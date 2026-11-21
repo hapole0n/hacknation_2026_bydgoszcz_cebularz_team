@@ -9,6 +9,7 @@
     "prebuild": "pnpm --filter @kropka/core build",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "pretest": "pnpm --filter @kropka/core build",
     "test": "vitest run"
   },
   "dependencies": {

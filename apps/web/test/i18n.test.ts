@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { BANDS_PL, CATEGORIES_PL, CHAINS_PL, CHAIN_MODES_PL, CONTEXT_TYPES_PL, DECISIONS_PL, IDENTIFIER_TYPES_PL, METHODS_PL, NOTES_PL, RELATIONS_PL, SOURCE_TYPES_PL, TAGS_PL } from '@kropka/core';
 import { describe, expect, it } from 'vitest';
 import en from '../src/i18n/en.json';
 import pl from '../src/i18n/pl.json';
@@ -10,6 +11,21 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap((f) => (statSyn
 const valueAt = (dict: unknown, key: string) => key.split('.').reduce<unknown>((o, p) => (o as Record<string, unknown>)[p], dict);
 
 describe('i18n', () => {
+  it('the report wording in core matches the UI dictionary (pl)', () => {
+    expect(pl.identifierTypes).toEqual(IDENTIFIER_TYPES_PL);
+    expect(pl.bands).toEqual(BANDS_PL);
+    expect(pl.categories).toEqual(CATEGORIES_PL);
+    expect(pl.sourceTypes).toEqual(SOURCE_TYPES_PL);
+    expect(pl.contextTypes).toEqual(CONTEXT_TYPES_PL);
+    expect(pl.tags).toEqual(TAGS_PL);
+    expect(pl.notes).toEqual(NOTES_PL);
+    expect(pl.run.chainModes).toEqual(CHAIN_MODES_PL);
+    expect(pl.form.methods).toEqual(METHODS_PL);
+    expect(pl.identities.relation).toEqual(RELATIONS_PL);
+    expect(pl.chains).toMatchObject(CHAINS_PL);
+    expect({ CONFIRMED: pl.decision.state.CONFIRMED, REJECTED: pl.decision.state.REJECTED }).toEqual(DECISIONS_PL);
+  });
+
   it('pl and en have exactly the same keys, none empty', () => {
     expect(flatten(en).sort()).toEqual(flatten(pl).sort());
     for (const dict of [pl, en]) for (const k of flatten(dict)) expect(valueAt(dict, k), k).not.toBe('');

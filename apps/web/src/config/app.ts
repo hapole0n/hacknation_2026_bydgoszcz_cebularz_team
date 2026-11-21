@@ -1,2 +1,2 @@
-// Working product name — the ONLY place it is defined (UI text uses {{appName}} from i18n).
-export const APP_NAME = 'KROPKA';
+// Working product name lives in @kropka/core (one place for the UI, the report and the PDF); UI text uses {{appName}} from i18n.
+export { APP_NAME } from '@kropka/core';

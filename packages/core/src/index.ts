@@ -11,3 +11,7 @@ export * from './labels.js';
 export * from './chain/model.js';
 export * from './chain/classify.js';
 export * from './chain/indicators.js';
+export * from './app.js';
+export * from './report/pl.js';
+export * from './report/build.js';
+export * from './report/hash.js';
