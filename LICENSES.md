@@ -1,7 +1,7 @@
 # Licencje wykorzystanych komponentów
 
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
-Wszystkie komponenty są Open Source.
+Wszystkie komponenty są Open Source. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
 
 ## Podsumowanie (675 pakietów npm)
 
@@ -22,25 +22,63 @@ Wszystkie komponenty są Open Source.
 | 0BSD | 1 |
 | (MIT OR CC0-1.0) | 1 |
 
-## Komponenty spoza npm (obrazy Docker)
+Silnego copyleftu (GPL / AGPL / SSPL) ani licencji nieznanych wśród zależności nie ma.
+
+## Uwagi do licencji o szczególnych wymogach
+
+| Pakiet | Decyzja |
+|---|---|
+| `elkjs` | EPL-2.0 (copyleft na poziomie plików). Zależność narzędzia Prisma Studio (`prisma` → `@prisma/studio-core`), niemodyfikowana, niepowiązana z kodem aplikacji. Obowiązek: zachować licencję i wskazać źródło (npm: elkjs). |
+| `lightningcss` | MPL-2.0 (copyleft na poziomie plików). Narzędzie budowania (Tailwind / Vite, devDependency interfejsu), niemodyfikowane; do paczki webowej trafia tylko wygenerowany CSS. |
+| `lightningcss-win32-x64-msvc` | MPL-2.0, jak `lightningcss` (binarium dla Windows, tylko narzędzie budowania). |
+| `caniuse-lite` | CC-BY-4.0 (wymaga uznania autorstwa). Dane przeglądarek z caniuse.com © Alexis Deveria i współautorzy, https://creativecommons.org/licenses/by/4.0/ — używane tylko przy budowaniu (browserslist), niezmienione. |
+| `@fontsource-variable/ibm-plex-sans` | OFL-1.1 — czcionka interfejsu, patrz „Czcionki”. |
+| `@fontsource-variable/source-serif-4` | OFL-1.1 — czcionka interfejsu, patrz „Czcionki”. |
+
+## Komponenty spoza npm (obrazy Docker i usługi)
 
 | Komponent | Licencja |
 |---|---|
 | PostgreSQL 16 (`postgres:16-alpine`) | PostgreSQL License |
 | nginx (`nginx:alpine`) | BSD-2-Clause |
 | Node.js 22 (`node:22-bookworm-slim`) | MIT |
-| Ollama (opcjonalnie, profil `ai`) | MIT |
+| Ollama (opcjonalnie, uruchamiany osobno przez użytkownika; nie jest częścią `docker-compose.yml`) | MIT |
+
+Obrazy bazowe zawierają też pakiety systemowe Debian / Alpine na ich własnych licencjach (w tym GPL); aplikacja ich nie modyfikuje ani nie łączy z własnym kodem.
 
 ## Czcionki
 
-| Czcionka | Licencja | Użycie |
-|---|---|---|
-| Roboto (dołączona do pakietu `pdfmake`; `node_modules/pdfmake/fonts/Roboto`) | SIL OFL-1.1 (wg metadanych pliku) | osadzana (podzbiór znaków) w raportach PDF, z polskimi literami |
-| IBM Plex Sans, Source Serif 4 (`@fontsource-variable/*`) | SIL OFL-1.1 | interfejs webowy, serwowane lokalnie |
+Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SIL Open Font License 1.1; skrypt sprawdza przy każdym generowaniu, że pliki nadal to deklarują.
+
+| Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
+|---|---|---|---|
+| Roboto 3.x (dołączona do pakietu `pdfmake`: `fonts/Roboto/*.ttf`) | SIL OFL-1.1 (zapisana w metadanych pliku) | Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic) | osadzana (podzbiór znaków) w raportach PDF, z polskimi literami |
+| IBM Plex Sans (`@fontsource-variable/ibm-plex-sans`) | SIL OFL-1.1 | Copyright 2019 IBM Corp. All rights reserved. IBMPlexSans-Italic[wdth,wght].ttf: Copyright 2019 IBM Corp. All rights reserved. (wg pliku LICENSE pakietu) | interfejs webowy |
+| Source Serif 4 (`@fontsource-variable/source-serif-4`) | SIL OFL-1.1 | Google Inc. (wg pliku LICENSE pakietu) | interfejs webowy |
 
 ## Zbiory danych i etykiet
 
-Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i datę pobrania.
+Listy etykiet adresów (`config/labels/*.json`). Aplikacja nie wystartuje, jeśli plik nie ma w nagłówku źródła, licencji i daty pobrania.
+
+| Plik | Wpisów | Źródło | Licencja | Pobrano |
+|---|---|---|---|---|
+| `binance-tron.json` | 8 | Binance — official post "Our Commitment To Transparency" (published 2022-11-10): the list of wallet addresses of major tokens on BTC, ETH, BSC, BNB and TRX, network TRX (USDT / USDC). Public page, no login. (https://www.binance.com/en/blog/community/2895840147147652626) | No licence is stated on the page; the addresses are an official public disclosure by the exchange. Only addresses and the snapshot reference are reproduced here. | 2026-11-21 |
+| `charity.json` | 1 | Public label of a government donation address (dawsbot/eth-labels, data/csv/accounts.csv @ d9b21aefeded56f7fce7208d6fa173d128526c1b) (https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv) | MIT (dawsbot/eth-labels) | 2026-11-21 |
+| `dex.json` | 2 | Official Uniswap documentation (deployment addresses) + eth-labels cross-check (https://developers.uniswap.org/docs/protocols/v2/deployments) | Public facts from official docs (no licence stated on the pages); cross-check dataset MIT (dawsbot/eth-labels) | 2026-11-21 |
+| `examples.json` | 8 | Specification test vectors (EIP-55, BIP-173, BIP-350) and the burn addresses of eth-labels (https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md) | EIP/BIP texts: CC0 / public domain; eth-labels: MIT | 2026-11-21 |
+| `exchanges-tron.json` | 79 | OKX Proof of Reserves — published wallet-address file (report of 1 Nov 2026, 00:00 UTC+8), network TRON; every address in the file carries a signed message ("I am an OKX address" or "I am an Okcoin address") (https://www.okx.com/en-eu/proof-of-reserves/download) | No licence is stated for the address file on the OKX download page; the addresses are an official public disclosure by the exchange. Only addresses and the snapshot reference are reproduced here. | 2026-11-21 |
+| `exchanges.json` | 1 | Public label of a centralised-exchange hot wallet: brianleect/etherscan-labels (Etherscan mainnet labels, data/etherscan/combined/combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9), cross-checked in dawsbot/eth-labels (https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json) | MIT (brianleect/etherscan-labels; dawsbot/eth-labels) | 2026-11-21 |
+| `synthetic-demo.json` | 1 | SYNTHETIC — demo data only (fixtures/addresses.json, generated by scripts/gen-fixture-addresses.mjs) | n/a (synthetic; the address belongs to nobody) | 2026-11-21 |
+
+Pozostałe dane:
+
+| Dane | Pochodzenie | Licencja |
+|---|---|---|
+| `fixtures/sandbox-web`, `fixtures/chain`, `fixtures/addresses.json`, `fixtures/expected.json`, `fixtures/demo-case.json` | **syntetyczne**: osoby, strony i adresy zmyślone (adresy z losowych kluczy, `scripts/gen-fixture-addresses.mjs`; e-maile na domenach zarezerwowanych) | autorstwa zespołu; nie dotyczą żadnej prawdziwej osoby |
+| `fixtures/recorded/real-addresses.json` | odpowiedzi publicznych API (Etherscan API v2 (module=proxy, action=eth_getCode) and TronGrid (POST /wallet/getcontract), both public APIs, read through EgressClient) dla pięciu adresów instytucjonalnych, zapisane 2026-11-21; bez kluczy API i bez list transakcji | Facts read from public blockchains (bytecode present or not, contract metadata); no licence text applies to them. No API key is stored: URLs are saved without `apikey`. |
+| Kursy NBP (API `api.nbp.pl`, tabela A) | pobierane w czasie działania, w testach zastępowane syntetycznymi (USD 4,00; EUR 4,40) | dane publiczne NBP; nie są zapisywane w repozytorium |
+| Dane Ethereum z Etherscan API v2 | pobierane w czasie działania (Powered by Etherscan.io APIs); w repozytorium tylko odpowiedzi `eth_getCode` pięciu adresów publicznych | regulamin Etherscan API |
+| Dane TRON z TronGrid | jak wyżej (`wallet/getcontract`) | regulamin TronGrid |
 
 ## Pakiety npm
 

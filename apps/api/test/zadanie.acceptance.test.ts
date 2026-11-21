@@ -338,6 +338,19 @@ describe('Z-21…Z-28 — technical requirements (task section 5)', () => {
   const read = (p: string) => readFileSync(repoPath(p), 'utf8');
   const deps = (p: string) => Object.keys({ ...JSON.parse(read(p)).dependencies, ...JSON.parse(read(p)).devDependencies });
 
+  it('Z-21 licences of the Open Source components are documented: every dependency of every workspace package, every label list and the fonts are in LICENSES.md; no strong copyleft', () => {
+    const licenses = read('LICENSES.md');
+    const names = new Set(['package.json', 'apps/api/package.json', 'apps/web/package.json', 'packages/core/package.json'].flatMap(deps).filter((n) => !n.startsWith('@kropka/')));
+    expect(names.size).toBeGreaterThan(30);
+    for (const n of names) expect(licenses, `${n} is in LICENSES.md (run pnpm licenses:report)`).toContain(`| ${n} |`);
+    const npmRows = licenses.slice(licenses.indexOf('## Pakiety npm')).split('\n').filter((l) => /^\| [^|]+ \| [^|]+ \| [^|]+ \|/.test(l)).slice(1); // without the header row
+    expect(npmRows.length).toBeGreaterThan(500);
+    for (const row of npmRows) expect(row.split('|')[3]!.trim(), row).toMatch(/^[^\s]+.*$/); // every package has a licence …
+    expect(npmRows.filter((r) => /\|\s*\(?(A?GPL|SSPL|UNKNOWN|UNLICENSED|SEE LICENSE)/i.test(r.split('|')[3]!))).toEqual([]); // … and none is strong copyleft or unknown
+    for (const s of app.labels.sources) expect(licenses, s.file).toContain(`\`${s.file}\``);
+    for (const font of ['Roboto', 'IBM Plex Sans', 'Source Serif 4']) expect(licenses, font).toContain(font);
+  });
+
   it('Z-22 stack: Node.js + TypeScript backend (NestJS), React front-end, PostgreSQL', () => {
     expect(deps('apps/api/package.json')).toEqual(expect.arrayContaining(['@nestjs/core', '@prisma/client']));
     expect(deps('apps/web/package.json')).toEqual(expect.arrayContaining(['react', 'react-dom', 'vite']));
