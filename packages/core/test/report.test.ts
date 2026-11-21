@@ -280,6 +280,21 @@ describe('section 8: changes since the previous run', () => {
     expect(t).toContain('SYNERGY_INDEPENDENT_SOURCES: +15');
   });
 
+  it('a threshold that only appeared because the valuation caught up is a note, not a new threshold', () => {
+    const A = '0xaaaa111111111111111111111111111111111111';
+    const cash = { detected: false, patterns: [], totalPln: 0, totalEur: 0, firstAt: null, lastAt: null, endpoints: [] };
+    const chainWith = (unvalued: number, crossed: string | null) => ({
+      address: { chain: 'ETH', address: A, category: 'UNHOSTED' },
+      indicators: { totals: { unvalued }, tags: [], cashOut: cash, thresholds: [{ eur: 1000, maxSingleEur: 0, singleCrossedAt: crossed, cumulativeCrossedAt: null }] },
+      flows: [],
+    });
+    const d = diffRuns(diffInput('r0', '2026-11-20T10:00:00Z', { chain: [chainWith(3, null)] }), diffInput('r1', '2026-11-21T10:00:00Z', { chain: [chainWith(0, '2026-11-01T10:00:00Z')] }));
+    const t = sec({ ...base(), diff: d });
+    expect(t).toContain('Wycena uzupełniona');
+    expect(t).toContain('poprzednia analiza nie miała wyceny 3 transferów');
+    expect(t).not.toContain('Nowe przekroczenia progów');
+  });
+
   it('warns when the two runs used different sources', () => {
     const d = diffRuns(diffInput('r0', '2026-11-20T10:00:00Z'), diffInput('r1', '2026-11-21T10:00:00Z', { params: { connectors: ['sandbox', 'github'], chain: 'live' } }));
     expect(sec({ ...base(), diff: d })).toContain('Analizy przeszukały różne źródła');

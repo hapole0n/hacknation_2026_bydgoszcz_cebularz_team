@@ -13,6 +13,8 @@ const audits: { host: string; path: string; status: number }[] = [];
 const prisma = { auditLog: { create: async ({ data }: { data: (typeof audits)[number] }) => void audits.push(data) } } as unknown as PrismaService;
 const addresses = JSON.parse(readFileSync(repoPath('fixtures/addresses.json'), 'utf8'));
 const A1: string = addresses.A1.address;
+/** An address that is NOT a synthetic persona's: only such an address may reach the (fake) RPC node. */
+const LIVE = '0x2222222222222222222222222222222222222222';
 const email = (value: string) => ({ type: 'EMAIL' as const, value, normalized: value.toLowerCase() });
 const address = (value: string) => ({ type: 'ADDRESS' as const, value, normalized: value });
 
@@ -95,7 +97,15 @@ describe('ENS connector', () => {
     expect(byName!.text).toContain(`Adres: ${A1}`);
   });
 
-  /** A fake Ethereum node: the registry, a resolver, and the records of `alice.eth` ↔ A1. */
+  it('the address of a synthetic persona the sandbox has no name for is NOT sent to the RPC: only fixtures answer', async () => {
+    const f = sandboxFetch();
+    const out = await new EnsConnector(egress(f)).search({ identifiers: [address(addresses.A0.address)] });
+    expect(out).toEqual([]);
+    expect(f.requested).toEqual([`http://sandbox-web/ens/reverse/${addresses.A0.address.toLowerCase()}.json`]);
+    expect(f.requested.some((u) => u.includes('ethereum-rpc'))).toBe(false);
+  });
+
+  /** A fake Ethereum node: the registry, a resolver, and the records of `alice.eth` ↔ LIVE. */
   function node(opts: { reverseName?: string; forwardAddress?: string; texts?: Record<string, string> } = {}) {
     const REGISTRY = '0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e';
     const RESOLVER = '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41';
@@ -105,7 +115,7 @@ describe('ENS connector', () => {
       return `0x${'20'.padStart(64, '0')}${s.length.toString(16).padStart(64, '0')}${data.padEnd(Math.ceil(data.length / 64) * 64 || 64, '0')}`;
     };
     const aliceNode = namehash('alice.eth');
-    const revNode = reverseNode(A1);
+    const revNode = reverseNode(LIVE);
     return vi.fn(async (_url: string, init?: RequestInit) => {
       const { params } = JSON.parse(String(init?.body)) as { params: [{ to: string; data: string }] };
       const { to, data } = params[0];
@@ -120,10 +130,10 @@ describe('ENS connector', () => {
   const live = (rpc: ReturnType<typeof node>) => new EnsConnector(egress((async (url: string, init?: RequestInit) => (String(url).includes('sandbox-web') ? new Response('nope', { status: 404 }) : rpc(String(url), init))) as unknown as typeof fetch));
 
   it('live: reverse record + forward check + text records through a public RPC (eth_call only), POSTed via the egress client', async () => {
-    const rpc = node({ reverseName: 'alice.eth', forwardAddress: A1, texts: { 'com.github': 'alice-dev', email: 'alice@example.com' } });
-    const [d] = await live(rpc).search({ identifiers: [address(A1)] });
+    const rpc = node({ reverseName: 'alice.eth', forwardAddress: LIVE, texts: { 'com.github': 'alice-dev', email: 'alice@example.com' } });
+    const [d] = await live(rpc).search({ identifiers: [address(LIVE)] });
     expect(d).toMatchObject({ url: 'https://app.ens.domains/alice.eth', author: { handle: 'alice-dev' }, platform: 'ens.domains' });
-    expect(d!.text).toContain(`Adres: ${A1}`);
+    expect(d!.text).toContain(`Adres: ${LIVE}`);
     expect(d!.text).toContain('com.github: alice-dev');
     expect(d!.text).not.toContain('com.twitter'); // empty records are left out
     const posts = rpc.mock.calls.map(([u, init]) => [u, init?.method, JSON.parse(String(init?.body)).method]);
@@ -134,9 +144,9 @@ describe('ENS connector', () => {
   it('a reverse record that does not resolve back to the address is not believed (anyone can claim any name)', async () => {
     const other = '0x1111111111111111111111111111111111111111';
     expect(decodeAddress(`0x${'0'.repeat(24)}${other.slice(2)}`)).toBe(other);
-    expect(await live(node({ reverseName: 'alice.eth', forwardAddress: other })).search({ identifiers: [address(A1)] })).toEqual([]);
-    expect(await live(node({ reverseName: 'alice.eth' })).search({ identifiers: [address(A1)] })).toEqual([]); // the name does not resolve at all
-    expect(await live(node({})).search({ identifiers: [address(A1)] })).toEqual([]); // no reverse record
+    expect(await live(node({ reverseName: 'alice.eth', forwardAddress: other })).search({ identifiers: [address(LIVE)] })).toEqual([]);
+    expect(await live(node({ reverseName: 'alice.eth' })).search({ identifiers: [address(LIVE)] })).toEqual([]); // the name does not resolve at all
+    expect(await live(node({})).search({ identifiers: [address(LIVE)] })).toEqual([]); // no reverse record
   });
 
   it('only EVM addresses and .eth names are looked up; an HTTP error from the node is reported', async () => {
@@ -144,6 +154,6 @@ describe('ENS connector', () => {
     expect(await new EnsConnector(egress(f)).search({ identifiers: [address('TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey'), { type: 'NICK', value: 'jtestowy', normalized: 'jtestowy' }, email('a@example.org')] })).toEqual([]);
     expect(f).not.toHaveBeenCalled();
     const down = new EnsConnector(egress((async (url: string) => (String(url).includes('sandbox-web') ? new Response('', { status: 404 }) : new Response('busy', { status: 503 }))) as unknown as typeof fetch));
-    await expect(down.search({ identifiers: [address(A1)] })).rejects.toMatchObject({ note: { code: 'PROVIDER_HTTP', params: { provider: 'Ethereum RPC', status: 503 } } });
+    await expect(down.search({ identifiers: [address(LIVE)] })).rejects.toMatchObject({ note: { code: 'PROVIDER_HTTP', params: { provider: 'Ethereum RPC', status: 503 } } });
   });
 });

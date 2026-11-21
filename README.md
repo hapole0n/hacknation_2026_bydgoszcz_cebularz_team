@@ -76,6 +76,7 @@ Zrzuty z przebiegu na danych syntetycznych (`docs/screenshots/`):
 - **AI wyłącznie lokalne i opcjonalne** (domyślnie wyłączone). Ocena jest deterministyczna, oparta na jawnych regułach i wyjaśnialna — każdy punkt ma uzasadnienie i dowód.
 - **Minimalizacja danych.** Zapisujemy fragmenty ±200 znaków oraz SHA-256 pełnej treści, a nie całe strony. Decyzje analityka są zapisane osobno i nie zmieniają obliczonego wyniku.
 - **Raport.** Raport (HTML w aplikacji, PDF, JSON) oddziela FAKT (źródło, odnośnik, czas pobrania), OBLICZENIE (reguła, dane, wynik) i WNIOSEK (z poziomem pewności), ma sekcję „Ograniczenia” i skrót SHA-256 danych. PDF powstaje lokalnie (pdfmake, czcionka osadzona), bez przeglądarki i bez wysyłania danych na zewnątrz.
+- **Ograniczenie: etykiety giełd w sieci TRON.** Dla OKX używamy publicznego pliku Proof of Reserves (79 dużych portfeli). Dla Binance oficjalny, publiczny (bez logowania) jest tylko wpis „Our Commitment To Transparency” z listopada 2022 — 8 adresów TRX, jawnie „niekompletny zbiór danych”; aktualny plik adresów Proof of Reserves Binance jest za logowaniem i **nie jest używany**. Pozostałe portfele Binance w TRON wykrywa heurystyka (adres depozytowy / zachowanie usługi), a nie etykieta, więc mogą być sklasyfikowane słabiej.
 - **Klucze** tylko w pliku `.env` (szablon `.env.example`), nigdy w repozytorium.
 
 ## Licencje wykorzystanych komponentów

@@ -49,9 +49,18 @@ describe('sandbox fixtures', () => {
 });
 
 describe('labels', () => {
+  it('Binance on TRON: the 8 addresses of the official transparency post (public, no login) are labelled as an exchange; its limits are in the header', () => {
+    const labels = new LabelService();
+    const doc = JSON.parse(read('config/labels/binance-tron.json'));
+    expect(doc.entries).toHaveLength(8);
+    for (const e of doc.entries) expect(labels.lookup('TRON', e.address), e.address).toMatchObject({ category: 'CEX_CUSTODIAL' }); // every address passes the base58check validation at load
+    expect(doc.header).toMatchObject({ sourceUrl: expect.stringContaining('binance.com/en/blog'), retrieved: '2026-11-21' });
+    expect(doc.header.selection).toContain('not a complete set');
+  });
+
   it('every label file declares source, licence and retrieval date', () => {
     const labels = new LabelService();
-    expect(labels.sources.map((s) => s.file)).toEqual(['charity.json', 'dex.json', 'examples.json', 'exchanges-tron.json', 'exchanges.json', 'synthetic-demo.json']);
+    expect(labels.sources.map((s) => s.file)).toEqual(['binance-tron.json', 'charity.json', 'dex.json', 'examples.json', 'exchanges-tron.json', 'exchanges.json', 'synthetic-demo.json']);
     for (const s of labels.sources) expect([s.source, s.license, s.retrieved].every(Boolean), s.file).toBe(true);
   });
 

@@ -673,12 +673,18 @@
       "scoreChanges": "zmiany oceny: {{n}}",
       "newTransactions": "nowe transakcje: {{n}}",
       "newThresholds": "progi: {{n}}",
-      "sourceChanges": "zmiana adresu w źródle: {{n}}"
+      "sourceChanges": "zmiana adresu w źródle: {{n}}",
+      "valuationCompleted": "wycena uzupełniona: {{n}}"
     },
     "txCount_one": "{{count}} transakcja",
     "txCount_few": "{{count}} transakcje",
     "txCount_many": "{{count}} transakcji",
-    "txCount_other": "{{count}} transakcji"
+    "txCount_other": "{{count}} transakcji",
+    "valuationCompleted": "Wycena uzupełniona",
+    "valuationNote_one": "Poprzednia analiza nie miała wyceny {{count}} transferu (np. brak kursu NBP), ta ma. To nie nowe zdarzenie: te progi były przekroczone już przed nią:",
+    "valuationNote_few": "Poprzednia analiza nie miała wyceny {{count}} transferów (np. brak kursu NBP), ta ma. To nie nowe zdarzenie: te progi były przekroczone już przed nią:",
+    "valuationNote_many": "Poprzednia analiza nie miała wyceny {{count}} transferów (np. brak kursu NBP), ta ma. To nie nowe zdarzenie: te progi były przekroczone już przed nią:",
+    "valuationNote_other": "Poprzednia analiza nie miała wyceny {{count}} transferów (np. brak kursu NBP), ta ma. To nie nowe zdarzenie: te progi były przekroczone już przed nią:"
   },
   "notifications": {
     "title": "Powiadomienia",

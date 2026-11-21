@@ -118,6 +118,16 @@ export function RunChanges({ runId }: { runId: string }) {
               ))}
             </Group>
           )}
+          {(d.valuationCompleted ?? []).length > 0 && (
+            <Group title={t('changes.valuationCompleted')}>
+              {d.valuationCompleted!.map((v) => (
+                <li key={`${v.chain}:${v.address}`}>
+                  <span className={mono}>{addr(v)}</span>: {t('changes.valuationNote', { count: v.previouslyUnvalued })}{' '}
+                  {v.thresholds.map((x) => `${formatEur(x.thresholdEur, lang)} — ${t(`changes.thresholdKind.${x.kind}`)}, ${formatDateTime(x.at, lang)}`).join('; ')}
+                </li>
+              ))}
+            </Group>
+          )}
           {d.newIndicators.filter((i) => i.cashOut).length > 0 && (
             <Group title={t('changes.newCashOut')}>
               {d.newIndicators.filter((i) => i.cashOut).map((i) => (

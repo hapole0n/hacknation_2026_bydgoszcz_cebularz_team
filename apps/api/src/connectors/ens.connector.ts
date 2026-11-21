@@ -16,6 +16,7 @@ import {
 } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { NoteError } from '../notes.js';
+import { isSyntheticAddress } from './synthetic.js';
 import { identKey, sha256Hex, type ConnectorPolicy, type SearchIdentifier, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
 
 const DEFAULT_RPC = 'https://ethereum-rpc.publicnode.com';
@@ -33,7 +34,8 @@ interface Resolved {
  *   - address → primary name (reverse record, accepted only when the name resolves back to the same address) + text records
  *   - name.eth → address + text records (com.github, com.twitter, email, url)
  * Records are set by the holder of the name, so a match is a strong, self-published trace. The synthetic sandbox answers
- * first (its own ENS fixtures); anything it does not know goes to the RPC.
+ * first (its own ENS fixtures); an address of a synthetic persona (fixtures/addresses.json) is never sent to the RPC, anything
+ * else the sandbox does not know goes there.
  */
 @Injectable()
 export class EnsConnector implements SourceConnector {
@@ -108,6 +110,7 @@ export class EnsConnector implements SourceConnector {
   async reverse(address: string, ctx: { connectorId: string; caseId?: string; runId?: string }): Promise<Resolved | null> {
     const fx = await this.fixture(`reverse/${address.toLowerCase()}.json`, ctx);
     if (fx?.doc.name) return { name: fx.doc.name, address, texts: fx.doc.texts ?? {}, fixtureUrl: fx.url };
+    if (isSyntheticAddress(address)) return null; // a synthetic persona has no name outside the sandbox: the RPC is never asked about it
     const node = reverseNode(address);
     const resolver = await this.resolverOf(node, ctx);
     if (!resolver) return null;

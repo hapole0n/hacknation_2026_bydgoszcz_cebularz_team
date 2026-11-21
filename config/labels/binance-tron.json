@@ -1,0 +1,20 @@
+{
+  "header": {
+    "source": "Binance — official post \"Our Commitment To Transparency\" (published 2022-11-10): the list of wallet addresses of major tokens on BTC, ETH, BSC, BNB and TRX, network TRX (USDT / USDC). Public page, no login.",
+    "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626",
+    "license": "No licence is stated on the page; the addresses are an official public disclosure by the exchange. Only addresses and the snapshot reference are reproduced here.",
+    "retrieved": "2026-11-21",
+    "snapshot": "\"Snapshot made by 10/11/2022 00:00 UTC\"; the page was last updated on 2023-10-09",
+    "selection": "all TRX-network addresses of that list (8 distinct; TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi is printed under both USDC and USDT). The page says: \"This is not a complete set of data, which will be shared later in the full report\" and \"Only major tokens ... are included\", so this is a partial, 2022 list: other Binance wallets on TRON are NOT covered (the current PoR address file is behind the account login and is not used)."
+  },
+  "entries": [
+    { "chain": "TRON", "address": "TMuA6YqfCeX8EhbfYEg5y7S4DqzSJireY9", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TWd4WrZ9wn84f5x1hZhL4DHvk738ns5jwb", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDC (TRX) and USDT (TRX)" },
+    { "chain": "TRON", "address": "TJDENsfBJs4RFETt1X1W8wMDc8M5XnJhCe", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TAzsQ9Gx8eqFNFSKbeXrbi45CuVPHzA8wr", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TQrY8tryqsYVCYS3MFbtffiPp2ccyn4STm", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TNXoiAJ3dct8Fjg4M9fkLFh9S2v9TXc32G", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" },
+    { "chain": "TRON", "address": "TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS", "category": "CEX_CUSTODIAL", "name": "Binance (adres z oficjalnej listy, stan 2022-11-10)", "isContract": false, "sourceUrl": "https://www.binance.com/en/blog/community/2895840147147652626", "note": "Binance transparency list, snapshot 2022-11-10: USDT (TRX)" }
+  ]
+}

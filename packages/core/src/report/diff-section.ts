@@ -73,6 +73,17 @@ export function diffSection(diff: RunDiffDoc | null | undefined): Omit<ReportSec
     blocks.push({ type: 'heading', text: 'Nowe przekroczenia progów (przesłanka analityczna, nie kwalifikacja prawna)' });
     blocks.push(table(['Adres', 'Próg', 'Rodzaj', 'Od'], diff.newThresholds.map((t) => [addr(t.chain, t.address), `${fmtNum(t.thresholdEur)} EUR`, t.kind === 'single' ? 'pojedynczy transfer' : 'łączne wyjście do gotówki', fmtDateTime(t.at)]), [6, 3, 5, 4]));
   }
+  const completed = diff.valuationCompleted ?? [];
+  if (completed.length > 0) {
+    blocks.push({ type: 'heading', text: 'Wycena uzupełniona' });
+    blocks.push({
+      type: 'list',
+      items: completed.map(
+        (v) =>
+          `${addr(v.chain, v.address)}: poprzednia analiza nie miała wyceny ${v.previouslyUnvalued} ${plural(v.previouslyUnvalued, 'transferu', 'transferów', 'transferów')} (np. brak kursu NBP), ta ma. Progi widoczne teraz, a przekroczone przed poprzednią analizą, to nie nowe zdarzenie: ${v.thresholds.map((t) => `${fmtNum(t.thresholdEur)} EUR (${t.kind === 'single' ? 'pojedynczy transfer' : 'łączne wyjście do gotówki'}, ${fmtDateTime(t.at)})`).join('; ')}.`,
+      ),
+    });
+  }
   const indicators = diff.newIndicators.filter((i) => i.cashOut);
   if (indicators.length > 0) {
     blocks.push({ type: 'heading', text: 'Nowe wskaźniki wyjścia do gotówki' });

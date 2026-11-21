@@ -30,7 +30,7 @@ export interface DiffRunInput {
   }[];
   evidence: { id: string; url: string | null; metaJson: { platform?: string | null; title?: string | null } }[];
   traces: { evidenceId: string; chain: string; address: string }[];
-  chain: { address: { chain: string; address: string; category: string }; indicators: Pick<Indicators, 'tags' | 'thresholds' | 'cashOut'>; flows: FlowEntry[] }[];
+  chain: { address: { chain: string; address: string; category: string }; indicators: Pick<Indicators, 'tags' | 'thresholds' | 'cashOut'> & { totals?: Pick<Indicators['totals'], 'unvalued'> }; flows: FlowEntry[] }[];
 }
 
 // ---- output --------------------------------------------------------------------------------------------------------
@@ -83,6 +83,15 @@ export interface NewThreshold extends AddrRef {
   kind: 'single' | 'cumulative';
   at: string;
 }
+/**
+ * The previous run could not value some transfers (e.g. NBP was down), this one could, and the thresholds listed here were
+ * crossed BEFORE the previous run: nothing new happened, the valuation caught up ("wycena uzupełniona").
+ */
+export interface ValuationCompleted extends AddrRef {
+  /** Transfers the previous run left without a value. */
+  previouslyUnvalued: number;
+  thresholds: NewThreshold[];
+}
 export interface NewIndicator extends AddrRef {
   tag: string;
   /** The tag means a possible exit to fiat. */
@@ -110,9 +119,11 @@ export interface RunDiffDoc {
   categoryChanges: CategoryChange[];
   newTransactions: NewTransactions[];
   newThresholds: NewThreshold[];
+  /** Absent in diffs stored before this field. */
+  valuationCompleted?: ValuationCompleted[];
   newIndicators: NewIndicator[];
   sourceChanges: SourceChange[];
-  counts: { addressesAdded: number; addressesRemoved: number; scoreChanges: number; categoryChanges: number; newTransactions: number; newThresholds: number; newIndicators: number; sourceChanges: number };
+  counts: { addressesAdded: number; addressesRemoved: number; scoreChanges: number; categoryChanges: number; newTransactions: number; newThresholds: number; newIndicators: number; sourceChanges: number; /** absent in diffs stored before this field */ valuationCompleted?: number };
   /** Nothing differs between the runs. */
   empty: boolean;
 }
@@ -219,6 +230,7 @@ export function diffRuns(prev: DiffRunInput, next: DiffRunInput): RunDiffDoc {
   const prevChain = new Map(prev.chain.map((c) => [key(c.address.chain, c.address.address), c]));
   const newTransactions: NewTransactions[] = [];
   const newThresholds: NewThreshold[] = [];
+  const valuationCompleted: ValuationCompleted[] = [];
   const newIndicators: NewIndicator[] = [];
   for (const c of next.chain) {
     const old = prevChain.get(key(c.address.chain, c.address.address));
@@ -227,16 +239,25 @@ export function diffRuns(prev: DiffRunInput, next: DiffRunInput): RunDiffDoc {
     if (fresh.length > 0) {
       newTransactions.push({ ...ref(c.address), isNewAddress: !old, count: new Set(fresh.map((f) => f.tx)).size, firstAt: fresh[0]!.time, lastAt: fresh[fresh.length - 1]!.time, flows: fresh.slice(-MAX_LISTED_FLOWS) });
     }
+    const unvaluedBefore = old?.indicators.totals?.unvalued ?? 0;
+    const caughtUp: NewThreshold[] = [];
     for (const th of c.indicators.thresholds) {
       const was = old?.indicators.thresholds.find((x) => x.eur === th.eur);
-      if (th.singleCrossedAt && !was?.singleCrossedAt) newThresholds.push({ ...ref(c.address), thresholdEur: th.eur, kind: 'single', at: th.singleCrossedAt });
-      if (th.cumulativeCrossedAt && !was?.cumulativeCrossedAt) newThresholds.push({ ...ref(c.address), thresholdEur: th.eur, kind: 'cumulative', at: th.cumulativeCrossedAt });
+      for (const [kind, at, before] of [['single', th.singleCrossedAt, was?.singleCrossedAt], ['cumulative', th.cumulativeCrossedAt, was?.cumulativeCrossedAt]] as const) {
+        if (!at || before) continue;
+        const entry: NewThreshold = { ...ref(c.address), thresholdEur: th.eur, kind, at };
+        // crossed before the previous run, which could not value everything: the valuation caught up, nothing new happened
+        if (old && unvaluedBefore > 0 && time(at) <= time(prev.startedAt)) caughtUp.push(entry);
+        else newThresholds.push(entry);
+      }
     }
+    if (caughtUp.length > 0) valuationCompleted.push({ ...ref(c.address), previouslyUnvalued: unvaluedBefore, thresholds: caughtUp });
     const had = new Set(old?.indicators.tags ?? []);
     for (const tag of c.indicators.tags) if (!had.has(tag) && !tag.startsWith('OVER_')) newIndicators.push({ ...ref(c.address), tag, cashOut: CASH_OUT_TAGS.includes(tag) });
   }
   newTransactions.sort(byAddress);
   newThresholds.sort((a, b) => byAddress(a, b) || a.thresholdEur - b.thresholdEur || a.kind.localeCompare(b.kind));
+  valuationCompleted.sort(byAddress);
   newIndicators.sort((a, b) => byAddress(a, b) || a.tag.localeCompare(b.tag));
 
   // Address swap: the same URL carried address X before and carries Y now.
@@ -261,6 +282,7 @@ export function diffRuns(prev: DiffRunInput, next: DiffRunInput): RunDiffDoc {
     newThresholds: newThresholds.length,
     newIndicators: newIndicators.length,
     sourceChanges: sourceChanges.length,
+    valuationCompleted: valuationCompleted.length,
   };
   return {
     version: 1,
@@ -274,6 +296,7 @@ export function diffRuns(prev: DiffRunInput, next: DiffRunInput): RunDiffDoc {
     categoryChanges,
     newTransactions,
     newThresholds,
+    valuationCompleted,
     newIndicators,
     sourceChanges,
     counts,

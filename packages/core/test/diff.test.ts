@@ -19,9 +19,9 @@ const link = (address: string, score: number, breakdown: BreakdownEntry[], extra
 });
 const flow = (tx: string, time: string, tags: string[] = []): FlowEntry => ({ time, tx, direction: 'in', counterparty: { address: HOT }, asset: 'USDT', amount: 100, valuePln: 400, valueEur: 100, tags });
 const thr = (eur: number, single: string | null = null, cumulative: string | null = null) => ({ eur, maxSingleEur: 0, singleCrossedAt: single, cumulativeCrossedAt: cumulative });
-const chainOf = (address: string, flows: FlowEntry[], extra: { tags?: string[]; thresholds?: ReturnType<typeof thr>[]; detected?: boolean } = {}): DiffRunInput['chain'][number] => ({
+const chainOf = (address: string, flows: FlowEntry[], extra: { tags?: string[]; thresholds?: ReturnType<typeof thr>[]; detected?: boolean; unvalued?: number } = {}): DiffRunInput['chain'][number] => ({
   address: { chain: 'ETH', address, category: 'UNHOSTED' },
-  indicators: { tags: extra.tags ?? [], thresholds: extra.thresholds ?? [thr(1000), thr(10000), thr(15000)], cashOut: { detected: extra.detected ?? false, patterns: [], totalPln: 0, totalEur: 0, firstAt: null, lastAt: null, endpoints: [] } },
+  indicators: { totals: { unvalued: extra.unvalued ?? 0 }, tags: extra.tags ?? [], thresholds: extra.thresholds ?? [thr(1000), thr(10000), thr(15000)], cashOut: { detected: extra.detected ?? false, patterns: [], totalPln: 0, totalEur: 0, firstAt: null, lastAt: null, endpoints: [] } },
   flows,
 });
 const run = (id: string, startedAt: string, parts: Partial<DiffRunInput> = {}): DiffRunInput => ({ id, startedAt, params: { connectors: ['sandbox'], chain: 'fixture' }, links: [], evidence: [], traces: [], chain: [], ...parts });
@@ -118,6 +118,32 @@ describe('diffRuns', () => {
     expect(d.categoryChanges).toEqual([{ chain: 'ETH', address: A1, from: 'UNHOSTED', to: 'CASP_KANTOR' }]);
     expect(d.sourceChanges).toEqual([{ url: SITE, platform: 'site.example', title: 'title of f1', kind: 'removed', from: [{ chain: 'ETH', address: A2 }], to: [] }]);
     expect(notificationsFor(d)).toEqual([]); // nothing new, nothing crossed
+  });
+
+  it('a threshold that appears only because the previous run could not value some transfers is not new: "wycena uzupełniona"', () => {
+    const before = run('r1', '2026-11-21T10:00:00Z', { chain: [chainOf(A1, [flow('t1', '2026-10-01T10:00:00Z')], { unvalued: 2 })] }); // NBP was down: nothing valued, no threshold visible
+    const after = run('r2', '2026-11-21T11:00:00Z', { chain: [chainOf(A1, [flow('t1', '2026-10-01T10:00:00Z')], { thresholds: [thr(1000, '2026-10-01T10:00:00Z'), thr(10000), thr(15000)] })] });
+    const d = diffRuns(before, after);
+    expect(d.newThresholds).toEqual([]);
+    expect(d.valuationCompleted).toEqual([{ chain: 'ETH', address: A1, previouslyUnvalued: 2, thresholds: [{ chain: 'ETH', address: A1, thresholdEur: 1000, kind: 'single', at: '2026-10-01T10:00:00Z' }] }]);
+    expect(d.counts).toMatchObject({ newThresholds: 0, valuationCompleted: 1 });
+    expect(d.empty).toBe(false); // the analyst should still be told why the numbers moved
+    expect(notificationsFor(d)).toEqual([]); // but nothing happened that deserves a bell
+  });
+
+  it('a crossing AFTER the previous run is new even when that run had unvalued transfers', () => {
+    const before = run('r1', '2026-11-21T10:00:00Z', { chain: [chainOf(A1, [flow('t1', '2026-10-01T10:00:00Z')], { unvalued: 1 })] });
+    const after = run('r2', '2026-11-21T11:00:00Z', { chain: [chainOf(A1, [flow('t1', '2026-10-01T10:00:00Z'), flow('t2', '2026-11-21T10:30:00Z')], { thresholds: [thr(1000, '2026-11-21T10:30:00Z'), thr(10000), thr(15000)] })] });
+    const d = diffRuns(before, after);
+    expect(d.newThresholds).toHaveLength(1);
+    expect(d.valuationCompleted).toEqual([]);
+    expect(notificationsFor(d).map((n) => n.kind)).toContain('THRESHOLD_EXCEEDED');
+  });
+
+  it('a brand-new address has no "before": its thresholds are new', () => {
+    const d = diffRuns(run('r1', '2026-11-21T10:00:00Z'), run('r2', '2026-11-21T11:00:00Z', { chain: [chainOf(A1, [flow('t1', '2026-10-01T10:00:00Z')], { thresholds: [thr(1000, '2026-10-01T10:00:00Z'), thr(10000), thr(15000)] })] }));
+    expect(d.newThresholds).toHaveLength(1);
+    expect(d.valuationCompleted).toEqual([]);
   });
 
   it('only transactions that were not in the previous snapshot are new; thresholds already crossed are not repeated', () => {

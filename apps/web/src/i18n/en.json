@@ -647,10 +647,14 @@
       "scoreChanges": "score changes: {{n}}",
       "newTransactions": "new transactions: {{n}}",
       "newThresholds": "thresholds: {{n}}",
-      "sourceChanges": "address changed on a source: {{n}}"
+      "sourceChanges": "address changed on a source: {{n}}",
+      "valuationCompleted": "valuation completed: {{n}}"
     },
     "txCount_one": "{{count}} transaction",
-    "txCount_other": "{{count}} transactions"
+    "txCount_other": "{{count}} transactions",
+    "valuationCompleted": "Valuation completed",
+    "valuationNote_one": "The previous run could not value {{count}} transfer (e.g. NBP rate missing), this one could. Not a new event: these thresholds were crossed before it:",
+    "valuationNote_other": "The previous run could not value {{count}} transfers (e.g. NBP rate missing), this one could. Not a new event: these thresholds were crossed before it:"
   },
   "notifications": {
     "title": "Notifications",
