@@ -5,3 +5,6 @@ allowBuilds:
   '@prisma/engines': true
   esbuild: true
   prisma: true
+overrides:
+  # GHSA-7589-6fvf-x4pw (ReDoS in effect <= 3.22.0, pulled in by prisma's config loader): 3.22.1+ is a patch of the same 3.x line
+  effect: ^3.22.5

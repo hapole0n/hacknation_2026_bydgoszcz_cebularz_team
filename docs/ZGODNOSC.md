@@ -94,4 +94,13 @@ Nic tu nie jest upiększone: to, czego nie zrobiliśmy albo zrobiliśmy części
 
 ## Przegląd przed publikacją repozytorium
 
-Wynik przeglądu historii git (klucze, `.env`, dane prywatne) i `pnpm audit` — w sekcji uzupełnianej po wykonaniu przeglądu (patrz commit „docs: wynik przeglądu przed publikacją”).
+Wykonany 21.11.2026 na całej historii (47 commitów, gałąź `main`); historii nie przepisywano.
+
+- **Pliki `.env`:** nigdy nie były śledzone; w historii jest wyłącznie `.env.example` (bez wartości kluczy).
+- **Klucze i tokeny:** brak wzorców kluczy (GitHub, AWS, Slack, OpenAI, klucze prywatne PEM, Gravatar, 34-znakowe klucze Etherscan) ani przypisań `*_KEY=` / `*_TOKEN=` z wartością. Skan oparto o wzorce — plik `.env` nie był odczytywany ani porównywany.
+- **Adresy krypto:** każdy adres, który kiedykolwiek trafił do historii, jest też w obecnych `fixtures/`, `config/labels/` lub kodzie, czyli jest syntetyczny albo publicznym adresem instytucjonalnym. Nie ma adresów spoza tego zbioru.
+- **Dane osobowe właściciela repozytorium** wskazane przez zespół do sprawdzenia (adres portfela, e-mail, nazwa użytkownika komunikatora): nie występują w żadnym commicie.
+- **Zrzuty ekranu** (`docs/screenshots/`) pochodzą z przebiegów na danych syntetycznych; dziennik zapytań na zrzucie 12 zawiera wyłącznie zapytania sprawy demonstracyjnej.
+- **Inne:** brak zrzutów bazy danych ani dużych plików binarnych poza dokumentem zadania i zrzutami ekranu; katalog `.playwright-mcp/` (robocze zrzuty przeglądarki z danymi syntetycznymi) był przez krótki czas śledzony, obecnie jest w `.gitignore`.
+- **Pozycje zgłoszone zespołowi do decyzji** (nie są sekretami, ale dotyczą osób i warto je świadomie ocenić przed ustawieniem repozytorium jako publicznego) zostały przekazane osobno.
+- **`pnpm audit`:** podatność *high* (ReDoS w pakiecie `effect`, zależność narzędzia Prisma) usunięta wymuszeniem wersji `effect ^3.22.5` (`pnpm-workspace.yaml`, `overrides`); pełny zestaw testów, budowa i lint przeszły po zmianie. Pozostaje jedna podatność *moderate* (`minimatch` w narzędziu deweloperskim `shadcn`, używanym tylko do generowania komponentów; poprawka wymaga skoku wersji głównej) — nie jest krytyczna i nie trafia do działającej aplikacji. Podatności krytycznych nie było.

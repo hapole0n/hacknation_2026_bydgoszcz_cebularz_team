@@ -423,7 +423,7 @@ Pozostałe dane:
 | dotenv | 17.4.2 | BSD-2-Clause | https://github.com/motdotla/dotenv#readme |
 | dunder-proto | 1.0.1 | MIT | https://github.com/es-shims/dunder-proto#readme |
 | ee-first | 1.1.1 | MIT | https://github.com/jonathanong/ee-first#readme |
-| effect | 3.20.0 | MIT | https://effect.website |
+| effect | 3.22.5 | MIT | https://effect.website |
 | electron-to-chromium | 1.5.492 | ISC | https://github.com/Kilian/electron-to-chromium#readme |
 | elkjs | 0.11.1 | EPL-2.0 | https://github.com/kieler/elkjs#readme |
 | emoji-regex | 8.0.0, 10.6.0 | MIT | https://mths.be/emoji-regex |
