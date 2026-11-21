@@ -569,5 +569,16 @@
       "newThresholds": "thresholds: {{n}}",
       "sourceChanges": "address changed on a source: {{n}}"
     }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "Notifications",
+    "bellUnread": "Notifications, unread: {{count}}",
+    "markAll": "Mark all as read",
+    "empty": "No notifications. They appear when a later analysis of a case finds a change.",
+    "NEW_ADDRESS": "New address {{chain}} {{address}} with a score of {{score}}%.",
+    "ADDRESS_CHANGED": "Address changed on {{platform}}: {{from}} → {{to}}.",
+    "THRESHOLD_EXCEEDED": "Address {{chain}} {{address}} crossed the {{thresholdEur}} EUR threshold ({{at}}).",
+    "NEW_CASH_OUT": "New cash-out indicator for address {{chain}} {{address}}: {{tags}}."
   }
 }

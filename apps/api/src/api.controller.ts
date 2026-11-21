@@ -192,6 +192,30 @@ export class ApiController {
     return { total, blocked, failed, rows: rows.map((r) => ({ ...r, caseTitle: r.caseId ? (titles.get(r.caseId) ?? null) : null })) };
   }
 
+  /**
+   * In-app notifications (the bell): newest first, with the unread count. Only inside the application — nothing is sent out.
+   * `kind` + `params` are codes; the web puts the words in.
+   */
+  @Get('notifications')
+  async notifications(@Query('limit') limit?: string) {
+    const take = Math.min(Math.max(Number.parseInt(limit ?? '', 10) || 30, 1), 200);
+    const [rows, unread] = await Promise.all([
+      this.prisma.notification.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'asc' }], take }),
+      this.prisma.notification.count({ where: { readAt: null } }),
+    ]);
+    const titles = new Map((await this.prisma.case.findMany({ where: { id: { in: [...new Set(rows.map((r) => r.caseId))] } }, select: { id: true, title: true } })).map((c) => [c.id, c.title]));
+    return { unread, items: rows.map(({ paramsJson, ...r }) => ({ ...r, params: paramsJson, caseTitle: titles.get(r.caseId) ?? null })) };
+  }
+
+  /** Marks notifications as read: the given ids, or all unread ones when `ids` is omitted. */
+  @Post('notifications/read')
+  async markRead(@Body() body: unknown) {
+    const ids = isObj(body) ? body.ids : undefined;
+    if (ids !== undefined && !(Array.isArray(ids) && ids.every((i) => typeof i === 'string'))) throw new BadRequestException('ids: expected a list of notification ids');
+    const { count } = await this.prisma.notification.updateMany({ where: { readAt: null, ...(ids ? { id: { in: ids as string[] } } : {}) }, data: { readAt: new Date() } });
+    return { updated: count };
+  }
+
   /** The report document (what the HTML view shows) with its SHA-256. */
   @Get('runs/:id/report')
   report(@Param('id') id: string) {

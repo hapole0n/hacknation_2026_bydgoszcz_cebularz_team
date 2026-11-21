@@ -465,4 +465,21 @@ describe('monitoring: comparison of runs (PLAN 3.8)', () => {
     expect(await section(monitored.first.run.id)).toContain('To pierwsza analiza');
     expect(await section(monitored.second.run.id)).toContain('Nie wykryto zmian');
   });
+
+  it('notifications: listed newest first with the case title and unread count; marking by id leaves the others unread', async () => {
+    // rows are test fixtures here; real ones come from the swap scenario (sandbox v2). "Mark all" is not exercised: it would touch the analyst's own notifications.
+    const [a, b] = await Promise.all(['NEW_ADDRESS', 'THRESHOLD_EXCEEDED'].map((kind, i) => prisma.notification.create({ data: { caseId: monitored.id, runId: monitored.second.run.id, kind, paramsJson: { n: i }, createdAt: new Date(Date.now() + i * 1000) } })));
+    const before = await api.notifications('100');
+    const ours = before.items.filter((n) => n.caseId === monitored.id);
+    expect(ours.map((n) => n.id)).toEqual([b!.id, a!.id]); // newest first
+    expect(ours[0]).toMatchObject({ kind: 'THRESHOLD_EXCEEDED', caseTitle: 'Demo — monitoring', readAt: null, params: { n: 1 } });
+
+    expect(await api.markRead({ ids: [a!.id] })).toEqual({ updated: 1 });
+    const after = await api.notifications('100');
+    expect(after.unread).toBe(before.unread - 1);
+    expect(after.items.find((n) => n.id === a!.id)!.readAt).not.toBeNull();
+    expect(after.items.find((n) => n.id === b!.id)!.readAt).toBeNull();
+    await expect(api.markRead({ ids: [1] })).rejects.toThrow(/ids/);
+  });
 });
+

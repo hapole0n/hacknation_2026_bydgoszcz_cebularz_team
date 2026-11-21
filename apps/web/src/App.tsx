@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { NotificationBell } from '@/components/NotificationBell';
 import { Button } from '@/components/ui/button';
 import { APP_NAME } from '@/config/app';
 import { LANGUAGES } from '@/i18n';
@@ -38,6 +39,7 @@ export function App() {
                 </Link>
               ))}
             </nav>
+            <NotificationBell />
             <div className="flex items-center gap-1" role="group" aria-label={t('app.language')}>
               {LANGUAGES.map((lng) => (
                 <Button key={lng} size="sm" variant={i18n.language === lng ? 'default' : 'outline'} onClick={() => i18n.changeLanguage(lng)} aria-pressed={i18n.language === lng}>

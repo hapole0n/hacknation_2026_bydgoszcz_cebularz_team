@@ -569,5 +569,16 @@
       "newThresholds": "progi: {{n}}",
       "sourceChanges": "zmiana adresu w źródle: {{n}}"
     }
+  },
+  "notifications": {
+    "title": "Powiadomienia",
+    "bell": "Powiadomienia",
+    "bellUnread": "Powiadomienia, nieprzeczytane: {{count}}",
+    "markAll": "Oznacz wszystkie jako przeczytane",
+    "empty": "Brak powiadomień. Pojawią się, gdy kolejna analiza sprawy wykryje zmianę.",
+    "NEW_ADDRESS": "Nowy adres {{chain}} {{address}} z oceną {{score}}%.",
+    "ADDRESS_CHANGED": "Zmiana adresu w źródle {{platform}}: {{from}} → {{to}}.",
+    "THRESHOLD_EXCEEDED": "Adres {{chain}} {{address}} przekroczył próg {{thresholdEur}} EUR ({{at}}).",
+    "NEW_CASH_OUT": "Nowy wskaźnik wyjścia do gotówki dla adresu {{chain}} {{address}}: {{tags}}."
   }
 }
