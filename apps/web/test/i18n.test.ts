@@ -62,6 +62,8 @@ describe('i18n', () => {
       'evidence.rounds': ['1', '2', '3'],
       'identities.relation': ['PUBLISHER', 'SAME_NICK_OTHER_PLATFORM'],
       'form.methods': ['official_api', 'public_page', 'synthetic'],
+      'audit.columns': ['time', 'case', 'source', 'host', 'path', 'status', 'duration'],
+      'audit.status': ['blocked', 'error'],
       notes: ['ERROR', 'CHAIN_KEY_MISSING', 'PROVIDER_HTTP', 'PROVIDER_ERROR', 'NBP_HTTP', 'NBP_NO_RATE', 'HISTORY_TRUNCATED', 'UNVALUED_TRANSFERS', 'EGRESS_BLOCKED', 'ALL_CONNECTORS_FAILED'],
       'graph.kind': ['identifier', 'identity', 'source', 'address', 'counterparty', 'others'],
       'graph.legendItems': ['identifier', 'identity', 'source', 'address', 'counterparty', 'linked', 'mentioned', 'transfer', 'excluded'],

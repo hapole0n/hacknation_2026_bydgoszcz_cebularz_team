@@ -6,7 +6,8 @@
     "language": "Language",
     "footer": "Results are analytical premises, not a ruling. Data in demonstration cases is synthetic.",
     "notFound": "No such page",
-    "notFoundBody": "The address is wrong or the case was removed."
+    "notFoundBody": "The address is wrong or the case was removed.",
+    "navAudit": "Request log"
   },
   "common": {
     "loading": "Loading…",
@@ -487,5 +488,25 @@
     "downloadJson": "Download JSON",
     "print": "Print",
     "polishOnly": "The report is written in Polish. The PDF and JSON contain the same data as this view."
+  },
+  "audit": {
+    "title": "Request log",
+    "lead": "Every request the program sent to an outside service: when, for which case, where to and with what result. The log holds neither response content nor query parameters.",
+    "summary": "Requests: {{total}}; blocked: {{blocked}}; network errors: {{failed}}.",
+    "onlyProblems": "Show only blocked and failed",
+    "empty": "No requests to show.",
+    "columns": {
+      "time": "Time",
+      "case": "Case",
+      "source": "Source",
+      "host": "Host",
+      "path": "Path (no query)",
+      "status": "Result",
+      "duration": "Duration"
+    },
+    "status": {
+      "blocked": "Blocked",
+      "error": "Network error"
+    }
   }
 }

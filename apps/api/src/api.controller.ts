@@ -148,6 +148,25 @@ export class ApiController {
     return this.pipeline.results(id);
   }
 
+  /**
+   * Log of every outbound request (PLAN 3.9): time, case, source, host, path without query, status.
+   * status 0 = blocked by the allowlist, -1 = network error. Newest first.
+   */
+  @Get('audit-log')
+  async auditLog(@Query('limit') limit?: string, @Query('problems') problems?: string) {
+    const take = Math.min(Math.max(Number.parseInt(limit ?? '', 10) || 200, 1), 1000);
+    const where = problems === 'true' ? { status: { lte: 0 } } : undefined;
+    const [rows, total, blocked, failed] = await Promise.all([
+      this.prisma.auditLog.findMany({ where, orderBy: [{ at: 'desc' }, { id: 'asc' }], take }),
+      this.prisma.auditLog.count(),
+      this.prisma.auditLog.count({ where: { status: 0 } }),
+      this.prisma.auditLog.count({ where: { status: { lt: 0 } } }),
+    ]);
+    const caseIds = [...new Set(rows.flatMap((r) => (r.caseId ? [r.caseId] : [])))];
+    const titles = new Map((await this.prisma.case.findMany({ where: { id: { in: caseIds } }, select: { id: true, title: true } })).map((c) => [c.id, c.title]));
+    return { total, blocked, failed, rows: rows.map((r) => ({ ...r, caseTitle: r.caseId ? (titles.get(r.caseId) ?? null) : null })) };
+  }
+
   /** The report document (what the HTML view shows) with its SHA-256. */
   @Get('runs/:id/report')
   report(@Param('id') id: string) {

@@ -169,6 +169,27 @@ export interface RunResults {
   chain: ChainDto[];
 }
 
+export interface AuditRow {
+  id: string;
+  at: string;
+  caseId: string | null;
+  caseTitle: string | null;
+  runId: string | null;
+  connectorId: string;
+  host: string;
+  path: string;
+  /** 0 = blocked by the allowlist, -1 = network error, otherwise the HTTP status. */
+  status: number;
+  durationMs: number;
+}
+
+export interface AuditLogPage {
+  total: number;
+  blocked: number;
+  failed: number;
+  rows: AuditRow[];
+}
+
 export interface CaseInput {
   title: string;
   identifiers: { type: IdentifierType; value: string }[];

@@ -321,7 +321,7 @@ describe('analyst decisions and demo cases (UI)', () => {
     expect(c.identifiers.map((i) => i.type)).toEqual(['ADDRESS']);
     await expect(api.demoCase('other')).rejects.toThrow(/variant/);
     const listed = (await api.listCases()).find((k) => k.id === a.id)!;
-    expect(listed).toMatchObject({ identifiers: expect.any(Array), _count: { runs: 0 }, runs: [] });
+    expect(listed).toMatchObject({ identifiers: expect.any(Array), _count: { runs: existed ? expect.any(Number) : 0 }, runs: existed ? expect.any(Array) : [] }); // a demo case loaded by hand may already have runs
   });
 });
 
@@ -421,5 +421,28 @@ describe('report (HTML view data, PDF, JSON) — stored with the run', () => {
     const r = await api.report(addressResults.run.id);
     expect(JSON.stringify(r.doc.sections.find((s) => s.id === 'links'))).toContain('Konta, które opublikowały badany adres');
     await expect(api.report('00000000-0000-0000-0000-000000000000')).rejects.toThrow(/not found/);
+  });
+});
+
+describe('audit log page (PLAN 3.9)', () => {
+  it('lists outbound requests with the case title and path without query; blocked ones are counted and marked', async () => {
+    await expect(egress.get('https://not-allowed.example/secret/path?token=abc', { connectorId: 'test', caseId: caseIds[0] })).rejects.toThrow(/allowlist/);
+    const log = await api.auditLog('1000', undefined);
+    expect(log.total).toBeGreaterThan(0);
+    const ours = log.rows.filter((r) => r.caseId === caseIds[0]);
+    expect(ours.length).toBeGreaterThan(0);
+    expect(ours.every((r) => r.caseTitle === spec.case.title)).toBe(true);
+    expect(log.rows.some((r) => r.path.includes('?') || r.path.includes('token'))).toBe(false);
+    const blocked = log.rows.find((r) => r.host === 'not-allowed.example');
+    expect(blocked).toMatchObject({ status: 0, path: '/secret/path', connectorId: 'test' });
+    expect(log.blocked).toBeGreaterThanOrEqual(1);
+  });
+
+  it('can show only the problems (blocked or failed) and limits the page size', async () => {
+    const problems = await api.auditLog('1000', 'true');
+    expect(problems.rows.length).toBeGreaterThanOrEqual(1);
+    expect(problems.rows.every((r) => r.status <= 0)).toBe(true);
+    expect((await api.auditLog('1', undefined)).rows).toHaveLength(1);
+    expect((await api.auditLog('abc', undefined)).rows.length).toBeLessThanOrEqual(200);
   });
 });

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { CaseDetail, CaseInput, CaseListItem, ChainAdapterInfo, ChainMode, ConnectorInfo, Decision, ReportBundle, RunResults } from './types';
+import type { AuditLogPage, CaseDetail, CaseInput, CaseListItem, ChainAdapterInfo, ChainMode, ConnectorInfo, Decision, ReportBundle, RunResults } from './types';
 
 export class ApiError extends Error {
   constructor(
@@ -38,6 +38,7 @@ export const useCases = () => useQuery({ queryKey: ['cases'], queryFn: () => req
 export const useCase = (id: string | undefined) => useQuery({ queryKey: ['case', id], queryFn: () => request<CaseDetail>(`/cases/${id}`), enabled: !!id });
 export const useRun = (id: string) => useQuery({ queryKey: ['run', id], queryFn: () => request<RunResults>(`/runs/${id}`) });
 export const useReport = (id: string) => useQuery({ queryKey: ['report', id], queryFn: () => request<ReportBundle>(`/runs/${id}/report`) });
+export const useAuditLog = (problems: boolean) => useQuery({ queryKey: ['audit', problems], queryFn: () => request<AuditLogPage>(`/audit-log?limit=300${problems ? '&problems=true' : ''}`) });
 export const useConnectors = () => useQuery({ queryKey: ['connectors'], queryFn: () => request<ConnectorInfo[]>('/connectors'), staleTime: Infinity });
 export const useChainAdapters = () => useQuery({ queryKey: ['chain-adapters'], queryFn: () => request<ChainAdapterInfo[]>('/chain-adapters'), staleTime: 60_000 });
 

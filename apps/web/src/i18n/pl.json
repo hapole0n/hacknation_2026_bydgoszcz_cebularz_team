@@ -6,7 +6,8 @@
     "language": "Język",
     "footer": "Wyniki są przesłankami analitycznymi, a nie rozstrzygnięciem. Dane w sprawach demonstracyjnych są sztuczne.",
     "notFound": "Nie ma takiej strony",
-    "notFoundBody": "Adres jest nieprawidłowy albo sprawa została usunięta."
+    "notFoundBody": "Adres jest nieprawidłowy albo sprawa została usunięta.",
+    "navAudit": "Dziennik zapytań"
   },
   "common": {
     "loading": "Ładowanie…",
@@ -487,5 +488,25 @@
     "downloadJson": "Pobierz JSON",
     "print": "Drukuj",
     "polishOnly": "Raport jest sporządzany po polsku. PDF i JSON zawierają te same dane co ten widok."
+  },
+  "audit": {
+    "title": "Dziennik zapytań",
+    "lead": "Każde zapytanie, które program wysłał do zewnętrznego serwisu: kiedy, w której sprawie, dokąd i z jakim wynikiem. Dziennik nie zawiera treści odpowiedzi ani parametrów zapytań.",
+    "summary": "Zapytań: {{total}}; zablokowanych: {{blocked}}; z błędem sieci: {{failed}}.",
+    "onlyProblems": "Pokaż tylko zablokowane i z błędem",
+    "empty": "Brak zapytań do pokazania.",
+    "columns": {
+      "time": "Czas",
+      "case": "Sprawa",
+      "source": "Źródło",
+      "host": "Serwer",
+      "path": "Ścieżka (bez parametrów)",
+      "status": "Wynik",
+      "duration": "Czas trwania"
+    },
+    "status": {
+      "blocked": "Zablokowane",
+      "error": "Błąd sieci"
+    }
   }
 }

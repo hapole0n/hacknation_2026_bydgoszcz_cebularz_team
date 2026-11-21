@@ -36,13 +36,14 @@ export function Link({ to, onClick, children, ...rest }: { to: string; children:
 }
 
 export interface Match {
-  page: 'cases' | 'new' | 'case' | 'run' | 'report' | 'notFound';
+  page: 'cases' | 'new' | 'case' | 'run' | 'report' | 'audit' | 'notFound';
   id?: string;
 }
 
 export function matchPath(path: string): Match {
   if (path === '/' || path === '') return { page: 'cases' };
   if (path === '/cases/new') return { page: 'new' };
+  if (path === '/audit') return { page: 'audit' };
   const c = /^\/cases\/([^/]+)$/.exec(path);
   if (c) return { page: 'case', id: c[1] };
   const r = /^\/runs\/([^/]+)$/.exec(path);

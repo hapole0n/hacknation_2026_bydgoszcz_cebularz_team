@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { APP_NAME } from '@/config/app';
 import { LANGUAGES } from '@/i18n';
 import { CasePage } from '@/pages/CasePage';
+import { AuditPage } from '@/pages/AuditPage';
 import { CasesPage } from '@/pages/CasesPage';
 import { NewCasePage } from '@/pages/NewCasePage';
 import { ReportPage } from '@/pages/ReportPage';
@@ -18,6 +19,7 @@ export function App() {
   const nav = [
     { to: '/', label: t('app.navCases'), active: match.page === 'cases' || match.page === 'case' || match.page === 'run' || match.page === 'report' },
     { to: '/cases/new', label: t('app.navNew'), active: match.page === 'new' },
+    { to: '/audit', label: t('app.navAudit'), active: match.page === 'audit' },
   ];
 
   return (
@@ -50,6 +52,7 @@ export function App() {
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
         {match.page === 'cases' && <CasesPage />}
         {match.page === 'new' && <NewCasePage />}
+        {match.page === 'audit' && <AuditPage />}
         {match.page === 'case' && <CasePage key={match.id} id={match.id!} />}
         {match.page === 'run' && <RunPage key={match.id} id={match.id!} />}
         {match.page === 'report' && <ReportPage key={match.id} id={match.id!} />}
