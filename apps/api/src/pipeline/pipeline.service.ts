@@ -19,13 +19,14 @@ import {
   type ExclusionId,
   type IdentityRuleId,
   type RunDiffDoc,
+  type SearchLogEntry,
   type SourceType,
 } from '@kropka/core';
 import { AiService } from '../ai/ai.service.js';
 import { ChainAnalysisService, type ChainAnalysis } from '../chains/chain-analysis.service.js';
 import { DEFAULT_CHAIN_MODE, type ChainMode } from '../chains/chain.registry.js';
 import { DEFAULT_CONNECTORS, ConnectorRegistry } from '../connectors/connector.registry.js';
-import type { ArchiveSource, EvidenceDraft, SearchIdentifier } from '../connectors/connector.js';
+import { identKey, type ArchiveSource, type EvidenceDraft, type SearchIdentifier } from '../connectors/connector.js';
 import type { Prisma } from '../generated/prisma/client.js';
 import { LabelService } from '../labels/label.service.js';
 import { NoteError, noteOf, type Note } from '../notes.js';
@@ -136,12 +137,13 @@ export class PipelineService {
       const seen = new Set<string>();
       const people = idents.filter((i) => i.type !== 'ADDRESS');
 
-      const ingest = (draft: EvidenceDraft, round: 1 | 2 | 3 | 4, onlyKey?: string) => {
+      /** Returns how many crypto addresses the resource carries (also when an earlier source already brought it): the search log counts them. */
+      const ingest = (draft: EvidenceDraft, round: 1 | 2 | 3 | 4, onlyKey?: string): number => {
         const dedupe = draft.url ?? draft.resourceId ?? draft.sha256;
-        if (seen.has(dedupe)) return;
         const extraction = extractAddresses(draft.text, { examples: this.labels.exampleAddresses() });
         const cands = extraction.addresses.filter((c) => !onlyKey || (c.chain !== null && labelKey(c.chain, c.address) === onlyKey));
-        if (onlyKey && cands.length === 0) return;
+        const found = cands.filter((c) => c.chain !== null).length;
+        if ((onlyKey && cands.length === 0) || seen.has(dedupe)) return found;
         seen.add(dedupe);
 
         const signals = { text: extraction.text, authorHandle: draft.author?.handle, authorName: draft.author?.name };
@@ -166,13 +168,57 @@ export class PipelineService {
           sourceType: mine[0]?.sourceType ?? sourceTypeFor('DISCUSSION', draft.origin),
           snippet: cands[0]?.context ?? extraction.text.slice(0, SNIPPET_CHARS),
         });
+        return found;
+      };
+      // The search log ("Przeszukane źródła"): round 1 per source and identifier, rounds 2-4 summed up per source.
+      const searchLog: SearchLogEntry[] = [];
+      const sums = new Map<string, SearchLogEntry & { failed: boolean }>();
+      const sumFor = (connector: string, round: 2 | 3 | 4) => {
+        const k = `${connector}:${round}`;
+        if (!sums.has(k)) sums.set(k, { connector, round, identifier: null, outcome: 'NONE', resources: 0, addresses: 0, queries: 0, failed: false });
+        return sums.get(k)!;
       };
       const search = async (identifiers: Ident[], round: 1 | 2 | 3, accept: (d: EvidenceDraft) => boolean, onlyKey?: string) => {
         for (const c of connectors) {
+          if (c.identifiers.length === 0) continue; // works on pages other sources found (round 4)
+          const row = (i: Ident, e: Pick<SearchLogEntry, 'outcome' | 'resources' | 'addresses' | 'note'>) => searchLog.push({ connector: c.id, round, identifier: { type: i.type, value: i.value }, ...e });
+          const taken = identifiers.filter((i) => c.identifiers.includes(i.type) && (c.accepts?.(i) ?? true));
+          const runnable = taken.filter((i) => {
+            const key = c.missingKey?.(i.type);
+            if (key && round === 1) row(i, { outcome: 'SKIPPED_NO_KEY', resources: 0, addresses: 0, note: { code: 'KEY_MISSING', params: { key } } });
+            return !key;
+          });
+          if (round === 1) for (const i of identifiers) if (!taken.includes(i)) row(i, { outcome: 'UNSUPPORTED', resources: 0, addresses: 0 });
+          if (runnable.length === 0) continue;
+
+          const sum = round === 1 ? undefined : sumFor(c.id, round);
+          if (sum) sum.queries!++;
+          const per = new Map<string, { resources: number; addresses: number }>();
           try {
-            for (const d of await c.search({ identifiers, ...ctx, notify: notifyFor(c.id, round) })) if (accept(d)) ingest(d, round, onlyKey);
+            for (const d of await c.search({ identifiers, ...ctx, notify: notifyFor(c.id, round) })) {
+              if (!accept(d)) continue;
+              const found = ingest(d, round, onlyKey);
+              if (sum) {
+                if (found > 0) {
+                  sum.resources++;
+                  sum.addresses += found;
+                }
+                continue;
+              }
+              for (const k of d.via?.length ? d.via : runnable.map(identKey)) {
+                const p = per.get(k) ?? { resources: 0, addresses: 0 };
+                per.set(k, { resources: p.resources + 1, addresses: p.addresses + found });
+              }
+            }
+            if (!sum) for (const i of runnable) {
+              const p = per.get(identKey(i)) ?? { resources: 0, addresses: 0 };
+              row(i, { outcome: p.resources > 0 ? 'FOUND' : 'NONE', ...p });
+            }
           } catch (e) {
-            errors.push({ connector: c.id, round, note: noteOf(e) });
+            const note = noteOf(e);
+            errors.push({ connector: c.id, round, note });
+            if (sum) sum.failed = true;
+            else for (const i of runnable) row(i, { outcome: 'ERROR', resources: 0, addresses: 0, note });
           }
         }
       };
@@ -192,10 +238,17 @@ export class PipelineService {
           .slice(0, MAX_ARCHIVED_PAGES)
           .map((e) => ({ url: e.draft.url!, platform: e.draft.platform, origin: e.draft.origin, author: e.draft.author, title: e.draft.title }));
         for (const c of archives) {
+          const sum = sumFor(c.id, 4);
+          sum.queries = pages.length;
           try {
-            for (const d of await c.archive!(pages, { identifiers: idents, ...ctx })) ingest(d, 4);
+            for (const d of await c.archive!(pages, { identifiers: idents, ...ctx })) {
+              const found = ingest(d, 4);
+              sum.resources++;
+              sum.addresses += found;
+            }
           } catch (e) {
             errors.push({ connector: c.id, round: 4, note: noteOf(e) });
+            sum.failed = true;
           }
         }
       }
@@ -379,6 +432,11 @@ export class PipelineService {
         return { chain: a.chain, address: a.address, category: a.category, labels: a.labels, isContract: a.isContract, exclusions: (exclusionsOf.get(key) ?? []).map((id) => ({ ruleId: id, pl: this.rules.rules.exclusions[id].pl, en: this.rules.rules.exclusions[id].en })) };
       });
 
+      const searches: SearchLogEntry[] = [
+        ...searchLog,
+        ...[...sums.values()].map(({ failed, ...e }): SearchLogEntry => ({ ...e, outcome: e.resources > 0 ? 'FOUND' : failed ? 'ERROR' : 'NONE', note: failed ? errors.find((x) => x.connector === e.connector && x.round === e.round)?.note : undefined })),
+      ];
+
       // Persist everything or nothing.
       await this.prisma.$transaction(async (tx) => {
         await tx.evidence.createMany({
@@ -450,6 +508,7 @@ export class PipelineService {
               chainWarnings,
               identities,
               subjects,
+              searches,
             }),
           },
         });

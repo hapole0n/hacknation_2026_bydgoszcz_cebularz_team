@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { normalizeIdentifier, type FlowEntry, type IdentifierType, type Indicators } from '@kropka/core';
+import { normalizeIdentifier, type FlowEntry, type IdentifierType, type Indicators, type SearchLogEntry } from '@kropka/core';
 import { parseCaseBody } from '../src/api.controller.js';
 import type { Identity } from '../src/pipeline/identities.js';
 import { BtcMempoolAdapter } from '../src/chains/btc-mempool.adapter.js';
@@ -80,6 +80,12 @@ describe('demo case — the seven stages', () => {
     expect(results.evidence).toHaveLength(spec.counts.evidence);
     const meta = (e: Results['evidence'][number]) => e.metaJson as { round: number };
     expect(results.evidence.filter((e) => meta(e).round === 2)).toHaveLength(spec.counts.evidenceFromReverseLookup);
+    // the search log: every identifier was searched in the sandbox and found something; the reverse lookup of the found addresses is summed up
+    const log = (results.run.summaryJson as { searches: SearchLogEntry[] }).searches;
+    expect(log.filter((l) => l.round === 1).map((l) => [l.connector, l.identifier!.type, l.outcome]).sort()).toEqual([['sandbox', 'EMAIL', 'FOUND'], ['sandbox', 'MESSENGER', 'FOUND'], ['sandbox', 'NICK', 'FOUND']]);
+    expect(log.filter((l) => l.round === 1).every((l) => l.resources > 0 && l.addresses > 0)).toBe(true);
+    expect(log.find((l) => l.round === 2)).toMatchObject({ connector: 'sandbox', identifier: null, outcome: 'FOUND' }); // counts every page that carries the address, also those found in round 1
+    expect(log.find((l) => l.round === 2)!.resources).toBeGreaterThanOrEqual(spec.counts.evidenceFromReverseLookup);
     // nothing but the sandbox and the (synthetic) NBP API was contacted
     expect(fetched.requested.every((u) => u.startsWith('http://sandbox-web/') || u.startsWith('https://api.nbp.pl/'))).toBe(true);
   });
@@ -311,7 +317,7 @@ describe('analyst decisions and demo cases (UI)', () => {
 
 describe('failure handling and input validation', () => {
   it('a run whose connectors all fail is stored as FAILED with the reason', async () => {
-    const broken = { id: 'broken', kind: 'web2', version: '0', policy: {}, search: async () => { throw new Error('boom'); } };
+    const broken = { id: 'broken', kind: 'web2', version: '0', policy: {}, identifiers: ['NICK', 'EMAIL', 'MESSENGER'], search: async () => { throw new Error('boom'); } };
     const stub = { pick: () => [broken], list: () => [] } as unknown as ConnectorRegistry;
     const failing = new PipelineService(prisma, new RulesService(), labels, stub, analysis, ai);
     await expect(failing.run(caseIds[0]!, { connectors: ['broken'] })).rejects.toThrow(/all connectors failed.*boom/);
@@ -343,6 +349,8 @@ describe('failure handling and input validation', () => {
 
   it('GET /connectors and /chain-adapters list sources, policies and readiness', () => {
     expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api'], ['gravatar', 'official_api'], ['ens', 'official_api']]);
+    expect(api.connectors().find((c) => c.id === 'github')).toMatchObject({ identifiers: ['NICK', 'SOCIAL_LOGIN', 'NAME', 'ADDRESS'] });
+    expect(api.connectors().find((c) => c.id === 'ens')).toMatchObject({ conditions: { NICK: 'ethName' } });
     expect(api.chainAdapters().map((a) => [a.id, a.live])).toEqual([['fixture', false], ['mempool.space', true], ['etherscan', true], ['trongrid', true]]);
     expect(api.chainAdapters().find((a) => a.id === 'mempool.space')).toMatchObject({ available: true, reason: null });
   });
@@ -496,6 +504,23 @@ describe('an address typed in by the analyst is analysed on-chain even when no p
     const subjects = (r.run.summaryJson as { subjects: { address: string; category: string; exclusions: { ruleId: string; pl: string }[] }[] }).subjects;
     expect(subjects.map((s) => [s.address, s.category, s.exclusions.map((e) => e.ruleId)])).toEqual([[addr('D1'), 'CEX_DEPOSIT', ['EXCL_CUSTODIAL_DEPOSIT']]]);
     expect(subjects[0]!.exclusions[0]!.pl).not.toBe('');
+    // an empty search reads as "searched, found nothing", not as a failure
+    const log = (r.run.summaryJson as { searches: SearchLogEntry[] }).searches;
+    expect(log).toEqual([{ connector: 'sandbox', round: 1, identifier: { type: 'ADDRESS', value: addr('D1') }, outcome: 'NONE', resources: 0, addresses: 0 }]);
+  });
+
+  it('a source that cannot take the identifier, or lacks its key, says so instead of staying silent', async () => {
+    const token = process.env.GITHUB_TOKEN;
+    delete process.env.GITHUB_TOKEN;
+    try {
+      const created = await api.createCase({ title: 'Demo — dziennik wyszukiwania', identifiers: [{ type: 'ADDRESS', value: addr('D1') }] });
+      caseIds.push(created.id);
+      const r = await pipeline.run(created.id, { ...runOptions, connectors: ['sandbox', 'github', 'gravatar'] });
+      const log = (r.run.summaryJson as { searches: SearchLogEntry[] }).searches.map((l) => [l.connector, l.outcome, l.note?.params?.key]);
+      expect(log).toEqual([['sandbox', 'NONE', undefined], ['github', 'SKIPPED_NO_KEY', 'GITHUB_TOKEN'], ['gravatar', 'UNSUPPORTED', undefined]]);
+    } finally {
+      if (token) process.env.GITHUB_TOKEN = token;
+    }
   });
 });
 

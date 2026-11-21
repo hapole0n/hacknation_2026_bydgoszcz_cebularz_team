@@ -79,10 +79,18 @@ export class ApiController {
     private readonly world: SandboxWorld,
   ) {}
 
-  /** Sources and their policies (terms of service, method, rate limit) — shown to the analyst. */
+  /** Sources, their policies (terms of service, method, rate limit) and which identifiers they look up (`missingKeys`: the .env key a type still needs) — shown to the analyst. */
   @Get('connectors')
   connectors() {
-    return this.registry.list().map(({ id, kind, version, policy }) => ({ id, kind, version, policy }));
+    return this.registry.list().map((c) => ({
+      id: c.id,
+      kind: c.kind,
+      version: c.version,
+      policy: c.policy,
+      identifiers: c.identifiers,
+      conditions: c.conditions ?? {},
+      missingKeys: Object.fromEntries(c.identifiers.flatMap((t) => (c.missingKey?.(t) ? [[t, c.missingKey(t)]] : []))),
+    }));
   }
 
   /** On-chain data sources and whether each is ready (live ones need an API key in .env). */

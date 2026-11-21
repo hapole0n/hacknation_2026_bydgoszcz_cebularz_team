@@ -36,7 +36,12 @@ export interface EvidenceDraft {
   title?: string;
   archiveUrl?: string;
   snapshotOf?: string;
+  /** Which of the searched identifiers led to this resource (`identKey`); empty = all of them (the search log is built from it). */
+  via?: string[];
 }
+
+/** Stable key of an identifier inside one search (`EvidenceDraft.via`). */
+export const identKey = (i: { type: IdentifierType; normalized: string }) => `${i.type}:${i.normalized}`;
 
 export interface ConnectorPolicy {
   /** Terms of service / acceptable-use page of the source. */
@@ -62,6 +67,14 @@ export interface SourceConnector {
   readonly kind: 'web2';
   readonly version: string;
   readonly policy: ConnectorPolicy;
+  /** Kinds of identifier this source looks up (empty: it only works on pages other sources found). Shown in the new-case form and in the run's search log. */
+  readonly identifiers: readonly IdentifierType[];
+  /** Caveats shown next to the type in the new-case form (`form.conditions.<value>`), when `accepts` is narrower than the type. */
+  readonly conditions?: Partial<Record<IdentifierType, string>>;
+  /** Finer than the type: e.g. ENS takes a nick only when it is a `.eth` name. */
+  accepts?(i: SearchIdentifier): boolean;
+  /** The .env key this source needs to look up this kind of identifier, when it is not set: the lookup is skipped and the log says so. */
+  missingKey?(type: IdentifierType): string | undefined;
   search(input: SearchInput): Promise<EvidenceDraft[]>;
   /** Optional: earlier copies of pages other sources found (web archives). Called with those pages after the first search round. */
   archive?(sources: ArchiveSource[], input: SearchInput): Promise<EvidenceDraft[]>;

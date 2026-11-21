@@ -16,7 +16,7 @@ import {
 } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { NoteError } from '../notes.js';
-import { sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
+import { identKey, sha256Hex, type ConnectorPolicy, type SearchIdentifier, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
 
 const DEFAULT_RPC = 'https://ethereum-rpc.publicnode.com';
 
@@ -41,8 +41,19 @@ export class EnsConnector implements SourceConnector {
   readonly kind = 'web2' as const;
   readonly version = '1.0.0';
   readonly policy: ConnectorPolicy = { tosUrl: 'https://docs.ens.domains/', method: 'official_api', rateLimitPerSec: 2, weightHint: 1 };
+  readonly identifiers = ['ADDRESS', 'NICK', 'SOCIAL_LOGIN'] as const;
+  readonly conditions = { ADDRESS: 'ethOnly', NICK: 'ethName', SOCIAL_LOGIN: 'ethName' };
 
   constructor(private readonly egress: EgressClient) {}
+
+  /** An address only on Ethereum; a nick or login only when it is a `.eth` name. */
+  accepts(i: SearchIdentifier) {
+    if (i.type === 'ADDRESS') {
+      const p = parseAddress(i.normalized);
+      return p.ok && p.chain === 'ETH';
+    }
+    return isEnsName(i.normalized);
+  }
 
   async search(input: SearchInput): Promise<EvidenceDraft[]> {
     const ctx = { connectorId: this.id, caseId: input.caseId, runId: input.runId };
@@ -55,7 +66,7 @@ export class EnsConnector implements SourceConnector {
       } else if ((i.type === 'NICK' || i.type === 'SOCIAL_LOGIN') && isEnsName(i.normalized)) {
         found = await this.forward(i.normalized, ctx);
       }
-      if (found) out.push(this.draft(found));
+      if (found) out.push({ ...this.draft(found), via: [identKey(i)] });
     }
     return out;
   }

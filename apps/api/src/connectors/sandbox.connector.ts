@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { evaluateIdentity, findIdentifierInText, type TraceOrigin } from '@kropka/core';
+import { IDENTIFIER_TYPES, evaluateIdentity, findIdentifierInText, type TraceOrigin } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { SandboxWorld } from './sandbox-world.js';
-import { htmlToText, sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
+import { htmlToText, identKey, sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
 
 interface IndexPage {
   path: string;
@@ -28,6 +28,7 @@ export class SandboxConnector implements SourceConnector {
     rateLimitPerSec: 0,
     weightHint: 1,
   };
+  readonly identifiers = IDENTIFIER_TYPES;
 
   constructor(
     private readonly egress: EgressClient,
@@ -51,9 +52,10 @@ export class SandboxConnector implements SourceConnector {
       if (!res.ok) continue;
       const text = page.path.endsWith('.html') ? htmlToText(res.text) : res.text;
       const signals = { text, authorHandle: page.author?.handle, authorName: page.author?.name };
-      const relevant = input.identifiers.some((i) => (i.type === 'ADDRESS' ? findIdentifierInText(i, text) : evaluateIdentity(i, signals, input.identifiers).matched));
-      if (!relevant) continue;
+      const hits = input.identifiers.filter((i) => (i.type === 'ADDRESS' ? findIdentifierInText(i, text) : evaluateIdentity(i, signals, input.identifiers).matched));
+      if (hits.length === 0) continue;
       found.push({
+        via: hits.map(identKey),
         connectorId: this.id,
         url,
         fetchedAt: new Date(),

@@ -208,6 +208,40 @@
       "contract": "Smart contract",
       "noData": "No blockchain data",
       "skipped": "Labelled address: history not fetched"
+    },
+    "searched": {
+      "title": "Sources searched",
+      "summaryFound_one": "Searched {{count}} source — crypto addresses found.",
+      "summaryFound_other": "Searched {{count}} sources — crypto addresses found.",
+      "summaryEmpty_one": "Searched {{count}} source — no crypto addresses found.",
+      "summaryEmpty_other": "Searched {{count}} sources — no crypto addresses found.",
+      "summaryNothing": "None of the selected sources looks up the kinds of identifier given — nothing was searched.",
+      "columns": {
+        "source": "Source",
+        "query": "What was searched",
+        "result": "Result"
+      },
+      "round": {
+        "2": "addresses found in the sources: who else publishes them ({{queries}})",
+        "3": "accounts that published the address: their other traces ({{queries}})",
+        "4": "earlier copies of the pages with addresses in the web archive ({{pages}})"
+      },
+      "queriesCount_one": "{{count}} lookup",
+      "queriesCount_other": "{{count}} lookups",
+      "pagesCount_one": "{{count}} page",
+      "pagesCount_other": "{{count}} pages",
+      "resourcesCount_one": "{{count}} resource",
+      "resourcesCount_other": "{{count}} resources",
+      "addressesCount_one": "{{count}} address",
+      "addressesCount_other": "{{count}} addresses",
+      "outcome": {
+        "FOUND": "found {{resources}}, with {{addresses}} in them",
+        "NONE": "no results",
+        "NONE_profile": "profile not found",
+        "ERROR": "error: {{detail}}",
+        "SKIPPED_NO_KEY": "skipped: key {{key}} missing in .env",
+        "UNSUPPORTED": "this source does not look up this kind of identifier"
+      }
     }
   },
   "bands": {

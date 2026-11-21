@@ -7,6 +7,9 @@ import pl from '../src/i18n/pl.json';
 
 const flatten = (o: unknown, prefix = ''): string[] =>
   typeof o === 'object' && o !== null ? Object.entries(o).flatMap(([k, v]) => flatten(v, prefix ? `${prefix}.${k}` : k)) : [prefix];
+/** i18next plural suffixes: `key_one`, `key_few`, … (`pl` has four forms, `en` two). */
+const PLURAL = /_(zero|one|two|few|many|other)$/;
+const withoutPlural = (keys: string[]) => [...new Set(keys.map((k) => k.replace(PLURAL, '')))].sort();
 const walk = (dir: string): string[] => readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? walk(join(dir, f)) : [join(dir, f)]));
 const valueAt = (dict: unknown, key: string) => key.split('.').reduce<unknown>((o, p) => (o as Record<string, unknown>)[p], dict);
 
@@ -26,13 +29,20 @@ describe('i18n', () => {
     expect({ CONFIRMED: pl.decision.state.CONFIRMED, REJECTED: pl.decision.state.REJECTED }).toEqual(DECISIONS_PL);
   });
 
-  it('pl and en have exactly the same keys, none empty', () => {
-    expect(flatten(en).sort()).toEqual(flatten(pl).sort());
+  it('pl and en have exactly the same keys (plural forms aside), none empty', () => {
+    expect(withoutPlural(flatten(en))).toEqual(withoutPlural(flatten(pl)));
     for (const dict of [pl, en]) for (const k of flatten(dict)) expect(valueAt(dict, k), k).not.toBe('');
   });
 
+  it('every counted noun has all the plural forms of its language (pl: one / few / many / other, en: one / other)', () => {
+    for (const [dict, forms] of [[pl, ['one', 'few', 'many', 'other']], [en, ['one', 'other']]] as const) {
+      const keys = new Set(flatten(dict));
+      for (const base of withoutPlural(flatten(dict).filter((k) => PLURAL.test(k)))) for (const f of forms) expect(keys.has(`${base}_${f}`), `${base}_${f}`).toBe(true);
+    }
+  });
+
   it('every literal t("…") key used in the source exists', () => {
-    const known = new Set(flatten(pl));
+    const known = new Set(withoutPlural(flatten(pl)));
     const missing: string[] = [];
     for (const file of walk('src').filter((f) => /\.tsx?$/.test(f))) {
       for (const m of readFileSync(file, 'utf8').matchAll(/\bt\(\s*'([A-Za-z0-9_.]+)'/g)) if (!known.has(m[1]!)) missing.push(`${file}: ${m[1]}`);
@@ -58,6 +68,7 @@ describe('i18n', () => {
       'common.status': ['PENDING', 'RUNNING', 'DONE', 'FAILED'],
       'decision.state': ['CONFIRMED', 'REJECTED', 'none'],
       'run.chainModes': ['fixture', 'live', 'off'],
+      'run.searched.outcome': ['FOUND', 'NONE', 'NONE_profile', 'ERROR', 'SKIPPED_NO_KEY', 'UNSUPPORTED'],
       'form.chain': ['fixture', 'live', 'off'],
       'evidence.rounds': ['1', '2', '3'],
       'identities.relation': ['PUBLISHER', 'SAME_NICK_OTHER_PLATFORM'],

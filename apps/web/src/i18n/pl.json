@@ -208,6 +208,52 @@
       "contract": "Smart kontrakt",
       "noData": "Brak danych z blockchaina",
       "skipped": "Adres z etykietą: historii nie pobrano"
+    },
+    "searched": {
+      "title": "Przeszukane źródła",
+      "summaryFound_one": "Przeszukano {{count}} źródło — znaleziono adresy kryptowalutowe.",
+      "summaryFound_few": "Przeszukano {{count}} źródła — znaleziono adresy kryptowalutowe.",
+      "summaryFound_many": "Przeszukano {{count}} źródeł — znaleziono adresy kryptowalutowe.",
+      "summaryFound_other": "Przeszukano {{count}} źródła — znaleziono adresy kryptowalutowe.",
+      "summaryEmpty_one": "Przeszukano {{count}} źródło — nie znaleziono adresów kryptowalutowych.",
+      "summaryEmpty_few": "Przeszukano {{count}} źródła — nie znaleziono adresów kryptowalutowych.",
+      "summaryEmpty_many": "Przeszukano {{count}} źródeł — nie znaleziono adresów kryptowalutowych.",
+      "summaryEmpty_other": "Przeszukano {{count}} źródła — nie znaleziono adresów kryptowalutowych.",
+      "summaryNothing": "Żadne z wybranych źródeł nie sprawdza podanych typów identyfikatorów — niczego nie przeszukano.",
+      "columns": {
+        "source": "Źródło",
+        "query": "Czego szukano",
+        "result": "Wynik"
+      },
+      "round": {
+        "2": "adresy znalezione w źródłach: kto jeszcze je publikuje ({{queries}})",
+        "3": "konta, które opublikowały badany adres: ich inne ślady ({{queries}})",
+        "4": "wcześniejsze kopie stron z adresami w archiwum ({{pages}})"
+      },
+      "queriesCount_one": "{{count}} zapytanie",
+      "queriesCount_few": "{{count}} zapytania",
+      "queriesCount_many": "{{count}} zapytań",
+      "queriesCount_other": "{{count}} zapytania",
+      "pagesCount_one": "{{count}} strona",
+      "pagesCount_few": "{{count}} strony",
+      "pagesCount_many": "{{count}} stron",
+      "pagesCount_other": "{{count}} strony",
+      "resourcesCount_one": "{{count}} zasób",
+      "resourcesCount_few": "{{count}} zasoby",
+      "resourcesCount_many": "{{count}} zasobów",
+      "resourcesCount_other": "{{count}} zasobu",
+      "addressesCount_one": "{{count}} adres",
+      "addressesCount_few": "{{count}} adresy",
+      "addressesCount_many": "{{count}} adresów",
+      "addressesCount_other": "{{count}} adresu",
+      "outcome": {
+        "FOUND": "znaleziono {{resources}}, w nich {{addresses}}",
+        "NONE": "brak wyników",
+        "NONE_profile": "profil nie znaleziony",
+        "ERROR": "błąd: {{detail}}",
+        "SKIPPED_NO_KEY": "pominięto: brak klucza {{key}} w pliku .env",
+        "UNSUPPORTED": "źródło nie sprawdza tego typu identyfikatora"
+      }
     }
   },
   "bands": {

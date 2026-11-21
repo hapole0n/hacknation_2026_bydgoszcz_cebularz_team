@@ -31,6 +31,7 @@ export class WaybackConnector implements SourceConnector {
   readonly kind = 'web2' as const;
   readonly version = '1.0.0';
   readonly policy: ConnectorPolicy = { tosUrl: 'https://archive.org/about/terms.php', method: 'official_api', rateLimitPerSec: 1, weightHint: 1 };
+  readonly identifiers = [] as const;
 
   constructor(private readonly egress: EgressClient) {}
 

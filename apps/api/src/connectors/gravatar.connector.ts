@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { toChecksumAddress } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { NoteError } from '../notes.js';
-import { sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
+import { identKey, sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
 
 const LIVE_BASE = 'https://api.gravatar.com';
 
@@ -32,6 +32,7 @@ export class GravatarConnector implements SourceConnector {
   readonly kind = 'web2' as const;
   readonly version = '1.0.0';
   readonly policy: ConnectorPolicy = { tosUrl: 'https://docs.gravatar.com/', method: 'official_api', rateLimitPerSec: 1, weightHint: 1 };
+  readonly identifiers = ['EMAIL'] as const;
 
   constructor(private readonly egress: EgressClient) {}
 
@@ -66,6 +67,7 @@ export class GravatarConnector implements SourceConnector {
         connectorId: this.id,
         url: synthetic ? url : (p.profile_url ?? url),
         resourceId: `gravatar:${hash}`,
+        via: [identKey(email)],
         fetchedAt: new Date(),
         sha256: sha256Hex(res.text),
         text,

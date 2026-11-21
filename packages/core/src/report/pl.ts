@@ -1,4 +1,5 @@
 // Polish wording for the report. Kept in step with apps/web/src/i18n/pl.json (a web test compares the two).
+import type { SearchLogEntry } from '../types.js';
 
 export const IDENTIFIER_TYPES_PL: Record<string, string> = {
   NAME: 'Imię i nazwisko',
@@ -120,3 +121,42 @@ export interface NoteLike {
   params?: Record<string, string | number>;
 }
 export const noteTextPl = (n: NoteLike) => (NOTES_PL[n.code] ?? NOTES_PL.ERROR!).replace(/\{\{(\w+)\}\}/g, (_, k: string) => String(n.params?.[k] ?? (k === 'detail' ? n.code : '')));
+
+// ---- the search log ("Przeszukane źródła"); the web keeps the same wording in i18n `run.searched.*` --------------------
+
+/** Kinds of identifier that are looked up as a profile (an account, a handle): an empty answer is "profile not found". */
+const PROFILE_LOOKUPS = ['NICK', 'SOCIAL_LOGIN', 'MESSENGER', 'EMAIL'];
+/** A source counts as searched when it was actually asked (not when it could not take the identifier or lacked a key). */
+const asked = (e: SearchLogEntry) => e.outcome === 'FOUND' || e.outcome === 'NONE' || e.outcome === 'ERROR';
+
+export const searchedSources = (log: SearchLogEntry[]) => new Set(log.filter(asked).map((e) => e.connector)).size;
+
+/** "Przeszukano 3 źródła — nie znaleziono adresów kryptowalutowych." — an empty result is a result, not a breakdown. */
+export function searchSummaryPl(log: SearchLogEntry[], foundAddresses: boolean): string {
+  const n = searchedSources(log);
+  if (n === 0) return 'Żadne z wybranych źródeł nie sprawdza podanych typów identyfikatorów — niczego nie przeszukano.';
+  return `Przeszukano ${n} ${plural(n, 'źródło', 'źródła', 'źródeł')} — ${foundAddresses ? 'znaleziono adresy kryptowalutowe' : 'nie znaleziono adresów kryptowalutowych'}.`;
+}
+
+export function searchQueryPl(e: SearchLogEntry): string {
+  const q = e.queries ?? 0;
+  if (e.round === 1 && e.identifier) return `${label(IDENTIFIER_TYPES_PL, e.identifier.type)}: ${e.identifier.value}`;
+  if (e.round === 2) return `adresy znalezione w źródłach: kto jeszcze je publikuje (${q} ${plural(q, 'zapytanie', 'zapytania', 'zapytań')})`;
+  if (e.round === 3) return `konta, które opublikowały badany adres: ich inne ślady (${q} ${plural(q, 'zapytanie', 'zapytania', 'zapytań')})`;
+  return `wcześniejsze kopie stron z adresami w archiwum (${q} ${plural(q, 'strona', 'strony', 'stron')})`;
+}
+
+export function searchOutcomePl(e: SearchLogEntry): string {
+  switch (e.outcome) {
+    case 'FOUND':
+      return `znaleziono ${e.resources} ${plural(e.resources, 'zasób', 'zasoby', 'zasobów')}, w nich ${e.addresses} ${plural(e.addresses, 'adres', 'adresy', 'adresów')}`;
+    case 'NONE':
+      return e.identifier && PROFILE_LOOKUPS.includes(e.identifier.type) ? 'profil nie znaleziony' : 'brak wyników';
+    case 'ERROR':
+      return `błąd: ${e.note ? noteTextPl(e.note) : 'nieznany'}`;
+    case 'SKIPPED_NO_KEY':
+      return `pominięto: brak klucza ${e.note?.params?.key ?? ''} w pliku .env`;
+    case 'UNSUPPORTED':
+      return 'źródło nie sprawdza tego typu identyfikatora';
+  }
+}

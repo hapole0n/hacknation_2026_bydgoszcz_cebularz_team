@@ -1,6 +1,6 @@
-import type { AddrRef, AddressCategory, Block as ReportBlock, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, StatementKind } from '@kropka/core';
+import type { AddrRef, AddressCategory, Block as ReportBlock, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, SearchLogEntry, StatementKind } from '@kropka/core';
 
-export type { AddrRef, AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportBlock, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, StatementKind };
+export type { AddrRef, AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportBlock, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, SearchLogEntry, StatementKind };
 
 /** `GET /runs/:id/report`: the report document and the SHA-256 of its data. */
 export interface ReportBundle {
@@ -46,6 +46,10 @@ export interface ConnectorInfo {
   kind: string;
   version: string;
   policy: { tosUrl: string; method: 'official_api' | 'public_page' | 'synthetic'; rateLimitPerSec: number; weightHint: number };
+  /** Kinds of identifier the source looks up; `conditions`: a caveat per kind (`form.conditions.<value>`); `missingKeys`: the .env key a kind still needs. */
+  identifiers: IdentifierType[];
+  conditions: Partial<Record<IdentifierType, string>>;
+  missingKeys: Partial<Record<IdentifierType, string>>;
 }
 
 /** A backend message as a code + params, translated in the UI (`notes.<code>`). */
@@ -159,6 +163,8 @@ export interface RunSummary {
   identities: Identity[];
   /** The addresses typed in as identifiers, with the verdict on the address itself (absent in runs made before this field). */
   subjects?: (AddressDto & { exclusions: { ruleId: string; pl: string; en: string }[] })[];
+  /** What each source did with each identifier (absent in runs made before this field). */
+  searches?: SearchLogEntry[];
   error?: Note;
 }
 

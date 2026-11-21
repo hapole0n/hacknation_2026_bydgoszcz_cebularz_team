@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCase, useRun } from '@/api/client';
-import type { AddressDto, Band, ChainDto, EvidenceDto, Identity, LinkDto, RunResults } from '@/api/types';
+import type { AddressDto, Band, ChainDto, EvidenceDto, Identity, LinkDto, RunResults, SearchLogEntry } from '@/api/types';
 import { AddressCard } from '@/components/AddressCard';
 import { Drawer } from '@/components/Drawer';
 import { EvidenceItem } from '@/components/EvidenceItem';
@@ -89,6 +89,8 @@ export function RunPage({ id }: { id: string }) {
       )}
 
       <SubjectsPanel run={head} chainOf={(s) => view.addressInfo(keyOf(s.chain, s.address)).chain} onOpenAddress={openAddress} />
+
+      <SearchedPanel run={head} foundAddresses={data.traces.length > 0} />
 
       <Tabs value={activeTab} onValueChange={setTab}>
         <TabsList className="h-auto flex-wrap justify-start">
@@ -253,6 +255,49 @@ function SubjectsPanel({ run, chainOf, onOpenAddress }: { run: RunResults['run']
               </tr>
             );
           })}
+        </tbody>
+      </table>
+    </Panel>
+  );
+}
+
+/** What each source did with each identifier — an empty result reads as "searched N sources, found nothing", not as a breakdown. */
+function SearchedPanel({ run, foundAddresses }: { run: RunResults['run']; foundAddresses: boolean }) {
+  const { t } = useTranslation();
+  const log = run.summaryJson?.searches ?? [];
+  if (log.length === 0) return null;
+  const asked = new Set(log.filter((e) => e.outcome === 'FOUND' || e.outcome === 'NONE' || e.outcome === 'ERROR').map((e) => e.connector)).size;
+  const PROFILE_LOOKUPS = ['NICK', 'SOCIAL_LOGIN', 'MESSENGER', 'EMAIL'];
+  const query = (e: SearchLogEntry) =>
+    e.round === 1 && e.identifier
+      ? `${t(`identifierTypes.${e.identifier.type}`)}: ${e.identifier.value}`
+      : t(`run.searched.round.${e.round}`, { queries: t('run.searched.queriesCount', { count: e.queries ?? 0 }), pages: t('run.searched.pagesCount', { count: e.queries ?? 0 }) });
+  const result = (e: SearchLogEntry) =>
+    e.outcome === 'FOUND'
+      ? t('run.searched.outcome.FOUND', { resources: t('run.searched.resourcesCount', { count: e.resources }), addresses: t('run.searched.addressesCount', { count: e.addresses }) })
+      : e.outcome === 'NONE'
+        ? t(e.identifier && PROFILE_LOOKUPS.includes(e.identifier.type) ? 'run.searched.outcome.NONE_profile' : 'run.searched.outcome.NONE')
+        : t(`run.searched.outcome.${e.outcome}`, { key: e.note?.params?.key, detail: e.note ? noteText(t, e.note) : '' });
+  return (
+    <Panel className="overflow-x-auto p-5">
+      <h2 className="text-base font-semibold">{t('run.searched.title')}</h2>
+      <p className="mt-1 text-sm">{asked === 0 ? t('run.searched.summaryNothing') : t(foundAddresses ? 'run.searched.summaryFound' : 'run.searched.summaryEmpty', { count: asked })}</p>
+      <table className="mt-3 w-full text-sm">
+        <thead>
+          <tr className="border-b text-left text-muted-foreground">
+            <th scope="col" className="px-3 py-2 font-medium">{t('run.searched.columns.source')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('run.searched.columns.query')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('run.searched.columns.result')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {log.map((e, i) => (
+            <tr key={i} className={cn('border-b align-top last:border-b-0', e.outcome === 'UNSUPPORTED' && 'text-muted-foreground')}>
+              <td className="px-3 py-2">{t(`form.connectorNames.${e.connector}`, { defaultValue: e.connector })}</td>
+              <td className="break-all px-3 py-2">{query(e)}</td>
+              <td className={cn('px-3 py-2', e.outcome === 'ERROR' && 'font-medium')}>{result(e)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Panel>

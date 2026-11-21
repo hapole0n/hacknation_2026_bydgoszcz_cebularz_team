@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyseHistory, buildReport, canonicalJson, diffRuns, valueTransfer, type Block, type ReportInput, type ValuedTransfer } from '../src/index.js';
+import { analyseHistory, buildReport, canonicalJson, diffRuns, valueTransfer, type Block, type ReportInput, type SearchLogEntry, type ValuedTransfer } from '../src/index.js';
 
 const ME = '0x1111111111111111111111111111111111111111';
 const CEX = '0x2222222222222222222222222222222222222222';
@@ -185,6 +185,47 @@ describe('buildReport', () => {
     expect(doc.summary).toHaveLength(6);
     expect(doc.summary[1]).toMatch(/^Badany adres: 0x222222…222222 \(Ethereum\) — wykluczony, giełda \(powiernicza\)\.$/);
     expect(all(doc)).not.toMatch(/undefined|\{\{|NaN/);
+  });
+});
+
+describe('section 2: the search log ("Przeszukane źródła")', () => {
+  const entry = (e: Partial<SearchLogEntry>): SearchLogEntry => ({ connector: 'sandbox', round: 1, identifier: { type: 'NICK', value: 'jtestowy' }, outcome: 'NONE', resources: 0, addresses: 0, ...e });
+  const sources = (r: ReportInput) => text(buildReport(r).sections.find((s) => s.id === 'sources')!.blocks);
+
+  it('an empty search reads as "searched N sources, found no addresses", with one line per source and identifier', () => {
+    const r = base();
+    Object.assign(r, { evidence: [], traces: [] });
+    r.run.summaryJson!.searches = [
+      entry({}),
+      entry({ connector: 'github', identifier: { type: 'NICK', value: 'jtestowy' } }),
+      entry({ connector: 'github', identifier: { type: 'ADDRESS', value: ME }, outcome: 'SKIPPED_NO_KEY', note: { code: 'KEY_MISSING', params: { key: 'GITHUB_TOKEN' } } }),
+      entry({ connector: 'gravatar', identifier: { type: 'ADDRESS', value: ME }, outcome: 'UNSUPPORTED' }),
+      entry({ connector: 'ens', identifier: { type: 'ADDRESS', value: ME }, outcome: 'ERROR', note: { code: 'PROVIDER_HTTP', params: { provider: 'Ethereum RPC', status: 503 } } }),
+    ];
+    const t = sources(r);
+    expect(t).toContain('Przeszukano 3 źródła — nie znaleziono adresów kryptowalutowych.'); // sandbox, github, ens were asked; gravatar could not take the type
+    expect(t).toContain('profil nie znaleziony');
+    expect(t).toContain('pominięto: brak klucza GITHUB_TOKEN w pliku .env');
+    expect(t).toContain('źródło nie sprawdza tego typu identyfikatora');
+    expect(t).toContain('błąd: Dostawca danych Ethereum RPC zwrócił błąd HTTP 503.');
+    expect(t).not.toContain('Nie znaleziono żadnych źródeł');
+  });
+
+  it('counts with Polish endings and sums up the later rounds', () => {
+    const r = base();
+    r.run.summaryJson!.searches = [
+      entry({ outcome: 'FOUND', resources: 2, addresses: 5 }),
+      entry({ round: 2, identifier: null, outcome: 'FOUND', resources: 1, addresses: 1, queries: 3 }),
+    ];
+    const t = sources(r);
+    expect(t).toContain('znaleziono 2 zasoby, w nich 5 adresów');
+    expect(t).toContain('znaleziono 1 zasób, w nich 1 adres');
+    expect(t).toContain('3 zapytania');
+    expect(t).toContain('Przeszukano 1 źródło — znaleziono adresy kryptowalutowe.');
+  });
+
+  it('a run made before the log existed still reads as before', () => {
+    expect(sources(base())).not.toContain('Przeszukano');
   });
 });
 

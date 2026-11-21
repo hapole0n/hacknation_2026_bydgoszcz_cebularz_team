@@ -3,7 +3,7 @@ import type { RunDiffDoc } from '../diff.js';
 import { diffSection } from './diff-section.js';
 import { THRESHOLD_NOTE } from '../chain/indicators.js';
 import type { BreakdownEntry } from '../scoring/score.js';
-import type { Localized } from '../types.js';
+import type { Localized, SearchLogEntry } from '../types.js';
 import {
   BANDS_PL,
   CATEGORIES_PL,
@@ -26,6 +26,9 @@ import {
   label,
   noteTextPl,
   plural,
+  searchOutcomePl,
+  searchQueryPl,
+  searchSummaryPl,
   shortAddr,
   type NoteLike,
 } from './pl.js';
@@ -108,6 +111,8 @@ export interface ReportInput {
       identities: ReportIdentity[];
       /** Addresses typed in as identifiers, with the verdict on the address itself (absent in runs made before this field). */
       subjects?: ReportSubject[];
+      /** What each source did with each identifier (absent in runs made before this field). */
+      searches?: SearchLogEntry[];
       error?: NoteLike;
     } | null;
   };
@@ -218,6 +223,7 @@ export function buildReport(input: ReportInput): ReportDoc {
 
   // The verdict on each address typed in as an identifier (shown even when no source mentions it).
   const subjects = summary?.subjects ?? [];
+  const searches = summary?.searches ?? [];
   const subjectChain = (s: ReportSubject) => input.chain.find((c) => addrKey(c.address.chain, c.address.address) === addrKey(s.chain, s.address));
   const subjectBlocks: Block[] =
     subjects.length === 0
@@ -281,8 +287,14 @@ export function buildReport(input: ReportInput): ReportDoc {
     kind: 'FAKT',
     blocks: [
       { type: 'text', text: `Znaleziono ${input.evidence.length} ${plural(input.evidence.length, 'dowód', 'dowody', 'dowodów')} i ${input.traces.length} ${plural(input.traces.length, 'ślad', 'ślady', 'śladów')}. Każdy dowód ma adres, czas pobrania i skrót SHA-256 (pełne skróty — w ostatnim rozdziale).`, kind: 'FAKT', basis: 'treść źródeł zapisana w momencie analizy' },
+      ...(searches.length > 0
+        ? ([
+            { type: 'text', text: searchSummaryPl(searches, input.traces.length > 0), kind: 'FAKT', basis: 'dziennik wyszukiwania tej analizy' },
+            table(['Źródło', 'Czego szukano', 'Wynik'], searches.map((e) => [e.connector, searchQueryPl(e), searchOutcomePl(e)]), { kind: 'FAKT', weights: [2, 6, 6] }),
+          ] as Block[])
+        : []),
       input.evidence.length === 0
-        ? { type: 'text', text: 'Nie znaleziono żadnych źródeł dla podanych identyfikatorów.' }
+        ? { type: 'text', text: searches.length > 0 ? 'Żaden z przeszukanych serwisów nie zwrócił materiału.' : 'Nie znaleziono żadnych źródeł dla podanych identyfikatorów.' }
         : table(
             ['Nr', 'Serwis', 'Rodzaj źródła', 'Adres URL', 'Pobrano', 'SHA-256 (początek)'],
             input.evidence.map((e) => [ref.get(e.id)!, e.metaJson.platform || host(e.url), label(SOURCE_TYPES_PL, e.sourceType), e.url ?? DASH, fmtDateTime(e.fetchedAt), e.sha256.slice(0, 16)]),
