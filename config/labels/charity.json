@@ -1,0 +1,19 @@
+{
+  "header": {
+    "source": "Public label of a government donation address (dawsbot/eth-labels, data/csv/accounts.csv @ d9b21aefeded56f7fce7208d6fa173d128526c1b)",
+    "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv",
+    "license": "MIT (dawsbot/eth-labels)",
+    "retrieved": "2026-11-21",
+    "note": "The dataset names it \"donate / Ukraine Crypto Donation\" (chainId 1). TODO: confirm against an official government page (https://u24.gov.ua/ did not list the address when checked on 2026-11-21)."
+  },
+  "entries": [
+    {
+      "chain": "ETH",
+      "address": "0x165CD37b4C644C2921454429E7F9358d18A45e14",
+      "category": "CHARITY",
+      "name": "Ukraine Crypto Donation",
+      "isContract": false,
+      "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv"
+    }
+  ]
+}

@@ -6,3 +6,5 @@ export * from './extract/extract.js';
 export * from './context/classify.js';
 export * from './scoring/rules.js';
 export * from './scoring/score.js';
+export * from './identity.js';
+export * from './labels.js';

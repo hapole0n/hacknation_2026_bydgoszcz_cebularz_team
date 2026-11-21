@@ -10,7 +10,7 @@ const withDb = (query: () => Promise<unknown>) => new HealthController({ $queryR
 
 describe('GET /api/health', () => {
   it('reports ok and the loaded rules version when the database answers', async () => {
-    expect(await withDb(async () => [{ '?column?': 1 }]).check()).toMatchObject({ status: 'ok', db: 'up', rulesVersion: '1.0.0' });
+    expect(await withDb(async () => [{ '?column?': 1 }]).check()).toMatchObject({ status: 'ok', db: 'up', rulesVersion: '1.1.0' });
   });
 
   it('reports degraded (not a crash) when the database is down', async () => {

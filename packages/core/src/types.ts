@@ -43,5 +43,6 @@ export const EXCLUSION_IDS = [
   'EXCL_MIXER',
   'EXCL_CHARITY',
   'EXCL_EXAMPLE',
+  'EXCL_SERVICE',
 ] as const;
 export type ExclusionId = (typeof EXCLUSION_IDS)[number];

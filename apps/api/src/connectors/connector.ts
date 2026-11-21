@@ -1,0 +1,79 @@
+import { createHash } from 'node:crypto';
+import type { IdentifierType, TraceOrigin } from '@olcys/core';
+
+export interface SearchIdentifier {
+  id?: string;
+  type: IdentifierType;
+  value: string;
+  normalized: string;
+}
+
+export interface SearchInput {
+  identifiers: SearchIdentifier[];
+  caseId?: string;
+  runId?: string;
+}
+
+/** What a connector found: one public resource. The full text lives in memory only; the DB keeps a snippet + sha256. */
+export interface EvidenceDraft {
+  connectorId: string;
+  url?: string;
+  resourceId?: string;
+  fetchedAt: Date;
+  /** SHA-256 of the full fetched content. */
+  sha256: string;
+  text: string;
+  /** Independent-origin key: service / registrable domain. Repeats of one platform are not independent confirmation. */
+  platform: string;
+  origin: TraceOrigin;
+  /** Account that published the resource, when the platform shows it. */
+  author?: { handle?: string; name?: string };
+  /** ISO date the resource was published (or archived). */
+  publishedAt?: string;
+  title?: string;
+  archiveUrl?: string;
+  snapshotOf?: string;
+}
+
+export interface ConnectorPolicy {
+  /** Terms of service / acceptable-use page of the source. */
+  tosUrl: string;
+  method: 'official_api' | 'public_page' | 'synthetic';
+  rateLimitPerSec: number;
+  /** Relative trust placed in the source (shown to the analyst). */
+  weightHint: number;
+}
+
+/** Plug-in interface for Web2 sources (PLAN §3.1). New sources implement this and register in ConnectorRegistry. */
+export interface SourceConnector {
+  readonly id: string;
+  readonly kind: 'web2';
+  readonly version: string;
+  readonly policy: ConnectorPolicy;
+  search(input: SearchInput): Promise<EvidenceDraft[]>;
+}
+
+export const sha256Hex = (text: string) => createHash('sha256').update(text).digest('hex');
+
+/** Minimal HTML → text: drops scripts/styles, breaks lines at block elements, decodes common entities. */
+export function htmlToText(html: string): string {
+  const title = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1] ?? '';
+  const body = html
+    .replace(/<(script|style|head)[\s\S]*?<\/\1>/gi, '')
+    .replace(/<br\s*\/?>|<\/(p|div|li|h\d|article|tr)>/gi, '\n')
+    .replace(/<[^>]+>/g, '');
+  return decodeEntities(`${title}\n${body}`)
+    .replace(/[ \t]+/g, ' ')
+    .replace(/ ?\n ?/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+const decodeEntities = (s: string) =>
+  s
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&amp;/g, '&');

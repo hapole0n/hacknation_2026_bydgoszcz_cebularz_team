@@ -1,0 +1,18 @@
+{
+  "_comment": "Search index of the synthetic mini-internet (what a search engine would know). All people, pages and addresses are artificial. Order matters: it is the order in which evidence is collected.",
+  "pages": [
+    { "path": "/jtestowy-site/index.html", "platform": "jtestowy.example.org", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy", "name": "Jan Testowy" }, "publishedAt": "2026-10-12", "title": "Strona osobista — Jan Testowy" },
+    { "path": "/archive/20210302/jtestowy-site/index.html", "platform": "jtestowy.example.org", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy", "name": "Jan Testowy" }, "publishedAt": "2021-03-02", "snapshotOf": "/jtestowy-site/index.html", "title": "Strona osobista — archiwum 2021-03-02" },
+    { "path": "/gitlike/jtestowy/README.html", "platform": "git.example.dev", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy" }, "publishedAt": "2026-09-18", "title": "Profil README w serwisie z kodem" },
+    { "path": "/listy/archiwum/2026-09/0042.eml", "platform": "listy.example.pl", "origin": "EMAIL", "author": { "name": "Jan Testowy" }, "publishedAt": "2026-09-30", "title": "Archiwum listy dyskusyjnej — wiadomość 0042" },
+    { "path": "/forum/post/3181.html", "platform": "forum.krypto-lublin.example", "origin": "PUBLIC", "author": { "handle": "marek_k" }, "publishedAt": "2026-08-14", "title": "Forum — wpis #3181" },
+    { "path": "/forum/post/3204.html", "platform": "forum.krypto-lublin.example", "origin": "PUBLIC", "author": { "handle": "jtestowy" }, "publishedAt": "2026-08-20", "title": "Forum — wpis #3204" },
+    { "path": "/p2p/ogloszenie-1042.html", "platform": "p2p-gielda.example.pl", "origin": "PUBLIC", "author": { "handle": "usdt_lublin" }, "publishedAt": "2026-11-03", "title": "Ogłoszenie P2P #1042" },
+    { "path": "/tg/s/krypto_lublin_chat/57.html", "platform": "tg.example.me", "origin": "MESSENGER", "author": { "handle": "jtestowy_pl" }, "publishedAt": "2026-11-05", "title": "Kanał w stylu Telegrama — post #57" },
+    { "path": "/social/rozdanie-btc.html", "platform": "social.example.pl", "origin": "COMMENT_THREAD", "publishedAt": "2026-07-01", "title": "Rozdanie BTC — komentarze" },
+    { "path": "/ig/kantor_usdt_lublin/p1.html", "platform": "insta.example.com", "origin": "PUBLIC", "author": { "handle": "kantor_usdt_lublin" }, "publishedAt": "2026-10-25", "title": "Reklama kantora w stylu Instagrama" },
+    { "path": "/hobby/post/771.html", "platform": "forum-hobby.example.pl", "origin": "PUBLIC", "author": { "handle": "jtestowy", "name": "Janusz Kowalczyk" }, "publishedAt": "2026-06-02", "title": "Forum hobbystyczne — wpis #771 (inna osoba)" },
+    { "path": "/promo/komentarz-5521.html", "platform": "okazje-krypto.example", "origin": "COMMENT_THREAD", "author": { "handle": "krypto_okazje_77" }, "publishedAt": "2026-06-10", "title": "Komentarz promocyjny #5521" },
+    { "path": "/airdrop/komentarz-88.html", "platform": "airdrop-news.example", "origin": "COMMENT_THREAD", "author": { "handle": "bonus_airdrop" }, "publishedAt": "2026-06-15", "title": "Komentarz airdrop #88" }
+  ]
+}

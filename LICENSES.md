@@ -3,11 +3,11 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
 Wszystkie komponenty są Open Source.
 
-## Podsumowanie (651 pakietów npm)
+## Podsumowanie (652 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
-| MIT | 539 |
+| MIT | 540 |
 | Apache-2.0 | 39 |
 | ISC | 39 |
 | BSD-3-Clause | 10 |
@@ -129,6 +129,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @nestjs/core | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/platform-express | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/schematics | 12.0.16 | MIT | https://github.com/nestjs/schematics#readme |
+| @noble/curves | 2.4.0 | MIT | https://paulmillr.com/noble/ |
 | @noble/hashes | 2.4.0 | MIT | https://paulmillr.com/noble/ |
 | @nodelib/fs.scandir | 2.1.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
 | @nodelib/fs.stat | 2.0.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |

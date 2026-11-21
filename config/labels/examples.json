@@ -1,0 +1,67 @@
+{
+  "header": {
+    "source": "Specification test vectors (EIP-55, BIP-173, BIP-350) and the burn addresses of eth-labels",
+    "sourceUrl": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md",
+    "license": "EIP/BIP texts: CC0 / public domain; eth-labels: MIT",
+    "retrieved": "2026-11-21",
+    "note": "Every vector below was found verbatim in the fetched spec text (ethereum/ERCs master @ 99123078478f; bitcoin/bips bip-0173 / bip-0350). Burn rows: eth-labels chainId 1, label \"burn\". Such addresses are documentation / burn addresses: never attributed to a person (EXCL_EXAMPLE)."
+  },
+  "entries": [
+    {
+      "chain": "ETH",
+      "address": "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed",
+      "category": "EXAMPLE_BURN",
+      "name": "EIP-55 test vector",
+      "sourceUrl": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md"
+    },
+    {
+      "chain": "ETH",
+      "address": "0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359",
+      "category": "EXAMPLE_BURN",
+      "name": "EIP-55 test vector",
+      "sourceUrl": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md"
+    },
+    {
+      "chain": "ETH",
+      "address": "0xdbF03B407c01E7cD3CBea99509d93f8DDDC8C6FB",
+      "category": "EXAMPLE_BURN",
+      "name": "EIP-55 test vector",
+      "sourceUrl": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md"
+    },
+    {
+      "chain": "ETH",
+      "address": "0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb",
+      "category": "EXAMPLE_BURN",
+      "name": "EIP-55 test vector",
+      "sourceUrl": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md"
+    },
+    {
+      "chain": "BTC",
+      "address": "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+      "category": "EXAMPLE_BURN",
+      "name": "BIP-173 example address",
+      "sourceUrl": "https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki"
+    },
+    {
+      "chain": "BTC",
+      "address": "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
+      "category": "EXAMPLE_BURN",
+      "name": "BIP-350 example address",
+      "sourceUrl": "https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki"
+    },
+    {
+      "chain": "ETH",
+      "address": "0x0000000000000000000000000000000000000000",
+      "category": "EXAMPLE_BURN",
+      "name": "Null address (burn)",
+      "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv"
+    },
+    {
+      "chain": "ETH",
+      "address": "0x000000000000000000000000000000000000dEaD",
+      "category": "EXAMPLE_BURN",
+      "name": "Dead address (burn)",
+      "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv"
+    }
+  ]
+}

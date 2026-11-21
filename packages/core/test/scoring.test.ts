@@ -27,10 +27,10 @@ const EXACT = ['IDENT_EXACT_SAME_PLATFORM'] as const;
 
 describe('parseRules', () => {
   it('loads config/scoring-rules.v1.yaml', () => {
-    expect(rules.version).toBe('1.0.0');
+    expect(rules.version).toBe('1.1.0');
     expect(Object.keys(rules.base)).toHaveLength(8);
     expect(Object.keys(rules.modifiers)).toHaveLength(10);
-    expect(Object.keys(rules.exclusions)).toHaveLength(6);
+    expect(Object.keys(rules.exclusions)).toHaveLength(7);
     expect(rules.hints).toHaveLength(2);
     expect(rules.base.OFFICIAL_PROFILE.score).toBe(85);
     expect(rules.modifiers.SYNERGY_INDEPENDENT_SOURCES.delta).toBe(15);
@@ -50,7 +50,7 @@ describe('parseRules', () => {
     expect(broken('delta: 15,', 'delta: "15",')).toThrow(/expected a number/);
     expect(broken('id: EXCLUDED', 'id: NOPE')).toThrow(/missing band "EXCLUDED"/);
     expect(broken('clamp: { min: 0, max: 100 }', 'clamp: { min: 100, max: 0 }')).toThrow(/clamp/);
-    expect(broken('version: "1.0.0"', 'version: ""')).toThrow(/version/);
+    expect(broken('version: "1.1.0"', 'version: ""')).toThrow(/version/);
   });
 
   it('validates hint conditions at load time', () => {
@@ -73,7 +73,7 @@ describe('parseRules', () => {
 describe('Confidence Score — synthetic persona "Jan Testowy" (PLAN §5)', () => {
   it('own personal site with the address, exact handle → 95, very high', () => {
     const r = score({ traces: [trace('ev-site', 'jtestowy.example.org', 'OFFICIAL_PROFILE', { identity: [...EXACT] })] });
-    expect(r).toMatchObject({ score: 95, band: 'VERY_HIGH', excluded: false, rulesVersion: '1.0.0' });
+    expect(r).toMatchObject({ score: 95, band: 'VERY_HIGH', excluded: false, rulesVersion: '1.1.0' });
     expect(r.bandLabel.pl).toBe('Bardzo wysokie prawdopodobieństwo');
     expect(deltas(r)).toEqual([
       ['BASE_OFFICIAL_PROFILE', 85],

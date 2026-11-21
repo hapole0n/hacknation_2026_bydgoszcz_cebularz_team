@@ -1,0 +1,27 @@
+{
+  "header": {
+    "source": "Official Uniswap documentation (deployment addresses) + eth-labels cross-check",
+    "sourceUrl": "https://developers.uniswap.org/docs/protocols/v2/deployments",
+    "license": "Public facts from official docs (no licence stated on the pages); cross-check dataset MIT (dawsbot/eth-labels)",
+    "retrieved": "2026-11-21",
+    "note": "Docs pages: v2 deployments and v3/deployments/v3-ethereum-deployments (docs.uniswap.org redirects there). eth-labels @ d9b21aefeded56f7fce7208d6fa173d128526c1b lists both with chainId 1, label \"dex\"."
+  },
+  "entries": [
+    {
+      "chain": "ETH",
+      "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "category": "DEX",
+      "name": "Uniswap V2: Router 02",
+      "isContract": true,
+      "sourceUrl": "https://developers.uniswap.org/docs/protocols/v2/deployments"
+    },
+    {
+      "chain": "ETH",
+      "address": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+      "category": "DEX",
+      "name": "Uniswap V3: SwapRouter02",
+      "isContract": true,
+      "sourceUrl": "https://developers.uniswap.org/docs/protocols/v3/deployments/v3-ethereum-deployments"
+    }
+  ]
+}

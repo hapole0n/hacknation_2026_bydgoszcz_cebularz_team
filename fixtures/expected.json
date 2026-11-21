@@ -1,0 +1,43 @@
+{
+  "_comment": "Acceptance spec of the demo case (apps/api/test/pipeline.acceptance.test.ts). Address names refer to fixtures/addresses.json (synthetic) or to `realAddresses` (public institutional addresses, config/labels). Rule ids are the breakdown entries in order; ties between equally strong traces keep the order of fixtures/sandbox-web/index.json.",
+  "case": {
+    "title": "Demo — Jan Testowy",
+    "identifiers": [
+      { "type": "NICK", "value": "jtestowy" },
+      { "type": "EMAIL", "value": "jan.testowy@example.org" },
+      { "type": "MESSENGER", "value": "@jtestowy_pl" }
+    ]
+  },
+  "run": { "connectors": ["sandbox"], "asOf": "2026-11-21T12:00:00Z", "rulesVersion": "1.1.0" },
+  "realAddresses": {
+    "BINANCE_14": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "UNISWAP_V2_ROUTER": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+    "UKRAINE_DONATION": "0x165CD37b4C644C2921454429E7F9358d18A45e14"
+  },
+  "counts": { "evidence": 13, "evidenceFromReverseLookup": 2, "links": 17, "excludedLinks": 7 },
+  "links": [
+    { "identifier": "NICK:jtestowy", "address": "A1", "score": 100, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EXACT_SAME_PLATFORM", "SYNERGY_INDEPENDENT_SOURCES", "CLAMP"], "why": "own site + GitHub-like README (2 independent origins), nick = author and corroborated by e-mail: 85 + 10 + 15, clamped" },
+    { "identifier": "EMAIL:jan.testowy@example.org", "address": "A1", "score": 100, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EMAIL_EXACT", "SYNERGY_INDEPENDENT_SOURCES", "CLAMP"], "why": "site, README and e-mail footer (3 origins)" },
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "A1", "score": 100, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EXACT_SAME_PLATFORM", "SYNERGY_INDEPENDENT_SOURCES", "CLAMP"], "why": "Telegram handle on the site and in the e-mail footer" },
+
+    { "identifier": "NICK:jtestowy", "address": "A0", "score": 90, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EXACT_SAME_PLATFORM", "TRACE_OLDER_THAN_3Y"], "why": "address from the 2021 snapshot of the site: 85 + 10 - 5 (older than 3 years)" },
+    { "identifier": "EMAIL:jan.testowy@example.org", "address": "A0", "score": 90, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EMAIL_EXACT", "TRACE_OLDER_THAN_3Y"], "why": "same snapshot, e-mail match" },
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "A0", "score": 90, "band": "VERY_HIGH", "rules": ["BASE_OFFICIAL_PROFILE", "IDENT_EXACT_SAME_PLATFORM", "TRACE_OLDER_THAN_3Y"], "why": "same snapshot, Telegram handle" },
+
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "T1", "score": 95, "band": "VERY_HIGH", "rules": ["BASE_P2P_OFFER", "IDENT_EXACT_SAME_PLATFORM", "SYNERGY_INDEPENDENT_SOURCES"], "why": "P2P ad \"Sprzedam USDT za gotówkę\" (contact handle) + Telegram-like settlement post: 70 + 10 + 15" },
+
+    { "identifier": "NICK:jtestowy", "address": "B1", "score": 50, "band": "MEDIUM", "rules": ["BASE_FORUM_DISCUSSION"], "hints": 1, "why": "nick merely mentioned by another forum user; needs a second independent trace (hint)" },
+    { "identifier": "NICK:jtestowy", "address": "B2", "score": 25, "band": "LOW", "rules": ["BASE_GIVEAWAY"], "why": "giveaway comment thread" },
+
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "K1", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_SERVICE", "rules": ["EXCL_SERVICE"], "category": "CASP_KANTOR", "why": "Instagram-like ad of a kantor \"USDT ↔ gotówka\": synthetic label CASP_KANTOR, a service, not a person" },
+
+    { "identifier": "NICK:jtestowy", "address": "AB", "score": 20, "band": "LOW", "rules": ["BASE_FORUM_DISCUSSION", "IDENT_NICK_OTHER_PLATFORM", "ADDRESS_MULTI_IDENTITY"], "why": "persona B: same nick on another forum, no corroboration (-10); the address is pasted by 3 unrelated identities (-20, found by reverse lookup)" },
+
+    { "identifier": "NICK:jtestowy", "address": "BINANCE_14", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CEX", "rules": ["EXCL_CEX"], "category": "CEX_CUSTODIAL", "why": "exchange hot wallet quoted in a forum post" },
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "BINANCE_14", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CEX", "rules": ["EXCL_CEX"], "category": "CEX_CUSTODIAL", "why": "same post" },
+    { "identifier": "NICK:jtestowy", "address": "UNISWAP_V2_ROUTER", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CONTRACT", "rules": ["EXCL_CONTRACT"], "category": "DEX", "why": "DEX router contract" },
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "UNISWAP_V2_ROUTER", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CONTRACT", "rules": ["EXCL_CONTRACT"], "category": "DEX", "why": "same post" },
+    { "identifier": "NICK:jtestowy", "address": "UKRAINE_DONATION", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CHARITY", "rules": ["EXCL_CHARITY"], "category": "CHARITY", "why": "official charity address quoted in the post" },
+    { "identifier": "MESSENGER:jtestowy_pl", "address": "UKRAINE_DONATION", "score": 0, "band": "EXCLUDED", "excluded": "EXCL_CHARITY", "rules": ["EXCL_CHARITY"], "category": "CHARITY", "why": "same post" }
+  ]
+}

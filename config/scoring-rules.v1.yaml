@@ -2,7 +2,7 @@
 # Base tiers follow the KAS annex (KROK 2–3) of the task; modifiers are our own.
 # Code maps every rule id to a predicate in packages/core. Changing a number here
 # changes the score; bump `version` on every change (the version is stored in each Run).
-version: "1.0.0"
+version: "1.1.0" # 1.1.0: added EXCL_SERVICE (kantor / payment gateway / card issuer addresses)
 clamp: { min: 0, max: 100 }
 
 bands:
@@ -43,6 +43,7 @@ exclusions:
   - { id: EXCL_MIXER,             pl: "Mikser — usługa, nie osoba; korzystanie z miksera jest wskaźnikiem ryzyka", en: "Mixer — a service, not a person; usage is a risk indicator" }
   - { id: EXCL_CHARITY,           pl: "Znany adres zbiórki charytatywnej", en: "Known charity / fundraising address" }
   - { id: EXCL_EXAMPLE,           pl: "Adres przykładowy / z dokumentacji / burn", en: "Example / documentation / burn address" }
+  - { id: EXCL_SERVICE,           pl: "Adres usługi wymiany, kantoru, bramki płatniczej lub wydawcy karty (CASP) — usługa, nie portfel osoby; kontakt z nią jest wskaźnikiem cash-out", en: "Address of an exchange service, kantor, payment gateway or card issuer (CASP) — a service, not a person; contact with it is a cash-out indicator" }
 
 hints:
   - { when: "band == MEDIUM && !SYNERGY_INDEPENDENT_SOURCES", pl: "Drugie niezależne źródło podniosłoby wynik o 15 pp", en: "A second independent source would add 15 pp" }
