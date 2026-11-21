@@ -407,7 +407,7 @@ export function buildReport(input: ReportInput): ReportDoc {
         : table(
             ['Adres', 'Identyfikator', 'Wynik algorytmu', 'Decyzja analityka', 'Kto i kiedy', 'Komentarz'],
             decided.map((l) => [shortAddr(l.address.address), identityLabel(l), `${pct(l.score)}, ${label(BANDS_PL, l.band).toLowerCase()}`, label(DECISIONS_PL, l.analystDecision!), `${l.analystName ?? DASH}, ${fmtDateTime(l.decidedAt)}`, l.analystNote ?? DASH]),
-            { kind: 'FAKT', weights: [3, 4, 3, 2.5, 4, 5] },
+            { kind: 'FAKT', weights: [3, 6, 3, 2.5, 4, 5] },
           ),
     ],
   });

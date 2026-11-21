@@ -40,7 +40,19 @@ Sprawdzenie: `curl http://localhost:3000/api/health` → `{"status":"ok","db":"u
 TODO — pełny przebieg analizy na danych syntetycznych.
 
 ## Przykłady (zrzuty ekranu / logi)
-TODO
+Zrzuty z przebiegu na danych syntetycznych (`docs/screenshots/`):
+
+| Plik | Co pokazuje |
+|---|---|
+| `01-nowa-sprawa.png` | formularz nowej sprawy, wybór źródeł |
+| `02-wyniki.png` | wyniki: powiązania, Wskaźnik Pewności i rozbicie na reguły |
+| `03-graf.png` | graf powiązań (Cytoscape.js) |
+| `04-karta-adresu.png` | karta adresu: źródła, wskaźniki blockchain |
+| `05-odrzucone.png` | odrzucone przypisania z powodem |
+| `06-kto-stoi-za-adresem.png` | wariant „adres na wejściu”: konta, które go opublikowały |
+| `07-raport-html.png`, `08-raport-decyzje-wnioski.png` | raport w aplikacji |
+| `09-…`, `10-…`, `11-raport-pdf-….png` | raport PDF (strony wyrenderowane z pliku) |
+| `12-dziennik-zapytan.png` | Dziennik zapytań (widok „tylko zablokowane i z błędem”; wiersze pokazowe) |
 
 ## Zgodność i bezpieczeństwo
 - **Wyłącznie OSINT.** Jawne, legalne źródła; oficjalne API tam, gdzie istnieją; przestrzeganie regulaminów i robots.txt źródeł. Bez logowania na cudze konta, wycieków, omijania zabezpieczeń i skanowania podatności.
