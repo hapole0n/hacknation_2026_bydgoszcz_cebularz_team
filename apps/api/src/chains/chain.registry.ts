@@ -27,6 +27,11 @@ export class ChainRegistry {
     this.adapters = [fixture, btc, evm, tron];
   }
 
+  /** Plug-in point: add a blockchain data source at runtime; adapters are tried in registration order. */
+  register(adapter: ChainAdapter): void {
+    this.adapters.push(adapter);
+  }
+
   list() {
     return this.adapters.map((a) => ({ id: a.id, live: a.live, available: a.unavailableReason() === undefined, reason: a.unavailableReason() ?? null }));
   }

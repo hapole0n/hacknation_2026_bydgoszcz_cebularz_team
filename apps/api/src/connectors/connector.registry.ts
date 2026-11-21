@@ -19,6 +19,11 @@ export class ConnectorRegistry {
     this.byId = new Map([sandbox, github, wayback, gravatar, ens, telegram].map((c) => [c.id, c]));
   }
 
+  /** Plug-in point: add a source at runtime (it is then selectable by id like the built-in ones). */
+  register(connector: SourceConnector): void {
+    this.byId.set(connector.id, connector);
+  }
+
   list(): SourceConnector[] {
     return [...this.byId.values()];
   }
