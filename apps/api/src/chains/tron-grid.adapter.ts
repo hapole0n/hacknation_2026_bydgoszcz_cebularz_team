@@ -24,7 +24,8 @@ interface Trc20Tx {
   to: string;
   type: string;
   value: string;
-  token_info: { symbol: string; address: string; decimals: number };
+  /** TronGrid answers `{}` for tokens it does not know (seen on the USDT contract's own history). */
+  token_info: { symbol?: string; address?: string; decimals?: number };
 }
 
 /** TronGrid: TRX and TRC-20 (USDT) transfers (v1) and the contract check (wallet/getcontract). TronGrid throttles keyless callers hard, so TRONGRID_API_KEY is required. */
@@ -57,15 +58,12 @@ export class TronGridAdapter implements ChainAdapter {
         return [{ tx: t.txID, time: toIso(t.block_timestamp), from: tronAddressFromHex(v.owner_address), to: tronAddressFromHex(v.to_address), asset: 'TRX', amount: v.amount / 1e6, failed: t.ret?.[0]?.contractRet !== 'SUCCESS' }];
       }),
       ...trc20
-        .filter((t) => t.type === 'Transfer')
-        .map((t): ChainTransfer => ({
-          tx: t.transaction_id,
-          time: toIso(t.block_timestamp),
-          from: t.from,
-          to: t.to,
-          asset: tokenAsset('TRON', t.token_info.symbol, t.token_info.address),
-          amount: scaled(t.value, t.token_info.decimals),
-        })),
+        // shortcut: a transfer of a token TronGrid cannot identify (no symbol/decimals) is skipped without a note; add a warning code if analysts need the count.
+        .flatMap((t): ChainTransfer[] => {
+          const { symbol, address: contract, decimals } = t.token_info ?? {};
+          if (t.type !== 'Transfer' || !symbol || !contract || decimals === undefined) return [];
+          return [{ tx: t.transaction_id, time: toIso(t.block_timestamp), from: t.from, to: t.to, asset: tokenAsset('TRON', symbol, contract), amount: scaled(t.value, decimals) }];
+        }),
     ];
     const isContract = await this.isContract(address, key, ctx);
     return { chain, address, provider: this.id, fetchedAt: new Date().toISOString(), transfers, isContract, truncated: native.length >= LIMIT || trc20.length >= LIMIT };

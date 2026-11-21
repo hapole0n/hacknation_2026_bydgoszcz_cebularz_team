@@ -128,6 +128,8 @@ describe('TronGrid adapter', () => {
         ? reply({ success: true, data: [
             { transaction_id: 'tt1', block_timestamp: 1760000000000, from: T_PEER, to: T_ME, type: 'Transfer', value: '5000000', token_info: { symbol: 'USDT', address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', decimals: 6 } },
             { transaction_id: 'tt2', block_timestamp: 1760000001000, from: T_PEER, to: T_ME, type: 'Transfer', value: '1000000', token_info: { symbol: 'USDT', address: T_PEER, decimals: 6 } },
+            // TronGrid sends `token_info: {}` for tokens it does not know (41 of 200 rows on the USDT contract): skipped, must not fail the history
+            { transaction_id: 'tt3', block_timestamp: 1760000001500, from: T_PEER, to: T_ME, type: 'Transfer', value: '7', token_info: {} },
           ] })
         : reply({ success: true, data: [
             { txID: 'n1', block_timestamp: 1760000002000, ret: [{ contractRet: 'SUCCESS' }], raw_data: { contract: [{ type: 'TransferContract', parameter: { value: { owner_address: hexOf(T_ME), to_address: hexOf(T_PEER), amount: 2_500_000 } } }] } },
