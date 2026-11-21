@@ -35,7 +35,7 @@ export class WaybackConnector implements SourceConnector {
   constructor(private readonly egress: EgressClient) {}
 
   /** Nothing to look up by identifier: the archive is consulted for pages found by the other sources. */
-  async search(_input: SearchInput): Promise<EvidenceDraft[]> {
+  async search(): Promise<EvidenceDraft[]> {
     return [];
   }
 
