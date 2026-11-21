@@ -41,7 +41,8 @@ Keep these working. If you change them, update this section.
 
 ## Working rules for Claude Code
 - Before a phase: re-read that phase in PLAN.md, write a 3–6 line plan in Russian, then implement.
-- Small working increments. After each change run the relevant tests/build. Commit after every green step: `git add -A && git commit -m "<area>: <what>"`. Push at the end of each phase. Never force-push.
+- Small working increments. After each change run the relevant tests/build. Commit after every green step: `git add -A && git commit -m "<area>: <what>"`.
+- After every green step: a small, meaningful commit (feat/fix/test/docs) and an immediate `git push` to main. Do not pile changes up until the end of a phase. Never change commit dates, never rewrite history, never force-push.
 - Don't invent data sources, labels or addresses. If something is unknown, leave a clearly marked TODO and tell Oleh.
 - Every user-visible string goes through i18n (pl + en).
 - Every computed result carries provenance: which rule, source and evidence produced it.
