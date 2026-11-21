@@ -194,8 +194,9 @@ export class PipelineService {
           const sum = round === 1 ? undefined : sumFor(c.id, round);
           if (sum) sum.queries!++;
           const per = new Map<string, { resources: number; addresses: number }>();
+          const skipped = new Map<string, string>();
           try {
-            for (const d of await c.search({ identifiers, ...ctx, notify: notifyFor(c.id, round) })) {
+            for (const d of await c.search({ identifiers, ...ctx, notify: notifyFor(c.id, round), skip: (i, key) => void skipped.set(identKey(i), key) })) {
               if (!accept(d)) continue;
               const found = ingest(d, round, onlyKey);
               if (sum) {
@@ -212,7 +213,8 @@ export class PipelineService {
             }
             if (!sum) for (const i of runnable) {
               const p = per.get(identKey(i)) ?? { resources: 0, addresses: 0 };
-              row(i, { outcome: p.resources > 0 ? 'FOUND' : 'NONE', ...p });
+              const off = skipped.get(identKey(i));
+              row(i, p.resources === 0 && off ? { outcome: 'SKIPPED_NO_KEY', ...p, note: { code: 'KEY_MISSING', params: { key: off } } } : { outcome: p.resources > 0 ? 'FOUND' : 'NONE', ...p });
             }
           } catch (e) {
             const note = noteOf(e);

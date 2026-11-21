@@ -155,7 +155,7 @@ export function searchOutcomePl(e: SearchLogEntry): string {
     case 'ERROR':
       return `błąd: ${e.note ? noteTextPl(e.note) : 'nieznany'}`;
     case 'SKIPPED_NO_KEY':
-      return `pominięto: brak klucza ${e.note?.params?.key ?? ''} w pliku .env`;
+      return `pominięto: w pliku .env nie ustawiono ${e.note?.params?.key ?? ''}`;
     case 'UNSUPPORTED':
       return 'źródło nie sprawdza tego typu identyfikatora';
   }

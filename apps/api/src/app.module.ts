@@ -12,6 +12,7 @@ import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { EnsConnector } from './connectors/ens.connector.js';
 import { GithubConnector } from './connectors/github.connector.js';
 import { GravatarConnector } from './connectors/gravatar.connector.js';
+import { TelegramConnector } from './connectors/telegram.connector.js';
 import { SandboxConnector } from './connectors/sandbox.connector.js';
 import { SandboxWorld } from './connectors/sandbox-world.js';
 import { WaybackConnector } from './connectors/wayback.connector.js';
@@ -40,6 +41,7 @@ import { RulesService } from './rules.service.js';
     WaybackConnector,
     GravatarConnector,
     EnsConnector,
+    TelegramConnector,
     ConnectorRegistry,
     FixtureChainAdapter,
     BtcMempoolAdapter,

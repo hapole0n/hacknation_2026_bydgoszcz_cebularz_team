@@ -8,6 +8,7 @@ import { FixtureChainAdapter } from '../src/chains/fixture.adapter.js';
 import { NbpService } from '../src/chains/nbp.service.js';
 import { TronGridAdapter } from '../src/chains/tron-grid.adapter.js';
 import { ConnectorRegistry } from '../src/connectors/connector.registry.js';
+import { TelegramConnector } from '../src/connectors/telegram.connector.js';
 import { EnsConnector } from '../src/connectors/ens.connector.js';
 import { GithubConnector } from '../src/connectors/github.connector.js';
 import { GravatarConnector } from '../src/connectors/gravatar.connector.js';
@@ -43,7 +44,7 @@ export function makeApp(opts: FetchOptions = {}) {
   const egress = new EgressClient(prisma, cfg);
   const labels = new LabelService();
   const world = new MemoryWorld(prisma);
-  const registry = new ConnectorRegistry(new SandboxConnector(egress, world), new GithubConnector(egress), new WaybackConnector(egress), new GravatarConnector(egress), new EnsConnector(egress));
+  const registry = new ConnectorRegistry(new SandboxConnector(egress, world), new GithubConnector(egress), new WaybackConnector(egress), new GravatarConnector(egress), new EnsConnector(egress), new TelegramConnector(egress));
   const chains = new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(egress), new EvmEtherscanAdapter(egress), new TronGridAdapter(egress));
   const analysis = new ChainAnalysisService(chains, new NbpService(egress), labels);
   const ai = new AiService(egress);

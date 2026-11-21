@@ -205,7 +205,7 @@ describe('section 2: the search log ("Przeszukane źródła")', () => {
     const t = sources(r);
     expect(t).toContain('Przeszukano 3 źródła — nie znaleziono adresów kryptowalutowych.'); // sandbox, github, ens were asked; gravatar could not take the type
     expect(t).toContain('profil nie znaleziony');
-    expect(t).toContain('pominięto: brak klucza GITHUB_TOKEN w pliku .env');
+    expect(t).toContain('pominięto: w pliku .env nie ustawiono GITHUB_TOKEN');
     expect(t).toContain('źródło nie sprawdza tego typu identyfikatora');
     expect(t).toContain('błąd: Dostawca danych Ethereum RPC zwrócił błąd HTTP 503.');
     expect(t).not.toContain('Nie znaleziono żadnych źródeł');

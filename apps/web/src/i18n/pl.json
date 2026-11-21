@@ -74,14 +74,16 @@
       "github": "GitHub (publiczne API)",
       "wayback": "Wayback Machine (archiwum stron)",
       "gravatar": "Gravatar (profil po e-mailu)",
-      "ens": "ENS (nazwy .eth, rekordy tekstowe)"
+      "ens": "ENS (nazwy .eth, rekordy tekstowe)",
+      "telegram_public": "Telegram (publiczne strony t.me)"
     },
     "connectorNotes": {
       "sandbox": "Strony, profile, ogłoszenia i adresy wyłącznie sztuczne. Zalecane do demonstracji.",
       "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com.",
       "wayback": "Wcześniejsze kopie stron, na których znaleziono adresy: jaki adres był na stronie i kiedy (data kopii). Strony sztucznego internetu sprawdza w jego własnym archiwum, pozostałe w archive.org.",
       "gravatar": "Publiczny profil Gravatar: nazwa, zweryfikowane konta; portfele kryptowalutowe tylko z kluczem GRAVATAR_API_KEY (bez klucza pomijamy je z adnotacją). Adresy e-mail z domen zarezerwowanych (example.org itd.) obsługuje wyłącznie sztuczny mini-internet.",
-      "ens": "Adres ↔ nazwa ENS i rekordy tekstowe (com.github, com.twitter, email, url) przez publiczny węzeł RPC. Rekord odwrotny uznajemy tylko, gdy nazwa wskazuje z powrotem na ten sam adres."
+      "ens": "Adres ↔ nazwa ENS i rekordy tekstowe (com.github, com.twitter, email, url) przez publiczny węzeł RPC. Rekord odwrotny uznajemy tylko, gdy nazwa wskazuje z powrotem na ten sam adres.",
+      "telegram_public": "Publiczna karta konta t.me/<nazwa> (nazwa, opis) i podgląd kanału t.me/s/<nazwa> (publiczne posty z adresami). Dostęp na żywo jest wyłączony: regulamin Telegrama ogranicza dostęp do treści użytkowników, więc włączasz go świadomie (TELEGRAM_LIVE=true w pliku .env). Sztuczne nazwy obsługuje mini-internet."
     },
     "chainTitle": "Dane z blockchaina",
     "chain": {
@@ -262,7 +264,7 @@
         "NONE": "brak wyników",
         "NONE_profile": "profil nie znaleziony",
         "ERROR": "błąd: {{detail}}",
-        "SKIPPED_NO_KEY": "pominięto: brak klucza {{key}} w pliku .env",
+        "SKIPPED_NO_KEY": "pominięto: w pliku .env nie ustawiono {{key}}",
         "UNSUPPORTED": "źródło nie sprawdza tego typu identyfikatora"
       }
     }

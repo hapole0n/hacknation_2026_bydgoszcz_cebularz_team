@@ -348,7 +348,7 @@ describe('failure handling and input validation', () => {
   });
 
   it('GET /connectors and /chain-adapters list sources, policies and readiness', () => {
-    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api'], ['gravatar', 'official_api'], ['ens', 'official_api']]);
+    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api'], ['gravatar', 'official_api'], ['ens', 'official_api'], ['telegram_public', 'public_page']]);
     expect(api.connectors().find((c) => c.id === 'github')).toMatchObject({ identifiers: ['NICK', 'SOCIAL_LOGIN', 'NAME', 'ADDRESS'] });
     expect(api.connectors().find((c) => c.id === 'ens')).toMatchObject({ conditions: { NICK: 'ethName' } });
     expect(api.chainAdapters().map((a) => [a.id, a.live])).toEqual([['fixture', false], ['mempool.space', true], ['etherscan', true], ['trongrid', true]]);
@@ -521,6 +521,26 @@ describe('an address typed in by the analyst is analysed on-chain even when no p
     } finally {
       if (token) process.env.GITHUB_TOKEN = token;
     }
+  });
+});
+
+describe('Telegram (public pages) in a run', () => {
+  it('the handle of the demo persona is found on its sandbox card; the other identifiers are not its business', async () => {
+    const created = await api.createCase({ ...spec.case, title: 'Demo — Telegram' });
+    caseIds.push(created.id);
+    const r = await pipeline.run(created.id, { ...runOptions, connectors: ['sandbox', 'telegram_public'] });
+    const log = (r.run.summaryJson as { searches: SearchLogEntry[] }).searches.filter((l) => l.connector === 'telegram_public');
+    expect(log.map((l) => [l.identifier!.type, l.outcome]).sort()).toEqual([['EMAIL', 'UNSUPPORTED'], ['MESSENGER', 'FOUND'], ['NICK', 'UNSUPPORTED']]);
+    expect(log.find((l) => l.outcome === 'FOUND')).toMatchObject({ resources: 1, addresses: 1 });
+    expect(r.evidence.some((e) => e.connectorId === 'telegram_public' && e.url?.endsWith('/tme/jtestowy_pl.html'))).toBe(true);
+  });
+
+  it('a handle nobody serves is skipped, not searched, while live access is off', async () => {
+    const created = await api.createCase({ title: 'Demo — Telegram wyłączony', identifiers: [{ type: 'MESSENGER', value: '@ktos_z_internetu' }] });
+    caseIds.push(created.id);
+    const r = await pipeline.run(created.id, { ...runOptions, connectors: ['telegram_public'] });
+    const [entry] = (r.run.summaryJson as { searches: SearchLogEntry[] }).searches;
+    expect(entry).toMatchObject({ connector: 'telegram_public', outcome: 'SKIPPED_NO_KEY', note: { params: { key: 'TELEGRAM_LIVE' } } });
   });
 });
 

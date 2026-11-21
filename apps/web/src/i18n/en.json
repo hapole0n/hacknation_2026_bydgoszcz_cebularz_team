@@ -74,14 +74,16 @@
       "github": "GitHub (public API)",
       "wayback": "Wayback Machine (page archive)",
       "gravatar": "Gravatar (profile by e-mail)",
-      "ens": "ENS (.eth names, text records)"
+      "ens": "ENS (.eth names, text records)",
+      "telegram_public": "Telegram (public t.me pages)"
     },
     "connectorNotes": {
       "sandbox": "Pages, profiles, adverts and addresses are all artificial. Recommended for demonstrations.",
       "github": "A user's profile and profile README; with a token also address search in code. Requests go to github.com.",
       "wayback": "Earlier copies of pages on which addresses were found: which address was on the page and when (date of the copy). Pages of the synthetic internet are looked up in its own archive, others at archive.org.",
       "gravatar": "Public Gravatar profile: name, verified accounts; crypto wallets only with GRAVATAR_API_KEY (without a key they are skipped, with a note). E-mails on reserved domains (example.org etc.) are answered only by the synthetic mini-internet.",
-      "ens": "Address ↔ ENS name and text records (com.github, com.twitter, email, url) through a public RPC node. A reverse record counts only when the name resolves back to the same address."
+      "ens": "Address ↔ ENS name and text records (com.github, com.twitter, email, url) through a public RPC node. A reverse record counts only when the name resolves back to the same address.",
+      "telegram_public": "Public account card t.me/<name> (name, bio) and channel preview t.me/s/<name> (public posts with addresses). Live access is off: Telegram's terms restrict access to user content, so you switch it on deliberately (TELEGRAM_LIVE=true in .env). Synthetic names are served by the mini-internet."
     },
     "chainTitle": "Blockchain data",
     "chain": {
@@ -248,7 +250,7 @@
         "NONE": "no results",
         "NONE_profile": "profile not found",
         "ERROR": "error: {{detail}}",
-        "SKIPPED_NO_KEY": "skipped: key {{key}} missing in .env",
+        "SKIPPED_NO_KEY": "skipped: {{key}} is not set in .env",
         "UNSUPPORTED": "this source does not look up this kind of identifier"
       }
     }

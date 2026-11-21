@@ -10,7 +10,7 @@ hosts:
   - { host: raw.githubusercontent.com,   purpose: "GitHub profile README raw content", rateLimitPerSec: 1 }
   - { host: api.gravatar.com,            purpose: "Gravatar public profile (crypto wallets) by e-mail hash", rateLimitPerSec: 1 }
   - { host: web.archive.org,             purpose: "Wayback Machine CDX and archived snapshots", rateLimitPerSec: 1 }
-  - { host: t.me,                        purpose: "Telegram public channel preview (t.me/s/...)", rateLimitPerSec: 0.5 }
+  - { host: t.me,                        purpose: "Telegram public pages (t.me/<name>, t.me/s/<name>); used only with TELEGRAM_LIVE=true", rateLimitPerSec: 0.5 }
   - { host: api.nbp.pl,                  purpose: "NBP exchange rates (EUR/PLN, USD/PLN) for PIT valuation", rateLimitPerSec: 2 }
   - { host: ethereum-rpc.publicnode.com, purpose: "ENS resolution via public Ethereum RPC (configurable)", rateLimitPerSec: 2 }
   - { host: api.coingecko.com,           purpose: "OPTIONAL historical crypto prices (first to cut)", rateLimitPerSec: 0.5 }

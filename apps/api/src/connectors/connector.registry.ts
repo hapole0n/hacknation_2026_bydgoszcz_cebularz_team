@@ -3,6 +3,7 @@ import { EnsConnector } from './ens.connector.js';
 import { GithubConnector } from './github.connector.js';
 import { GravatarConnector } from './gravatar.connector.js';
 import { SandboxConnector } from './sandbox.connector.js';
+import { TelegramConnector } from './telegram.connector.js';
 import { WaybackConnector } from './wayback.connector.js';
 import type { SourceConnector } from './connector.js';
 
@@ -14,8 +15,8 @@ export class ConnectorRegistry {
   private readonly byId: Map<string, SourceConnector>;
 
   // New sources: implement SourceConnector and add it here.
-  constructor(sandbox: SandboxConnector, github: GithubConnector, wayback: WaybackConnector, gravatar: GravatarConnector, ens: EnsConnector) {
-    this.byId = new Map([sandbox, github, wayback, gravatar, ens].map((c) => [c.id, c]));
+  constructor(sandbox: SandboxConnector, github: GithubConnector, wayback: WaybackConnector, gravatar: GravatarConnector, ens: EnsConnector, telegram: TelegramConnector) {
+    this.byId = new Map([sandbox, github, wayback, gravatar, ens, telegram].map((c) => [c.id, c]));
   }
 
   list(): SourceConnector[] {

@@ -15,6 +15,8 @@ export interface SearchInput {
   runId?: string;
   /** For a note that is not a failure (e.g. "wallets skipped, no API key"): shown with the run, never fatal. */
   notify?: (note: Note) => void;
+  /** The source did not look this identifier up because the .env setting `key` is off or missing (the search log says so). */
+  skip?: (identifier: SearchIdentifier, key: string) => void;
 }
 
 /** What a connector found: one public resource. The full text lives in memory only; the DB keeps a snippet + sha256. */
@@ -96,7 +98,7 @@ export function htmlToText(html: string): string {
     .trim();
 }
 
-const decodeEntities = (s: string) =>
+export const decodeEntities = (s: string) =>
   s
     .replace(/&nbsp;/g, ' ')
     .replace(/&lt;/g, '<')
