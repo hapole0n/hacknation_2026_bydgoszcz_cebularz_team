@@ -81,6 +81,14 @@ export interface ReportIdentity {
   score: { score: number; band: string } | null;
   otherAddresses: { chain: string; address: string; category: string; excluded: boolean }[];
 }
+export interface ReportSubject {
+  chain: string;
+  address: string;
+  category: string;
+  labels: { name: string | null; source: string; sourceUrl?: string | null }[];
+  isContract: boolean | null;
+  exclusions: { ruleId: string; pl: string; en: string }[];
+}
 export interface ReportInput {
   appName: string;
   case: { id: string; title: string; createdBy: string; identifiers: { type: string; value: string }[] };
@@ -98,6 +106,8 @@ export interface ReportInput {
       chainNotes: { address: string; notes: NoteLike[] }[];
       chainWarnings: { address: string; warnings: NoteLike[] }[];
       identities: ReportIdentity[];
+      /** Addresses typed in as identifiers, with the verdict on the address itself (absent in runs made before this field). */
+      subjects?: ReportSubject[];
       error?: NoteLike;
     } | null;
   };
@@ -206,6 +216,36 @@ export function buildReport(input: ReportInput): ReportDoc {
 
   const sections: Omit<ReportSection, 'number'>[] = [];
 
+  // The verdict on each address typed in as an identifier (shown even when no source mentions it).
+  const subjects = summary?.subjects ?? [];
+  const subjectChain = (s: ReportSubject) => input.chain.find((c) => addrKey(c.address.chain, c.address.address) === addrKey(s.chain, s.address));
+  const subjectBlocks: Block[] =
+    subjects.length === 0
+      ? []
+      : [
+          { type: 'heading', text: 'Analizowane adresy' },
+          table(
+            ['Adres', 'Sieć', 'Rodzaj', 'Wykluczenie', 'Etykieta (źródło)', 'Transakcje', 'Wpływy', 'Wypływy'],
+            subjects.map((s) => {
+              const c = subjectChain(s);
+              const lab = s.labels[0];
+              const notes = (summary?.chainNotes ?? []).filter((n) => n.address.toLowerCase() === s.address.toLowerCase()).flatMap((n) => n.notes);
+              const noData = notes.length > 0 ? `brak danych: ${noteTextPl(notes[0]!)}` : lab ? 'nie pobrano (adres z etykietą)' : 'brak danych z blockchaina';
+              return [
+                s.address,
+                chainName(s.chain),
+                label(CATEGORIES_PL, s.category),
+                s.exclusions.length > 0 ? `wykluczony: ${s.exclusions.map((e) => `${e.pl} (${e.ruleId})`).join('; ')}` : 'nie wykluczony',
+                lab ? `${lab.name ?? DASH}${lab.source === 'heuristic' ? ' (heurystyka)' : lab.sourceUrl ? ` — ${lab.sourceUrl}` : ''}` : DASH,
+                c ? String(c.indicators.txCount) : noData,
+                c ? money(c.indicators.totals.inPln, c.indicators.totals.inEur, c.indicators.totals.unvalued) : DASH,
+                c ? money(c.indicators.totals.outPln, c.indicators.totals.outEur, c.indicators.totals.unvalued) : DASH,
+              ];
+            }),
+            { kind: 'OBLICZENIE', weights: [6, 2, 3, 6, 5, 2, 3, 3], mono: [0] },
+          ),
+        ];
+
   // 1 — inputs
   sections.push({
     id: 'input',
@@ -214,6 +254,7 @@ export function buildReport(input: ReportInput): ReportDoc {
     blocks: [
       { type: 'text', text: 'Dane wprowadzone przez analityka oraz ustawienia, z jakimi uruchomiono analizę.', kind: 'FAKT', basis: 'dane z formularza sprawy' },
       table(['Typ identyfikatora', 'Wartość'], kase.identifiers.map((i) => [label(IDENTIFIER_TYPES_PL, i.type), i.value]), { kind: 'FAKT', weights: [2, 5] }),
+      ...subjectBlocks,
       kv(
         [
           ['Sprawa', kase.title],
@@ -562,6 +603,9 @@ export function buildReport(input: ReportInput): ReportDoc {
     ],
     summary: [
       `Dla sprawy „${kase.title}” przeanalizowano ${kase.identifiers.length} ${plural(kase.identifiers.length, 'identyfikator', 'identyfikatory', 'identyfikatorów')}, przeszukując źródła: ${run.paramsJson.connectors.join(', ')} (analiza z ${fmtDate(run.startedAt)}).`,
+      ...(subjects.length > 0
+        ? [`${subjects.length === 1 ? 'Badany adres' : 'Badane adresy'}: ${subjects.map((s) => `${shortAddr(s.address)} (${chainName(s.chain)}) — ${s.exclusions.length > 0 ? 'wykluczony' : 'nie wykluczony'}, ${label(CATEGORIES_PL, s.category).toLowerCase()}`).join('; ')}.`]
+        : []),
       s2,
       s3,
       s4,

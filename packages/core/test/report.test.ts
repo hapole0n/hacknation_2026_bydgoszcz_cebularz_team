@@ -170,6 +170,22 @@ describe('buildReport', () => {
     expect(doc.summary[2]).toMatch(/Żaden adres nie osiągnął/);
     expect(all(doc)).not.toMatch(/undefined|NaN/);
   });
+
+  it('shows the verdict on a typed-in address in the inputs section and in one summary line', () => {
+    const r = base();
+    r.run.summaryJson!.subjects = [
+      { chain: 'ETH', address: CEX, category: 'CEX_CUSTODIAL', isContract: null, labels: [{ name: 'Binance 14 (hot wallet)', source: 'label', sourceUrl: 'https://example.org/labels' }], exclusions: [{ ruleId: 'EXCL_CEX', pl: 'Adres giełdy', en: 'Exchange address' }] },
+    ];
+    const doc = buildReport(r);
+    const input = text(doc.sections.find((s) => s.id === 'input')!.blocks);
+    expect(input).toContain('Analizowane adresy');
+    expect(input).toContain('wykluczony: Adres giełdy (EXCL_CEX)');
+    expect(input).toContain('Binance 14 (hot wallet)');
+    expect(input).toContain('nie pobrano (adres z etykietą)'); // a labelled institution gets no chain history
+    expect(doc.summary).toHaveLength(6);
+    expect(doc.summary[1]).toMatch(/^Badany adres: 0x222222…222222 \(Ethereum\) — wykluczony, giełda \(powiernicza\)\.$/);
+    expect(all(doc)).not.toMatch(/undefined|\{\{|NaN/);
+  });
 });
 
 describe('canonicalJson', () => {
