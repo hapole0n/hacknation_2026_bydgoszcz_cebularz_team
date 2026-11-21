@@ -55,6 +55,7 @@ export class ReportService {
       traces: results.traces,
       chain: results.chain,
       connectors: this.registry.list().map(({ id, policy }) => ({ id, policy })),
+      diff: (await this.pipeline.diffOf(runId)).diff,
     });
     return { generatedAt: new Date().toISOString(), sha256: sha256(canonicalJson(doc)), evidenceSha256: sha256(results.evidence.map((e) => e.sha256).sort().join('\n')), doc };
   }

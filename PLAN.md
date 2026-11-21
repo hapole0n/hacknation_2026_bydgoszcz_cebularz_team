@@ -102,7 +102,7 @@ Case (sprawa) → many Runs. Schedule per case (off / 15 min / 1 h / 24 h; "Uruc
 - `Link(id, runId, identifierId, addressId, score, band, breakdownJson, hintsJson, excludedReason?, analystDecision?, analystNote?, decidedAt?)`
 - `ChainSnapshot(id, runId, addressId, indicatorsJson, flowsJson, fetchedAt, provider)`
 - `RunDiff(id, caseId, fromRunId, toRunId, diffJson)`
-- `Notification(id, caseId, runId, kind, message, readAt)`
+- `Notification(id, caseId, runId, createdAt, kind, paramsJson, readAt)` — kind + params, the words come from the web / report
 - `AuditLog(id, at, caseId?, runId?, connectorId, host, path, status, durationMs)`
 - `Report(id, runId, format, sha256, createdAt, path)`
 

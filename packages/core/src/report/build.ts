@@ -1,4 +1,6 @@
 import type { FlowEntry, Indicators } from '../chain/indicators.js';
+import type { RunDiffDoc } from '../diff.js';
+import { diffSection } from './diff-section.js';
 import { THRESHOLD_NOTE } from '../chain/indicators.js';
 import type { BreakdownEntry } from '../scoring/score.js';
 import type { Localized } from '../types.js';
@@ -103,6 +105,8 @@ export interface ReportInput {
   traces: ReportTrace[];
   chain: ReportChain[];
   connectors: { id: string; policy: { tosUrl: string; method: string } }[];
+  /** Comparison with the previous run of the case; null / absent for the first run. */
+  diff?: RunDiffDoc | null;
 }
 
 // ---- output -----------------------------------------------------------------------------------------------------
@@ -412,7 +416,10 @@ export function buildReport(input: ReportInput): ReportDoc {
     ],
   });
 
-  // 8 — conclusions needing verification
+  // 8 — what changed since the previous run
+  sections.push(diffSection(input.diff));
+
+  // 9 — conclusions needing verification
   const groups = new Map<string, ReportLink[]>();
   for (const l of active.filter((x) => x.score >= 40)) groups.set(addrKey(l.address.chain, l.address.address), [...(groups.get(addrKey(l.address.chain, l.address.address)) ?? []), l]);
   const sec8: Block[] = [];
@@ -459,7 +466,7 @@ export function buildReport(input: ReportInput): ReportDoc {
   if (sec8.length === 0) sec8.push({ type: 'text', text: 'Zebrane dane nie pozwalają na wniosek o powiązaniu adresu z osobą. To także wynik analizy.' });
   sections.push({ id: 'conclusions', title: 'Wnioski wymagające weryfikacji', kind: 'WNIOSEK', blocks: sec8 });
 
-  // 9 — recommended next steps
+  // 10 — recommended next steps
   const steps: string[] = [];
   for (const c of input.chain) {
     const cexFlows = c.flows.filter((f) => f.counterparty.category === 'CEX_CUSTODIAL' || f.counterparty.category === 'CEX_DEPOSIT');
@@ -474,7 +481,7 @@ export function buildReport(input: ReportInput): ReportDoc {
   steps.push('Zachować dowody razem z ich skrótami SHA-256 i powtórzyć analizę bezpośrednio przed użyciem wyniku w postępowaniu.');
   sections.push({ id: 'next', title: 'Rekomendowane dalsze czynności', kind: 'WNIOSEK', blocks: [{ type: 'list', items: steps }] });
 
-  // 10 — limitations
+  // 11 — limitations
   sections.push({
     id: 'limits',
     title: 'Ograniczenia',
@@ -495,7 +502,7 @@ export function buildReport(input: ReportInput): ReportDoc {
     ],
   });
 
-  // 11 — metadata and reproducibility
+  // 12 — metadata and reproducibility
   const noteLines = [
     ...(summary?.connectorErrors ?? []).map((e) => `Źródło „${e.connector}”${e.round > 1 ? ` (runda ${e.round})` : ''}: ${noteTextPl(e.note)}`),
     ...(summary?.chainNotes ?? []).flatMap((n) => n.notes.map((x) => `Adres ${shortAddr(n.address)}: ${noteTextPl(x)}`)),

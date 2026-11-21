@@ -132,6 +132,7 @@
       "startedAt": "Started",
       "status": "Status",
       "trigger": "Started by",
+      "changes": "Changes",
       "rules": "Rules version",
       "open": "Results"
     },
@@ -524,6 +525,49 @@
     "status": {
       "blocked": "Blocked",
       "error": "Network error"
+    }
+  },
+  "changes": {
+    "title": "Changes since the previous run",
+    "first": "This is the first analysis of this case — nothing to compare with.",
+    "none": "No changes since the analysis of {{date}}: same addresses, same scores, no new transactions.",
+    "comparedWith": "Compared with the analysis of {{date}}.",
+    "differentSources": "The analyses used different sources or blockchain mode — some differences may come from that.",
+    "sourceChanges": "Address changed on the same source",
+    "sourceKind": {
+      "swap": "address swapped",
+      "added": "address added",
+      "removed": "address removed"
+    },
+    "added": "New addresses",
+    "removed": "Addresses no longer found",
+    "scoreChanges": "Confidence Score changes",
+    "newLink": "new link",
+    "linkGone": "link gone",
+    "rule": {
+      "added": "rule added",
+      "removed": "rule no longer applies",
+      "changed": "rule changed"
+    },
+    "categoryChanges": "Address category changed",
+    "newTransactions": "New transactions",
+    "txCount": "{{count}} transactions",
+    "newAddress": "new address",
+    "newThresholds": "New threshold crossings",
+    "thresholdKind": {
+      "single": "single transfer",
+      "cumulative": "cumulative cash-out"
+    },
+    "newCashOut": "New cash-out indicators",
+    "summary": "Changes",
+    "noChanges": "no changes",
+    "firstRun": "first analysis",
+    "summaryParts": {
+      "addressesAdded": "new addresses: {{n}}",
+      "scoreChanges": "score changes: {{n}}",
+      "newTransactions": "new transactions: {{n}}",
+      "newThresholds": "thresholds: {{n}}",
+      "sourceChanges": "address changed on a source: {{n}}"
     }
   }
 }

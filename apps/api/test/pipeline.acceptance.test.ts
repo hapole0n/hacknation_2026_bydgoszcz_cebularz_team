@@ -355,7 +355,7 @@ describe('report (HTML view data, PDF, JSON) — stored with the run', () => {
     expect(a.sha256).toMatch(/^[0-9a-f]{64}$/);
     expect(b.sha256).toBe(a.sha256); // same data → same hash (the time of generation is not part of it)
     expect(a.doc.summary).toHaveLength(5);
-    expect(a.doc.sections.map((s) => s.id)).toEqual(['input', 'sources', 'links', 'rejected', 'chain', 'chronology', 'decisions', 'conclusions', 'next', 'limits', 'meta']);
+    expect(a.doc.sections.map((s) => s.id)).toEqual(['input', 'sources', 'links', 'rejected', 'chain', 'chronology', 'decisions', 'changes', 'conclusions', 'next', 'limits', 'meta']);
     const text = JSON.stringify(a.doc);
     for (const e of results.evidence) expect(text).toContain(e.sha256);
     expect(text).toContain('Giełda (powiernicza)'); // rejected attributions carry their reason
@@ -406,7 +406,7 @@ describe('report (HTML view data, PDF, JSON) — stored with the run', () => {
     const f = await reports.file(results.run.id, 'JSON');
     const json = JSON.parse(f.content.toString('utf8'));
     expect(json.sha256).toBe((await api.report(results.run.id)).sha256);
-    expect(json.doc.sections).toHaveLength(11);
+    expect(json.doc.sections).toHaveLength(12);
     expect(f.fileName).toMatch(/^kropka-raport-[0-9a-f]{8}\.json$/);
   });
 
@@ -437,5 +437,32 @@ describe('audit log page (PLAN 3.9)', () => {
     expect(problems.rows.every((r) => r.status <= 0)).toBe(true);
     expect((await api.auditLog('1', undefined)).rows).toHaveLength(1);
     expect((await api.auditLog('abc', undefined)).rows.length).toBeLessThanOrEqual(200);
+  });
+});
+
+describe('monitoring: comparison of runs (PLAN 3.8)', () => {
+  let monitored: { id: string; first: Results; second: Results };
+
+  beforeAll(async () => {
+    const created = await api.createCase({ ...spec.case, title: 'Demo — monitoring' });
+    caseIds.push(created.id);
+    const first = await pipeline.run(created.id, runOptions);
+    monitored = { id: created.id, first, second: await pipeline.run(created.id, runOptions) };
+  });
+
+  it('the first run has no comparison; a re-run on unchanged sources differs in nothing and rings no bell', async () => {
+    expect((await api.runDiff(monitored.first.run.id)).diff).toBeNull();
+    const { diff } = await api.runDiff(monitored.second.run.id);
+    expect(diff).toMatchObject({ fromRunId: monitored.first.run.id, toRunId: monitored.second.run.id, empty: true, params: { same: true } });
+    expect(await prisma.notification.count({ where: { caseId: monitored.id } })).toBe(0);
+    // the case page lists the runs with the counts of each comparison
+    const kase = await api.getCase(monitored.id);
+    expect(kase.runs.map((r) => [r.id, r.changes === null])).toEqual([[monitored.second.run.id, false], [monitored.first.run.id, true]]);
+  });
+
+  it('section 8 of the report: first run "nothing to compare", the second "no changes"', async () => {
+    const section = async (runId: string) => JSON.stringify((await api.report(runId)).doc.sections.find((s) => s.id === 'changes'));
+    expect(await section(monitored.first.run.id)).toContain('To pierwsza analiza');
+    expect(await section(monitored.second.run.id)).toContain('Nie wykryto zmian');
   });
 });

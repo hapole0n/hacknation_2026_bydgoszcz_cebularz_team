@@ -1,6 +1,6 @@
-import type { AddressCategory, Block as ReportBlock, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportDoc, ReportSection, ScoreResult, StatementKind } from '@kropka/core';
+import type { AddrRef, AddressCategory, Block as ReportBlock, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, StatementKind } from '@kropka/core';
 
-export type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportBlock, ReportDoc, ReportSection, ScoreResult, StatementKind };
+export type { AddrRef, AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportBlock, ReportDoc, ReportSection, RunDiffDoc, ScoreResult, StatementKind };
 
 /** `GET /runs/:id/report`: the report document and the SHA-256 of its data. */
 export interface ReportBundle {
@@ -35,7 +35,7 @@ export interface CaseDetail {
   /** Monitoring: re-run every N minutes (15 / 60 / 1440), null = off. */
   scheduleEveryMin: number | null;
   nextRunAt: string | null;
-  runs: { id: string; status: RunStatus; trigger: RunTrigger; startedAt: string; finishedAt: string | null; rulesVersion: string }[];
+  runs: { id: string; status: RunStatus; trigger: RunTrigger; startedAt: string; finishedAt: string | null; rulesVersion: string; /** counts of the comparison with the previous run; null for the first run */ changes: RunDiffDoc['counts'] | null }[];
 }
 
 export type RunTrigger = 'manual' | 'scheduled';

@@ -1,4 +1,4 @@
-// Pure domain logic (no I/O): extraction, classification, scoring — indicators and diff come later.
+// Pure domain logic (no I/O): extraction, classification, scoring, indicators, report, run diff.
 export * from './chain.js';
 export * from './types.js';
 export * from './extract/validate.js';
@@ -11,6 +11,7 @@ export * from './labels.js';
 export * from './chain/model.js';
 export * from './chain/classify.js';
 export * from './chain/indicators.js';
+export * from './diff.js';
 export * from './app.js';
 export * from './report/pl.js';
 export * from './report/build.js';

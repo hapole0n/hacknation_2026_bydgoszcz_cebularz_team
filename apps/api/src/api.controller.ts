@@ -134,14 +134,18 @@ export class ApiController {
     return this.prisma.link.update({ where: { id }, data, select: { id: true, analystDecision: true, analystNote: true, analystName: true, decidedAt: true } });
   }
 
+  /** The case with its run history; each run carries the counts of its comparison with the run before it (null for the first). */
   @Get('cases/:id')
   async getCase(@Param('id') id: string) {
     const kase = await this.prisma.case.findUnique({
       where: { id },
-      include: { identifiers: true, runs: { orderBy: { startedAt: 'desc' }, select: { id: true, status: true, trigger: true, startedAt: true, finishedAt: true, rulesVersion: true } } },
+      include: {
+        identifiers: true,
+        runs: { orderBy: { startedAt: 'desc' }, select: { id: true, status: true, trigger: true, startedAt: true, finishedAt: true, rulesVersion: true, diffsTo: { select: { diffJson: true } } } },
+      },
     });
     if (!kase) throw new NotFoundException(`case ${id} not found`);
-    return kase;
+    return { ...kase, runs: kase.runs.map(({ diffsTo, ...r }) => ({ ...r, changes: (diffsTo[0]?.diffJson as { counts?: unknown } | undefined)?.counts ?? null })) };
   }
 
   /**
@@ -161,6 +165,12 @@ export class ApiController {
   @Get('runs/:id')
   getRun(@Param('id') id: string) {
     return this.pipeline.results(id);
+  }
+
+  /** "Zmiany od poprzedniego przebiegu": `{ diff }` — null for the first run of a case. */
+  @Get('runs/:id/diff')
+  runDiff(@Param('id') id: string) {
+    return this.pipeline.diffOf(id);
   }
 
   /**

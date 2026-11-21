@@ -9,6 +9,7 @@ import { GraphView } from '@/components/GraphView';
 import { BandChip, CategoryBadge, EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DecisionForm, LinkHeading, ScoreLedger } from '@/components/ScoreLedger';
 import { Button } from '@/components/ui/button';
+import { RunChanges } from '@/components/RunChanges';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BAND_ORDER, BAND_STYLE } from '@/lib/bands';
 import { addressKey, formatDateTime, loc, shortAddress, shortHash } from '@/lib/format';
@@ -73,6 +74,8 @@ export function RunPage({ id }: { id: string }) {
           <BandDistribution counts={view.counts} total={data.links.length} />
         </div>
       </Panel>
+
+      <RunChanges runId={head.id} />
 
       {notes.length > 0 && (
         <Panel className="border-l-4 border-l-band-medium p-4">

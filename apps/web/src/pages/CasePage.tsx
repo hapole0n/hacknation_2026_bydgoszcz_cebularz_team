@@ -1,12 +1,20 @@
 import { useState } from 'react';
+import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useCase, useSetSchedule, useStartRun } from '@/api/client';
-import { SCHEDULE_OPTIONS } from '@/api/types';
+import { SCHEDULE_OPTIONS, type CaseDetail } from '@/api/types';
 import { EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DEFAULT_RUN_OPTIONS, SourcePicker } from '@/components/SourcePicker';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatDateTime } from '@/lib/format';
 import { Link, navigate } from '@/router';
+
+/** One line for the history table: what the comparison with the previous run found. */
+function changesText(c: CaseDetail['runs'][number]['changes'], t: TFunction): string {
+  if (!c) return t('changes.firstRun');
+  const parts = (['addressesAdded', 'sourceChanges', 'scoreChanges', 'newTransactions', 'newThresholds'] as const).filter((k) => c[k] > 0).map((k) => t(`changes.summaryParts.${k}`, { n: c[k] }));
+  return parts.length > 0 ? parts.join('; ') : t('changes.noChanges');
+}
 
 export function CasePage({ id }: { id: string }) {
   const { t, i18n } = useTranslation();
@@ -52,6 +60,7 @@ export function CasePage({ id }: { id: string }) {
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.startedAt')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.status')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.trigger')}</th>
+                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.changes')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.rules')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium"><span className="sr-only">{t('case.columns.open')}</span></th>
                     </tr>
@@ -62,6 +71,7 @@ export function CasePage({ id }: { id: string }) {
                         <td className="px-4 py-3 tabular-nums">{formatDateTime(r.startedAt, lang)}</td>
                         <td className="px-4 py-3">{t(`common.status.${r.status}`)}</td>
                         <td className="px-4 py-3">{t(`case.trigger.${r.trigger}`)}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{changesText(r.changes, t)}</td>
                         <td className="px-4 py-3 tabular-nums">{r.rulesVersion}</td>
                         <td className="px-4 py-3 text-right">
                           <Link to={`/runs/${r.id}`} className="text-steel underline underline-offset-2">{t('case.open')}</Link>

@@ -1,20 +1,24 @@
 import { randomUUID } from 'node:crypto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import {
   activeNearTrace,
   classifyContext,
   countClaimants,
+  diffRuns,
   evaluateIdentity,
   exclusionForCategory,
   extractAddresses,
   labelKey,
   normalizeIdentifier,
+  notificationsFor,
   parseAddress,
   scoreLink,
   sourceTypeFor,
   type AddressCandidate,
+  type DiffRunInput,
   type ExclusionId,
   type IdentityRuleId,
+  type RunDiffDoc,
   type SourceType,
 } from '@kropka/core';
 import { ChainAnalysisService, type ChainAnalysis } from '../chains/chain-analysis.service.js';
@@ -61,8 +65,26 @@ interface AddressRow {
 const json = (v: unknown) => v as Prisma.InputJsonValue;
 const SNIPPET_CHARS = 400;
 
+type RunResults = Awaited<ReturnType<PipelineService['results']>>;
+
+/** What the diff needs from `results()`; JSON columns are typed here once. */
+const toDiffInput = (r: RunResults): DiffRunInput => {
+  const params = r.run.paramsJson as unknown as { connectors?: string[]; chain?: string };
+  return {
+    id: r.run.id,
+    startedAt: r.run.startedAt.toISOString(),
+    params: { connectors: params.connectors ?? [], chain: params.chain ?? 'fixture' },
+    links: r.links as unknown as DiffRunInput['links'],
+    evidence: r.evidence as unknown as DiffRunInput['evidence'],
+    traces: r.traces,
+    chain: r.chain as unknown as DiffRunInput['chain'],
+  };
+};
+
 @Injectable()
 export class PipelineService {
+  private readonly log = new Logger(PipelineService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly rules: RulesService,
@@ -369,7 +391,30 @@ export class PipelineService {
       await this.prisma.run.update({ where: { id: run.id }, data: { status: 'FAILED', finishedAt: new Date(), summaryJson: json({ error: noteOf(e) }) } });
       throw e;
     }
+    // The comparison is an extra: if it fails the run stays DONE and the analyst still has the results.
+    await this.compareWithPrevious(run.id, caseId, run.startedAt).catch((e: Error) => this.log.warn(`comparison of run ${run.id} failed: ${e.message}`));
     return this.results(run.id);
+  }
+
+  /** RunDiff against the latest earlier finished run of the case, and the notifications that diff deserves (PLAN 3.8). */
+  private async compareWithPrevious(runId: string, caseId: string, startedAt: Date) {
+    const prev = await this.prisma.run.findFirst({ where: { caseId, status: 'DONE', startedAt: { lt: startedAt } }, orderBy: { startedAt: 'desc' }, select: { id: true } });
+    if (!prev) return; // the first run has nothing to be compared with
+    const diff = diffRuns(toDiffInput(await this.results(prev.id)), toDiffInput(await this.results(runId)));
+    await this.prisma.$transaction([
+      this.prisma.runDiff.create({ data: { caseId, fromRunId: prev.id, toRunId: runId, diffJson: json(diff) } }),
+      this.prisma.notification.createMany({ data: notificationsFor(diff).map((n) => ({ caseId, runId, kind: n.kind, paramsJson: json(n.params) })) }),
+    ]);
+  }
+
+  /** The stored comparison of a run with the one before it; null for the first run of a case. */
+  async diffOf(runId: string) {
+    const row = await this.prisma.runDiff.findFirst({ where: { toRunId: runId }, orderBy: { id: 'asc' } });
+    if (!row) {
+      const exists = await this.prisma.run.findUnique({ where: { id: runId }, select: { id: true } });
+      if (!exists) throw new NotFoundException(`run ${runId} not found`);
+    }
+    return { diff: (row?.diffJson ?? null) as unknown as RunDiffDoc | null };
   }
 
   async results(runId: string) {

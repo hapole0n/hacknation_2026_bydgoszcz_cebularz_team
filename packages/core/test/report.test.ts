@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyseHistory, buildReport, canonicalJson, valueTransfer, type Block, type ReportInput, type ValuedTransfer } from '../src/index.js';
+import { analyseHistory, buildReport, canonicalJson, diffRuns, valueTransfer, type Block, type ReportInput, type ValuedTransfer } from '../src/index.js';
 
 const ME = '0x1111111111111111111111111111111111111111';
 const CEX = '0x2222222222222222222222222222222222222222';
@@ -90,8 +90,9 @@ describe('buildReport', () => {
 
   it('has the sections of PLAN 3.7 in order, plus decisions and limitations', () => {
     const doc = buildReport(base());
-    expect(doc.sections.map((s) => s.id)).toEqual(['input', 'sources', 'links', 'rejected', 'chain', 'chronology', 'decisions', 'conclusions', 'next', 'limits', 'meta']);
-    expect(doc.sections.map((s) => s.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+    expect(doc.sections.map((s) => s.id)).toEqual(['input', 'sources', 'links', 'rejected', 'chain', 'chronology', 'decisions', 'changes', 'conclusions', 'next', 'limits', 'meta']);
+    expect(doc.sections.map((s) => s.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    expect(doc.sections[7]).toMatchObject({ title: 'Zmiany od poprzedniego przebiegu', number: 8 });
   });
 
   it('every claim is labelled: sources are FAKT, scores OBLICZENIE, conclusions WNIOSEK', () => {
@@ -176,3 +177,39 @@ describe('canonicalJson', () => {
     expect(canonicalJson({ b: 1, a: [{ d: 2, c: 3 }] })).toBe(canonicalJson({ a: [{ c: 3, d: 2 }], b: 1 }));
   });
 });
+
+describe('section 8: changes since the previous run', () => {
+  const sec = (input: ReportInput) => text(buildReport(input).sections.find((s) => s.id === 'changes')!.blocks);
+  const rule = { ruleId: 'SYNERGY_INDEPENDENT_SOURCES', kind: 'synergy' as const, delta: 15, reasonPl: 'Ten sam adres w drugim niezależnym źródle', reasonEn: 'same address, second independent source', evidenceIds: [] };
+  const diffInput = (id: string, startedAt: string, extra: Partial<Parameters<typeof diffRuns>[0]> = {}) => ({ id, startedAt, params: { connectors: ['sandbox'], chain: 'fixture' }, links: [], evidence: [], traces: [], chain: [], ...extra });
+
+  it('the first run says there is nothing to compare with', () => {
+    expect(sec(base())).toContain('To pierwsza analiza tej sprawy');
+  });
+
+  it('an identical re-run says nothing changed', () => {
+    const d = diffRuns(diffInput('r0', '2026-11-20T10:00:00Z'), diffInput('r1', '2026-11-21T10:00:00Z'));
+    expect(sec({ ...base(), diff: d })).toContain('Nie wykryto zmian');
+  });
+
+  it('lists the new address, the swap on a source, and the score change with its rule', () => {
+    const A = '0xaaaa111111111111111111111111111111111111';
+    const B = '0xbbbb222222222222222222222222222222222222';
+    const link = (address: string, score: number, breakdown: unknown[]) => ({ identifier: { type: 'NICK', value: 'jtestowy' }, address: { chain: 'ETH', address, category: 'UNHOSTED' }, score, band: 'VERY_HIGH', excludedReason: null, breakdownJson: breakdown as never });
+    const d = diffRuns(
+      diffInput('r0', '2026-11-20T10:00:00Z', { links: [link(A, 70, [])], evidence: [{ id: 'e', url: 'http://s/x', metaJson: { platform: 's', title: 'Strona' } }], traces: [{ evidenceId: 'e', chain: 'ETH', address: A }] }),
+      diffInput('r1', '2026-11-21T10:00:00Z', { links: [link(A, 85, [rule]), link(B, 90, [])], evidence: [{ id: 'f', url: 'http://s/x', metaJson: { platform: 's', title: 'Strona' } }], traces: [{ evidenceId: 'f', chain: 'ETH', address: B }] }),
+    );
+    const t = sec({ ...base(), diff: d });
+    expect(t).toContain('Nowe adresy');
+    expect(t).toContain('zamiana adresu');
+    expect(t).toContain('70% → 85%');
+    expect(t).toContain('SYNERGY_INDEPENDENT_SOURCES: +15');
+  });
+
+  it('warns when the two runs used different sources', () => {
+    const d = diffRuns(diffInput('r0', '2026-11-20T10:00:00Z'), diffInput('r1', '2026-11-21T10:00:00Z', { params: { connectors: ['sandbox', 'github'], chain: 'live' } }));
+    expect(sec({ ...base(), diff: d })).toContain('Analizy przeszukały różne źródła');
+  });
+});
+

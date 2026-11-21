@@ -132,6 +132,7 @@
       "startedAt": "Rozpoczęta",
       "status": "Stan",
       "trigger": "Uruchomiona",
+      "changes": "Zmiany",
       "rules": "Wersja reguł",
       "open": "Wyniki"
     },
@@ -524,6 +525,49 @@
     "status": {
       "blocked": "Zablokowane",
       "error": "Błąd sieci"
+    }
+  },
+  "changes": {
+    "title": "Zmiany od poprzedniego przebiegu",
+    "first": "To pierwsza analiza tej sprawy — nie ma z czym porównać.",
+    "none": "Bez zmian od analizy z {{date}}: te same adresy, te same oceny, brak nowych transakcji.",
+    "comparedWith": "Porównanie z analizą z {{date}}.",
+    "differentSources": "Analizy użyły różnych źródeł lub trybu blockchain — część różnic może z tego wynikać.",
+    "sourceChanges": "Zmiana adresu w tym samym źródle",
+    "sourceKind": {
+      "swap": "zamiana adresu",
+      "added": "dodany adres",
+      "removed": "usunięty adres"
+    },
+    "added": "Nowe adresy",
+    "removed": "Adresy, których już nie ma",
+    "scoreChanges": "Zmiany Wskaźnika Pewności",
+    "newLink": "nowe powiązanie",
+    "linkGone": "powiązanie zniknęło",
+    "rule": {
+      "added": "doszła reguła",
+      "removed": "przestała obowiązywać",
+      "changed": "zmieniła się reguła"
+    },
+    "categoryChanges": "Zmiana kategorii adresu",
+    "newTransactions": "Nowe transakcje",
+    "txCount": "{{count}} transakcji",
+    "newAddress": "nowy adres",
+    "newThresholds": "Nowe przekroczenia progów",
+    "thresholdKind": {
+      "single": "pojedynczy transfer",
+      "cumulative": "łączne wyjście do gotówki"
+    },
+    "newCashOut": "Nowe wskaźniki wyjścia do gotówki",
+    "summary": "Zmiany",
+    "noChanges": "bez zmian",
+    "firstRun": "pierwsza analiza",
+    "summaryParts": {
+      "addressesAdded": "nowe adresy: {{n}}",
+      "scoreChanges": "zmiany oceny: {{n}}",
+      "newTransactions": "nowe transakcje: {{n}}",
+      "newThresholds": "progi: {{n}}",
+      "sourceChanges": "zmiana adresu w źródle: {{n}}"
     }
   }
 }

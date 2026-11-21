@@ -218,17 +218,19 @@ model RunDiff {
 }
 
 model Notification {
-  id      String    @id @default(uuid())
-  caseId  String
-  runId   String?
-  kind    String
-  message String
-  readAt  DateTime?
+  id         String    @id @default(uuid())
+  caseId     String
+  runId      String?
+  createdAt  DateTime  @default(now())
+  kind       String // NEW_ADDRESS | ADDRESS_CHANGED | THRESHOLD_EXCEEDED | NEW_CASH_OUT (packages/core/src/diff.ts)
+  paramsJson Json      @default("{}") // the words are put in by the web / report from kind + params
+  readAt     DateTime?
 
   case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
   run  Run? @relation(fields: [runId], references: [id], onDelete: Cascade)
 
   @@index([caseId])
+  @@index([readAt, createdAt])
 }
 
 // Egress audit trail. No FKs on purpose: the log must survive "delete case".
