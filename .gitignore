@@ -16,3 +16,4 @@ data/
 reports/output/
 apps/api/src/generated/
 *.tsbuildinfo
+.playwright-mcp/
