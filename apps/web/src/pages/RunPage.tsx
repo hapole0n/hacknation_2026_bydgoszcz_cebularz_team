@@ -42,6 +42,7 @@ export function RunPage({ id }: { id: string }) {
 
   const notes: string[] = [
     ...(summary?.connectorErrors.map((e) => t('run.connectorError', { connector: e.connector, message: (e.round > 1 ? `${t('run.round', { round: e.round })}: ` : '') + noteText(t, e.note) })) ?? []),
+    ...(summary?.connectorNotes?.map((n) => t('run.connectorNote', { connector: n.connector, message: noteText(t, n.note) })) ?? []),
     ...(summary?.chainNotes.map((n) => t('run.chainNote', { address: shortAddress(n.address), note: n.notes.map((x) => noteText(t, x)).join(' ') })) ?? []),
     ...(summary?.chainWarnings.flatMap((w) => w.warnings.map((x) => t('run.chainWarning', { address: shortAddress(w.address), warning: noteText(t, x) }))) ?? []),
   ];

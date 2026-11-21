@@ -1,0 +1,10 @@
+{
+  "_comment": "SYNTHETIC ENS data of persona A (forward record of jtestowy.demo.eth).",
+  "address": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+  "texts": {
+    "com.github": "jtestowy",
+    "com.twitter": "jtestowy_pl",
+    "email": "jan.testowy@example.org",
+    "url": "https://jtestowy.example.org"
+  }
+}

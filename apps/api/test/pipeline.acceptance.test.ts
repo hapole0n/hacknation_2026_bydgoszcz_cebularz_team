@@ -30,7 +30,7 @@ delete (synthetic as Record<string, unknown>)._comment;
 const addr = (name: string): string => synthetic[name]?.address ?? spec.realAddresses[name];
 const key = (type: IdentifierType, value: string) => `${type}:${normalizeIdentifier(type, value)}`;
 
-const { prisma, fetched, egress, labels, registry, analysis, reports, pipeline, world, api } = makeApp();
+const { prisma, cfg, fetched, egress, labels, registry, analysis, reports, pipeline, world, api } = makeApp();
 const runOptions = { connectors: spec.run.connectors, chain: spec.run.chain, asOf: new Date(spec.run.asOf) };
 
 type Results = Awaited<ReturnType<PipelineService['results']>>;
@@ -342,7 +342,7 @@ describe('failure handling and input validation', () => {
   });
 
   it('GET /connectors and /chain-adapters list sources, policies and readiness', () => {
-    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api']]);
+    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api'], ['gravatar', 'official_api'], ['ens', 'official_api']]);
     expect(api.chainAdapters().map((a) => [a.id, a.live])).toEqual([['fixture', false], ['mempool.space', true], ['etherscan', true], ['trongrid', true]]);
     expect(api.chainAdapters().find((a) => a.id === 'mempool.space')).toMatchObject({ available: true, reason: null });
   });
@@ -596,6 +596,53 @@ describe('web archive (Wayback): earlier copies of the pages that carry addresse
     const score = (r: Results) => r.links.map((l) => [key(l.identifier.type as IdentifierType, l.identifier.value), l.address.address, l.score] as const).sort().join('|');
     expect(score(withArchive)).toBe(score(results)); // same links, same scores as the sandbox-only run
     expect(fetched.requested.filter((u) => u.includes('web.archive.org'))).toEqual([]); // the real archive was never asked about a synthetic page
+  });
+});
+
+describe('Gravatar and ENS bridges (synthetic persona)', () => {
+  it('e-mail → Gravatar profile with a wallet; address → ENS name and records; both add independent origins to A1, no other score moves', async () => {
+    const created = await api.createCase({ ...spec.case, title: 'Demo — Gravatar i ENS' });
+    caseIds.push(created.id);
+    const bridged = await pipeline.run(created.id, { ...runOptions, connectors: ['sandbox', 'gravatar', 'ens'] });
+    const round = (e: Results['evidence'][number]) => (e.metaJson as { round: number }).round;
+    const gravatar = bridged.evidence.filter((e) => e.connectorId === 'gravatar');
+    const ens = bridged.evidence.filter((e) => e.connectorId === 'ens');
+    expect(gravatar.map((e) => [round(e), (e.metaJson as { platform: string }).platform])).toEqual([[1, 'gravatar.com']]); // found by the e-mail
+    expect(ens.map((e) => [round(e), e.resourceId])).toEqual([[2, 'ens:jtestowy.demo.eth']]); // found by reverse lookup of A1
+    expect(bridged.traces.filter((t) => t.evidenceId === gravatar[0]!.id).map((t) => t.address)).toEqual([addr('A1')]);
+    expect(bridged.traces.filter((t) => t.evidenceId === ens[0]!.id).map((t) => t.address)).toEqual([addr('A1')]);
+
+    const nickA1 = (r: Results) => r.links.find((l) => l.identifier.type === 'NICK' && l.address.address === addr('A1'))!;
+    const synergy = nickA1(bridged).breakdownJson as { ruleId: string; evidenceIds: string[] }[];
+    const ids = synergy.find((b) => b.ruleId === 'SYNERGY_INDEPENDENT_SOURCES')!.evidenceIds;
+    expect(ids).toEqual(expect.arrayContaining([gravatar[0]!.id, ens[0]!.id]));
+
+    const score = (r: Results) => r.links.map((l) => [key(l.identifier.type as IdentifierType, l.identifier.value), l.address.address, l.score] as const).sort().join('|');
+    expect(score(bridged)).toBe(score(results)); // A1 was already at 100; nothing else moved
+    // synthetic subjects only ever reached the sandbox; the public RPC saw eth_calls for other addresses, never the real Gravatar
+    expect(fetched.requested.some((u) => u.includes('api.gravatar.com'))).toBe(false);
+  });
+
+  it('a real e-mail on a run without GRAVATAR_API_KEY: the profile is read, the wallets are skipped and the run says so (a note, not an error)', async () => {
+    const live = cfg.fetchImpl;
+    cfg.fetchImpl = (async (input: string | URL | Request, init?: RequestInit) => {
+      const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url);
+      return url.hostname === 'api.gravatar.com'
+        ? new Response(JSON.stringify({ display_name: 'Ala Syntetyczna', profile_url: 'https://gravatar.com/ala', payments: { crypto_wallets: [{ label: 'ETH', address: addr('A1') }] } }), { status: 200 })
+        : live(input, init);
+    }) as typeof fetch;
+    try {
+      const created = await api.createCase({ title: 'Demo — Gravatar bez klucza', identifiers: [{ type: 'EMAIL', value: 'ala.syntetyczna@gmail.example.pl' }, { type: 'NICK', value: 'jtestowy' }] });
+      caseIds.push(created.id);
+      const r = await pipeline.run(created.id, { ...runOptions, connectors: ['sandbox', 'gravatar'] });
+      const summary = r.run.summaryJson as { connectorNotes: { connector: string; note: { code: string } }[]; connectorErrors: unknown[] };
+      expect(summary.connectorNotes).toEqual([expect.objectContaining({ connector: 'gravatar', note: { code: 'GRAVATAR_WALLETS_SKIPPED', params: { key: 'GRAVATAR_API_KEY' } } })]);
+      expect(summary.connectorErrors).toEqual([]);
+      expect(r.evidence.find((e) => e.connectorId === 'gravatar')!.snippet).not.toContain(addr('A1')); // wallets skipped
+      expect(JSON.stringify((await api.report(r.run.id)).doc)).toContain('portfele kryptowalutowe pominięte'); // the report says it too
+    } finally {
+      cfg.fetchImpl = live;
+    }
   });
 });
 

@@ -16,9 +16,9 @@ function walk(dir: string): string[] {
 }
 const root = repoPath('fixtures/sandbox-web');
 const allFiles = walk(root).map((f) => relative(root, f).replaceAll('\\', '/')).filter((f) => !['index.html', 'index.json'].includes(f));
-// the web archive (wayback/) is served by its own connector; page variants are listed under their page in index.json
+// the web archive, Gravatar and ENS (wayback/, gravatar/, ens/) are served by their own connectors; page variants are listed under their page in index.json
 const variantFiles = index.pages.flatMap((p: { variants?: Record<string, { path: string }> }) => Object.values(p.variants ?? {}).map((v) => v.path.slice(1)));
-const pageFiles = allFiles.filter((f) => !f.startsWith('wayback/') && !variantFiles.includes(f));
+const pageFiles = allFiles.filter((f) => !/^(wayback|gravatar|ens)\//.test(f) && !variantFiles.includes(f));
 
 describe('sandbox fixtures', () => {
   it('every synthetic address is valid and published on at least one page', () => {
@@ -32,7 +32,7 @@ describe('sandbox fixtures', () => {
   it('every valid address on any page is a known one (synthetic, or a labelled public institutional address)', () => {
     const known = new Set([...Object.values(addresses).map((a) => a.address), ...Object.values<string>(expected.realAddresses)]);
     for (const f of allFiles) {
-      for (const a of extractAddresses(read(`fixtures/sandbox-web/${f}`)).addresses) expect(known, `${f}: ${a.address}`).toContain(a.address);
+      for (const a of extractAddresses(read(`fixtures/sandbox-web/${f}`)).addresses.filter((x) => x.kind !== 'ENS')) expect(known, `${f}: ${a.address}`).toContain(a.address);
     }
   });
 

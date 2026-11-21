@@ -25,8 +25,8 @@ export interface FetchOptions {
 }
 
 /**
- * Offline `fetch`: serves http://sandbox-web/… from fixtures/sandbox-web and answers api.nbp.pl like the real
- * NBP Web API (JSON shape and 404 for days without a quotation); refuses every other host.
+ * Offline `fetch`: serves http://sandbox-web/… from fixtures/sandbox-web, answers api.nbp.pl like the real
+ * NBP Web API (JSON shape and 404 for days without a quotation) and the public Ethereum RPC with an empty chain; refuses every other host.
  */
 export function sandboxFetch(opts: FetchOptions = {}): typeof fetch & { requested: string[] } {
   const requested: string[] = [];
@@ -48,6 +48,8 @@ export function sandboxFetch(opts: FetchOptions = {}): typeof fetch & { requeste
     const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url);
     requested.push(url.href);
     if (url.hostname === 'api.nbp.pl') return nbp(url);
+    // an "empty" Ethereum: every eth_call answers 0x (no resolver, no record), so no address has an ENS name outside the sandbox
+    if (url.hostname === 'ethereum-rpc.publicnode.com') return new Response(JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0x' }), { status: 200 });
     if (url.hostname !== 'sandbox-web') throw new Error(`network disabled in tests: ${url.href}`);
     const file = normalize(join(root, decodeURIComponent(url.pathname)));
     if (!file.startsWith(root) || !existsSync(file)) return new Response('not found', { status: 404 });

@@ -8,7 +8,9 @@ import { FixtureChainAdapter } from './chains/fixture.adapter.js';
 import { NbpService } from './chains/nbp.service.js';
 import { TronGridAdapter } from './chains/tron-grid.adapter.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
+import { EnsConnector } from './connectors/ens.connector.js';
 import { GithubConnector } from './connectors/github.connector.js';
+import { GravatarConnector } from './connectors/gravatar.connector.js';
 import { SandboxConnector } from './connectors/sandbox.connector.js';
 import { SandboxWorld } from './connectors/sandbox-world.js';
 import { WaybackConnector } from './connectors/wayback.connector.js';
@@ -34,6 +36,8 @@ import { RulesService } from './rules.service.js';
     SandboxConnector,
     GithubConnector,
     WaybackConnector,
+    GravatarConnector,
+    EnsConnector,
     ConnectorRegistry,
     FixtureChainAdapter,
     BtcMempoolAdapter,

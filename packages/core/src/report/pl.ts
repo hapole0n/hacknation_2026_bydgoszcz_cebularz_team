@@ -110,6 +110,7 @@ export const NOTES_PL: Record<string, string> = {
   HISTORY_TRUNCATED: 'Historia obcięta do ostatniej strony wyników dostawcy.',
   UNVALUED_TRANSFERS: 'Transfery bez wyceny: {{count}} (brak stablecoina lub źródła ceny).',
   EGRESS_BLOCKED: 'Połączenie z hostem {{host}} zablokowane: brak go na liście dozwolonych.',
+  GRAVATAR_WALLETS_SKIPPED: 'Gravatar: portfele kryptowalutowe pominięte — brak klucza {{key}} w pliku .env (profil został odczytany).',
   ALL_CONNECTORS_FAILED: 'Wszystkie źródła zwróciły błąd: {{detail}}',
 };
 

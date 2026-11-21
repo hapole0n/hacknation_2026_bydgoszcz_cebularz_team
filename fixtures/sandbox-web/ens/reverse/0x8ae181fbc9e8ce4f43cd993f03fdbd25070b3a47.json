@@ -1,0 +1,10 @@
+{
+  "_comment": "SYNTHETIC ENS data of persona A (reverse record of address A1). The name is artificial; the sandbox answers before any real RPC is asked.",
+  "name": "jtestowy.demo.eth",
+  "texts": {
+    "com.github": "jtestowy",
+    "com.twitter": "jtestowy_pl",
+    "email": "jan.testowy@example.org",
+    "url": "https://jtestowy.example.org"
+  }
+}

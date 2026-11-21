@@ -94,6 +94,7 @@ export interface ReportInput {
     paramsJson: { connectors: string[]; asOf: string; chain: string };
     summaryJson: {
       connectorErrors: { connector: string; round: number; note: NoteLike }[];
+      connectorNotes?: { connector: string; round: number; note: NoteLike }[];
       chainNotes: { address: string; notes: NoteLike[] }[];
       chainWarnings: { address: string; warnings: NoteLike[] }[];
       identities: ReportIdentity[];
@@ -505,6 +506,7 @@ export function buildReport(input: ReportInput): ReportDoc {
   // 12 — metadata and reproducibility
   const noteLines = [
     ...(summary?.connectorErrors ?? []).map((e) => `Źródło „${e.connector}”${e.round > 1 ? ` (runda ${e.round})` : ''}: ${noteTextPl(e.note)}`),
+    ...(summary?.connectorNotes ?? []).map((e) => `Źródło „${e.connector}”: ${noteTextPl(e.note)}`),
     ...(summary?.chainNotes ?? []).flatMap((n) => n.notes.map((x) => `Adres ${shortAddr(n.address)}: ${noteTextPl(x)}`)),
     ...(summary?.chainWarnings ?? []).flatMap((w) => w.warnings.map((x) => `Adres ${shortAddr(w.address)}: ${noteTextPl(x)}`)),
   ];

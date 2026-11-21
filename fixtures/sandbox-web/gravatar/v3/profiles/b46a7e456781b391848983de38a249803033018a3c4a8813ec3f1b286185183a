@@ -1,0 +1,24 @@
+{
+  "_comment": "SYNTHETIC Gravatar v3 profile of persona A (stands in for api.gravatar.com for e-mails on reserved domains). The real API returns payments.crypto_wallets only to callers with an API key.",
+  "hash": "b46a7e456781b391848983de38a249803033018a3c4a8813ec3f1b286185183a",
+  "profile_url": "https://gravatar.com/jtestowy-synthetic",
+  "display_name": "Jan Testowy",
+  "description": "Programista z Lublina (profil syntetyczny).",
+  "location": "Lublin",
+  "job_title": "Programista",
+  "verified_accounts": [
+    {
+      "service_type": "github",
+      "service_label": "GitHub",
+      "url": "https://github.com/jtestowy"
+    }
+  ],
+  "payments": {
+    "crypto_wallets": [
+      {
+        "label": "ETH",
+        "address": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47"
+      }
+    ]
+  }
+}

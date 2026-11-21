@@ -120,6 +120,11 @@ export class PipelineService {
       const evidence: EvidenceRec[] = [];
       const traces: TraceRec[] = [];
       const errors: { connector: string; round: number; note: Note }[] = [];
+      /** Not failures: a connector telling the analyst what it could not do (e.g. wallets skipped for lack of a key). */
+      const connectorNotes: { connector: string; round: number; note: Note }[] = [];
+      const notifyFor = (connector: string, round: number) => (note: Note) => {
+        if (!connectorNotes.some((n) => n.connector === connector && n.note.code === note.code)) connectorNotes.push({ connector, round, note });
+      };
       const seen = new Set<string>();
       const people = idents.filter((i) => i.type !== 'ADDRESS');
 
@@ -156,7 +161,7 @@ export class PipelineService {
       const search = async (identifiers: Ident[], round: 1 | 2 | 3, accept: (d: EvidenceDraft) => boolean, onlyKey?: string) => {
         for (const c of connectors) {
           try {
-            for (const d of await c.search({ identifiers, ...ctx })) if (accept(d)) ingest(d, round, onlyKey);
+            for (const d of await c.search({ identifiers, ...ctx, notify: notifyFor(c.id, round) })) if (accept(d)) ingest(d, round, onlyKey);
           } catch (e) {
             errors.push({ connector: c.id, round, note: noteOf(e) });
           }
@@ -406,6 +411,7 @@ export class PipelineService {
             summaryJson: json({
               stats: { evidence: evidence.length, traces: traces.length, links: links.length, chainSnapshots: analyses.size, identities: identities.length },
               connectorErrors: errors,
+              connectorNotes,
               chainNotes,
               chainWarnings,
               identities,

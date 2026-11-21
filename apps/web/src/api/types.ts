@@ -151,6 +151,7 @@ export interface Identity {
 export interface RunSummary {
   stats: { evidence: number; traces: number; links: number; chainSnapshots: number; identities: number };
   connectorErrors: { connector: string; round: number; note: Note }[];
+  connectorNotes?: { connector: string; round: number; note: Note }[];
   chainNotes: { address: string; notes: Note[] }[];
   chainWarnings: { address: string; warnings: Note[] }[];
   identities: Identity[];

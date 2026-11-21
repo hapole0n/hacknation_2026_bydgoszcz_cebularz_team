@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { IdentifierType, TraceOrigin } from '@kropka/core';
+import type { Note } from '../notes.js';
 
 export interface SearchIdentifier {
   id?: string;
@@ -12,6 +13,8 @@ export interface SearchInput {
   identifiers: SearchIdentifier[];
   caseId?: string;
   runId?: string;
+  /** For a note that is not a failure (e.g. "wallets skipped, no API key"): shown with the run, never fatal. */
+  notify?: (note: Note) => void;
 }
 
 /** What a connector found: one public resource. The full text lives in memory only; the DB keeps a snippet + sha256. */

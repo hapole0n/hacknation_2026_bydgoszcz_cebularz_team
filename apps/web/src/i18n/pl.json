@@ -72,12 +72,16 @@
     "connectorNames": {
       "sandbox": "Syntetyczny mini-internet",
       "github": "GitHub (publiczne API)",
-      "wayback": "Wayback Machine (archiwum stron)"
+      "wayback": "Wayback Machine (archiwum stron)",
+      "gravatar": "Gravatar (profil po e-mailu)",
+      "ens": "ENS (nazwy .eth, rekordy tekstowe)"
     },
     "connectorNotes": {
       "sandbox": "Strony, profile, ogłoszenia i adresy wyłącznie sztuczne. Zalecane do demonstracji.",
       "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com.",
-      "wayback": "Wcześniejsze kopie stron, na których znaleziono adresy: jaki adres był na stronie i kiedy (data kopii). Strony sztucznego internetu sprawdza w jego własnym archiwum, pozostałe w archive.org."
+      "wayback": "Wcześniejsze kopie stron, na których znaleziono adresy: jaki adres był na stronie i kiedy (data kopii). Strony sztucznego internetu sprawdza w jego własnym archiwum, pozostałe w archive.org.",
+      "gravatar": "Publiczny profil Gravatar: nazwa, zweryfikowane konta; portfele kryptowalutowe tylko z kluczem GRAVATAR_API_KEY (bez klucza pomijamy je z adnotacją). Adresy e-mail z domen zarezerwowanych (example.org itd.) obsługuje wyłącznie sztuczny mini-internet.",
+      "ens": "Adres ↔ nazwa ENS i rekordy tekstowe (com.github, com.twitter, email, url) przez publiczny węzeł RPC. Rekord odwrotny uznajemy tylko, gdy nazwa wskazuje z powrotem na ten sam adres."
     },
     "chainTitle": "Dane z blockchaina",
     "chain": {
@@ -193,7 +197,8 @@
     "connectorError": "Źródło „{{connector}}” zwróciło błąd: {{message}}",
     "chainNote": "Adres {{address}}: {{note}}",
     "chainWarning": "Adres {{address}}: {{warning}}",
-    "round": "runda {{round}}"
+    "round": "runda {{round}}",
+    "connectorNote": "Źródło „{{connector}}”: {{message}}"
   },
   "bands": {
     "VERY_HIGH": "Bardzo wysokie",
@@ -506,7 +511,8 @@
     "HISTORY_TRUNCATED": "Historia obcięta do ostatniej strony wyników dostawcy.",
     "UNVALUED_TRANSFERS": "Transfery bez wyceny: {{count}} (brak stablecoina lub źródła ceny).",
     "EGRESS_BLOCKED": "Połączenie z hostem {{host}} zablokowane: brak go na liście dozwolonych.",
-    "ALL_CONNECTORS_FAILED": "Wszystkie źródła zwróciły błąd: {{detail}}"
+    "ALL_CONNECTORS_FAILED": "Wszystkie źródła zwróciły błąd: {{detail}}",
+    "GRAVATAR_WALLETS_SKIPPED": "Gravatar: portfele kryptowalutowe pominięte — brak klucza {{key}} w pliku .env (profil został odczytany)."
   },
   "report": {
     "open": "Raport",
