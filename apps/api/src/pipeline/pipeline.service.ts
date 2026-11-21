@@ -78,7 +78,7 @@ export class PipelineService {
    *   → on-chain step: history, bytecode / deposit / service classification, NBP valuation, indicators, chronology
    *   → link identifier ↔ address, label / exclude, score → persist everything in one transaction.
    */
-  async run(caseId: string, opts: { connectors?: string[]; asOf?: Date; chain?: ChainMode } = {}) {
+  async run(caseId: string, opts: { connectors?: string[]; asOf?: Date; chain?: ChainMode; trigger?: 'manual' | 'scheduled' } = {}) {
     const kase = await this.prisma.case.findUnique({ where: { id: caseId }, include: { identifiers: true } });
     if (!kase) throw new NotFoundException(`case ${caseId} not found`);
     const connectors = this.registry.pick(opts.connectors ?? DEFAULT_CONNECTORS);
@@ -87,7 +87,7 @@ export class PipelineService {
     const params = { connectors: connectors.map((c) => c.id), asOf: asOf.toISOString(), contextRadius: 200, chain: chainMode };
 
     const run = await this.prisma.run.create({
-      data: { caseId, status: 'RUNNING', rulesVersion: this.rules.rules.version, appVersion: APP_VERSION, paramsJson: json(params) },
+      data: { caseId, status: 'RUNNING', trigger: opts.trigger ?? 'manual', rulesVersion: this.rules.rules.version, appVersion: APP_VERSION, paramsJson: json(params) },
     });
 
     try {

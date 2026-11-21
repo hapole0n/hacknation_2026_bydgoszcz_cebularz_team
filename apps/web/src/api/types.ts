@@ -32,8 +32,14 @@ export interface CaseDetail {
   createdAt: string;
   createdBy: string;
   identifiers: { id: string; type: IdentifierType; value: string; normalized: string }[];
-  runs: { id: string; status: RunStatus; startedAt: string; finishedAt: string | null; rulesVersion: string }[];
+  /** Monitoring: re-run every N minutes (15 / 60 / 1440), null = off. */
+  scheduleEveryMin: number | null;
+  nextRunAt: string | null;
+  runs: { id: string; status: RunStatus; trigger: RunTrigger; startedAt: string; finishedAt: string | null; rulesVersion: string }[];
 }
+
+export type RunTrigger = 'manual' | 'scheduled';
+export const SCHEDULE_OPTIONS = [null, 15, 60, 1440] as const;
 
 export interface ConnectorInfo {
   id: string;

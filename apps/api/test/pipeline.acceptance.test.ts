@@ -2,7 +2,8 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { normalizeIdentifier, type FlowEntry, type IdentifierType, type Indicators } from '@kropka/core';
-import { ApiController, parseCaseBody } from '../src/api.controller.js';
+import { parseCaseBody } from '../src/api.controller.js';
+import type { Identity } from '../src/pipeline/identities.js';
 import { BtcMempoolAdapter } from '../src/chains/btc-mempool.adapter.js';
 import { ChainAnalysisService } from '../src/chains/chain-analysis.service.js';
 import { ChainRegistry } from '../src/chains/chain.registry.js';
@@ -10,18 +11,12 @@ import { EvmEtherscanAdapter } from '../src/chains/evm-etherscan.adapter.js';
 import { FixtureChainAdapter } from '../src/chains/fixture.adapter.js';
 import { NbpService } from '../src/chains/nbp.service.js';
 import { TronGridAdapter } from '../src/chains/tron-grid.adapter.js';
-import { ConnectorRegistry } from '../src/connectors/connector.registry.js';
-import { GithubConnector } from '../src/connectors/github.connector.js';
-import { SandboxConnector } from '../src/connectors/sandbox.connector.js';
 import { EgressClient, EgressConfig } from '../src/egress/egress.client.js';
-import { LabelService } from '../src/labels/label.service.js';
-import { repoPath } from '../src/paths.js';
-import type { Identity } from '../src/pipeline/identities.js';
 import { PipelineService } from '../src/pipeline/pipeline.service.js';
-import { PrismaService } from '../src/prisma.service.js';
-import { ReportService, TEMPLATE_VERSION } from '../src/report/report.service.js';
 import { RulesService } from '../src/rules.service.js';
-import { sandboxFetch } from './fixture-fetch.js';
+import { repoPath } from '../src/paths.js';
+import { TEMPLATE_VERSION } from '../src/report/report.service.js';
+import { makeApp } from './harness.js';
 
 /**
  * Acceptance test of the demo (task acceptance criteria): addresses found, sources linked, scores per the algorithm,
@@ -35,18 +30,7 @@ delete (synthetic as Record<string, unknown>)._comment;
 const addr = (name: string): string => synthetic[name]?.address ?? spec.realAddresses[name];
 const key = (type: IdentifierType, value: string) => `${type}:${normalizeIdentifier(type, value)}`;
 
-const prisma = new PrismaService();
-const cfg = new EgressConfig();
-const fetched = sandboxFetch();
-cfg.fetchImpl = fetched;
-const egress = new EgressClient(prisma, cfg);
-const labels = new LabelService();
-const registry = new ConnectorRegistry(new SandboxConnector(egress), new GithubConnector(egress));
-const chains = new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(egress), new EvmEtherscanAdapter(egress), new TronGridAdapter(egress));
-const analysis = new ChainAnalysisService(chains, new NbpService(egress), labels);
-const pipeline = new PipelineService(prisma, new RulesService(), labels, registry, analysis);
-const reports = new ReportService(prisma, pipeline, registry);
-const api = new ApiController(prisma, pipeline, registry, chains, reports);
+const { prisma, fetched, egress, labels, registry, analysis, reports, pipeline, api } = makeApp();
 const runOptions = { connectors: spec.run.connectors, chain: spec.run.chain, asOf: new Date(spec.run.asOf) };
 
 type Results = Awaited<ReturnType<PipelineService['results']>>;

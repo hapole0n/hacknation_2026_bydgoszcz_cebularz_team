@@ -124,17 +124,34 @@
     "identifiers": "Identifiers",
     "runs": "Analyses",
     "noRuns": "This case has not been analysed yet.",
-    "runNow": "Run the analysis",
-    "runAgain": "Run the analysis again",
+    "runNow": "Run now",
+    "runAgain": "Run now",
     "createdBy": "Opened by",
     "createdAt": "Created",
     "columns": {
       "startedAt": "Started",
       "status": "Status",
+      "trigger": "Started by",
       "rules": "Rules version",
       "open": "Results"
     },
-    "open": "Open results"
+    "open": "Open results",
+    "history": "Analysis history",
+    "scheduleTitle": "Monitoring",
+    "scheduleHint": "The program repeats the analysis by itself with the settings of the last one (sources, blockchain mode) and compares it with the previous one.",
+    "scheduleLabel": "Repeat the analysis",
+    "schedule": {
+      "off": "Off",
+      "15": "Every 15 minutes",
+      "60": "Every hour",
+      "1440": "Every 24 hours"
+    },
+    "nextRun": "Next analysis",
+    "nextRunOff": "Monitoring is off.",
+    "trigger": {
+      "manual": "Manual",
+      "scheduled": "Scheduled"
+    }
   },
   "run": {
     "backToCase": "Back to the case",

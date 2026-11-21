@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCase, useStartRun } from '@/api/client';
+import { useCase, useSetSchedule, useStartRun } from '@/api/client';
+import { SCHEDULE_OPTIONS } from '@/api/types';
 import { EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DEFAULT_RUN_OPTIONS, SourcePicker } from '@/components/SourcePicker';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ export function CasePage({ id }: { id: string }) {
   const { t, i18n } = useTranslation();
   const kase = useCase(id);
   const startRun = useStartRun();
+  const setSchedule = useSetSchedule(id);
   const [options, setOptions] = useState(DEFAULT_RUN_OPTIONS);
   const lang = i18n.language;
 
@@ -39,7 +41,7 @@ export function CasePage({ id }: { id: string }) {
           </section>
 
           <section>
-            <h2 className="mb-3 text-base font-semibold">{t('case.runs')}</h2>
+            <h2 className="mb-3 text-base font-semibold">{t('case.history')}</h2>
             {c.runs.length === 0 ? (
               <EmptyState title={t('case.noRuns')} />
             ) : (
@@ -49,6 +51,7 @@ export function CasePage({ id }: { id: string }) {
                     <tr className="border-b text-left text-muted-foreground">
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.startedAt')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.status')}</th>
+                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.trigger')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.rules')}</th>
                       <th scope="col" className="px-4 py-2.5 font-medium"><span className="sr-only">{t('case.columns.open')}</span></th>
                     </tr>
@@ -58,6 +61,7 @@ export function CasePage({ id }: { id: string }) {
                       <tr key={r.id} className="border-b last:border-b-0">
                         <td className="px-4 py-3 tabular-nums">{formatDateTime(r.startedAt, lang)}</td>
                         <td className="px-4 py-3">{t(`common.status.${r.status}`)}</td>
+                        <td className="px-4 py-3">{t(`case.trigger.${r.trigger}`)}</td>
                         <td className="px-4 py-3 tabular-nums">{r.rulesVersion}</td>
                         <td className="px-4 py-3 text-right">
                           <Link to={`/runs/${r.id}`} className="text-steel underline underline-offset-2">{t('case.open')}</Link>
@@ -72,6 +76,27 @@ export function CasePage({ id }: { id: string }) {
         </div>
 
         <aside className="space-y-5">
+          <Panel className="space-y-2 p-4">
+            <h2 className="text-sm font-semibold">{t('case.scheduleTitle')}</h2>
+            <p className="text-sm text-muted-foreground">{t('case.scheduleHint')}</p>
+            <label className="block text-sm">
+              <span className="mr-2">{t('case.scheduleLabel')}</span>
+              <select
+                className="rounded-md border bg-background px-2 py-1.5 text-sm"
+                value={c.scheduleEveryMin ?? ''}
+                disabled={setSchedule.isPending}
+                onChange={(e) => setSchedule.mutate(e.target.value === '' ? null : Number(e.target.value))}
+              >
+                {SCHEDULE_OPTIONS.map((m) => (
+                  <option key={m ?? 'off'} value={m ?? ''}>{t(`case.schedule.${m ?? 'off'}`)}</option>
+                ))}
+              </select>
+            </label>
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              {c.scheduleEveryMin && c.nextRunAt ? `${t('case.nextRun')}: ${formatDateTime(c.nextRunAt, lang)}` : t('case.nextRunOff')}
+            </p>
+            {setSchedule.isError && <ErrorNote title={t('form.errors.server')} message={setSchedule.error.message} />}
+          </Panel>
           <SourcePicker value={options} onChange={setOptions} />
           <Button onClick={run} disabled={startRun.isPending || options.connectors.length === 0}>
             {startRun.isPending ? t('form.running') : c.runs.length > 0 ? t('case.runAgain') : t('case.runNow')}

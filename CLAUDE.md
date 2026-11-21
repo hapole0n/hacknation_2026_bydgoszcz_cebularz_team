@@ -23,7 +23,7 @@
 
 ## Stack
 - pnpm workspaces monorepo, TypeScript everywhere (`strict: true`).
-- `apps/api`: NestJS + Prisma + PostgreSQL 16; `@nestjs/schedule` for cyclic analyses.
+- `apps/api`: NestJS + Prisma + PostgreSQL 16; cyclic analyses = `SchedulerService` (one `setInterval` tick, `SCHEDULER_TICK_MS`, default 30 s; the schedule and due time live in `Case.scheduleEveryMin` / `nextRunAt`) — no `@nestjs/schedule` needed.
 - `apps/web`: React + Vite + Tailwind + shadcn/ui + react-i18next (`pl` default, `en`) + Cytoscape.js (graph) + TanStack Query.
 - `packages/core`: pure TypeScript domain logic — address extraction/validation, classification, scoring engine, indicators, diff. **No I/O.** Fully unit-tested with Vitest.
 - `fixtures/sandbox-web`: static synthetic "mini-internet" served locally on `:8088`.

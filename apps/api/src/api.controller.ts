@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query, StreamableFile } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Put, Query, StreamableFile } from '@nestjs/common';
 import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
@@ -7,6 +7,7 @@ import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
 import { ReportService, type ReportFile } from './report/report.service.js';
+import { SCHEDULE_MINUTES, SchedulerService, isScheduleMinutes } from './schedule/scheduler.service.js';
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 const text = (v: unknown, field: string, max: number): string => {
@@ -42,7 +43,6 @@ export function parseCaseBody(body: unknown) {
   return {
     title: text(body.title, 'title', 200),
     createdBy: body.createdBy === undefined ? 'analyst' : text(body.createdBy, 'createdBy', 100),
-    scheduleCron: body.scheduleCron === undefined ? null : text(body.scheduleCron, 'scheduleCron', 100),
     retentionDays: (retentionDays as number | undefined) ?? null,
     identifiers,
   };
@@ -58,6 +58,14 @@ export function parseDecisionBody(body: unknown) {
   return { analystDecision: decision as 'CONFIRMED' | 'REJECTED', analystNote: note, analystName: text(body.analyst, 'analyst', 100), decidedAt: new Date() };
 }
 
+/** Validates PUT /api/cases/:id/schedule: `{ everyMinutes: 15 | 60 | 1440 | null }` (null = monitoring off). */
+export function parseScheduleBody(body: unknown): number | null {
+  if (!isObj(body) || (body.everyMinutes !== null && !isScheduleMinutes(body.everyMinutes))) {
+    throw new BadRequestException(`everyMinutes: one of ${SCHEDULE_MINUTES.join(', ')} or null (off)`);
+  }
+  return body.everyMinutes as number | null;
+}
+
 @Controller()
 export class ApiController {
   constructor(
@@ -66,6 +74,7 @@ export class ApiController {
     private readonly registry: ConnectorRegistry,
     private readonly chains: ChainRegistry,
     private readonly reports: ReportService,
+    private readonly scheduler: SchedulerService,
   ) {}
 
   /** Sources and their policies (terms of service, method, rate limit) — shown to the analyst. */
@@ -110,6 +119,12 @@ export class ApiController {
     return this.prisma.case.create({ data: { ...data, identifiers: { create: identifiers } }, include: { identifiers: true } });
   }
 
+  /** Monitoring: re-run the case every 15 min / hour / day, or switch it off. Survives a restart (stored in the database). */
+  @Put('cases/:id/schedule')
+  setSchedule(@Param('id') id: string, @Body() body: unknown) {
+    return this.scheduler.setSchedule(id, parseScheduleBody(body));
+  }
+
   /** The analyst confirms / rejects a computed link (name + time stored); the computed score is never touched. */
   @Post('links/:id/decision')
   async decide(@Param('id') id: string, @Body() body: unknown) {
@@ -123,14 +138,14 @@ export class ApiController {
   async getCase(@Param('id') id: string) {
     const kase = await this.prisma.case.findUnique({
       where: { id },
-      include: { identifiers: true, runs: { orderBy: { startedAt: 'desc' }, select: { id: true, status: true, startedAt: true, finishedAt: true, rulesVersion: true } } },
+      include: { identifiers: true, runs: { orderBy: { startedAt: 'desc' }, select: { id: true, status: true, trigger: true, startedAt: true, finishedAt: true, rulesVersion: true } } },
     });
     if (!kase) throw new NotFoundException(`case ${id} not found`);
     return kase;
   }
 
   /**
-   * Runs the analysis synchronously and returns the results (fine at demo scale; scheduling comes with P6).
+   * Runs the analysis synchronously and returns the results (fine at demo scale; cyclic runs: SchedulerService).
    * Body: { connectors?: string[], chain?: "fixture" | "live" | "off" } — live sources are opt-in, default is offline.
    */
   @Post('cases/:id/runs')

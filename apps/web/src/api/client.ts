@@ -35,7 +35,9 @@ export interface RunOptions {
 }
 
 export const useCases = () => useQuery({ queryKey: ['cases'], queryFn: () => request<CaseListItem[]>('/cases') });
-export const useCase = (id: string | undefined) => useQuery({ queryKey: ['case', id], queryFn: () => request<CaseDetail>(`/cases/${id}`), enabled: !!id });
+// A case under monitoring gets new runs by itself: poll while the page is open.
+export const useCase = (id: string | undefined) =>
+  useQuery({ queryKey: ['case', id], queryFn: () => request<CaseDetail>(`/cases/${id}`), enabled: !!id, refetchInterval: (q) => (q.state.data?.scheduleEveryMin ? 15_000 : false) });
 export const useRun = (id: string) => useQuery({ queryKey: ['run', id], queryFn: () => request<RunResults>(`/runs/${id}`) });
 export const useReport = (id: string) => useQuery({ queryKey: ['report', id], queryFn: () => request<ReportBundle>(`/runs/${id}/report`) });
 export const useAuditLog = (problems: boolean) => useQuery({ queryKey: ['audit', problems], queryFn: () => request<AuditLogPage>(`/audit-log?limit=300${problems ? '&problems=true' : ''}`) });
@@ -59,6 +61,14 @@ export function useStartRun() {
       qc.invalidateQueries({ queryKey: ['cases'] });
       qc.invalidateQueries({ queryKey: ['case', r.run.caseId] });
     },
+  });
+}
+
+export function useSetSchedule(caseId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (everyMinutes: number | null) => request(`/cases/${caseId}/schedule`, { method: 'PUT', body: { everyMinutes } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['case', caseId] }),
   });
 }
 

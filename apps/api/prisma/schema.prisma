@@ -59,8 +59,10 @@ model Case {
   title         String
   createdAt     DateTime @default(now())
   createdBy     String
-  scheduleCron  String?
-  retentionDays Int? // null = keep until the case is deleted
+  // Monitoring: re-run every N minutes (15 / 60 / 1440), null = off. nextRunAt is the stored due time, so a restart loses nothing.
+  scheduleEveryMin Int?
+  nextRunAt        DateTime?
+  retentionDays    Int? // null = keep until the case is deleted
 
   identifiers   Identifier[]
   runs          Run[]
@@ -88,6 +90,7 @@ model Run {
   startedAt    DateTime  @default(now())
   finishedAt   DateTime?
   status       RunStatus @default(PENDING)
+  trigger      String    @default("manual") // "manual" | "scheduled"
   rulesVersion String
   appVersion   String
   paramsJson   Json // inputs: connectors, asOf, chain mode …

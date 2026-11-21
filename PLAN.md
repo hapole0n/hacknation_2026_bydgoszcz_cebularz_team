@@ -84,7 +84,7 @@ Cytoscape.js: nodes = identifiers, evidence/sources, addresses (styled by catego
 Formats: HTML view, PDF (print via Playwright or print CSS), JSON bundle. Readable for non-IT readers.
 
 ### 3.8 Cases, runs, monitoring, diff
-Case (sprawa) → many Runs. Schedule per case (demo: every 1 min; default daily). Diff between runs: new/removed addresses, score changes, category changes, address swap on the same source (incl. Wayback snapshots). In-app notifications.
+Case (sprawa) → many Runs. Schedule per case (off / 15 min / 1 h / 24 h; "Uruchom teraz" runs now). Diff between runs: new/removed addresses, score changes, category changes, address swap on the same source (incl. Wayback snapshots). In-app notifications.
 
 ### 3.9 Security and compliance
 `EgressClient`: allowlist, per-host rate limit, cache, User-Agent with contact, AuditLog row per request (time, case, connector, host, path without secrets, status, duration). UI page "Dziennik zapytań zewnętrznych". Data minimisation: store snippets ±200 chars + SHA-256 of full content + archive link, not full pages. Retention per case + "delete case". README section "Zgodność i bezpieczeństwo".
@@ -93,9 +93,9 @@ Case (sprawa) → many Runs. Schedule per case (demo: every 1 min; default daily
 `AiProvider` interface → OpenAI-compatible client (`AI_BASE_URL`, `AI_MODEL`). Used only as a context-classification fallback and for a plain-language summary draft marked "wygenerowane przez lokalny model — do weryfikacji". Target GPU: RTX 3060 Laptop 6 GB → small Polish-capable instruct model, Q4 (candidates: Bielik 4.5B, PLLuM 8B, Qwen 7B) — choose in P6.
 
 ## 4. Data model (Prisma, first cut)
-- `Case(id, title, createdAt, createdBy, scheduleCron, retentionDays)`
+- `Case(id, title, createdAt, createdBy, scheduleEveryMin, nextRunAt, retentionDays)` — monitoring: 15 / 60 / 1440 min or off; the due time is stored, one in-process tick runs due cases
 - `Identifier(id, caseId, type[NAME|NICK|MESSENGER|SOCIAL_LOGIN|EMAIL|ADDRESS], value, normalized)`
-- `Run(id, caseId, startedAt, finishedAt, status, rulesVersion, appVersion, paramsJson)`
+- `Run(id, caseId, startedAt, finishedAt, status, trigger[manual|scheduled], rulesVersion, appVersion, paramsJson)`
 - `Evidence(id, runId, connectorId, url, resourceId, fetchedAt, sha256, snippet, archiveUrl, sourceType, metaJson)`
 - `Trace(id, runId, evidenceId, identifierId?, chain, address, contextType, contextSnippet, position)`
 - `Address(id, chain, address, category, labelsJson, isContract, firstSeen, lastSeen, metaJson)` — unique (chain, address)

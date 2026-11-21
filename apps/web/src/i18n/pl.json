@@ -124,17 +124,34 @@
     "identifiers": "Identyfikatory",
     "runs": "Analizy",
     "noRuns": "Ta sprawa nie była jeszcze analizowana.",
-    "runNow": "Uruchom analizę",
-    "runAgain": "Uruchom analizę ponownie",
+    "runNow": "Uruchom teraz",
+    "runAgain": "Uruchom teraz",
     "createdBy": "Założył(a)",
     "createdAt": "Utworzona",
     "columns": {
       "startedAt": "Rozpoczęta",
       "status": "Stan",
+      "trigger": "Uruchomiona",
       "rules": "Wersja reguł",
       "open": "Wyniki"
     },
-    "open": "Otwórz wyniki"
+    "open": "Otwórz wyniki",
+    "history": "Historia analiz",
+    "scheduleTitle": "Monitoring",
+    "scheduleHint": "Program sam powtarza analizę z ustawieniami ostatniej analizy (źródła, tryb blockchain) i porównuje ją z poprzednią.",
+    "scheduleLabel": "Powtarzaj analizę",
+    "schedule": {
+      "off": "Wyłączone",
+      "15": "Co 15 minut",
+      "60": "Co godzinę",
+      "1440": "Co 24 godziny"
+    },
+    "nextRun": "Następna analiza",
+    "nextRunOff": "Monitoring wyłączony.",
+    "trigger": {
+      "manual": "Ręcznie",
+      "scheduled": "Harmonogram"
+    }
   },
   "run": {
     "backToCase": "Wróć do sprawy",
