@@ -43,7 +43,14 @@ TODO — pełny przebieg analizy na danych syntetycznych.
 TODO
 
 ## Zgodność i bezpieczeństwo
-TODO — wyłącznie OSINT, przestrzeganie regulaminów źródeł, brak wysyłania danych do niezatwierdzonych usług, allowlista hostów i dziennik zapytań, AI wyłącznie lokalne i opcjonalne, minimalizacja danych, retencja.
+- **Wyłącznie OSINT.** Jawne, legalne źródła; oficjalne API tam, gdzie istnieją; przestrzeganie regulaminów i robots.txt źródeł. Bez logowania na cudze konta, wycieków, omijania zabezpieczeń i skanowania podatności.
+- **Dane syntetyczne.** Fixtures, testy i demo używają wyłącznie danych sztucznych. Źródła „na żywo” są opt-in dla każdej analizy i służą tylko do pokazu na własnych stronach person syntetycznych lub instytucjonalnych przykładach publicznych (giełdy, routery DEX, zbiórki).
+- **Brak wysyłania danych do niezatwierdzonych usług.** Każde zapytanie wychodzące przechodzi przez `EgressClient`: allowlista hostów (`config/egress-allowlist.yaml`), limit zapytań na host, cache i wpis w dzienniku. Brak telemetrii, brak skryptów i czcionek z CDN.
+- **Dziennik zapytań.** Strona „Dziennik zapytań” pokazuje każde zapytanie: czas, sprawę, źródło, serwer, ścieżkę bez parametrów i wynik. Zapytania zablokowane przez allowlistę i błędy sieci są wyróżnione. Dziennik nie przechowuje treści odpowiedzi ani parametrów zapytań (tam mogą być klucze API).
+- **AI wyłącznie lokalne i opcjonalne** (domyślnie wyłączone). Ocena jest deterministyczna, oparta na jawnych regułach i wyjaśnialna — każdy punkt ma uzasadnienie i dowód.
+- **Minimalizacja danych.** Zapisujemy fragmenty ±200 znaków oraz SHA-256 pełnej treści, a nie całe strony. Decyzje analityka są zapisane osobno i nie zmieniają obliczonego wyniku.
+- **Raport.** Raport (HTML w aplikacji, PDF, JSON) oddziela FAKT (źródło, odnośnik, czas pobrania), OBLICZENIE (reguła, dane, wynik) i WNIOSEK (z poziomem pewności), ma sekcję „Ograniczenia” i skrót SHA-256 danych. PDF powstaje lokalnie (pdfmake, czcionka osadzona), bez przeglądarki i bez wysyłania danych na zewnątrz.
+- **Klucze** tylko w pliku `.env` (szablon `.env.example`), nigdy w repozytorium.
 
 ## Licencje wykorzystanych komponentów
 Zob. `LICENSES.md`.
