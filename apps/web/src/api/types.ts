@@ -157,6 +157,8 @@ export interface RunSummary {
   chainNotes: { address: string; notes: Note[] }[];
   chainWarnings: { address: string; warnings: Note[] }[];
   identities: Identity[];
+  /** The addresses typed in as identifiers, with the verdict on the address itself (absent in runs made before this field). */
+  subjects?: (AddressDto & { exclusions: { ruleId: string; pl: string; en: string }[] })[];
   error?: Note;
 }
 

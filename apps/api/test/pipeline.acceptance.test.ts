@@ -492,6 +492,10 @@ describe('an address typed in by the analyst is analysed on-chain even when no p
     expect(r.links).toHaveLength(0);
     expect(r.chain.map((c) => [c.address.address, c.address.category])).toEqual([[addr('D1'), 'CEX_DEPOSIT']]);
     expect(indicatorsOf(r, 'D1').txCount).toBeGreaterThan(0);
+    // the run page shows the verdict on the typed-in address itself (category + why excluded) although there is no link
+    const subjects = (r.run.summaryJson as { subjects: { address: string; category: string; exclusions: { ruleId: string; pl: string }[] }[] }).subjects;
+    expect(subjects.map((s) => [s.address, s.category, s.exclusions.map((e) => e.ruleId)])).toEqual([[addr('D1'), 'CEX_DEPOSIT', ['EXCL_CUSTODIAL_DEPOSIT']]]);
+    expect(subjects[0]!.exclusions[0]!.pl).not.toBe('');
   });
 });
 

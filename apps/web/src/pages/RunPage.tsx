@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCase, useRun } from '@/api/client';
-import type { AddressDto, Band, EvidenceDto, Identity, LinkDto, RunResults } from '@/api/types';
+import type { AddressDto, Band, ChainDto, EvidenceDto, Identity, LinkDto, RunResults } from '@/api/types';
 import { AddressCard } from '@/components/AddressCard';
 import { Drawer } from '@/components/Drawer';
 import { EvidenceItem } from '@/components/EvidenceItem';
@@ -13,7 +13,7 @@ import { AiSuggestions } from '@/components/AiSuggestions';
 import { RunChanges } from '@/components/RunChanges';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BAND_ORDER, BAND_STYLE } from '@/lib/bands';
-import { addressKey, formatDateTime, loc, shortAddress, shortHash } from '@/lib/format';
+import { addressKey, formatDateTime, formatPln, loc, shortAddress, shortHash } from '@/lib/format';
 import { noteText } from '@/lib/notes';
 import { cn } from '@/lib/utils';
 import { Link } from '@/router';
@@ -87,6 +87,8 @@ export function RunPage({ id }: { id: string }) {
           </ul>
         </Panel>
       )}
+
+      <SubjectsPanel run={head} chainOf={(s) => view.addressInfo(keyOf(s.chain, s.address)).chain} onOpenAddress={openAddress} />
 
       <Tabs value={activeTab} onValueChange={setTab}>
         <TabsList className="h-auto flex-wrap justify-start">
@@ -172,7 +174,8 @@ function derive(data: RunResults) {
     const links = data.links.filter((l) => keyOf(l.address.chain, l.address.address) === k);
     const snapshot = data.chain.find((c) => keyOf(c.address.chain, c.address.address) === k);
     const fromIdentity = data.run.summaryJson?.identities.flatMap((i) => i.otherAddresses).find((o) => keyOf(o.chain, o.address) === k);
-    const dto: AddressDto = links[0]?.address ?? {
+    const subject = data.run.summaryJson?.subjects?.find((s) => keyOf(s.chain, s.address) === k);
+    const dto: AddressDto = subject ?? links[0]?.address ?? {
       chain: chain as AddressDto['chain'],
       address,
       category: (snapshot?.address.category ?? fromIdentity?.category ?? 'UNHOSTED') as AddressDto['category'],
@@ -184,6 +187,76 @@ function derive(data: RunResults) {
   };
 
   return { evidence, scored, counts, rejectedAddresses: [...groups.values()], addressInfo };
+}
+
+/** The verdict on each address the analyst typed in — shown even when no source mentions it (then there are no links to show). */
+function SubjectsPanel({ run, chainOf, onOpenAddress }: { run: RunResults['run']; chainOf: (s: AddressDto) => ChainDto | undefined; onOpenAddress: (key: string) => void }) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const subjects = run.summaryJson?.subjects ?? [];
+  if (subjects.length === 0) return null;
+  // Money that could not be valued is never shown as 0,00 zł.
+  const money = (pln: number, unvalued: number) => (unvalued === 0 ? formatPln(pln, lang) : pln === 0 ? t('address.noValuation') : `${formatPln(pln, lang)} — ${t('address.partialValuation')}`);
+  return (
+    <Panel className="overflow-x-auto p-5">
+      <h2 className="text-base font-semibold">{t('run.subjects.title')}</h2>
+      <table className="mt-3 w-full text-sm">
+        <thead>
+          <tr className="border-b text-left text-muted-foreground">
+            <th scope="col" className="px-3 py-2 font-medium">{t('rejected.columns.address')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('address.network')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('rejected.columns.category')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('run.subjects.exclusion')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('run.subjects.labelSource')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('address.kpi.tx')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('address.kpi.inPln')}</th>
+            <th scope="col" className="px-3 py-2 font-medium">{t('address.kpi.outPln')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subjects.map((s) => {
+            const chain = chainOf(s);
+            const label = s.labels[0];
+            const notes = run.summaryJson?.chainNotes.filter((n) => n.address.toLowerCase() === s.address.toLowerCase()).flatMap((n) => n.notes) ?? [];
+            return (
+              <tr key={keyOf(s.chain, s.address)} className="border-b align-top last:border-b-0">
+                <td className="px-3 py-2.5">
+                  <button type="button" className="break-all text-left font-medium text-steel underline underline-offset-2" onClick={() => onOpenAddress(keyOf(s.chain, s.address))}>{shortAddress(s.address, 10, 6)}</button>
+                </td>
+                <td className="px-3 py-2.5">{s.chain}</td>
+                <td className="px-3 py-2.5">
+                  <CategoryBadge category={s.category} />
+                  {s.isContract && s.category !== 'CONTRACT' && <p className="mt-1 text-xs text-muted-foreground">{t('run.subjects.contract')}</p>}
+                </td>
+                <td className="max-w-xs px-3 py-2.5">
+                  {s.exclusions.length === 0 ? t('run.subjects.notExcluded') : s.exclusions.map((e) => <p key={e.ruleId}><span className="font-medium">{t('run.subjects.excluded')}:</span> {loc(e, lang)} <span className="text-xs text-muted-foreground">({e.ruleId})</span></p>)}
+                </td>
+                <td className="px-3 py-2.5">
+                  {!label ? '—' : (
+                    <>
+                      {label.name}{label.source === 'heuristic' && <span className="text-muted-foreground"> ({t('address.labelHeuristic')})</span>}
+                      {label.sourceUrl && <a href={label.sourceUrl} target="_blank" rel="noopener noreferrer" className="block text-xs text-steel underline underline-offset-2">{t('rejected.labelSource')}</a>}
+                    </>
+                  )}
+                </td>
+                {chain ? (
+                  <>
+                    <td className="px-3 py-2.5 tabular-nums">{chain.indicators.txCount}</td>
+                    <td className="px-3 py-2.5 tabular-nums">{money(chain.indicators.totals.inPln, chain.indicators.totals.unvalued)}</td>
+                    <td className="px-3 py-2.5 tabular-nums">{money(chain.indicators.totals.outPln, chain.indicators.totals.unvalued)}</td>
+                  </>
+                ) : (
+                  <td colSpan={3} className="px-3 py-2.5 text-muted-foreground">
+                    {notes.length > 0 ? notes.map((n, i) => <p key={i}>{t('run.subjects.noData')}: {noteText(t, n)}</p>) : <p>{label ? t('run.subjects.skipped') : t('run.subjects.noData')}</p>}
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </Panel>
+  );
 }
 
 function BandDistribution({ counts, total }: { counts: Record<Band, number>; total: number }) {

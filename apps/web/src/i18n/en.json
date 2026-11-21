@@ -198,7 +198,17 @@
     "chainNote": "Address {{address}}: {{note}}",
     "chainWarning": "Address {{address}}: {{warning}}",
     "round": "runda {{round}}",
-    "connectorNote": "Source “{{connector}}”: {{message}}"
+    "connectorNote": "Source “{{connector}}”: {{message}}",
+    "subjects": {
+      "title": "Analysed addresses",
+      "exclusion": "Exclusion",
+      "excluded": "Excluded",
+      "notExcluded": "Not excluded",
+      "labelSource": "Label source",
+      "contract": "Smart contract",
+      "noData": "No blockchain data",
+      "skipped": "Labelled address: history not fetched"
+    }
   },
   "bands": {
     "VERY_HIGH": "Very high",
