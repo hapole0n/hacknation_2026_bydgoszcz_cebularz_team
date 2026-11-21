@@ -71,7 +71,7 @@ export function RunPage({ id }: { id: string }) {
         />
         <div>
           <p className="text-sm text-muted-foreground">
-            {data.links.length} {t('run.stats.links')}, {view.rejectedAddresses.length} {t('run.stats.excluded')}, {data.evidence.length} {t('run.stats.evidence')}, {data.chain.length} {t('run.stats.snapshots')}
+            {[t('run.stats.links', { count: data.links.length }), t('run.stats.excluded', { count: view.rejectedAddresses.length }), t('run.stats.evidence', { count: data.evidence.length }), t('run.stats.snapshots', { count: data.chain.length })].join(', ')}
           </p>
           <BandDistribution counts={view.counts} total={data.links.length} />
         </div>

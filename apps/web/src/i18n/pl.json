@@ -62,7 +62,6 @@
     "sources": "Źródła danych",
     "sourcesHint": "Domyślnie przeszukiwany jest tylko syntetyczny „mini-internet”. Źródła na żywo wysyłają zapytania poza system, więc zaznaczaj je świadomie.",
     "terms": "Regulamin źródła",
-    "rate": "limit {{count}} zapytań na sekundę",
     "noRateLimit": "bez limitu (źródło lokalne)",
     "methods": {
       "official_api": "oficjalne API",
@@ -113,7 +112,11 @@
     "conditions": {
       "ethOnly": "tylko adresy Ethereum",
       "ethName": "tylko nazwy .eth"
-    }
+    },
+    "rate_one": "limit {{count}} zapytanie na sekundę",
+    "rate_few": "limit {{count}} zapytania na sekundę",
+    "rate_many": "limit {{count}} zapytań na sekundę",
+    "rate_other": "limit {{count, number}} zapytania na sekundę"
   },
   "identifierTypes": {
     "NAME": "Imię i nazwisko",
@@ -192,10 +195,22 @@
       "off": "pominięty"
     },
     "stats": {
-      "links": "powiązań",
-      "excluded": "odrzuconych",
-      "evidence": "dowodów",
-      "snapshots": "adresów z historią"
+      "links_one": "{{count}} powiązanie",
+      "links_few": "{{count}} powiązania",
+      "links_many": "{{count}} powiązań",
+      "links_other": "{{count}} powiązań",
+      "excluded_one": "{{count}} odrzucone przypisanie",
+      "excluded_few": "{{count}} odrzucone przypisania",
+      "excluded_many": "{{count}} odrzuconych przypisań",
+      "excluded_other": "{{count}} odrzuconych przypisań",
+      "evidence_one": "{{count}} dowód",
+      "evidence_few": "{{count}} dowody",
+      "evidence_many": "{{count}} dowodów",
+      "evidence_other": "{{count}} dowodów",
+      "snapshots_one": "{{count}} adres z historią",
+      "snapshots_few": "{{count}} adresy z historią",
+      "snapshots_many": "{{count}} adresów z historią",
+      "snapshots_other": "{{count}} adresów z historią"
     },
     "distribution": "Rozkład ocen",
     "notes": "Uwagi do analizy",
@@ -504,7 +519,6 @@
     "showSources": "Pokaż źródła",
     "fit": "Dopasuj widok",
     "empty": "Brak elementów do narysowania.",
-    "others": "+{{count}} innych adresów",
     "legend": "Legenda",
     "legendItems": {
       "identifier": "Identyfikator",
@@ -529,7 +543,11 @@
     },
     "openAddress": "Pokaż kartę adresu",
     "bestScore": "Najwyższa ocena",
-    "excludedNote": "Wykluczony z przypisania osobistego."
+    "excludedNote": "Wykluczony z przypisania osobistego.",
+    "others_one": "+{{count}} inny adres",
+    "others_few": "+{{count}} inne adresy",
+    "others_many": "+{{count}} innych adresów",
+    "others_other": "+{{count}} innych adresów"
   },
   "evidence": {
     "title": "Źródła i dowody",
@@ -639,7 +657,6 @@
     },
     "categoryChanges": "Zmiana kategorii adresu",
     "newTransactions": "Nowe transakcje",
-    "txCount": "{{count}} transakcji",
     "newAddress": "nowy adres",
     "newThresholds": "Nowe przekroczenia progów",
     "thresholdKind": {
@@ -657,7 +674,11 @@
       "newTransactions": "nowe transakcje: {{n}}",
       "newThresholds": "progi: {{n}}",
       "sourceChanges": "zmiana adresu w źródle: {{n}}"
-    }
+    },
+    "txCount_one": "{{count}} transakcja",
+    "txCount_few": "{{count}} transakcje",
+    "txCount_many": "{{count}} transakcji",
+    "txCount_other": "{{count}} transakcji"
   },
   "notifications": {
     "title": "Powiadomienia",

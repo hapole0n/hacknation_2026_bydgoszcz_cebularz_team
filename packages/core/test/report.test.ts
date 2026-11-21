@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyseHistory, buildReport, canonicalJson, diffRuns, valueTransfer, type Block, type ReportInput, type SearchLogEntry, type ValuedTransfer } from '../src/index.js';
+import { analyseHistory, buildReport, canonicalJson, diffRuns, plural, valueTransfer, type Block, type ReportInput, type SearchLogEntry, type ValuedTransfer } from '../src/index.js';
 
 const ME = '0x1111111111111111111111111111111111111111';
 const CEX = '0x2222222222222222222222222222222222222222';
@@ -226,6 +226,22 @@ describe('section 2: the search log ("Przeszukane źródła")', () => {
 
   it('a run made before the log existed still reads as before', () => {
     expect(sources(base())).not.toContain('Przeszukano');
+  });
+});
+
+describe('Polish endings in the report', () => {
+  it('1 / 2–4 / 5+ / the teens (12–14) / 22–24 / 112', () => {
+    expect([0, 1, 2, 4, 5, 12, 14, 21, 22, 25, 112].map((n) => plural(n, 'dowód', 'dowody', 'dowodów'))).toEqual(['dowodów', 'dowód', 'dowody', 'dowody', 'dowodów', 'dowodów', 'dowodów', 'dowodów', 'dowody', 'dowodów', 'dowodów']);
+  });
+
+  it('the summary counts with the right ending', () => {
+    const r = base();
+    const one = buildReport(r).summary[0]!;
+    expect(one).toMatch(/przeanalizowano 1 identyfikator,/);
+    r.case.identifiers = [1, 2, 3, 4, 5].map((n) => ({ type: 'NICK', value: `n${n}` }));
+    expect(buildReport(r).summary[0]).toMatch(/przeanalizowano 5 identyfikatorów,/);
+    r.case.identifiers = [1, 2].map((n) => ({ type: 'NICK', value: `n${n}` }));
+    expect(buildReport(r).summary[0]).toMatch(/przeanalizowano 2 identyfikatory,/);
   });
 });
 

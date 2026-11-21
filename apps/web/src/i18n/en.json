@@ -62,7 +62,6 @@
     "sources": "Data sources",
     "sourcesHint": "By default only the synthetic \"mini-internet\" is searched. Live sources send requests outside the system, so tick them deliberately.",
     "terms": "Source terms",
-    "rate": "limit {{count}} requests per second",
     "noRateLimit": "no limit (local source)",
     "methods": {
       "official_api": "official API",
@@ -111,7 +110,9 @@
     "conditions": {
       "ethOnly": "Ethereum addresses only",
       "ethName": ".eth names only"
-    }
+    },
+    "rate_one": "limit {{count}} request per second",
+    "rate_other": "limit {{count, number}} requests per second"
   },
   "identifierTypes": {
     "NAME": "Name and surname",
@@ -190,10 +191,14 @@
       "off": "skipped"
     },
     "stats": {
-      "links": "links",
-      "excluded": "rejected",
-      "evidence": "pieces of evidence",
-      "snapshots": "addresses with history"
+      "links_one": "{{count}} link",
+      "links_other": "{{count}} links",
+      "excluded_one": "{{count}} rejected attribution",
+      "excluded_other": "{{count}} rejected attributions",
+      "evidence_one": "{{count}} piece of evidence",
+      "evidence_other": "{{count}} pieces of evidence",
+      "snapshots_one": "{{count}} address with history",
+      "snapshots_other": "{{count}} addresses with history"
     },
     "distribution": "Distribution of scores",
     "notes": "Notes on the analysis",
@@ -490,7 +495,6 @@
     "showSources": "Show sources",
     "fit": "Fit to view",
     "empty": "Nothing to draw.",
-    "others": "+{{count}} other addresses",
     "legend": "Legend",
     "legendItems": {
       "identifier": "Identifier",
@@ -515,7 +519,9 @@
     },
     "openAddress": "Show the address card",
     "bestScore": "Highest score",
-    "excludedNote": "Excluded from personal attribution."
+    "excludedNote": "Excluded from personal attribution.",
+    "others_one": "+{{count}} other address",
+    "others_other": "+{{count}} other addresses"
   },
   "evidence": {
     "title": "Sources and evidence",
@@ -625,7 +631,6 @@
     },
     "categoryChanges": "Address category changed",
     "newTransactions": "New transactions",
-    "txCount": "{{count}} transactions",
     "newAddress": "new address",
     "newThresholds": "New threshold crossings",
     "thresholdKind": {
@@ -643,7 +648,9 @@
       "newTransactions": "new transactions: {{n}}",
       "newThresholds": "thresholds: {{n}}",
       "sourceChanges": "address changed on a source: {{n}}"
-    }
+    },
+    "txCount_one": "{{count}} transaction",
+    "txCount_other": "{{count}} transactions"
   },
   "notifications": {
     "title": "Notifications",
