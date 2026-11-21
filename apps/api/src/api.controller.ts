@@ -4,6 +4,7 @@ import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kro
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { SandboxWorld, isSandboxVersion } from './connectors/sandbox-world.js';
+import { createCaseWithSignature } from './cases.js';
 import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
@@ -45,6 +46,7 @@ export function parseCaseBody(body: unknown) {
     title: text(body.title, 'title', 200),
     createdBy: body.createdBy === undefined ? 'analyst' : text(body.createdBy, 'createdBy', 100),
     retentionDays: (retentionDays as number | undefined) ?? null,
+    basis: body.basis === undefined || body.basis === null || String(body.basis).trim() === '' ? null : text(body.basis, 'basis', 200),
     identifiers,
   };
 }
@@ -101,8 +103,7 @@ export class ApiController {
 
   @Post('cases')
   createCase(@Body() body: unknown) {
-    const { identifiers, ...data } = parseCaseBody(body);
-    return this.prisma.case.create({ data: { ...data, identifiers: { create: identifiers } }, include: { identifiers: true } });
+    return createCaseWithSignature(this.prisma, parseCaseBody(body));
   }
 
   @Get('cases')
@@ -125,8 +126,7 @@ export class ApiController {
     const def = demo[variant ?? 'identifiers'];
     const existing = await this.prisma.case.findFirst({ where: { title: def.title, createdBy: 'demo' }, include: { identifiers: true } });
     if (existing) return existing;
-    const { identifiers, ...data } = parseCaseBody({ ...def, createdBy: 'demo' });
-    return this.prisma.case.create({ data: { ...data, identifiers: { create: identifiers } }, include: { identifiers: true } });
+    return createCaseWithSignature(this.prisma, parseCaseBody({ ...def, createdBy: 'demo' }));
   }
 
   /** Monitoring: re-run the case every 15 min / hour / day, or switch it off. Survives a restart (stored in the database). */
@@ -212,8 +212,16 @@ export class ApiController {
       this.prisma.auditLog.count({ where: { status: { lt: 0 } } }),
     ]);
     const caseIds = [...new Set(rows.flatMap((r) => (r.caseId ? [r.caseId] : [])))];
-    const titles = new Map((await this.prisma.case.findMany({ where: { id: { in: caseIds } }, select: { id: true, title: true } })).map((c) => [c.id, c.title]));
-    return { total, blocked, failed, rows: rows.map((r) => ({ ...r, caseTitle: r.caseId ? (titles.get(r.caseId) ?? null) : null })) };
+    const cases = new Map((await this.prisma.case.findMany({ where: { id: { in: caseIds } }, select: { id: true, title: true, signature: true, basis: true } })).map((c) => [c.id, c]));
+    return {
+      total,
+      blocked,
+      failed,
+      rows: rows.map((r) => {
+        const c = r.caseId ? cases.get(r.caseId) : undefined;
+        return { ...r, caseTitle: c?.title ?? null, caseSignature: c?.signature ?? null, caseBasis: c?.basis ?? null };
+      }),
+    };
   }
 
   /**

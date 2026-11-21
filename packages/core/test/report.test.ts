@@ -311,3 +311,30 @@ describe('section 8: changes since the previous run', () => {
   });
 });
 
+
+describe('case reference, proceedings number and query time', () => {
+  const sectionText = (r: ReportInput, id: string) => text(buildReport(r).sections.find((s) => s.id === id)!.blocks);
+
+  it('the signature and "Numer postępowania / podstawa" are in the inputs and the meta; older cases without them read as before', () => {
+    const r = base();
+    r.case.signature = 'KR/2026/0007';
+    r.case.basis = 'RKS-2026/0412 (fikcyjny)';
+    const doc = buildReport(r);
+    expect(doc.meta).toEqual(expect.arrayContaining([['Sygnatura sprawy', 'KR/2026/0007'], ['Numer postępowania / podstawa', 'RKS-2026/0412 (fikcyjny)']]));
+    expect(sectionText(r, 'input')).toContain('RKS-2026/0412 (fikcyjny)');
+    const plain = buildReport(base());
+    expect(JSON.stringify(plain)).not.toContain('Sygnatura sprawy');
+    expect(JSON.stringify(plain)).not.toContain('Numer postępowania');
+  });
+
+  it('the search table has the time of each query (Warsaw time), a dash when the run is older than the field', () => {
+    const r = base();
+    r.run.summaryJson!.searches = [
+      { connector: 'sandbox', round: 1, identifier: { type: 'NICK', value: 'jtestowy' }, outcome: 'FOUND', resources: 2, addresses: 2, at: '2026-11-21T21:30:41Z' },
+      { connector: 'github', round: 1, identifier: { type: 'NICK', value: 'jtestowy' }, outcome: 'NONE', resources: 0, addresses: 0 },
+    ];
+    const t = sectionText(r, 'sources');
+    expect(t).toContain('"Czas"');
+    expect(t).toContain('22:30:41'); // 21:30:41 UTC = 22:30:41 CET
+  });
+});

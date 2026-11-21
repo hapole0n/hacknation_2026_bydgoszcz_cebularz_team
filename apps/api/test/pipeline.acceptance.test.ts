@@ -506,7 +506,7 @@ describe('an address typed in by the analyst is analysed on-chain even when no p
     expect(subjects[0]!.exclusions[0]!.pl).not.toBe('');
     // an empty search reads as "searched, found nothing", not as a failure
     const log = (r.run.summaryJson as { searches: SearchLogEntry[] }).searches;
-    expect(log).toEqual([{ connector: 'sandbox', round: 1, identifier: { type: 'ADDRESS', value: addr('D1') }, outcome: 'NONE', resources: 0, addresses: 0 }]);
+    expect(log).toEqual([{ connector: 'sandbox', round: 1, identifier: { type: 'ADDRESS', value: addr('D1') }, outcome: 'NONE', resources: 0, addresses: 0, at: expect.any(String) }]);
   });
 
   it('a source that cannot take the identifier, or lacks its key, says so instead of staying silent', async () => {
@@ -695,3 +695,50 @@ describe('Gravatar and ENS bridges (synthetic persona)', () => {
   });
 });
 
+
+describe('file reference, proceedings number and query time', () => {
+  it('every case gets the next reference KR/YYYY/NNNN of its (Warsaw) year; cases created at the same moment never share one', async () => {
+    const made = await Promise.all(Array.from({ length: 8 }, (_, i) => api.createCase({ title: `Test — sygnatura ${i}`, identifiers: [{ type: 'NICK', value: `sygnatura${i}` }] })));
+    caseIds.push(...made.map((c) => c.id));
+    const year = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', year: 'numeric' }).format(new Date());
+    expect(made.map((c) => c.signature).filter((s) => !new RegExp(`^KR/${year}/[0-9]{4}$`).test(s))).toEqual([]);
+    expect(new Set(made.map((c) => c.signature)).size).toBe(8);
+    const numbers = made.map((c) => Number(c.signature.slice(-4))).sort((a, b) => a - b);
+    expect(numbers[7]! - numbers[0]!).toBeGreaterThanOrEqual(7); // eight different running numbers
+    const next = await api.createCase({ title: 'Test — następna', identifiers: [{ type: 'NICK', value: 'nastepna' }] });
+    caseIds.push(next.id);
+    expect(Number(next.signature.slice(-4))).toBeGreaterThan(numbers[7]!); // numbers are not reused
+  });
+
+  it('"Numer postępowania / podstawa" is stored (trimmed, optional, at most 200 characters) and shown in the case, the request log and the report', async () => {
+    expect(parseCaseBody({ title: 'x', identifiers: [{ type: 'NICK', value: 'abc' }] }).basis).toBeNull();
+    expect(parseCaseBody({ title: 'x', basis: '   ', identifiers: [{ type: 'NICK', value: 'abc' }] }).basis).toBeNull();
+    expect(() => parseCaseBody({ title: 'x', basis: 'a'.repeat(201), identifiers: [{ type: 'NICK', value: 'abc' }] })).toThrow(/basis/);
+
+    const kase = await api.createCase({ title: 'Test — podstawa', basis: '  RKS-2026/0412 (fikcyjny) ', identifiers: spec.case.identifiers });
+    caseIds.push(kase.id);
+    expect(kase.basis).toBe('RKS-2026/0412 (fikcyjny)');
+    const run = await pipeline.run(kase.id, runOptions);
+    expect((await api.getCase(kase.id)).basis).toBe('RKS-2026/0412 (fikcyjny)');
+
+    // the sandbox pages of this run came from the in-process cache (no new request, so no row): one blocked request of this case gives the log a row to show
+    await expect(egress.get('https://example.com/zapytanie', { connectorId: 'test', caseId: kase.id })).rejects.toThrow();
+    const audit = await api.auditLog('300');
+    const mine = audit.rows.filter((r) => r.caseId === kase.id);
+    expect(mine.length).toBeGreaterThan(0);
+    expect(mine.every((r) => r.caseSignature === kase.signature && r.caseBasis === 'RKS-2026/0412 (fikcyjny)')).toBe(true);
+
+    const { doc } = await api.report(run.run.id);
+    expect(doc.meta).toEqual(expect.arrayContaining([['Sygnatura sprawy', kase.signature], ['Numer postępowania / podstawa', 'RKS-2026/0412 (fikcyjny)']]));
+    expect(JSON.stringify(doc.sections.find((s) => s.id === 'input'))).toContain('RKS-2026/0412 (fikcyjny)');
+  });
+
+  it('every line of "Przeszukane źródła" carries the time the source answered, and the report prints it', async () => {
+    const searches = (results.run.summaryJson as { searches: SearchLogEntry[] }).searches;
+    expect(searches.length).toBeGreaterThan(0);
+    for (const s of searches) expect(Date.parse(s.at!), `${s.connector} round ${s.round}`).toBeGreaterThanOrEqual(results.run.startedAt.getTime());
+    const sources = JSON.stringify((await api.report(results.run.id)).doc.sections.find((s) => s.id === 'sources'));
+    expect(sources).toContain('"Czas"');
+    expect(sources).toMatch(/\d\d:\d\d:\d\d/);
+  });
+});

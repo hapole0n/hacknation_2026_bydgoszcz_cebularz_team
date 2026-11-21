@@ -19,6 +19,7 @@ import {
   TAGS_PL,
   fmtDate,
   fmtDateTime,
+  fmtTime,
   fmtEur,
   fmtNum,
   fmtPln,
@@ -96,7 +97,8 @@ export interface ReportSubject {
 }
 export interface ReportInput {
   appName: string;
-  case: { id: string; title: string; createdBy: string; identifiers: { type: string; value: string }[] };
+  /** `signature`: file reference KR/YYYY/NNNN; `basis`: "Numer postępowania / podstawa" typed in by the analyst (both absent in cases made before they existed). */
+  case: { id: string; title: string; createdBy: string; signature?: string; basis?: string | null; identifiers: { type: string; value: string }[] };
   run: {
     id: string;
     status: string;
@@ -265,7 +267,9 @@ export function buildReport(input: ReportInput): ReportDoc {
       ...subjectBlocks,
       kv(
         [
+          ...(kase.signature ? ([['Sygnatura sprawy', kase.signature]] as [string, string][]) : []),
           ['Sprawa', kase.title],
+          ...(kase.basis ? ([['Numer postępowania / podstawa', kase.basis]] as [string, string][]) : []),
           ['Numer analizy', run.id],
           ['Analiza uruchomiona', fmtDateTime(run.startedAt)],
           ['Stan na dzień', fmtDate(run.paramsJson.asOf)],
@@ -292,7 +296,7 @@ export function buildReport(input: ReportInput): ReportDoc {
       ...(searches.length > 0
         ? ([
             { type: 'text', text: searchSummaryPl(searches, input.traces.length > 0), kind: 'FAKT', basis: 'dziennik wyszukiwania tej analizy' },
-            table(['Źródło', 'Czego szukano', 'Wynik'], searches.map((e) => [e.connector, searchQueryPl(e), searchOutcomePl(e)]), { kind: 'FAKT', weights: [2, 6, 6] }),
+            table(['Źródło', 'Czego szukano', 'Wynik', 'Czas'], searches.map((e) => [e.connector, searchQueryPl(e), searchOutcomePl(e), fmtTime(e.at)]), { kind: 'FAKT', weights: [2, 6, 6, 2] }),
           ] as Block[])
         : []),
       input.evidence.length === 0
@@ -610,7 +614,9 @@ export function buildReport(input: ReportInput): ReportDoc {
     title: 'Raport z analizy',
     caseTitle: kase.title,
     meta: [
+      ...(kase.signature ? ([['Sygnatura sprawy', kase.signature]] as [string, string][]) : []),
       ['Sprawa', kase.title],
+      ...(kase.basis ? ([['Numer postępowania / podstawa', kase.basis]] as [string, string][]) : []),
       ['Numer analizy', run.id],
       ['Data analizy', fmtDateTime(run.startedAt)],
       ['Wersja reguł', run.rulesVersion],

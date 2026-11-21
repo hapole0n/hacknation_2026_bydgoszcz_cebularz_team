@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>KROPKA — karta adresu Tron</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=VT323&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2F6F6F}
+a{color:#1C2F7A}a:hover{color:#0E1A4D}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #2F6F6F; display: flex; flex-direction: column; font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace; color: #2A2A2A">
+
+  <div style="flex: 1 0 auto; box-sizing: border-box; width: 100%; max-width: 1320px; margin: 0 auto; padding: 24px 24px 20px; display: flex">
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #C3C3C3; padding: 3px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E, inset 1px 1px 0 #DFDFDF">
+
+      <div style="display: flex; align-items: center; gap: 8px; padding: 3px 4px; background: #1C2F7A; color: #FFFFFF; font-size: 15px; font-weight: 600">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 12px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">—</span>
+        <span style="flex: 1; min-width: 0">KROPKA — Sprawa KR/2026/0031 — adres TRON</span>
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 11px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">▼</span>
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 11px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">▲</span>
+      </div>
+
+      <nav aria-label="Menu" style="display: flex; flex-wrap: wrap; gap: 2px; padding: 2px 4px; font-size: 14px; border-bottom: 1px solid #6E6E6E; box-shadow: 0 1px 0 #FFFFFF">
+        <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">S</span>prawa</a>
+        <a href="#widok" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">W</span>idok</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">R</span>aport</a>
+        <a href="#pomoc" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">P</span>omoc</a>
+      </nav>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 8px; border-top: 1px solid #FFFFFF">
+        <a href="Wyniki.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">← Esc · Wynik analizy</a>
+        <button type="button" onClick="{{copy}}" style="min-height: 44px; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-family: inherit; font-size: 14px; font-weight: 600; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E; cursor: pointer">F3 · {{copyLabel}}</button>
+        <a href="#graf" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F6 · Pokaż na grafie</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 700; text-decoration: none; outline: 1px solid #2A2A2A; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F7 · Raport PDF</a>
+      </div>
+
+      <main style="flex: 1 0 auto; display: flex; flex-direction: column; gap: 22px; padding: 14px 22px 26px">
+
+        <section aria-labelledby="adres" style="display: flex; flex-direction: column; gap: 12px">
+          <h1 id="adres" style="margin: 0; font-family: 'VT323', monospace; font-size: 52px; line-height: 1; font-weight: 400; color: #1C2F7A; overflow-wrap: anywhere">TEonzwFM…GZey</h1>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 14px; font-weight: 600">
+            <span>[ PORTFEL NIEHOSTOWANY ]</span>
+            <span style="color: #1C2F7A">[ WSKAŹNIK PEWNOŚCI 100 · PRZEDZIAŁ 80–100 ]</span>
+            <span style="padding: 0 6px; background: #8A2B0E; color: #FFFFFF">! PRZESŁANKA WYPŁATY DO GOTÓWKI</span>
+          </div>
+          <p style="margin: 0; max-width: 860px; font-size: 14px; line-height: 1.6">Podstawa przypisania: ogłoszenie P2P „USDT za gotówkę” oraz wpis w kanale Telegram, oba podpisane identyfikatorem jtestowy. Treść źródeł zapisana 21.11.2026, 22:31; skróty SHA-256 w raporcie.</p>
+        </section>
+
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A">
+          <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600">PRZYJĘTO</span>
+            <span style="font-family: 'VT323', monospace; font-size: 34px; line-height: 1; color: #1C2F7A">2 400 USDT</span>
+            <span style="font-size: 13px">≈ 8 736,00 zł</span>
+          </div>
+          <div style="padding: 12px 16px; border-left: 1px dashed #9A9A9A; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600">WYSŁANO</span>
+            <span style="font-family: 'VT323', monospace; font-size: 34px; line-height: 1; color: #1C2F7A">2 250 USDT</span>
+            <span style="font-size: 13px">≈ 8 190,00 zł</span>
+          </div>
+          <div style="padding: 12px 16px; border-left: 1px dashed #9A9A9A; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600">POZOSTAŁO</span>
+            <span style="font-family: 'VT323', monospace; font-size: 34px; line-height: 1; color: #1C2F7A">150 USDT</span>
+            <span style="font-size: 13px">na adresie</span>
+          </div>
+          <div style="padding: 12px 16px; border-left: 1px dashed #9A9A9A; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 600; color: #8A2B0E">DO KANTORU</span>
+            <span style="font-family: 'VT323', monospace; font-size: 34px; line-height: 1; color: #8A2B0E">2 250 USDT</span>
+            <span style="font-size: 13px">≈ 1 927 EUR</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+
+          <section aria-labelledby="os" style="flex: 999 1 600px; min-width: 0; position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px; display: flex; flex-direction: column; gap: 12px">
+            <h2 id="os" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Przebieg transakcji — październik 2026</h2>
+            <div style="background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600"><span>PAŹDZIERNIK 2026</span><span><span style="color: #1C2F7A">■ wpływ środków</span>   <span style="color: #8A2B0E">■ przelew do usługi wymiany</span></span></div>
+              <div aria-hidden="true" style="display: grid; grid-template-columns: repeat(31, minmax(0, 1fr)); gap: 2px">
+                <sc-for list="{{days}}" as="d" hint-placeholder-count="31"><span style="{{d.s}}"></span></sc-for>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 11px"><span>1</span><span>10</span><span>20</span><span>31</span></div>
+            </div>
+            <ol style="margin: 0; padding: 4px 12px; list-style: none; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A">
+              <sc-for list="{{tx}}" as="t" hint-placeholder-count="4">
+                <li style="display: grid; grid-template-columns: 106px 20px minmax(0, 1fr); gap: 0 12px; padding: 11px 0; border-bottom: 1px dashed #9A9A9A; font-size: 14px">
+                  <span>{{t.date}}</span>
+                  <span aria-hidden="true" style="font-weight: 700; color: {{t.color}}">{{t.arrow}}</span>
+                  <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                    <span><b>{{t.verb}} {{t.usdt}} USDT</b> {{t.prep}} {{t.who}}</span>
+                    <span>{{t.pln}} {{t.eur}}</span>
+                    <span style="font-size: 12px; line-height: 1.5"><b style="color: #1C2F7A">[FAKT]</b> blockchain Tron, transakcja potwierdzona · <b style="color: #1C2F7A">[OBLICZENIE]</b> {{t.rate}}</span>
+                    <sc-if value="{{t.signal}}" hint-placeholder-val="{{false}}">
+                      <span style="align-self: flex-start; padding: 2px 8px; background: #8A2B0E; color: #FFFFFF; font-size: 12px; font-weight: 700">! {{t.signalText}}</span>
+                    </sc-if>
+                  </div>
+                </li>
+              </sc-for>
+            </ol>
+            <p style="margin: 0; font-size: 12px; line-height: 1.5">Wycena: kurs średni NBP (tabela A) z ostatniego dnia roboczego poprzedzającego dzień transakcji, zgodnie z art. 11a ustawy o PIT; USDT wyceniany jak USD.</p>
+          </section>
+
+          <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+
+            <section aria-labelledby="progi" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px; display: flex; flex-direction: column; gap: 14px; font-size: 14px">
+              <h2 id="progi" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Progi — art. 35 ust. 1 ustawy AML</h2>
+              <sc-for list="{{limits}}" as="l" hint-placeholder-count="3">
+                <div style="display: flex; flex-direction: column; gap: 5px">
+                  <span><b>{{l.name}}</b> — {{l.desc}}</span>
+                  <span style="display: flex; align-items: center; gap: 10px">
+                    <span aria-hidden="true" style="display: inline-flex; gap: 2px; padding: 3px; background: #FFFFFF; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">
+                      <sc-for list="{{l.blocks}}" as="b" hint-placeholder-count="10"><span style="{{b.s}}"></span></sc-for>
+                    </span>
+                    <span style="font-weight: 600; color: {{l.color}}">{{l.state}}</span>
+                  </span>
+                </div>
+              </sc-for>
+            </section>
+
+            <section aria-labelledby="kontrahenci" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+              <h2 id="kontrahenci" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Kontrahenci</h2>
+              <div style="background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; padding: 4px 12px; font-size: 14px">
+                <div style="display: flex; flex-direction: column; gap: 3px; padding: 9px 0; border-bottom: 1px dashed #9A9A9A">
+                  <span><b>kantor „USDT ↔ gotówka”</b> <span style="color: #8A2B0E; font-weight: 600">[ USŁUGA ]</span></span>
+                  <span style="font-size: 13px">TVj7…JvSp · 2 przelewy wychodzące · 2 250 USDT</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 3px; padding: 9px 0">
+                  <span><b>nieustalony nadawca</b></span>
+                  <span style="font-size: 13px">2 wpływy · 2 400 USDT</span>
+                </div>
+              </div>
+            </section>
+
+            <section aria-labelledby="dalej" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+              <h2 id="dalej" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Rekomendowane dalsze czynności</h2>
+              <ol style="margin: 0; padding: 6px; list-style: none; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; font-size: 14px; line-height: 1.5">
+                <li style="padding: 6px 10px; background: #1C2F7A; color: #FFFFFF">[1] Wystąpienie do operatora usługi wymiany o dane klienta (przelewy z 05.10 i 20.10)</li>
+                <li style="padding: 6px 10px">[2] Ustalenie źródła wpływów z 02.10 i 19.10</li>
+                <li style="padding: 6px 10px">[3] Monitoring aktywny — kolejny przelew do usługi wymiany wygeneruje powiadomienie</li>
+              </ol>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <nav aria-label="Skróty klawiszowe" style="display: flex; flex-wrap: wrap; gap: 3px; padding: 3px; font-size: 13px">
+        <a href="#pomoc" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F1</b>&nbsp;Pomoc</a>
+        <a href="#kopiuj" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F3</b>&nbsp;Kopiuj adres</a>
+        <a href="#graf" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F6</b>&nbsp;Graf</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F7</b>&nbsp;Raport PDF</a>
+        <a href="Wyniki.dc.html" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>Esc</b>&nbsp;Wróć</a>
+        <span style="flex: 1 1 200px; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">Kursy: NBP, tabela A · blockchain: Tron, dane bieżące · stan na 21.11.2026, 22:31</span>
+      </nav>
+    </div>
+  </div>
+
+  <footer style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 5px 8px; background: #C3C3C3; border-top: 2px solid #FFFFFF; box-shadow: inset 0 1px 0 #DFDFDF">
+    <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 700; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">KROPKA</a>
+    <a href="Wyniki.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">KR/2026/0031</a>
+    <a href="Adres.dc.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #B7B7B7; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #2A2A2A #FFFFFF #FFFFFF #2A2A2A">Adres TEon…GZey</a>
+    <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; min-height: 36px; padding: 0 12px; font-size: 13px; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">
+      <span style="color: #1C2F7A; font-weight: 600">PROTOTYP · DANE SYNTETYCZNE</span>
+      <span>Powered by Etherscan.io APIs</span>
+      <span>22:47</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { copied: false };
+  }
+  blocks(n) {
+    const out = [];
+    for (let i = 0; i < 10; i++) {
+      out.push({ s: i < n ? 'width: 10px; height: 13px; background: #1C2F7A' : 'width: 8px; height: 11px; border: 1px solid #6E6E6E' });
+    }
+    return out;
+  }
+  renderVals() {
+    const tx = [
+      { date: '02.10.2026', verb: 'OTRZYMAŁ', prep: 'od', arrow: '←', color: '#1C2F7A', usdt: '1 500', who: 'nieustalonego nadawcy', pln: '≈ 5 460,00 zł', eur: '', rate: '1 500 × 3,6400 zł · kurs USD z 01.10.2026', signal: false, signalText: '' },
+      { date: '05.10.2026', verb: 'WYSŁAŁ', prep: 'do', arrow: '→', color: '#8A2B0E', usdt: '1 400', who: 'usługi wymiany „USDT ↔ gotówka” (TVj7…JvSp)', pln: '≈ 5 096,00 zł', eur: '· ≈ 1 199 EUR', rate: '1 400 × 3,6400 zł · kurs USD z 02.10.2026', signal: true, signalText: 'PRZELEW DO USŁUGI WYMIANY · PRÓG 1 000 EUR PRZEKROCZONY' },
+      { date: '19.10.2026', verb: 'OTRZYMAŁ', prep: 'od', arrow: '←', color: '#1C2F7A', usdt: '900', who: 'nieustalonego nadawcy', pln: '≈ 3 276,00 zł', eur: '', rate: '900 × 3,6400 zł · kurs USD z 16.10.2026', signal: false, signalText: '' },
+      { date: '20.10.2026', verb: 'WYSŁAŁ', prep: 'do', arrow: '→', color: '#8A2B0E', usdt: '850', who: 'usługi wymiany „USDT ↔ gotówka” (TVj7…JvSp)', pln: '≈ 3 094,00 zł', eur: '· ≈ 728 EUR', rate: '850 × 3,6400 zł · kurs USD z 19.10.2026', signal: true, signalText: 'PRZELEW DO USŁUGI WYMIANY · ŁĄCZNIE OD 05.10: 1 927 EUR' }
+    ];
+    const inDays = [2, 19];
+    const outDays = [5, 20];
+    const days = [];
+    for (let d = 1; d <= 31; d++) {
+      let s = 'height: 16px; background: #DBDBDB';
+      if (inDays.indexOf(d) >= 0) s = 'height: 16px; background: #1C2F7A';
+      if (outDays.indexOf(d) >= 0) s = 'height: 16px; background: #8A2B0E';
+      days.push({ s: s });
+    }
+    const limits = [
+      { name: '1 000 EUR', desc: 'transakcja w walucie wirtualnej', blocks: this.blocks(10), state: 'PRZEKROCZONY · 1 raz (05.10)', color: '#8A2B0E' },
+      { name: '10 000 EUR', desc: 'łącznie do usługi wymiany', blocks: this.blocks(2), state: '19% · 1 927 EUR', color: '#2A2A2A' },
+      { name: '15 000 EUR', desc: 'transakcja okazjonalna', blocks: this.blocks(1), state: '13% · 1 927 EUR', color: '#2A2A2A' }
+    ];
+    return {
+      tx: tx,
+      days: days,
+      limits: limits,
+      copyLabel: this.state.copied ? 'Skopiowano' : 'Kopiuj adres',
+      copy: () => this.setState({ copied: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

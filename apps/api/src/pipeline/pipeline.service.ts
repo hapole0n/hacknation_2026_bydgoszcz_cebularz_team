@@ -181,7 +181,7 @@ export class PipelineService {
       const search = async (identifiers: Ident[], round: 1 | 2 | 3, accept: (d: EvidenceDraft) => boolean, onlyKey?: string) => {
         for (const c of connectors) {
           if (c.identifiers.length === 0) continue; // works on pages other sources found (round 4)
-          const row = (i: Ident, e: Pick<SearchLogEntry, 'outcome' | 'resources' | 'addresses' | 'note'>) => searchLog.push({ connector: c.id, round, identifier: { type: i.type, value: i.value }, ...e });
+          const row = (i: Ident, e: Pick<SearchLogEntry, 'outcome' | 'resources' | 'addresses' | 'note'>) => searchLog.push({ connector: c.id, round, identifier: { type: i.type, value: i.value }, ...e, at: new Date().toISOString() });
           const taken = identifiers.filter((i) => c.identifiers.includes(i.type) && (c.accepts?.(i) ?? true));
           const runnable = taken.filter((i) => {
             const key = c.missingKey?.(i.type);
@@ -192,7 +192,10 @@ export class PipelineService {
           if (runnable.length === 0) continue;
 
           const sum = round === 1 ? undefined : sumFor(c.id, round);
-          if (sum) sum.queries!++;
+          if (sum) {
+            sum.queries!++;
+            sum.at = new Date().toISOString();
+          }
           const per = new Map<string, { resources: number; addresses: number }>();
           const skipped = new Map<string, string>();
           try {
