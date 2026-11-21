@@ -173,6 +173,7 @@ model Link {
   excludedReason  String?
   analystDecision AnalystDecision?
   analystNote     String?
+  analystName     String? // who decided; shown next to the computed score, never changes it
   decidedAt       DateTime?
 
   run        Run        @relation(fields: [runId], references: [id], onDelete: Cascade)

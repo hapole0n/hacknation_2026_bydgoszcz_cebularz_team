@@ -284,6 +284,45 @@ describe('address case — who is behind A1?', () => {
   });
 });
 
+describe('analyst decisions and demo cases (UI)', () => {
+  it('confirm / reject stores who, when and why — and never changes the computed score', async () => {
+    const link = results.links.find((l) => l.address.address === addr('B1') && l.identifier.type === 'NICK')!;
+    const out = await api.decide(link.id, { decision: 'CONFIRMED', analyst: 'A. Kowalska', note: 'Potwierdzone w rozmowie' });
+    expect(out).toMatchObject({ analystDecision: 'CONFIRMED', analystName: 'A. Kowalska', analystNote: 'Potwierdzone w rozmowie', decidedAt: expect.any(Date) });
+    const after = (await api.getRun(results.run.id)).links.find((l) => l.id === link.id)!;
+    expect({ score: after.score, band: after.band, breakdown: after.breakdownJson }).toEqual({ score: link.score, band: link.band, breakdown: link.breakdownJson });
+    expect(after).toMatchObject({ analystDecision: 'CONFIRMED', analystName: 'A. Kowalska' });
+
+    expect(await api.decide(link.id, { decision: 'REJECTED', analyst: 'B. Nowak' })).toMatchObject({ analystDecision: 'REJECTED', analystName: 'B. Nowak', analystNote: null });
+    expect(await api.decide(link.id, { decision: null })).toEqual({ id: link.id, analystDecision: null, analystNote: null, analystName: null, decidedAt: null });
+  });
+
+  it('validates the decision and the link', async () => {
+    const link = results.links[0]!;
+    await expect(api.decide(link.id, { decision: 'MAYBE', analyst: 'x' })).rejects.toThrow(/decision/);
+    await expect(api.decide(link.id, { decision: 'CONFIRMED' })).rejects.toThrow(/analyst/);
+    await expect(api.decide(link.id, { decision: 'CONFIRMED', analyst: 'x', note: 'n'.repeat(1001) })).rejects.toThrow(/note/);
+    await expect(api.decide('00000000-0000-0000-0000-000000000000', { decision: null })).rejects.toThrow(/not found/);
+  });
+
+  it('the demo cases are created once, match the fixtures, and are not duplicated', async () => {
+    const demo = JSON.parse(readFileSync(repoPath('fixtures/demo-case.json'), 'utf8'));
+    expect(demo.identifiers.identifiers).toEqual(spec.case.identifiers);
+    expect(demo.address.identifiers).toEqual([{ type: 'ADDRESS', value: addr('A1') }]);
+    const existed = (await prisma.case.count({ where: { createdBy: 'demo' } })) > 0; // never delete a demo case somebody loaded by hand
+    const a = await api.demoCase();
+    const b = await api.demoCase();
+    const c = await api.demoCase('address');
+    if (!existed) caseIds.push(a.id, c.id);
+    expect(b.id).toBe(a.id);
+    expect(a).toMatchObject({ title: 'Demo — Jan Testowy', createdBy: 'demo' });
+    expect(c.identifiers.map((i) => i.type)).toEqual(['ADDRESS']);
+    await expect(api.demoCase('other')).rejects.toThrow(/variant/);
+    const listed = (await api.listCases()).find((k) => k.id === a.id)!;
+    expect(listed).toMatchObject({ identifiers: expect.any(Array), _count: { runs: 0 }, runs: [] });
+  });
+});
+
 describe('failure handling and input validation', () => {
   it('a run whose connectors all fail is stored as FAILED with the reason', async () => {
     const broken = { id: 'broken', kind: 'web2', version: '0', policy: {}, search: async () => { throw new Error('boom'); } };

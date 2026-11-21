@@ -1,16 +1,468 @@
 {
-  "subtitle": "Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut",
-  "language": "Język",
-  "health": {
-    "title": "Stan systemu",
-    "api": "API",
-    "db": "Baza danych",
-    "loading": "Sprawdzanie…",
-    "up": "działa",
-    "down": "niedostępna",
-    "ok": "działa",
-    "degraded": "ograniczone",
-    "unreachable": "brak połączenia z API"
+  "app": {
+    "subtitle": "Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut",
+    "navCases": "Sprawy",
+    "navNew": "Nowa sprawa",
+    "language": "Język",
+    "footer": "Wyniki są przesłankami analitycznymi, a nie rozstrzygnięciem. Dane w sprawach demonstracyjnych są sztuczne.",
+    "notFound": "Nie ma takiej strony",
+    "notFoundBody": "Adres jest nieprawidłowy albo sprawa została usunięta."
   },
-  "scaffold": "Szkielet projektu jest gotowy. Formularz sprawy i analiza pojawią się w kolejnych fazach."
+  "common": {
+    "loading": "Ładowanie…",
+    "retry": "Spróbuj ponownie",
+    "loadError": "Nie udało się pobrać danych",
+    "back": "Wróć",
+    "yes": "tak",
+    "no": "nie",
+    "none": "brak",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano",
+    "close": "Zamknij",
+    "status": {
+      "PENDING": "oczekuje",
+      "RUNNING": "w toku",
+      "DONE": "zakończona",
+      "FAILED": "nieudana"
+    },
+    "fact": "Fakt źródłowy",
+    "calc": "Wynik obliczeń"
+  },
+  "cases": {
+    "title": "Sprawy",
+    "lead": "Sprawa zbiera identyfikatory jednej osoby i kolejne analizy tych identyfikatorów.",
+    "new": "Nowa sprawa",
+    "loadDemo": "Załaduj sprawę demonstracyjną",
+    "loadDemoAddress": "Demonstracja: kto stoi za adresem?",
+    "demoHint": "Sprawa demonstracyjna zawiera wyłącznie sztuczne dane (osoba „Jan Testowy”).",
+    "emptyTitle": "Nie ma jeszcze żadnej sprawy",
+    "emptyBody": "Utwórz sprawę z własnymi identyfikatorami albo załaduj sprawę demonstracyjną. Wszystkie jej dane są sztuczne.",
+    "columns": {
+      "title": "Sprawa",
+      "identifiers": "Identyfikatory",
+      "createdAt": "Utworzona",
+      "lastRun": "Ostatnia analiza",
+      "runs": "Analizy"
+    },
+    "noRuns": "jeszcze nie uruchomiono",
+    "moreIdentifiers": "+{{count}} więcej"
+  },
+  "form": {
+    "title": "Nowa sprawa",
+    "lead": "Podaj co najmniej jeden identyfikator. System przeszuka wybrane źródła, rozpozna adresy kryptowalut i oceni, jak prawdopodobne jest powiązanie z osobą.",
+    "caseTitle": "Nazwa sprawy",
+    "caseTitlePlaceholder": "np. Sprawa 12/2026",
+    "identifiers": "Identyfikatory",
+    "identifiersHint": "Im więcej różnych identyfikatorów, tym pewniejsze powiązania: niezależne źródła potwierdzają się nawzajem.",
+    "addIdentifier": "Dodaj identyfikator",
+    "remove": "Usuń identyfikator",
+    "type": "Rodzaj",
+    "value": "Wartość",
+    "sources": "Źródła danych",
+    "sourcesHint": "Domyślnie przeszukiwany jest tylko syntetyczny „mini-internet”. Źródła na żywo wysyłają zapytania poza system, więc zaznaczaj je świadomie.",
+    "terms": "Regulamin źródła",
+    "rate": "limit {{count}} zapytań na sekundę",
+    "noRateLimit": "bez limitu (źródło lokalne)",
+    "methods": {
+      "official_api": "oficjalne API",
+      "public_page": "strona publiczna",
+      "synthetic": "dane sztuczne"
+    },
+    "connectorNames": {
+      "sandbox": "Syntetyczny mini-internet",
+      "github": "GitHub (publiczne API)"
+    },
+    "connectorNotes": {
+      "sandbox": "Strony, profile, ogłoszenia i adresy wyłącznie sztuczne. Zalecane do demonstracji.",
+      "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com."
+    },
+    "chainTitle": "Dane z blockchaina",
+    "chain": {
+      "fixture": "Syntetyczne historie transakcji (bez internetu)",
+      "live": "Publiczne eksploratory blockchaina (na żywo)",
+      "off": "Pomiń analizę blockchaina"
+    },
+    "chainLiveNote": "Wymaga kluczy API w pliku .env. Źródła bez klucza zostaną pominięte z komunikatem.",
+    "adapterReady": "gotowe",
+    "adapterUnavailable": "niedostępne: {{reason}}",
+    "submitRun": "Utwórz sprawę i uruchom analizę",
+    "submitSave": "Tylko utwórz sprawę",
+    "running": "Trwa analiza…",
+    "errors": {
+      "title": "Podaj nazwę sprawy.",
+      "identifiers": "Dodaj co najmniej jeden identyfikator z wartością.",
+      "connectors": "Wybierz co najmniej jedno źródło danych.",
+      "server": "Serwer odrzucił dane"
+    }
+  },
+  "identifierTypes": {
+    "NAME": "Imię i nazwisko",
+    "NICK": "Nick na forum",
+    "MESSENGER": "Komunikator (Telegram i inne)",
+    "SOCIAL_LOGIN": "Login w serwisie",
+    "EMAIL": "Adres e-mail",
+    "ADDRESS": "Adres kryptowalutowy"
+  },
+  "identifierHints": {
+    "NAME": "Najsłabsze powiązanie (−20 pkt): wymaga potwierdzenia innym identyfikatorem.",
+    "NICK": "Nick z forum lub portalu. Ten sam nick na innej platformie może należeć do kogoś innego.",
+    "MESSENGER": "Uchwyt w komunikatorze, np. @nazwa. Uznawany za podany kontakt.",
+    "SOCIAL_LOGIN": "Login w serwisie społecznościowym lub dla programistów.",
+    "EMAIL": "Dokładne dopasowanie adresu e-mail daje +10 pkt.",
+    "ADDRESS": "BTC, ETH, TRON lub nazwa ENS. System pokaże, kto ten adres opublikował."
+  },
+  "identifierPlaceholders": {
+    "NAME": "Jan Kowalski",
+    "NICK": "jtestowy",
+    "MESSENGER": "@jtestowy_pl",
+    "SOCIAL_LOGIN": "jtestowy",
+    "EMAIL": "jan.testowy@example.org",
+    "ADDRESS": "0x… / bc1… / T… / nazwa.eth"
+  },
+  "case": {
+    "identifiers": "Identyfikatory",
+    "runs": "Analizy",
+    "noRuns": "Ta sprawa nie była jeszcze analizowana.",
+    "runNow": "Uruchom analizę",
+    "runAgain": "Uruchom analizę ponownie",
+    "createdBy": "Założył(a)",
+    "createdAt": "Utworzona",
+    "columns": {
+      "startedAt": "Rozpoczęta",
+      "status": "Stan",
+      "rules": "Wersja reguł",
+      "open": "Wyniki"
+    },
+    "open": "Otwórz wyniki"
+  },
+  "run": {
+    "backToCase": "Wróć do sprawy",
+    "analysisOf": "Analiza z",
+    "rulesVersion": "Wersja reguł",
+    "sources": "Źródła",
+    "chainMode": "Blockchain",
+    "chainModes": {
+      "fixture": "syntetyczne historie",
+      "live": "na żywo",
+      "off": "pominięty"
+    },
+    "stats": {
+      "links": "powiązań",
+      "excluded": "odrzuconych",
+      "evidence": "dowodów",
+      "snapshots": "adresów z historią"
+    },
+    "distribution": "Rozkład ocen",
+    "notes": "Uwagi do analizy",
+    "failed": "Analiza zakończyła się błędem",
+    "tabs": {
+      "links": "Powiązania",
+      "rejected": "Odrzucone przypisania",
+      "graph": "Graf",
+      "evidence": "Źródła i dowody",
+      "identities": "Kto stoi za adresem"
+    },
+    "connectorError": "Źródło „{{connector}}” zwróciło błąd: {{message}}",
+    "chainNote": "Adres {{address}}: {{note}}",
+    "chainWarning": "Adres {{address}}: {{warning}}"
+  },
+  "bands": {
+    "VERY_HIGH": "Bardzo wysokie",
+    "PROBABLE": "Prawdopodobne",
+    "MEDIUM": "Średnie",
+    "LOW": "Niskie",
+    "EXCLUDED": "Wykluczone"
+  },
+  "bandHints": {
+    "VERY_HIGH": "80–100%",
+    "PROBABLE": "60–79%",
+    "MEDIUM": "40–59%: wymaga drugiego śladu",
+    "LOW": "poniżej 40%: szum",
+    "EXCLUDED": "0%: fałszywe trafienie"
+  },
+  "links": {
+    "columns": {
+      "address": "Adres",
+      "network": "Sieć",
+      "identifier": "Identyfikator",
+      "score": "Ocena",
+      "band": "Przedział",
+      "source": "Źródło",
+      "decision": "Decyzja"
+    },
+    "empty": "W tym przebiegu nie ma powiązań do oceny.",
+    "emptyHint": "Odrzucone przypisania znajdziesz w osobnej zakładce.",
+    "selectHint": "Wybierz wiersz, aby zobaczyć rozbicie oceny.",
+    "select": "Wybierz powiązanie {{address}}"
+  },
+  "score": {
+    "title": "Rozbicie oceny",
+    "calculated": "Wynik obliczeń",
+    "total": "Wynik",
+    "rulesVersion": "wg reguł w wersji {{version}}",
+    "columns": {
+      "rule": "Reguła",
+      "reason": "Uzasadnienie",
+      "points": "Punkty",
+      "evidence": "Dowody"
+    },
+    "kinds": {
+      "base": "Podstawa: rodzaj źródła",
+      "identity": "Dopasowanie tożsamości",
+      "synergy": "Synergia niezależnych źródeł",
+      "chain": "Blockchain",
+      "recency": "Aktualność śladu",
+      "conflict": "Konflikt tożsamości",
+      "clamp": "Ograniczenie zakresu",
+      "exclusion": "Wykluczenie"
+    },
+    "hints": "Co zmieniłoby wynik",
+    "noHints": "Brak podpowiedzi dla tego wyniku.",
+    "evidenceCount": "Dowody ({{count}})",
+    "noEvidence": "oparte na danych z blockchaina",
+    "tabs": {
+      "score": "Ocena",
+      "address": "Karta adresu"
+    },
+    "for": "Ocena powiązania",
+    "mentionedBy": "Powiązany identyfikator"
+  },
+  "decision": {
+    "title": "Decyzja analityka",
+    "note": "Decyzja jest zapisana osobno i nie zmienia wyliczonego wyniku.",
+    "analyst": "Analityk",
+    "analystPlaceholder": "Imię i nazwisko",
+    "comment": "Komentarz",
+    "commentPlaceholder": "Uzasadnienie decyzji (opcjonalnie)",
+    "confirm": "Potwierdź",
+    "reject": "Odrzuć",
+    "withdraw": "Wycofaj decyzję",
+    "state": {
+      "CONFIRMED": "Potwierdzone",
+      "REJECTED": "Odrzucone przez analityka",
+      "none": "Brak decyzji"
+    },
+    "by": "{{name}}, {{date}}",
+    "analystRequired": "Podaj imię i nazwisko analityka.",
+    "saved": "Zapisano decyzję.",
+    "failed": "Nie udało się zapisać decyzji"
+  },
+  "rejected": {
+    "title": "Odrzucone przypisania",
+    "lead": "Tych adresów nie przypisujemy osobie (0%): należą do giełdy, usługi, kontraktu albo są znanym adresem zbiórki lub przykładem. Interakcja z nimi jest zapisana i może być tropem, np. kontakt z giełdą to podstawa do zapytania o dane KYC.",
+    "columns": {
+      "address": "Adres",
+      "category": "Rodzaj",
+      "reason": "Powód odrzucenia",
+      "mentionedWith": "Wspomniany przy",
+      "evidence": "Dowody"
+    },
+    "empty": "Żaden adres nie został odrzucony.",
+    "recorded": "Interakcja zapisana",
+    "labelSource": "Źródło etykiety"
+  },
+  "categories": {
+    "UNHOSTED": "Niehostowany (portfel osoby)",
+    "CEX_CUSTODIAL": "Giełda (powiernicza)",
+    "CEX_DEPOSIT": "Adres depozytowy giełdy",
+    "CONTRACT": "Smart kontrakt",
+    "DEX": "DEX / router",
+    "CASP_KANTOR": "Kantor / punkt wymiany",
+    "PAYMENT_GATEWAY": "Bramka płatnicza",
+    "CRYPTO_CARD": "Karta krypto",
+    "MIXER": "Mikser",
+    "CHARITY": "Zbiórka charytatywna",
+    "SANCTIONED": "Adres sankcjonowany",
+    "EXAMPLE_BURN": "Adres przykładowy lub burn",
+    "UNKNOWN_SERVICE": "Usługa (ustalone heurystyką)"
+  },
+  "sourceTypes": {
+    "OFFICIAL_PROFILE": "Oficjalny profil",
+    "SALE_AD": "Ogłoszenie sprzedaży",
+    "P2P_OFFER": "Oferta P2P",
+    "EMAIL_FOOTER": "Stopka e-maila",
+    "MESSENGER_SETTLEMENT": "Komunikator (rozliczenie)",
+    "FORUM_DISCUSSION": "Dyskusja na forum",
+    "MASS_COMMENT": "Komentarze masowe",
+    "GIVEAWAY": "Rozdanie (giveaway)"
+  },
+  "contextTypes": {
+    "SALE": "sprzedaż",
+    "P2P": "P2P / gotówka",
+    "DONATION": "wsparcie lub darowizna",
+    "GIVEAWAY": "rozdanie",
+    "SETTLEMENT": "rozliczenie",
+    "DISCUSSION": "dyskusja"
+  },
+  "chains": {
+    "BTC": "Bitcoin",
+    "ETH": "Ethereum",
+    "TRON": "TRON"
+  },
+  "address": {
+    "title": "Karta adresu",
+    "network": "Sieć",
+    "category": "Rodzaj adresu",
+    "contract": "Smart kontrakt (bytecode różny od 0x)",
+    "labels": "Etykiety i ich źródła",
+    "labelStatic": "etykieta ze zbioru",
+    "labelHeuristic": "ustalone heurystyką",
+    "noLabels": "Brak etykiety: adres traktowany jest jako niehostowany.",
+    "links": "Oceny tego adresu",
+    "published": "Gdzie adres opublikowano",
+    "publishedNote": "Fakt źródłowy: fragment tekstu wokół adresu (±200 znaków).",
+    "context": "Kontekst",
+    "onchain": "Aktywność w blockchainie",
+    "onchainNote": "Wynik obliczeń z historii transakcji; kwoty w PLN po kursie średnim NBP z ostatniego dnia roboczego przed transakcją.",
+    "noChain": "Brak danych z blockchaina dla tego adresu.",
+    "noChainWhy": "W trybie „{{mode}}” historię mają tylko adresy bohaterów demonstracji lub adresy z dostępnym źródłem.",
+    "kpi": {
+      "tx": "Transakcje",
+      "first": "Pierwsza aktywność",
+      "last": "Ostatnia aktywność",
+      "inPln": "Wpływy",
+      "outPln": "Wypływy",
+      "stableIn": "Stablecoiny, wpływ",
+      "stableOut": "Stablecoiny, wypływ",
+      "counterparties": "Kontrahenci",
+      "known": "w tym rozpoznani: {{count}}",
+      "provider": "Źródło danych",
+      "fetched": "Pobrano"
+    },
+    "interactions": "Interakcje z usługami",
+    "interactionColumns": {
+      "kind": "Rodzaj",
+      "count": "Liczba",
+      "inPln": "Wpływ",
+      "outPln": "Wypływ"
+    },
+    "swaps": "Wymiany na DEX",
+    "swapLine": "{{date}}: {{sold}} → {{bought}} przez {{via}}",
+    "cashOut": "Sygnały wyjścia do gotówki",
+    "cashOutDetected": "Wykryto przepływy do punktów, w których środki mogą opuścić rynek krypto.",
+    "cashOutNone": "Nie wykryto sygnałów wyjścia do gotówki.",
+    "cashOutTotal": "Łącznie",
+    "endpointColumns": {
+      "address": "Punkt",
+      "kind": "Rodzaj",
+      "count": "Przelewy",
+      "total": "Wartość"
+    },
+    "adAddress": "adres z ogłoszenia",
+    "thresholds": "Progi kwotowe (AML)",
+    "thresholdColumns": {
+      "threshold": "Próg",
+      "max": "Największy pojedynczy przelew",
+      "single": "Pojedynczy przelew ≥ próg",
+      "cumulative": "Suma wyjść do gotówki ≥ próg"
+    },
+    "notReached": "nie osiągnięto",
+    "reachedAt": "osiągnięto {{date}}",
+    "chronology": "Chronologia przepływu środków",
+    "chronologyColumns": {
+      "time": "Data",
+      "direction": "Kierunek",
+      "counterparty": "Kontrahent",
+      "amount": "Kwota",
+      "pln": "PLN",
+      "tags": "Wskaźniki"
+    },
+    "in": "wpływ",
+    "out": "wypływ",
+    "unvalued": "Pozycje bez wyceny: {{count}} (brak kursu lub ceny).",
+    "truncated": "Historia obcięta do ostatniej strony wyników dostawcy."
+  },
+  "tags": {
+    "SWAP_DEX": "wymiana na DEX",
+    "STABLECOIN_CONVERSION": "zamiana na stablecoin",
+    "TO_CEX": "do giełdy",
+    "TO_CEX_DEPOSIT": "do adresu depozytowego giełdy",
+    "FROM_CEX": "z giełdy",
+    "TO_KANTOR": "do kantoru",
+    "FROM_KANTOR": "z kantoru",
+    "TO_GATEWAY": "do bramki płatniczej",
+    "TO_CARD": "do karty krypto",
+    "MIXER": "mikser",
+    "SANCTIONED": "adres sankcjonowany",
+    "TO_AD_ADDRESS": "na adres z ogłoszenia",
+    "USDT_TO_CASH": "USDT na gotówkę",
+    "STABLECOIN_TO_CASH": "stablecoin na gotówkę",
+    "OVER_1000_EUR": "≥ 1 000 EUR",
+    "OVER_10000_EUR": "≥ 10 000 EUR",
+    "OVER_15000_EUR": "≥ 15 000 EUR"
+  },
+  "graph": {
+    "title": "Graf powiązań",
+    "lead": "Identyfikatory, adresy, źródła i kontrahenci. Szare linie przerywane to wykluczone przypisania. Kliknij element, aby zobaczyć szczegóły.",
+    "showExcluded": "Pokaż wykluczone",
+    "showCounterparties": "Pokaż kontrahentów",
+    "showSources": "Pokaż źródła",
+    "fit": "Dopasuj widok",
+    "empty": "Brak elementów do narysowania.",
+    "others": "+{{count}} innych adresów",
+    "legend": "Legenda",
+    "legendItems": {
+      "identifier": "Identyfikator",
+      "identity": "Konto, które opublikowało adres",
+      "source": "Źródło (dowód)",
+      "address": "Adres; obwódka w kolorze przedziału oceny",
+      "counterparty": "Kontrahent z blockchaina; kolor oznacza rodzaj",
+      "linked": "Powiązanie; etykieta to ocena",
+      "mentioned": "Adres wspomniany w źródle",
+      "transfer": "Przepływ; etykieta to wartość w PLN",
+      "excluded": "Wykluczone przypisanie (szare, przerywane)"
+    },
+    "details": "Szczegóły",
+    "selectHint": "Wybierz element grafu, aby zobaczyć szczegóły.",
+    "kind": {
+      "identifier": "Identyfikator",
+      "identity": "Konto",
+      "source": "Źródło",
+      "address": "Adres",
+      "counterparty": "Kontrahent",
+      "others": "Pozostali kontrahenci"
+    },
+    "openAddress": "Pokaż kartę adresu",
+    "bestScore": "Najwyższa ocena",
+    "excludedNote": "Wykluczony z przypisania osobistego."
+  },
+  "evidence": {
+    "title": "Źródła i dowody",
+    "lead": "Każdy dowód ma adres, czas pobrania i odcisk SHA-256 pełnej treści. W bazie przechowujemy tylko fragment (minimalizacja danych).",
+    "columns": {
+      "platform": "Platforma",
+      "type": "Rodzaj źródła",
+      "url": "Adres (URL)",
+      "fetched": "Pobrano",
+      "published": "Opublikowano",
+      "sha": "SHA-256",
+      "round": "Etap"
+    },
+    "rounds": {
+      "1": "wyszukanie po identyfikatorach",
+      "2": "odwrotne wyszukanie adresu",
+      "3": "profil autora"
+    },
+    "author": "Autor",
+    "snippet": "Fragment",
+    "snapshotOf": "Archiwalna kopia strony",
+    "empty": "Nie zebrano żadnych dowodów.",
+    "open": "Szczegóły dowodu"
+  },
+  "identities": {
+    "title": "Kto stoi za adresem",
+    "lead": "Konta, które opublikowały adres, oraz inne adresy tych kont. Ten sam nick na innej platformie nie dowodzi, że to ta sama osoba.",
+    "relation": {
+      "PUBLISHER": "opublikowało adres",
+      "SAME_NICK_OTHER_PLATFORM": "ten sam nick na innej platformie; możliwa inna osoba"
+    },
+    "columns": {
+      "account": "Konto",
+      "relation": "Relacja",
+      "score": "Ocena",
+      "other": "Inne adresy tego konta"
+    },
+    "noOther": "brak",
+    "empty": "Nie znaleziono kont, które opublikowały ten adres."
+  }
 }

@@ -3,19 +3,19 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
 Wszystkie komponenty są Open Source.
 
-## Podsumowanie (652 pakietów npm)
+## Podsumowanie (654 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
-| MIT | 540 |
+| MIT | 541 |
 | Apache-2.0 | 39 |
 | ISC | 39 |
 | BSD-3-Clause | 10 |
 | BSD-2-Clause | 10 |
 | BlueOak-1.0.0 | 4 |
+| OFL-1.1 | 2 |
 | MPL-2.0 | 2 |
 | Unlicense | 2 |
-| OFL-1.1 | 1 |
 | MIT and ISC | 1 |
 | CC-BY-4.0 | 1 |
 | EPL-2.0 | 1 |
@@ -91,7 +91,8 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @floating-ui/dom | 1.8.0 | MIT | https://floating-ui.com |
 | @floating-ui/react-dom | 2.1.9 | MIT | https://floating-ui.com/docs/react-dom |
 | @floating-ui/utils | 0.2.12 | MIT | https://floating-ui.com |
-| @fontsource-variable/geist | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/geist |
+| @fontsource-variable/ibm-plex-sans | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/ibm-plex-sans |
+| @fontsource-variable/source-serif-4 | 5.3.1 | OFL-1.1 | https://fontsource.org/fonts/source-serif-4 |
 | @humanfs/core | 0.19.2 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
 | @humanfs/node | 0.16.8 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
 | @humanfs/types | 0.15.0 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
@@ -337,6 +338,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | cors | 2.8.6 | MIT | https://github.com/expressjs/cors#readme |
 | cross-spawn | 7.0.6 | MIT | https://github.com/moxystudio/node-cross-spawn |
 | csstype | 3.2.4 | MIT | https://github.com/frenic/csstype#readme |
+| cytoscape | 3.35.0 | MIT | http://js.cytoscape.org |
 | d3-array | 3.2.1, 3.2.4 | ISC | https://d3js.org/d3-array/ |
 | d3-color | 3.1.0 | ISC | https://d3js.org/d3-color/ |
 | d3-delaunay | 6.0.2 | ISC | https://github.com/d3/d3-delaunay |

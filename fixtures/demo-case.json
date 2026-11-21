@@ -1,0 +1,29 @@
+{
+  "_comment": "Cases loaded by the \"Załaduj sprawę demonstracyjną\" button (POST /api/demo/case). The address equals A1 of fixtures/addresses.json (a test checks it).",
+  "identifiers": {
+    "title": "Demo — Jan Testowy",
+    "identifiers": [
+      {
+        "type": "NICK",
+        "value": "jtestowy"
+      },
+      {
+        "type": "EMAIL",
+        "value": "jan.testowy@example.org"
+      },
+      {
+        "type": "MESSENGER",
+        "value": "@jtestowy_pl"
+      }
+    ]
+  },
+  "address": {
+    "title": "Demo — adres A1",
+    "identifiers": [
+      {
+        "type": "ADDRESS",
+        "value": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47"
+      }
+    ]
+  }
+}

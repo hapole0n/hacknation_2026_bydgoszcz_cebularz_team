@@ -1,7 +1,9 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { readFileSync } from 'node:fs';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
 import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@olcys/core';
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
+import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
 
@@ -45,6 +47,16 @@ export function parseCaseBody(body: unknown) {
   };
 }
 
+/** Validates POST /api/links/:id/decision: the analyst's call on a computed link (kept apart from the score). */
+export function parseDecisionBody(body: unknown) {
+  if (!isObj(body)) throw new BadRequestException('expected a JSON object');
+  const { decision } = body;
+  if (decision !== null && decision !== 'CONFIRMED' && decision !== 'REJECTED') throw new BadRequestException('decision: expected "CONFIRMED", "REJECTED" or null (to withdraw)');
+  if (decision === null) return { analystDecision: null, analystNote: null, analystName: null, decidedAt: null };
+  const note = body.note === undefined || body.note === '' ? null : text(body.note, 'note', 1000);
+  return { analystDecision: decision as 'CONFIRMED' | 'REJECTED', analystNote: note, analystName: text(body.analyst, 'analyst', 100), decidedAt: new Date() };
+}
+
 @Controller()
 export class ApiController {
   constructor(
@@ -74,7 +86,35 @@ export class ApiController {
 
   @Get('cases')
   listCases() {
-    return this.prisma.case.findMany({ orderBy: { createdAt: 'desc' }, include: { _count: { select: { runs: true } } } });
+    return this.prisma.case.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        identifiers: { select: { type: true, value: true } },
+        _count: { select: { runs: true } },
+        runs: { orderBy: { startedAt: 'desc' }, take: 1, select: { id: true, status: true, startedAt: true } },
+      },
+    });
+  }
+
+  /** "Załaduj sprawę demonstracyjną": creates (once) the synthetic demo case — variant "identifiers" (default) or "address". */
+  @Post('demo/case')
+  async demoCase(@Query('variant') variant?: string) {
+    const demo = JSON.parse(readFileSync(repoPath('fixtures/demo-case.json'), 'utf8'));
+    if (variant !== undefined && variant !== 'identifiers' && variant !== 'address') throw new BadRequestException('variant: "identifiers" or "address"');
+    const def = demo[variant ?? 'identifiers'];
+    const existing = await this.prisma.case.findFirst({ where: { title: def.title, createdBy: 'demo' }, include: { identifiers: true } });
+    if (existing) return existing;
+    const { identifiers, ...data } = parseCaseBody({ ...def, createdBy: 'demo' });
+    return this.prisma.case.create({ data: { ...data, identifiers: { create: identifiers } }, include: { identifiers: true } });
+  }
+
+  /** The analyst confirms / rejects a computed link (name + time stored); the computed score is never touched. */
+  @Post('links/:id/decision')
+  async decide(@Param('id') id: string, @Body() body: unknown) {
+    const data = parseDecisionBody(body);
+    const link = await this.prisma.link.findUnique({ where: { id }, select: { id: true } });
+    if (!link) throw new NotFoundException(`link ${id} not found`);
+    return this.prisma.link.update({ where: { id }, data, select: { id: true, analystDecision: true, analystNote: true, analystName: true, decidedAt: true } });
   }
 
   @Get('cases/:id')

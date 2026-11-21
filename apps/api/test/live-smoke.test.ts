@@ -44,15 +44,26 @@ describe.skipIf(!process.env.ETHERSCAN_API_KEY)('live smoke (Etherscan + NBP, pu
   });
 
   it('NBP: the real EUR/PLN rate before 2026-11-05 is the one of 2026-11-04', async () => {
-    const fx = await new NbpService(egress).fxFor(['2026-11-05T10:00:00Z'], { caseId: marker });
+    // a public API: tolerate a transient 5xx (each attempt is audited, the failed ones too)
+    let fx: Awaited<ReturnType<NbpService['fxFor']>> | undefined;
+    for (let attempt = 1; !fx; attempt++) {
+      try {
+        fx = await new NbpService(egress).fxFor(['2026-11-05T10:00:00Z'], { caseId: marker });
+      } catch (e) {
+        if (attempt === 3) throw e;
+        await new Promise((r) => setTimeout(r, 1500 * attempt));
+      }
+    }
     expect(fx.get('2026-11-05T10:00:00Z')).toMatchObject({ eurDate: '2026-11-04', eurPln: 4.4014 });
-  }, 30_000);
+  }, 40_000);
 
   it('every request is in the audit log: allowlisted hosts only, path without the key, nothing blocked', async () => {
     const rows = await prisma.auditLog.findMany({ where: { caseId: marker } });
     expect(rows.length).toBeGreaterThanOrEqual(7); // 2 × (txlist, tokentx, eth_getCode) + NBP
     expect(new Set(rows.map((r) => r.host))).toEqual(new Set(['api.etherscan.io', 'api.nbp.pl']));
-    expect(rows.every((r) => r.status === 200)).toBe(true);
+    expect(rows.every((r) => r.status > 0)).toBe(true); // none blocked by the allowlist (0) or failed on the network (-1)
+    expect(rows.filter((r) => r.host === 'api.etherscan.io').every((r) => r.status === 200)).toBe(true);
+    expect(rows.some((r) => r.host === 'api.nbp.pl' && r.status === 200)).toBe(true);
     expect(rows.filter((r) => r.host === 'api.etherscan.io').every((r) => r.path === '/v2/api' && r.connectorId === 'etherscan')).toBe(true);
     expect(JSON.stringify(rows)).not.toContain(process.env.ETHERSCAN_API_KEY!);
   });

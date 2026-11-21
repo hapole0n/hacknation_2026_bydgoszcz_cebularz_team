@@ -1,65 +1,68 @@
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_NAME } from '@/config/app';
 import { LANGUAGES } from '@/i18n';
-
-type Health = { status: 'ok' | 'degraded'; db: 'up' | 'down'; time: string };
-
-const fetchHealth = async (): Promise<Health> => {
-  const res = await fetch('/api/health');
-  if (!res.ok) throw new Error(String(res.status));
-  return res.json();
-};
+import { CasePage } from '@/pages/CasePage';
+import { CasesPage } from '@/pages/CasesPage';
+import { NewCasePage } from '@/pages/NewCasePage';
+import { RunPage } from '@/pages/RunPage';
+import { Link, matchPath, usePath } from '@/router';
+import { cn } from '@/lib/utils';
 
 export function App() {
   const { t, i18n } = useTranslation();
-  const health = useQuery({ queryKey: ['health'], queryFn: fetchHealth, refetchInterval: 10_000, retry: false });
+  const path = usePath();
+  const match = matchPath(path);
+
+  const nav = [
+    { to: '/', label: t('app.navCases'), active: match.page === 'cases' || match.page === 'case' || match.page === 'run' },
+    { to: '/cases/new', label: t('app.navNew'), active: match.page === 'new' },
+  ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="flex items-center justify-between border-b px-6 py-4">
-        <div>
-          <h1 className="text-xl font-semibold">{APP_NAME}</h1>
-          <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
-        </div>
-        <div className="flex items-center gap-2" role="group" aria-label={t('language')}>
-          {LANGUAGES.map((lng) => (
-            <Button
-              key={lng}
-              size="sm"
-              variant={i18n.language === lng ? 'default' : 'outline'}
-              onClick={() => i18n.changeLanguage(lng)}
-            >
-              {lng.toUpperCase()}
-            </Button>
-          ))}
+    <div className="flex min-h-screen flex-col">
+      <header className="border-b bg-card">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-8 gap-y-2 px-6 py-3">
+          <Link to="/" className="flex items-baseline gap-3">
+            <span className="font-serif text-2xl font-semibold">{APP_NAME}</span>
+            <span className="hidden text-sm text-muted-foreground md:inline">{t('app.subtitle')}</span>
+          </Link>
+          <div className="flex items-center gap-6">
+            <nav aria-label="Menu" className="flex gap-5 text-sm">
+              {nav.map((n) => (
+                <Link key={n.to} to={n.to} aria-current={n.active ? 'page' : undefined} className={cn('border-b-2 py-1 font-medium', n.active ? 'border-steel text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground')}>
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="flex items-center gap-1" role="group" aria-label={t('app.language')}>
+              {LANGUAGES.map((lng) => (
+                <Button key={lng} size="sm" variant={i18n.language === lng ? 'default' : 'outline'} onClick={() => i18n.changeLanguage(lng)} aria-pressed={i18n.language === lng}>
+                  {lng.toUpperCase()}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl space-y-4 p-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('health.title')}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1 text-sm">
-            {health.isPending && <p>{t('health.loading')}</p>}
-            {health.isError && <p className="text-destructive">{t('health.unreachable')}</p>}
-            {health.data && (
-              <>
-                <p>
-                  {t('health.api')}: <strong>{t(`health.${health.data.status}`)}</strong>
-                </p>
-                <p>
-                  {t('health.db')}: <strong>{t(`health.${health.data.db}`)}</strong>
-                </p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <p className="text-sm text-muted-foreground">{t('scaffold')}</p>
+      <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
+        {match.page === 'cases' && <CasesPage />}
+        {match.page === 'new' && <NewCasePage />}
+        {match.page === 'case' && <CasePage key={match.id} id={match.id!} />}
+        {match.page === 'run' && <RunPage key={match.id} id={match.id!} />}
+        {match.page === 'notFound' && (
+          <div className="py-16">
+            <h1 className="font-serif text-3xl font-semibold">{t('app.notFound')}</h1>
+            <p className="mt-2 text-muted-foreground">{t('app.notFoundBody')}</p>
+            <Link to="/" className="mt-4 inline-block text-steel underline underline-offset-2">{t('app.navCases')}</Link>
+          </div>
+        )}
       </main>
+
+      <footer className="border-t bg-card">
+        <p className="mx-auto max-w-7xl px-6 py-3 text-xs text-muted-foreground">{t('app.footer')}</p>
+      </footer>
     </div>
   );
 }

@@ -1,16 +1,468 @@
 {
-  "subtitle": "OSINT workstation for KAS analysts: linking public web traces to crypto addresses",
-  "language": "Language",
-  "health": {
-    "title": "System status",
-    "api": "API",
-    "db": "Database",
-    "loading": "Checking…",
-    "up": "up",
-    "down": "unavailable",
-    "ok": "ok",
-    "degraded": "degraded",
-    "unreachable": "API unreachable"
+  "app": {
+    "subtitle": "OSINT workstation for KAS analysts: linking public web traces to crypto addresses",
+    "navCases": "Cases",
+    "navNew": "New case",
+    "language": "Language",
+    "footer": "Results are analytical premises, not a ruling. Data in demonstration cases is synthetic.",
+    "notFound": "No such page",
+    "notFoundBody": "The address is wrong or the case was removed."
   },
-  "scaffold": "Project scaffold is ready. The case form and analysis arrive in later phases."
+  "common": {
+    "loading": "Loading…",
+    "retry": "Try again",
+    "loadError": "Could not load the data",
+    "back": "Back",
+    "yes": "yes",
+    "no": "no",
+    "none": "none",
+    "copy": "Copy",
+    "copied": "Copied",
+    "close": "Close",
+    "status": {
+      "PENDING": "pending",
+      "RUNNING": "running",
+      "DONE": "done",
+      "FAILED": "failed"
+    },
+    "fact": "Source fact",
+    "calc": "Calculation result"
+  },
+  "cases": {
+    "title": "Cases",
+    "lead": "A case holds the identifiers of one person and the successive analyses of those identifiers.",
+    "new": "New case",
+    "loadDemo": "Load the demonstration case",
+    "loadDemoAddress": "Demonstration: who is behind an address?",
+    "demoHint": "The demonstration case contains synthetic data only (the person \"Jan Testowy\").",
+    "emptyTitle": "There are no cases yet",
+    "emptyBody": "Create a case with your own identifiers or load the demonstration case. All its data is synthetic.",
+    "columns": {
+      "title": "Case",
+      "identifiers": "Identifiers",
+      "createdAt": "Created",
+      "lastRun": "Latest analysis",
+      "runs": "Analyses"
+    },
+    "noRuns": "not run yet",
+    "moreIdentifiers": "+{{count}} more"
+  },
+  "form": {
+    "title": "New case",
+    "lead": "Give at least one identifier. The system searches the selected sources, recognises crypto addresses and rates how likely each is linked to the person.",
+    "caseTitle": "Case name",
+    "caseTitlePlaceholder": "e.g. Case 12/2026",
+    "identifiers": "Identifiers",
+    "identifiersHint": "The more different identifiers you give, the firmer the links: independent sources confirm each other.",
+    "addIdentifier": "Add an identifier",
+    "remove": "Remove identifier",
+    "type": "Type",
+    "value": "Value",
+    "sources": "Data sources",
+    "sourcesHint": "By default only the synthetic \"mini-internet\" is searched. Live sources send requests outside the system, so tick them deliberately.",
+    "terms": "Source terms",
+    "rate": "limit {{count}} requests per second",
+    "noRateLimit": "no limit (local source)",
+    "methods": {
+      "official_api": "official API",
+      "public_page": "public page",
+      "synthetic": "synthetic data"
+    },
+    "connectorNames": {
+      "sandbox": "Synthetic mini-internet",
+      "github": "GitHub (public API)"
+    },
+    "connectorNotes": {
+      "sandbox": "Pages, profiles, adverts and addresses are all artificial. Recommended for demonstrations.",
+      "github": "A user's profile and profile README; with a token also address search in code. Requests go to github.com."
+    },
+    "chainTitle": "Blockchain data",
+    "chain": {
+      "fixture": "Synthetic transaction histories (no internet)",
+      "live": "Public blockchain explorers (live)",
+      "off": "Skip the blockchain analysis"
+    },
+    "chainLiveNote": "Needs API keys in the .env file. Sources without a key are skipped with a message.",
+    "adapterReady": "ready",
+    "adapterUnavailable": "unavailable: {{reason}}",
+    "submitRun": "Create the case and run the analysis",
+    "submitSave": "Only create the case",
+    "running": "Analysis in progress…",
+    "errors": {
+      "title": "Enter a case name.",
+      "identifiers": "Add at least one identifier with a value.",
+      "connectors": "Select at least one data source.",
+      "server": "The server rejected the data"
+    }
+  },
+  "identifierTypes": {
+    "NAME": "Name and surname",
+    "NICK": "Forum nick",
+    "MESSENGER": "Messenger (Telegram etc.)",
+    "SOCIAL_LOGIN": "Login on a service",
+    "EMAIL": "E-mail address",
+    "ADDRESS": "Crypto address"
+  },
+  "identifierHints": {
+    "NAME": "The weakest link (−20 pts): needs confirmation by another identifier.",
+    "NICK": "A forum or portal nick. The same nick on another platform may belong to someone else.",
+    "MESSENGER": "A messenger handle, e.g. @name. Treated as a declared contact.",
+    "SOCIAL_LOGIN": "A login on a social or developer service.",
+    "EMAIL": "An exact e-mail match adds 10 pts.",
+    "ADDRESS": "BTC, ETH, TRON or an ENS name. The system shows who published this address."
+  },
+  "identifierPlaceholders": {
+    "NAME": "Jan Kowalski",
+    "NICK": "jtestowy",
+    "MESSENGER": "@jtestowy_pl",
+    "SOCIAL_LOGIN": "jtestowy",
+    "EMAIL": "jan.testowy@example.org",
+    "ADDRESS": "0x… / bc1… / T… / name.eth"
+  },
+  "case": {
+    "identifiers": "Identifiers",
+    "runs": "Analyses",
+    "noRuns": "This case has not been analysed yet.",
+    "runNow": "Run the analysis",
+    "runAgain": "Run the analysis again",
+    "createdBy": "Opened by",
+    "createdAt": "Created",
+    "columns": {
+      "startedAt": "Started",
+      "status": "Status",
+      "rules": "Rules version",
+      "open": "Results"
+    },
+    "open": "Open results"
+  },
+  "run": {
+    "backToCase": "Back to the case",
+    "analysisOf": "Analysis of",
+    "rulesVersion": "Rules version",
+    "sources": "Sources",
+    "chainMode": "Blockchain",
+    "chainModes": {
+      "fixture": "synthetic histories",
+      "live": "live",
+      "off": "skipped"
+    },
+    "stats": {
+      "links": "links",
+      "excluded": "rejected",
+      "evidence": "pieces of evidence",
+      "snapshots": "addresses with history"
+    },
+    "distribution": "Distribution of scores",
+    "notes": "Notes on the analysis",
+    "failed": "The analysis ended with an error",
+    "tabs": {
+      "links": "Links",
+      "rejected": "Rejected attributions",
+      "graph": "Graph",
+      "evidence": "Sources and evidence",
+      "identities": "Who is behind the address"
+    },
+    "connectorError": "Source \"{{connector}}\" returned an error: {{message}}",
+    "chainNote": "Address {{address}}: {{note}}",
+    "chainWarning": "Address {{address}}: {{warning}}"
+  },
+  "bands": {
+    "VERY_HIGH": "Very high",
+    "PROBABLE": "Probable",
+    "MEDIUM": "Medium",
+    "LOW": "Low",
+    "EXCLUDED": "Excluded"
+  },
+  "bandHints": {
+    "VERY_HIGH": "80–100%",
+    "PROBABLE": "60–79%",
+    "MEDIUM": "40–59%: needs a second trace",
+    "LOW": "below 40%: noise",
+    "EXCLUDED": "0%: false positive"
+  },
+  "links": {
+    "columns": {
+      "address": "Address",
+      "network": "Network",
+      "identifier": "Identifier",
+      "score": "Score",
+      "band": "Band",
+      "source": "Source",
+      "decision": "Decision"
+    },
+    "empty": "There are no links to assess in this run.",
+    "emptyHint": "Rejected attributions are in their own tab.",
+    "selectHint": "Select a row to see how the score is built.",
+    "select": "Select the link {{address}}"
+  },
+  "score": {
+    "title": "How the score is built",
+    "calculated": "Calculation result",
+    "total": "Score",
+    "rulesVersion": "by rules version {{version}}",
+    "columns": {
+      "rule": "Rule",
+      "reason": "Reason",
+      "points": "Points",
+      "evidence": "Evidence"
+    },
+    "kinds": {
+      "base": "Base: type of source",
+      "identity": "Identity match",
+      "synergy": "Independent-source synergy",
+      "chain": "Blockchain",
+      "recency": "Age of the trace",
+      "conflict": "Identity conflict",
+      "clamp": "Range limit",
+      "exclusion": "Exclusion"
+    },
+    "hints": "What would change the score",
+    "noHints": "No hints for this score.",
+    "evidenceCount": "Evidence ({{count}})",
+    "noEvidence": "based on blockchain data",
+    "tabs": {
+      "score": "Score",
+      "address": "Address card"
+    },
+    "for": "Score of the link",
+    "mentionedBy": "Linked identifier"
+  },
+  "decision": {
+    "title": "Analyst's decision",
+    "note": "The decision is stored separately and never changes the computed score.",
+    "analyst": "Analyst",
+    "analystPlaceholder": "Full name",
+    "comment": "Comment",
+    "commentPlaceholder": "Reason for the decision (optional)",
+    "confirm": "Confirm",
+    "reject": "Reject",
+    "withdraw": "Withdraw the decision",
+    "state": {
+      "CONFIRMED": "Confirmed",
+      "REJECTED": "Rejected by the analyst",
+      "none": "No decision"
+    },
+    "by": "{{name}}, {{date}}",
+    "analystRequired": "Enter the analyst's name.",
+    "saved": "Decision saved.",
+    "failed": "Could not save the decision"
+  },
+  "rejected": {
+    "title": "Rejected attributions",
+    "lead": "These addresses are not attributed to the person (0%): they belong to an exchange, a service or a contract, or are a known fundraising or example address. The interaction with them is recorded and can be a lead, e.g. contact with an exchange is grounds for a KYC request.",
+    "columns": {
+      "address": "Address",
+      "category": "Type",
+      "reason": "Reason for rejection",
+      "mentionedWith": "Mentioned with",
+      "evidence": "Evidence"
+    },
+    "empty": "No address was rejected.",
+    "recorded": "Interaction recorded",
+    "labelSource": "Label source"
+  },
+  "categories": {
+    "UNHOSTED": "Unhosted (a person's wallet)",
+    "CEX_CUSTODIAL": "Exchange (custodial)",
+    "CEX_DEPOSIT": "Exchange deposit address",
+    "CONTRACT": "Smart contract",
+    "DEX": "DEX / router",
+    "CASP_KANTOR": "Kantor / exchange point",
+    "PAYMENT_GATEWAY": "Payment gateway",
+    "CRYPTO_CARD": "Crypto card",
+    "MIXER": "Mixer",
+    "CHARITY": "Charity fundraiser",
+    "SANCTIONED": "Sanctioned address",
+    "EXAMPLE_BURN": "Example or burn address",
+    "UNKNOWN_SERVICE": "Service (found by heuristic)"
+  },
+  "sourceTypes": {
+    "OFFICIAL_PROFILE": "Official profile",
+    "SALE_AD": "Sale advert",
+    "P2P_OFFER": "P2P offer",
+    "EMAIL_FOOTER": "E-mail footer",
+    "MESSENGER_SETTLEMENT": "Messenger (settlement)",
+    "FORUM_DISCUSSION": "Forum discussion",
+    "MASS_COMMENT": "Mass comments",
+    "GIVEAWAY": "Giveaway"
+  },
+  "contextTypes": {
+    "SALE": "sale",
+    "P2P": "P2P / cash",
+    "DONATION": "support or donation",
+    "GIVEAWAY": "giveaway",
+    "SETTLEMENT": "settlement",
+    "DISCUSSION": "discussion"
+  },
+  "chains": {
+    "BTC": "Bitcoin",
+    "ETH": "Ethereum",
+    "TRON": "TRON"
+  },
+  "address": {
+    "title": "Address card",
+    "network": "Network",
+    "category": "Address type",
+    "contract": "Smart contract (bytecode other than 0x)",
+    "labels": "Labels and their sources",
+    "labelStatic": "label from a dataset",
+    "labelHeuristic": "found by heuristic",
+    "noLabels": "No label: the address is treated as unhosted.",
+    "links": "Scores of this address",
+    "published": "Where the address was published",
+    "publishedNote": "Source fact: the text around the address (±200 characters).",
+    "context": "Context",
+    "onchain": "Blockchain activity",
+    "onchainNote": "Calculated from the transaction history; PLN amounts use the NBP mid rate of the last business day before the transaction.",
+    "noChain": "No blockchain data for this address.",
+    "noChainWhy": "In \"{{mode}}\" mode only the demonstration personas' addresses, or addresses with an available source, have a history.",
+    "kpi": {
+      "tx": "Transactions",
+      "first": "First activity",
+      "last": "Latest activity",
+      "inPln": "Inflows",
+      "outPln": "Outflows",
+      "stableIn": "Stablecoins, inflow",
+      "stableOut": "Stablecoins, outflow",
+      "counterparties": "Counterparties",
+      "known": "of which recognised: {{count}}",
+      "provider": "Data source",
+      "fetched": "Fetched"
+    },
+    "interactions": "Interactions with services",
+    "interactionColumns": {
+      "kind": "Type",
+      "count": "Count",
+      "inPln": "Inflow",
+      "outPln": "Outflow"
+    },
+    "swaps": "DEX swaps",
+    "swapLine": "{{date}}: {{sold}} → {{bought}} via {{via}}",
+    "cashOut": "Cash-out signals",
+    "cashOutDetected": "Flows to points where funds can leave the crypto market were detected.",
+    "cashOutNone": "No cash-out signals were detected.",
+    "cashOutTotal": "Total",
+    "endpointColumns": {
+      "address": "Point",
+      "kind": "Type",
+      "count": "Transfers",
+      "total": "Value"
+    },
+    "adAddress": "address from an advert",
+    "thresholds": "Amount thresholds (AML)",
+    "thresholdColumns": {
+      "threshold": "Threshold",
+      "max": "Largest single transfer",
+      "single": "Single transfer ≥ threshold",
+      "cumulative": "Cash-out total ≥ threshold"
+    },
+    "notReached": "not reached",
+    "reachedAt": "reached {{date}}",
+    "chronology": "Chronology of funds",
+    "chronologyColumns": {
+      "time": "Date",
+      "direction": "Direction",
+      "counterparty": "Counterparty",
+      "amount": "Amount",
+      "pln": "PLN",
+      "tags": "Indicators"
+    },
+    "in": "inflow",
+    "out": "outflow",
+    "unvalued": "Items not valued: {{count}} (no rate or price).",
+    "truncated": "History cut to the latest page returned by the provider."
+  },
+  "tags": {
+    "SWAP_DEX": "DEX swap",
+    "STABLECOIN_CONVERSION": "converted to stablecoin",
+    "TO_CEX": "to an exchange",
+    "TO_CEX_DEPOSIT": "to an exchange deposit address",
+    "FROM_CEX": "from an exchange",
+    "TO_KANTOR": "to a kantor",
+    "FROM_KANTOR": "from a kantor",
+    "TO_GATEWAY": "to a payment gateway",
+    "TO_CARD": "to a crypto card",
+    "MIXER": "mixer",
+    "SANCTIONED": "sanctioned address",
+    "TO_AD_ADDRESS": "to an address from an advert",
+    "USDT_TO_CASH": "USDT to cash",
+    "STABLECOIN_TO_CASH": "stablecoin to cash",
+    "OVER_1000_EUR": "≥ 1,000 EUR",
+    "OVER_10000_EUR": "≥ 10,000 EUR",
+    "OVER_15000_EUR": "≥ 15,000 EUR"
+  },
+  "graph": {
+    "title": "Link graph",
+    "lead": "Identifiers, addresses, sources and counterparties. Grey dashed lines are excluded attributions. Click an element to see its details.",
+    "showExcluded": "Show excluded",
+    "showCounterparties": "Show counterparties",
+    "showSources": "Show sources",
+    "fit": "Fit to view",
+    "empty": "Nothing to draw.",
+    "others": "+{{count}} other addresses",
+    "legend": "Legend",
+    "legendItems": {
+      "identifier": "Identifier",
+      "identity": "Account that published the address",
+      "source": "Source (evidence)",
+      "address": "Address; outline colour is the score band",
+      "counterparty": "Blockchain counterparty; colour shows the type",
+      "linked": "Link; the label is the score",
+      "mentioned": "Address mentioned in a source",
+      "transfer": "Flow; the label is the value in PLN",
+      "excluded": "Excluded attribution (grey, dashed)"
+    },
+    "details": "Details",
+    "selectHint": "Select an element of the graph to see its details.",
+    "kind": {
+      "identifier": "Identifier",
+      "identity": "Account",
+      "source": "Source",
+      "address": "Address",
+      "counterparty": "Counterparty",
+      "others": "Other counterparties"
+    },
+    "openAddress": "Show the address card",
+    "bestScore": "Highest score",
+    "excludedNote": "Excluded from personal attribution."
+  },
+  "evidence": {
+    "title": "Sources and evidence",
+    "lead": "Each piece of evidence has a URL, a fetch time and the SHA-256 of the full content. The database keeps only a snippet (data minimisation).",
+    "columns": {
+      "platform": "Platform",
+      "type": "Source type",
+      "url": "Address (URL)",
+      "fetched": "Fetched",
+      "published": "Published",
+      "sha": "SHA-256",
+      "round": "Stage"
+    },
+    "rounds": {
+      "1": "search by identifiers",
+      "2": "reverse search of an address",
+      "3": "author's profile"
+    },
+    "author": "Author",
+    "snippet": "Snippet",
+    "snapshotOf": "Archived copy of the page",
+    "empty": "No evidence was collected.",
+    "open": "Evidence details"
+  },
+  "identities": {
+    "title": "Who is behind the address",
+    "lead": "Accounts that published the address, and the other addresses of those accounts. The same nick on another platform does not prove it is the same person.",
+    "relation": {
+      "PUBLISHER": "published the address",
+      "SAME_NICK_OTHER_PLATFORM": "same nick on another platform; possibly another person"
+    },
+    "columns": {
+      "account": "Account",
+      "relation": "Relation",
+      "score": "Score",
+      "other": "Other addresses of this account"
+    },
+    "noOther": "none",
+    "empty": "No account that published this address was found."
+  }
 }
