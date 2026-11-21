@@ -28,7 +28,7 @@
 - `packages/core`: pure TypeScript domain logic — address extraction/validation, classification, scoring engine, indicators, diff. **No I/O.** Fully unit-tested with Vitest.
 - `fixtures/sandbox-web`: static synthetic "mini-internet" served locally on `:8088`.
 - `fixtures/chain`: synthetic on-chain histories for synthetic personas.
-- Optional `ollama` service (compose profile `ai`).
+- Optional local LLM (Ollama or any OpenAI-compatible server) is started by the user separately — there is no `ollama` service in docker-compose.yml.
 
 ## Commands (Windows 11 host; Git Bash available inside Claude Code)
 - `pnpm install` · `pnpm dev` (api + web) · `pnpm test` · `pnpm lint` · `pnpm build`

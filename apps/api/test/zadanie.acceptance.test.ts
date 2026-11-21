@@ -334,7 +334,7 @@ describe('Z-15…Z-20 — acceptance criteria (task section 3)', () => {
 
 // ───────────────────────── sections 5–7: technical, scenario, report, OSINT ─────────────────────────
 
-describe('Z-22…Z-27 — technical requirements (task section 5)', () => {
+describe('Z-21…Z-28 — technical requirements (task section 5)', () => {
   const read = (p: string) => readFileSync(repoPath(p), 'utf8');
   const deps = (p: string) => Object.keys({ ...JSON.parse(read(p)).dependencies, ...JSON.parse(read(p)).devDependencies });
 
@@ -385,6 +385,18 @@ describe('Z-22…Z-27 — technical requirements (task section 5)', () => {
     expect(read('.gitignore')).toMatch(/^\.env$/m);
     const template = read('.env.example');
     for (const line of template.split('\n').filter((l) => /(KEY|TOKEN|SECRET|PASSWORD)=/.test(l) && !l.startsWith('#'))) expect(line, line).toMatch(/=\s*$/);
+  });
+
+  it('Z-28 README.md has the required sections in order (description, assumptions, search parameters, architecture, installation, scenario, examples, compliance, licences, resources, documentation), no placeholders, and lists every allowlisted host', () => {
+    const readme = read('README.md');
+    const headings = [...readme.matchAll(/^## (.+)$/gm)].map((m) => m[1]!);
+    const required = ['Opis projektu', 'Założenia projektu', 'Parametry wyszukiwania', 'Architektura', 'Instalacja i uruchomienie', 'Scenariusz demonstracyjny', 'Przykłady', 'Zgodność i bezpieczeństwo', 'Licencje wykorzystanych komponentów', 'Wykorzystane zasoby', 'Dokumentacja techniczna'];
+    const at = required.map((r) => headings.findIndex((h) => h.startsWith(r)));
+    expect(at.every((i) => i >= 0), `missing: ${required.filter((_, i) => at[i]! < 0)}`).toBe(true);
+    expect(at).toEqual([...at].sort((a, b) => a - b)); // in the order of the task
+    expect(readme).not.toMatch(/TODO|TBD|XXX/);
+    for (const h of cfg.allowlist) expect(readme, `allowlist host ${h.host} is described in "Zgodność i bezpieczeństwo"`).toContain(h.host);
+    for (const link of ['LICENSES.md', 'docs/ZGODNOSC.md', 'docs/research-notes.md']) expect(existsSync(repoPath(link)) && readme.includes(link), link).toBe(true);
   });
 });
 
