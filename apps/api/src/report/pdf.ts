@@ -12,7 +12,7 @@ export interface ReportIntegrity {
   evidenceSha256: string;
 }
 
-// pdfmake ships Roboto (Apache-2.0, full Latin Extended-A: ą ę ł ś ż ź ć ń ó); the PDF embeds the subset it uses.
+// pdfmake ships Roboto (SIL OFL-1.1 per the font file, full Latin Extended-A: ą ę ł ś ż ź ć ń ó); the PDF embeds the subset it uses.
 const robotoDir = join(dirname(createRequire(import.meta.url).resolve('pdfmake/package.json')), 'fonts', 'Roboto');
 pdfmake.setFonts({ Roboto: { normal: join(robotoDir, 'Roboto-Regular.ttf'), bold: join(robotoDir, 'Roboto-Medium.ttf'), italics: join(robotoDir, 'Roboto-Italic.ttf'), bolditalics: join(robotoDir, 'Roboto-MediumItalic.ttf') } });
 pdfmake.setLocalAccessPolicy((path) => path.startsWith(robotoDir)); // nothing but the bundled fonts may be read

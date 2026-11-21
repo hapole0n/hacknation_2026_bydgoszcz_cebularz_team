@@ -3,16 +3,16 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
 Wszystkie komponenty są Open Source.
 
-## Podsumowanie (654 pakietów npm)
+## Podsumowanie (675 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
-| MIT | 541 |
-| Apache-2.0 | 39 |
+| MIT | 560 |
+| Apache-2.0 | 40 |
 | ISC | 39 |
 | BSD-3-Clause | 10 |
 | BSD-2-Clause | 10 |
-| BlueOak-1.0.0 | 4 |
+| BlueOak-1.0.0 | 5 |
 | OFL-1.1 | 2 |
 | MPL-2.0 | 2 |
 | Unlicense | 2 |
@@ -30,6 +30,13 @@ Wszystkie komponenty są Open Source.
 | nginx (`nginx:alpine`) | BSD-2-Clause |
 | Node.js 22 (`node:22-bookworm-slim`) | MIT |
 | Ollama (opcjonalnie, profil `ai`) | MIT |
+
+## Czcionki
+
+| Czcionka | Licencja | Użycie |
+|---|---|---|
+| Roboto (dołączona do pakietu `pdfmake`; `node_modules/pdfmake/fonts/Roboto`) | SIL OFL-1.1 (wg metadanych pliku) | osadzana (podzbiór znaków) w raportach PDF, z polskimi literami |
+| IBM Plex Sans, Source Serif 4 (`@fontsource-variable/*`) | SIL OFL-1.1 | interfejs webowy, serwowane lokalnie |
 
 ## Zbiory danych i etykiet
 
@@ -130,8 +137,9 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @nestjs/core | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/platform-express | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/schematics | 12.0.16 | MIT | https://github.com/nestjs/schematics#readme |
+| @noble/ciphers | 1.3.0 | MIT | https://paulmillr.com/noble/ |
 | @noble/curves | 2.4.0 | MIT | https://paulmillr.com/noble/ |
-| @noble/hashes | 2.4.0 | MIT | https://paulmillr.com/noble/ |
+| @noble/hashes | 1.8.0, 2.4.0 | MIT | https://paulmillr.com/noble/ |
 | @nodelib/fs.scandir | 2.1.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
 | @nodelib/fs.stat | 2.0.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
 | @nodelib/fs.walk | 1.2.8 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
@@ -218,6 +226,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @sindresorhus/is | 4.6.0 | MIT | https://github.com/sindresorhus/is#readme |
 | @sindresorhus/merge-streams | 4.0.0 | MIT | https://github.com/sindresorhus/merge-streams#readme |
 | @standard-schema/spec | 1.1.0 | MIT | https://standardschema.dev |
+| @swc/helpers | 0.5.24 | Apache-2.0 | https://swc.rs |
 | @tailwindcss/node | 4.3.5 | MIT | https://tailwindcss.com |
 | @tailwindcss/oxide | 4.3.5 | MIT | https://github.com/tailwindlabs/tailwindcss#readme |
 | @tailwindcss/oxide-wasm32-wasi | 4.3.5 | MIT | https://github.com/tailwindlabs/tailwindcss#readme |
@@ -252,6 +261,8 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @types/json-schema | 7.0.15 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/json-schema |
 | @types/lodash | 4.17.27 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/lodash |
 | @types/node | 22.20.5 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node |
+| @types/pdfkit | 0.17.7 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/pdfkit |
+| @types/pdfmake | 0.3.3 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/pdfmake |
 | @types/pg | 8.23.1 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/pg |
 | @types/qs | 6.15.1 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/qs |
 | @types/range-parser | 1.2.7 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/range-parser |
@@ -298,11 +309,13 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | atomically | 1.7.0 | MIT | https://github.com/fabiospampinato/atomically#readme |
 | aws-ssl-profiles | 1.1.2 | MIT | https://github.com/mysqljs/aws-ssl-profiles#readme |
 | balanced-match | 4.0.4 | MIT | https://github.com/juliangruber/balanced-match#readme |
+| base64-js | 0.0.8, 1.5.1 | MIT | https://github.com/beatgammit/base64-js |
 | baseline-browser-mapping | 2.11.39 | Apache-2.0 | https://github.com/web-platform-dx/baseline-browser-mapping#readme |
 | better-result | 2.10.0 | MIT | https://better-result.dev |
 | body-parser | 2.4.0 | MIT | https://github.com/expressjs/body-parser#readme |
 | brace-expansion | 5.0.13 | MIT | https://github.com/juliangruber/brace-expansion#readme |
 | braces | 3.0.3 | MIT | https://github.com/micromatch/braces |
+| brotli | 1.3.3 | MIT | https://github.com/devongovett/brotli.js |
 | browserslist | 4.29.6 | MIT | https://github.com/browserslist/browserslist#readme |
 | bundle-name | 4.1.1 | MIT | https://github.com/sindresorhus/bundle-name#readme |
 | busboy | 1.6.0 | MIT | https://github.com/mscdex/busboy#readme |
@@ -323,6 +336,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | cli-spinners | 2.9.2, 3.4.0 | MIT | https://github.com/sindresorhus/cli-spinners#readme |
 | cli-table3 | 0.6.5 | MIT | https://github.com/cli-table/cli-table3 |
 | cli-width | 4.1.0 | ISC | https://github.com/knownasilya/cli-width |
+| clone | 2.1.2 | MIT | https://github.com/pvorb/node-clone#readme |
 | clsx | 2.1.1 | MIT | https://github.com/lukeed/clsx#readme |
 | cn | 0.2.6, 0.5.2 | MIT | https://github.com/shadcn-ui/cn#readme |
 | code-block-writer | 13.0.3 | MIT | https://github.com/dsherret/code-block-writer#readme |
@@ -365,6 +379,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | destr | 2.0.5 | MIT | https://github.com/unjs/destr#readme |
 | detect-libc | 2.1.2 | Apache-2.0 | https://github.com/lovell/detect-libc#readme |
 | detect-node-es | 1.1.0 | MIT | https://github.com/thekashey/detect-node |
+| dfa | 1.2.0 | MIT | https://github.com/devongovett/dfa#readme |
 | diff | 8.0.4 | BSD-3-Clause | https://github.com/kpdecker/jsdiff#readme |
 | dot-prop | 6.0.1 | MIT | https://github.com/sindresorhus/dot-prop#readme |
 | dotenv | 17.4.2 | BSD-2-Clause | https://github.com/motdotla/dotenv#readme |
@@ -417,6 +432,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | fast-wrap-ansi | 0.2.2 | MIT | https://github.com/43081j/fast-wrap-ansi#readme |
 | fastq | 1.20.3 | ISC | https://github.com/mcollina/fastq#readme |
 | fdir | 6.5.0 | MIT | https://github.com/thecodrr/fdir#readme |
+| fflate | 0.8.3 | MIT | https://101arrowz.github.io/fflate |
 | figures | 6.1.0 | MIT | https://github.com/sindresorhus/figures#readme |
 | file-entry-cache | 11.1.5 | MIT | https://github.com/jaredwray/cacheable#readme |
 | file-type | 22.3.0 | MIT | https://github.com/sindresorhus/file-type#readme |
@@ -426,6 +442,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | find-up | 3.0.0, 5.0.0 | MIT | https://github.com/sindresorhus/find-up#readme |
 | flat-cache | 6.1.23 | MIT | https://github.com/jaredwray/cacheable#readme |
 | flatted | 3.4.4 | ISC | https://github.com/WebReflection/flatted#readme |
+| fontkit | 2.0.4 | MIT | https://github.com/foliojs/fontkit#readme |
 | foreground-child | 3.3.1 | ISC | https://github.com/tapjs/foreground-child#readme |
 | forwarded | 0.2.0 | MIT | https://github.com/jshttp/forwarded#readme |
 | fresh | 2.0.0 | MIT | https://github.com/jshttp/fresh#readme |
@@ -496,6 +513,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | levn | 0.4.1 | MIT | https://github.com/gkz/levn |
 | lightningcss | 1.33.0 | MPL-2.0 | https://github.com/parcel-bundler/lightningcss#readme |
 | lightningcss-win32-x64-msvc | 1.33.0 | MPL-2.0 | https://github.com/parcel-bundler/lightningcss#readme |
+| linebreak | 1.1.0 | MIT | https://github.com/devongovett/linebreaker |
 | load-esm | 1.0.3 | MIT | https://github.com/Borewit/load-esm#readme |
 | locate-path | 3.0.0, 6.0.0 | MIT | https://github.com/sindresorhus/locate-path#readme |
 | lodash | 4.18.1 | MIT | https://lodash.com/ |
@@ -543,6 +561,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | p-limit | 2.3.0, 3.1.0 | MIT | https://github.com/sindresorhus/p-limit#readme |
 | p-locate | 3.0.0, 5.0.0 | MIT | https://github.com/sindresorhus/p-locate#readme |
 | p-try | 2.2.0 | MIT | https://github.com/sindresorhus/p-try#readme |
+| pako | 0.2.9 | MIT | https://github.com/nodeca/pako |
 | parse-ms | 4.0.0 | MIT | https://github.com/sindresorhus/parse-ms#readme |
 | parseurl | 1.3.3 | MIT | https://github.com/pillarjs/parseurl#readme |
 | path-browserify | 1.0.1 | MIT | https://github.com/browserify/path-browserify |
@@ -550,6 +569,8 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | path-key | 3.1.1, 4.0.0 | MIT | https://github.com/sindresorhus/path-key#readme |
 | path-to-regexp | 8.4.2 | MIT | https://github.com/pillarjs/path-to-regexp#readme |
 | pathe | 2.0.3 | MIT | https://github.com/unjs/pathe#readme |
+| pdfkit | 0.20.2 | MIT | http://pdfkit.org/ |
+| pdfmake | 0.3.14 | MIT | http://pdfmake.org |
 | perfect-debounce | 2.1.0 | MIT | https://github.com/unjs/perfect-debounce#readme |
 | pg | 8.23.1 | MIT | https://github.com/brianc/node-postgres |
 | pg-cloudflare | 1.4.1 | MIT | https://github.com/brianc/node-postgres#readme |
@@ -564,6 +585,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | pkg-types | 2.4.0 | MIT | https://github.com/unjs/pkg-types#readme |
 | pkg-up | 3.1.0 | MIT | https://github.com/sindresorhus/pkg-up#readme |
 | pluralize | 8.0.0 | MIT | https://github.com/blakeembrey/pluralize#readme |
+| png-js | 2.0.0 | MIT | https://github.com/devongovett/png.js#readme |
 | postcss | 8.5.33 | MIT | https://postcss.org/ |
 | postcss-selector-parser | 7.2.1 | MIT | https://github.com/postcss/postcss-selector-parser |
 | postgres | 3.4.7 | Unlicense | https://github.com/porsager/postgres |
@@ -600,6 +622,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | remeda | 2.33.4 | MIT | https://remedajs.com/ |
 | require-from-string | 2.0.2 | MIT | https://github.com/floatdrop/require-from-string#readme |
 | restore-cursor | 5.1.0 | MIT | https://github.com/sindresorhus/restore-cursor#readme |
+| restructure | 3.0.2 | MIT | https://github.com/devongovett/restructure |
 | ret | 0.5.1 | MIT | https://github.com/fent/ret.js#readme |
 | retry | 0.12.0 | MIT | https://github.com/tim-kos/node-retry |
 | reusify | 1.1.0 | MIT | https://github.com/mcollina/reusify#readme |
@@ -611,6 +634,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | rxjs | 7.8.2 | Apache-2.0 | https://rxjs.dev |
 | safe-regex2 | 5.1.2 | MIT | https://github.com/fastify/safe-regex2 |
 | safer-buffer | 2.1.2 | MIT | https://github.com/ChALkeR/safer-buffer#readme |
+| sax | 1.6.1 | BlueOak-1.0.0 | https://github.com/isaacs/sax-js#readme |
 | scheduler | 0.28.0 | MIT | https://react.dev/ |
 | semver | 6.3.2, 7.8.6 | ISC | https://github.com/npm/node-semver#readme |
 | send | 1.2.1 | MIT | https://github.com/pillarjs/send#readme |
@@ -645,6 +669,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | systeminformation | 5.33.23 | MIT | https://systeminformation.io |
 | tailwindcss | 4.3.5 | MIT | https://tailwindcss.com |
 | tapable | 2.3.4 | MIT | https://github.com/webpack/tapable |
+| tiny-inflate | 1.0.3 | MIT | https://github.com/devongovett/tiny-inflate |
 | tiny-invariant | 1.3.3 | MIT | https://github.com/alexreardon/tiny-invariant#readme |
 | tinybench | 6.2.4 | MIT | https://github.com/tinylibs/tinybench#readme |
 | tinyexec | 1.3.1 | MIT | https://github.com/tinylibs/tinyexec#readme |
@@ -667,6 +692,8 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | undici | 7.30.2 | MIT | https://undici.nodejs.org |
 | undici-types | 6.21.0 | MIT | https://undici.nodejs.org |
 | unicode-emoji-modifier-base | 1.0.0 | MIT | https://github.com/mathiasbynens/unicode-emoji-modifier-base |
+| unicode-properties | 1.4.1 | MIT | https://github.com/devongovett/unicode-properties |
+| unicode-trie | 2.0.0 | MIT | https://github.com/devongovett/unicode-trie |
 | unicorn-magic | 0.3.0 | MIT | https://github.com/sindresorhus/unicorn-magic#readme |
 | universalify | 2.0.1 | MIT | https://github.com/RyanZim/universalify#readme |
 | unpipe | 1.0.0 | MIT | https://github.com/stream-utils/unpipe#readme |
@@ -685,6 +712,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | word-wrap | 1.2.5 | MIT | https://github.com/jonschlinkert/word-wrap |
 | wrappy | 1.0.2 | ISC | https://github.com/npm/wrappy |
 | wsl-utils | 1.0.1 | MIT | https://github.com/sindresorhus/wsl-utils#readme |
+| xmldoc | 2.0.3 | MIT | https://github.com/nfarina/xmldoc#readme |
 | xtend | 4.0.2 | MIT | https://github.com/Raynos/xtend |
 | yallist | 3.1.1 | ISC | https://github.com/isaacs/yallist#readme |
 | yaml | 2.9.1 | ISC | https://eemeli.org/yaml/ |

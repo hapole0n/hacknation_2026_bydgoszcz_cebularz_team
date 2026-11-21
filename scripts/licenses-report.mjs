@@ -34,6 +34,13 @@ ${counts.map(([l, n]) => `| ${l} | ${n} |`).join('\n')}
 | Node.js 22 (\`node:22-bookworm-slim\`) | MIT |
 | Ollama (opcjonalnie, profil \`ai\`) | MIT |
 
+## Czcionki
+
+| Czcionka | Licencja | Użycie |
+|---|---|---|
+| Roboto (dołączona do pakietu \`pdfmake\`; \`node_modules/pdfmake/fonts/Roboto\`) | SIL OFL-1.1 (wg metadanych pliku) | osadzana (podzbiór znaków) w raportach PDF, z polskimi literami |
+| IBM Plex Sans, Source Serif 4 (\`@fontsource-variable/*\`) | SIL OFL-1.1 | interfejs webowy, serwowane lokalnie |
+
 ## Zbiory danych i etykiet
 
 Pliki \`config/labels/*.json\` zawierają w nagłówku źródło, licencję i datę pobrania.
