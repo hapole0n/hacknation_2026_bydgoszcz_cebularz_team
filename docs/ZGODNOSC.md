@@ -50,7 +50,7 @@ Nic tu nie jest upiększone: to, czego nie zrobiliśmy albo zrobiliśmy części
 
 | ID | Wymaganie | Gdzie zrealizowane | Test | Status |
 |---|---|---|---|---|
-| Z-21 | Licencje użytych komponentów Open Source wskazane w dokumentacji | `LICENSES.md` (generowany: `pnpm licenses:report`), nagłówki `config/labels/*.json` | `Z-21` | ✅ |
+| Z-21 | Licencje użytych komponentów Open Source wskazane w dokumentacji | `LICENSES.md` (generowany: `pnpm licenses:report`), nagłówki `config/labels/*.json`; licencja własnego kodu: `LICENSE` | `Z-21` | ✅ |
 | Z-22 | Technologie: backend Node.js / TypeScript, front React, baza PostgreSQL | `apps/api` (NestJS 12 + Prisma 7), `apps/web` (React + Vite), PostgreSQL 16 w `docker-compose.yml` | `Z-22` | ✅ |
 | Z-23 | AI: łatwa wymiana modelu przez uniwersalne API; AI tylko lokalnie | `apps/api/src/ai/ai.service.ts` — API zgodne z OpenAI (`AI_BASE_URL`, `AI_MODEL`), domyślnie wyłączone | `Z-23`; `ai.test.ts` | ⚠️ |
 | Z-24 | Brak odwołań do niezaufanych zasobów i wysyłania danych do niezatwierdzonych usług zewnętrznych | `EgressClient` + allowlista + `AuditLog`; brak telemetrii; czcionki i skrypty serwowane lokalnie | `Z-24`; `egress.client.test.ts` | ✅ |
@@ -94,7 +94,7 @@ Nic tu nie jest upiększone: to, czego nie zrobiliśmy albo zrobiliśmy części
 
 ## Przegląd przed publikacją repozytorium
 
-Wykonany 21.11.2026 na całej historii (47 commitów, gałąź `main`); historii nie przepisywano.
+Wykonany 21.11.2026 na całej historii gałęzi `main`. Jedyna zmiana historii: z notatek (`docs/research-notes.md`) usunięto odwołania do profili prawdziwych użytkowników jednego z serwisów społecznościowych — także ze starszych commitów (`git filter-branch`, daty commitów zachowane). Po zmianie skan powtórzono.
 
 - **Pliki `.env`:** nigdy nie były śledzone; w historii jest wyłącznie `.env.example` (bez wartości kluczy).
 - **Klucze i tokeny:** brak wzorców kluczy (GitHub, AWS, Slack, OpenAI, klucze prywatne PEM, Gravatar, 34-znakowe klucze Etherscan) ani przypisań `*_KEY=` / `*_TOKEN=` z wartością. Skan oparto o wzorce — plik `.env` nie był odczytywany ani porównywany.
@@ -102,5 +102,6 @@ Wykonany 21.11.2026 na całej historii (47 commitów, gałąź `main`); historii
 - **Dane osobowe właściciela repozytorium** wskazane przez zespół do sprawdzenia (adres portfela, e-mail, nazwa użytkownika komunikatora): nie występują w żadnym commicie.
 - **Zrzuty ekranu** (`docs/screenshots/`) pochodzą z przebiegów na danych syntetycznych; dziennik zapytań na zrzucie 12 zawiera wyłącznie zapytania sprawy demonstracyjnej.
 - **Inne:** brak zrzutów bazy danych ani dużych plików binarnych poza dokumentem zadania i zrzutami ekranu; katalog `.playwright-mcp/` (robocze zrzuty przeglądarki z danymi syntetycznymi) był przez krótki czas śledzony, obecnie jest w `.gitignore`.
-- **Pozycje zgłoszone zespołowi do decyzji** (nie są sekretami, ale dotyczą osób i warto je świadomie ocenić przed ustawieniem repozytorium jako publicznego) zostały przekazane osobno.
+- **Autor:** imię, nazwisko i adres e-mail autora w metadanych commitów oraz w `CLAUDE.md` są zamierzone (autorstwo kodu); nazwa konta GitHub w `sandbox.connector.ts` to odnośnik do tego repozytorium, nie dane persony.
+- **Licencja projektu:** plik `LICENSE` (własny kod: wszelkie prawa zastrzeżone, udostępniony do oceny w konkursie).
 - **`pnpm audit`:** podatność *high* (ReDoS w pakiecie `effect`, zależność narzędzia Prisma) usunięta wymuszeniem wersji `effect ^3.22.5` (`pnpm-workspace.yaml`, `overrides`); pełny zestaw testów, budowa i lint przeszły po zmianie. Pozostaje jedna podatność *moderate* (`minimatch` w narzędziu deweloperskim `shadcn`, używanym tylko do generowania komponentów; poprawka wymaga skoku wersji głównej) — nie jest krytyczna i nie trafia do działającej aplikacji. Podatności krytycznych nie było.

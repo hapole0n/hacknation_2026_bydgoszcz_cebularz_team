@@ -1,7 +1,7 @@
 # Licencje wykorzystanych komponentów
 
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
-Wszystkie komponenty są Open Source. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
+Wszystkie komponenty zewnętrzne są Open Source; licencja własnego kodu projektu: plik `LICENSE`. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
 
 ## Podsumowanie (675 pakietów npm)
 

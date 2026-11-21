@@ -410,6 +410,7 @@ describe('Z-21…Z-28 — technical requirements (task section 5)', () => {
     expect(readme).not.toMatch(/TODO|TBD|XXX/);
     for (const h of cfg.allowlist) expect(readme, `allowlist host ${h.host} is described in "Zgodność i bezpieczeństwo"`).toContain(h.host);
     for (const link of ['LICENSES.md', 'docs/ZGODNOSC.md', 'docs/research-notes.md']) expect(existsSync(repoPath(link)) && readme.includes(link), link).toBe(true);
+    expect(existsSync(repoPath('LICENSE')) && readme.includes('](LICENSE)'), 'the licence of the project itself is linked').toBe(true);
   });
 });
 

@@ -58,7 +58,7 @@ const recorded = JSON.parse(readFileSync(root('fixtures/recorded/real-addresses.
 const md = `# Licencje wykorzystanych komponentów
 
 Plik generowany skryptem \`pnpm licenses:report\` (${new Date().toISOString().slice(0, 10)}) — nie edytować ręcznie.
-Wszystkie komponenty są Open Source. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
+Wszystkie komponenty zewnętrzne są Open Source; licencja własnego kodu projektu: plik \`LICENSE\`. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
 
 ## Podsumowanie (${rows.length} pakietów npm)
 

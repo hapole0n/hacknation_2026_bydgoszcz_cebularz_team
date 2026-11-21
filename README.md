@@ -254,9 +254,11 @@ Pełna lista: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md). Najważniejsze:
 - **Raport tylko po polsku**; interfejs PL / EN. Przejście przez interfejs sprawdzaliśmy ręcznie, bez automatycznych testów w przeglądarce.
 - **AI** sprawdzone tylko na atrapie modelu; wybór modelu nierozstrzygnięty; serwera Ollama nie ma w `docker-compose.yml`.
 - **Retencja i usuwanie:** pole `retentionDays` jest zapisywane, ale nic go nie egzekwuje; API nie ma usuwania sprawy. Brak uwierzytelniania.
-- Dane z Etherscan wymagają atrybucji („Powered by Etherscan.io APIs”) — w interfejsie jej jeszcze nie ma.
+- Dane z Etherscan wymagają atrybucji („Powered by Etherscan.io APIs”) — w interfejsie jej jeszcze nie ma; zaplanowana w stopce przy zmianie wyglądu (`docs/REDESIGN.md`).
 
 ## Licencje wykorzystanych komponentów
+
+**Licencja projektu:** [`LICENSE`](LICENSE) — Copyright © 2026 Oleh Kropyva, wszelkie prawa zastrzeżone; kod udostępniony do oceny w konkursie HackNation 2026 (w razie nagrodzenia prawa majątkowe przechodzą na Skarb Państwa — Ministerstwo Finansów zgodnie z Regulaminem). Wiążący jest tekst pliku `LICENSE`.
 
 Wszystkie zależności są Open Source; pełna lista z licencjami, obrazy Docker, czcionki oraz źródła i licencje list etykiet: [`LICENSES.md`](LICENSES.md) (generowany: `pnpm licenses:report`).
 
