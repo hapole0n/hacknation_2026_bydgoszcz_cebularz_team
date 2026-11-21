@@ -56,6 +56,32 @@ describe('allowlist', () => {
   });
 });
 
+describe('POST', () => {
+  it('sends a JSON body, audits host + path only, does not cache by default and does not follow redirects', async () => {
+    const f = ok('{"result":"0x"}');
+    const { client, audits } = setup(f as unknown as typeof fetch);
+    const a = await client.post('http://sandbox-web/rpc?key=secret', { method: 'eth_call', params: ['top-secret-address'] }, req);
+    await client.post('http://sandbox-web/rpc?key=secret', { method: 'eth_call', params: ['top-secret-address'] }, req);
+    expect(a).toMatchObject({ status: 200, ok: true, fromCache: false });
+    expect(f).toHaveBeenCalledTimes(2); // POSTs are not cached unless asked
+    const init = (f.mock.calls[0] as unknown as [string, RequestInit])[1];
+    expect(init.method).toBe('POST');
+    expect((init.headers as Record<string, string>)['Content-Type']).toBe('application/json');
+    expect(JSON.parse(String(init.body))).toEqual({ method: 'eth_call', params: ['top-secret-address'] });
+    expect(audits[0]).toMatchObject({ host: 'sandbox-web', path: '/rpc', status: 200 });
+    expect(JSON.stringify(audits)).not.toMatch(/secret|eth_call/);
+
+    const cached = setup(ok() as unknown as typeof fetch);
+    await cached.client.post('http://sandbox-web/rpc', { id: 1 }, { ...req, cacheTtlMs: 60_000 });
+    expect((await cached.client.post('http://sandbox-web/rpc', { id: 1 }, { ...req, cacheTtlMs: 60_000 })).fromCache).toBe(true);
+    expect((await cached.client.post('http://sandbox-web/rpc', { id: 2 }, { ...req, cacheTtlMs: 60_000 })).fromCache).toBe(false); // the body is part of the key
+
+    const moved = setup(vi.fn(async () => new Response(null, { status: 307, headers: { location: 'https://evil.example/' } })) as unknown as typeof fetch);
+    expect((await moved.client.post('http://sandbox-web/rpc', {}, req)).ok).toBe(false); // returned as is, never followed
+    await expect(moved.client.post('https://evil.example/', {}, req)).rejects.toBeInstanceOf(EgressBlockedError);
+  });
+});
+
 describe('redirects', () => {
   it('re-checks every hop: a redirect to an unlisted host is blocked', async () => {
     const f = vi.fn(async () => new Response(null, { status: 302, headers: { location: 'https://evil.example/steal' } }));

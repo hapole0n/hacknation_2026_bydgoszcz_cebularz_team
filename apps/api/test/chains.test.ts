@@ -122,7 +122,9 @@ describe('TronGrid adapter', () => {
   it('reads TRX and TRC-20 transfers (hex → base58), sends the key as a header', async () => {
     process.env.TRONGRID_API_KEY = 'tron-secret';
     const f = vi.fn(async (url: string) =>
-      url.includes('/trc20')
+      url.includes('/wallet/getcontract')
+        ? reply({})
+        : url.includes('/trc20')
         ? reply({ success: true, data: [
             { transaction_id: 'tt1', block_timestamp: 1760000000000, from: T_PEER, to: T_ME, type: 'Transfer', value: '5000000', token_info: { symbol: 'USDT', address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', decimals: 6 } },
             { transaction_id: 'tt2', block_timestamp: 1760000001000, from: T_PEER, to: T_ME, type: 'Transfer', value: '1000000', token_info: { symbol: 'USDT', address: T_PEER, decimals: 6 } },
@@ -140,12 +142,32 @@ describe('TronGrid adapter', () => {
       { tx: 'tt1', time: '2025-10-09T08:53:20Z', from: T_PEER, to: T_ME, asset: 'USDT', amount: 5 },
       { tx: 'tt2', time: '2025-10-09T08:53:21Z', from: T_PEER, to: T_ME, asset: 'USDT(?)', amount: 1 },
     ]);
-    expect(h.isContract).toBeNull(); // not checked on TRON
-    const init = f.mock.calls[0] as unknown as [string, RequestInit];
+    expect(h.isContract).toBe(false); // wallet/getcontract answered {} — an ordinary account
+    const init = f.mock.calls.find(([u]) => String(u).includes('/transactions?')) as unknown as [string, RequestInit];
     expect((init[1].headers as Record<string, string>)['TRON-PRO-API-KEY']).toBe('tron-secret');
     expect(init[0]).toContain('only_confirmed=true');
     expect(JSON.stringify(audits)).not.toContain('tron-secret');
     expect(tronAddressFromHex(hexOf(T_ME))).toBe(T_ME);
+  });
+
+  it('checks whether the address is a smart contract (POST wallet/getcontract) and keeps going when it cannot', async () => {
+    process.env.TRONGRID_API_KEY = 'tron-secret';
+    const history = (getcontract: () => Response | Promise<Response>) =>
+      new TronGridAdapter(egressWith(vi.fn(async (url: string, init?: RequestInit) => (url.includes('/wallet/getcontract') ? (calls.push([url, init!]), getcontract()) : reply({ success: true, data: [] }))))).history('TRON', T_ME, {});
+    const calls: [string, RequestInit][] = [];
+
+    expect((await history(() => reply({ contract_address: '41abc', bytecode: '6080' }))).isContract).toBe(true);
+    expect((await history(() => reply({}))).isContract).toBe(false);
+    expect((await history(() => reply({ Error: 'invalid address' }))).isContract).toBeNull();
+    expect((await history(() => reply('nope', 500))).isContract).toBeNull();
+    expect((await history(() => Promise.reject(new Error('socket hang up')))).isContract).toBeNull();
+
+    const [url, init] = calls[0]!;
+    expect(url).toBe('https://api.trongrid.io/wallet/getcontract');
+    expect(init.method).toBe('POST');
+    expect(JSON.parse(String(init.body))).toEqual({ value: T_ME, visible: true });
+    expect((init.headers as Record<string, string>)['TRON-PRO-API-KEY']).toBe('tron-secret');
+    expect(JSON.stringify(audits.filter((a) => a.path === '/wallet/getcontract'))).not.toContain(T_ME); // a POST body never reaches the audit log
   });
 });
 

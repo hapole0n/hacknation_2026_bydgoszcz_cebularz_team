@@ -203,6 +203,14 @@ export class PipelineService {
         const key = labelKey(t.cand.chain, t.cand.address);
         byAddress.set(key, [...(byAddress.get(key) ?? []), t]);
       }
+      // An address the analyst typed in is analysed on-chain even when no page mentions it.
+      const subjectCand = new Map<string, AddressCandidate>();
+      for (const i of idents) {
+        const cand = i.type === 'ADDRESS' ? extractAddresses(i.normalized, { examples: this.labels.exampleAddresses() }).addresses[0] : undefined;
+        if (cand?.chain) subjectCand.set(labelKey(cand.chain, cand.address), cand);
+      }
+      for (const key of subjectCand.keys()) if (!byAddress.has(key)) byAddress.set(key, []);
+      const candOf = (key: string, trs: TraceRec[]) => trs[0]?.cand ?? subjectCand.get(key)!;
 
       // On-chain step for every address that may belong to a person (labelled institutions are not worth a lookup).
       const adAddresses = new Set(traces.filter((t) => t.sourceType === 'P2P_OFFER' || t.sourceType === 'SALE_AD').map((t) => t.cand.address));
@@ -211,8 +219,8 @@ export class PipelineService {
       const chainWarnings: { address: string; warnings: Note[] }[] = [];
       if (chainMode !== 'off') {
         for (const [key, trs] of byAddress) {
-          const first = trs[0]!.cand;
-          if (!personal(first) || trs.some((t) => t.cand.isExample)) continue;
+          const first = candOf(key, trs);
+          if (!personal(first) || first.isExample || trs.some((t) => t.cand.isExample)) continue;
           try {
             const { analysis, notes } = await this.chain.analyse({ mode: chainMode, chain: first.chain!, address: first.address, adAddresses, ctx });
             if (analysis) {
@@ -229,7 +237,7 @@ export class PipelineService {
       const addressRows = new Map<string, AddressRow>();
       const exclusionsOf = new Map<string, ExclusionId[]>();
       for (const [key, trs] of byAddress) {
-        const first = trs[0]!.cand;
+        const first = candOf(key, trs);
         const label = labelOf(first);
         const analysis = analyses.get(key);
         const exclusions = new Set<ExclusionId>();

@@ -483,3 +483,15 @@ describe('monitoring: comparison of runs (PLAN 3.8)', () => {
   });
 });
 
+describe('an address typed in by the analyst is analysed on-chain even when no page mentions it', () => {
+  it('D1 lives only in fixtures/chain: no evidence, no links, but a chain snapshot and a category', async () => {
+    const created = await api.createCase({ title: 'Demo — adres bez śladów', identifiers: [{ type: 'ADDRESS', value: addr('D1') }] });
+    caseIds.push(created.id);
+    const r = await pipeline.run(created.id, runOptions);
+    expect(r.evidence).toHaveLength(0);
+    expect(r.links).toHaveLength(0);
+    expect(r.chain.map((c) => [c.address.address, c.address.category])).toEqual([[addr('D1'), 'CEX_DEPOSIT']]);
+    expect(indicatorsOf(r, 'D1').txCount).toBeGreaterThan(0);
+  });
+});
+

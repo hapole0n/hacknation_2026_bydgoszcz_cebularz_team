@@ -65,9 +65,22 @@ export class EgressClient {
   ) {}
 
   async get(url: string, req: EgressRequest): Promise<EgressResponse> {
-    // shortcut: the cache is per process and keyed by URL + presence of credentials; persist it if runs span restarts
+    return this.send('GET', url, undefined, req);
+  }
+
+  /**
+   * POST with a JSON body (JSON-RPC, a chat-completions call, TronGrid's `wallet/*`). Not cached unless the caller passes
+   * `cacheTtlMs` (only for idempotent reads); redirects are not followed — a POST that is redirected is a misconfiguration.
+   * The audit log keeps host + path only, never the body.
+   */
+  async post(url: string, json: unknown, req: EgressRequest): Promise<EgressResponse> {
+    return this.send('POST', url, JSON.stringify(json), { ...req, cacheTtlMs: req.cacheTtlMs ?? 0 });
+  }
+
+  private async send(method: 'GET' | 'POST', url: string, body: string | undefined, req: EgressRequest): Promise<EgressResponse> {
+    // shortcut: the cache is per process and keyed by URL (+ body) and presence of credentials; persist it if runs span restarts
     const ttl = req.cacheTtlMs ?? 300_000;
-    const cacheKey = `${url}|${req.headers?.Authorization ? 'auth' : ''}`;
+    const cacheKey = `${method}|${url}|${body ?? ''}|${req.headers?.Authorization ? 'auth' : ''}`;
     const hit = ttl > 0 ? this.cache.get(cacheKey) : undefined;
     if (hit && Date.now() - hit.at < ttl) return { ...hit.res, fromCache: true };
 
@@ -79,9 +92,10 @@ export class EgressClient {
       let res: Response;
       try {
         res = await this.cfg.fetchImpl(current, {
-          method: 'GET',
+          method,
           redirect: 'manual',
-          headers: { 'User-Agent': this.cfg.userAgent, ...req.headers },
+          headers: { 'User-Agent': this.cfg.userAgent, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }), ...req.headers },
+          body,
           signal: AbortSignal.timeout(this.cfg.timeoutMs),
         });
       } catch (e) {
@@ -91,7 +105,7 @@ export class EgressClient {
       await this.audit(req, u, res.status, Date.now() - started);
 
       const location = res.headers.get('location');
-      if (res.status >= 300 && res.status < 400 && location) {
+      if (method === 'GET' && res.status >= 300 && res.status < 400 && location) {
         current = new URL(location, current).toString();
         continue;
       }

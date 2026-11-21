@@ -27,7 +27,7 @@ interface Trc20Tx {
   token_info: { symbol: string; address: string; decimals: number };
 }
 
-/** TronGrid v1: TRX transfers and TRC-20 (USDT) transfers. TronGrid throttles keyless callers hard, so TRONGRID_API_KEY is required. */
+/** TronGrid: TRX and TRC-20 (USDT) transfers (v1) and the contract check (wallet/getcontract). TronGrid throttles keyless callers hard, so TRONGRID_API_KEY is required. */
 @Injectable()
 export class TronGridAdapter implements ChainAdapter {
   readonly id = 'trongrid';
@@ -67,7 +67,22 @@ export class TronGridAdapter implements ChainAdapter {
           amount: scaled(t.value, t.token_info.decimals),
         })),
     ];
-    // isContract: not checked on TRON (TronGrid needs a POST for that); heuristics classify instead
-    return { chain, address, provider: this.id, fetchedAt: new Date().toISOString(), transfers, isContract: null, truncated: native.length >= LIMIT || trc20.length >= LIMIT };
+    const isContract = await this.isContract(address, key, ctx);
+    return { chain, address, provider: this.id, fetchedAt: new Date().toISOString(), transfers, isContract, truncated: native.length >= LIMIT || trc20.length >= LIMIT };
+  }
+
+  /**
+   * Is this a smart contract? TronGrid `wallet/getcontract` answers `{}` for an ordinary account and the contract
+   * (bytecode, contract_address) for a contract. null = could not be checked (the history is still used; heuristics classify).
+   */
+  private async isContract(address: string, key: string, ctx: AdapterCtx): Promise<boolean | null> {
+    try {
+      const res = await this.egress.post(`${BASE}/wallet/getcontract`, { value: address, visible: true }, { connectorId: this.id, ...ctx, headers: { 'TRON-PRO-API-KEY': key }, cacheTtlMs: 300_000 });
+      if (!res.ok) return null;
+      const body = JSON.parse(res.text) as { contract_address?: string; bytecode?: string; Error?: string };
+      return body.Error ? null : Boolean(body.contract_address || body.bytecode);
+    } catch {
+      return null;
+    }
   }
 }

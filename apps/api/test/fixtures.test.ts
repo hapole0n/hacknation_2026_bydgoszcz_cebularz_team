@@ -48,8 +48,20 @@ describe('sandbox fixtures', () => {
 describe('labels', () => {
   it('every label file declares source, licence and retrieval date', () => {
     const labels = new LabelService();
-    expect(labels.sources.map((s) => s.file)).toEqual(['charity.json', 'dex.json', 'examples.json', 'exchanges.json', 'synthetic-demo.json']);
+    expect(labels.sources.map((s) => s.file)).toEqual(['charity.json', 'dex.json', 'examples.json', 'exchanges-tron.json', 'exchanges.json', 'synthetic-demo.json']);
     for (const s of labels.sources) expect([s.source, s.license, s.retrieved].every(Boolean), s.file).toBe(true);
+  });
+
+  it('TRON exchange wallets come from the published OKX Proof-of-Reserves file (official source, dated header) and exclude attribution', () => {
+    const doc = JSON.parse(read('config/labels/exchanges-tron.json'));
+    expect(doc.header).toMatchObject({ sourceUrl: expect.stringContaining('okx.com'), retrieved: '2026-11-21' });
+    expect(doc.entries.length).toBeGreaterThan(50);
+    const labels = new LabelService();
+    for (const e of doc.entries) {
+      expect(parseAddress(e.address), e.address).toMatchObject({ ok: true, chain: 'TRON' });
+      expect(labels.lookup('TRON', e.address)?.category).toBe('CEX_CUSTODIAL');
+    }
+    expect(labels.lookup('TRON', 'TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey')).toBeUndefined(); // an ordinary address is not labelled
   });
 
   it('flags documentation / burn addresses for the extractor', () => {

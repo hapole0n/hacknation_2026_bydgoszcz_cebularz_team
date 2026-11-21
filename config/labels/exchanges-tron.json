@@ -1,0 +1,724 @@
+{
+  "header": {
+    "source": "OKX Proof of Reserves — published wallet-address file (report of 1 Nov 2026, 00:00 UTC+8), network TRON; every address in the file carries a signed message (\"I am an OKX address\" or \"I am an Okcoin address\")",
+    "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+    "fileUrl": "https://static.okx.com/cdn/okx/por/chain/por_csv_2026110100_V1.zip",
+    "license": "No licence is stated for the address file on the OKX download page; the addresses are an official public disclosure by the exchange. Only addresses and the snapshot reference are reproduced here.",
+    "retrieved": "2026-11-21",
+    "snapshot": "TRON block height 87596323",
+    "selection": "rows with Network=TRON and coin USDT-TRC20 or TRX holding >= 100,000 units at the snapshot (79 wallets). The file lists ~474,000 TRON addresses; the small ones are per-user deposit addresses and are left to the deposit-sweep heuristic (CEX_DEPOSIT)."
+  },
+  "entries": [
+    {
+      "chain": "TRON",
+      "address": "TAX6SUmXCqA4TGmbrs5eU3spZYAnkcrVc6",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TAYmju2ZADQQxnnoJ7n5hGTgUBr896tDY7",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TAZt8ipPaUKeaJ5aZGFmBGuToYpK4Zma15",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TAqkpXjGwu2s6o6hjxj4advFnUcCJCmLuZ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TB1riuz6nEiBGQAQTfpGAKtMakY3JjSahZ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TB5XMhgBQzaySw5q2sFLEHcCH5ghZUU1t5",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TB73ShfgSqVyakXyoMjNXN6Y7y6SBKWzWx",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TB8h4xAuzeb6SRqwjZbW5jkS9Yyi4oHkJA",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TBGXf6qXFybQYvfhwSZTg7o7HJStXoqTTL",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TBNHZP2iAVyDhpTSZ8ee2Xjci1JExZTPE5",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TBREsCfBdPyD612xZnwvGPux7osbXvtzLh",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TBZijVV1NXgQ5Nwbnbq9qYuZvmpwDm4Abn",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TBwBJwj81yXc4DNKS19GJcpUUzfSWRbBzS",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TC9t6iRa7SJ714CwTt1Jm11HAdWRw2Tqi9",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TCw6YaWm3y6DvxY7M8hrCDnrJGeGMumzGJ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TDTJYL2UMdVMwvFvNDxgNP1P9kxxQPsSrS",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TDte9ahHNpH4gixrzDFKNfWo4ezmNTHAbs",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TEHPn1jYEePZz7v3Fp3VT9N5xDSKS8xTym",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TEXKmDAn7L5T3K1GUeCTpHZTPrMvXKCu5C",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TF3DgfyecTwPEk7GWyrw2TVDByV87T3gHa",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TFAXd82DvBpykbt9JyTpevDZWfkmqy2CnZ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TFDFwWB5iZs2dZsmWuNhkVBreZRzDaxU2H",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TGpC1efWgcTKfqJ7aeSe2jq5JCJwtonGpg",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THdNhGhPSuesSh7CBupCYG9jLAKWrCGEcW",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THdXEcBCZ7nagnmfRrfSHoiLRTbSRueoVW",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THmHduz1PJQ3qkTeM6DGRhCr1GRdNsdPz7",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THrQk2YQW9gHDeMZpF2AogMxza6cADMqFS",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THwyeoCMSXQq2aGDpXpSqo89VnTtFktGGp",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "THxEcFnr2fNXefzERQTVzU983dnUpLjCBn",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TJ8QezUuCXvwHocKYj4kPPD1Yjy58TxdHY",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TJVeQfDKsV2ZqrDzZKabgoE6De1vJhnP7h",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TJx3w8rvk77S5RADKH6GZxhMedYgRYKtj9",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKANuaceJYfyRw65R1LJtW2SJXSoDkPBRG",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKAqvu7JDijudPm1XjBNR76KRT1zvHAgse",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKDodq3RFq7dKHcA6pqFk8ryb3LP4B1dVo",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKDznqwZdFXW6avudKgN4iqdA5ySAEYm9w",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKZK55KZF9UBwzPn3uaMEsnn1ihNNQRabf",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKaCCNtRJ1MCzV4x5SaAayRYRx9qJDpf8W",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TKxafEsUEyBaXjYb1hDcFt5FzXuxLUwE31",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TLJSH71sp4hGcAAv7BXsrKLJ8bYbZ7LYU7",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TLMNq5oxB9k6kCBfzN51TDg6ZwBNQ9Q2w1",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TLNrPon76MdjfvreKXd2nmqod7AdyG9To1",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TLaGjwhvA8XQYSxFAcAXy7Dvuue9eGYitv",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TM1zzNDZD2DPASbKcgdVoTYhfmYgtfwx9R",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNF8bZJpvDybC8MRm1fxfjcLFMXmukiiok",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNGNqb8bfFEKjJa5c5aSKqZM25FK7pg3aJ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNS6ESriDfXCtCwauJj3SuJGQq3gMFGHVR",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNYowvaHncRBWAKDzAySA3uVHLkB9qs62p",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNkUL9Za9uBnSJ5MQMDaf2aSSFpuuoKw3k",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNkXAs5MTpByor6axbWYKBCf7wqnGKp2SF",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TNrWrhQLBUCJYW79VKcAHhGH4FWBZtXitN",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TPD1DVWhwQCDQ4PZDSANYiMssdreZBX9yw",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TQ1q1QFReCRHcz7ipPHHL4gNNfCNrUooiv",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TQ7wK19fhZZqLdj2Xcw2e6Ejs3cTZbfBbF",
+      "category": "CEX_CUSTODIAL",
+      "name": "Okcoin (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an Okcoin address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TQQBRmmgRXJChVC66Vp5T5vpcnAq7ZXVL3",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TQZcnTEX8x5TU8eNXzdnqzp8LdzoEg77AT",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TRn5CFr7iDSkNfv5wHT3Lqx3d8R3EshGVf",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TRvDdpXnjWutnyhC6sUVuU8CbdHs9VEk94",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TS11Kh7B5etU4MqBnwRJbMrtMeZ2HTbWYQ",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TSAvg79MmExMFiwV5pkaXhKWvEuFdxZ1C6",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TSj3esPRNeJKTzDTMA1fzHoKm2dGXjakEy",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TSyW7rLDPSLW3ukijmdWZKL1iqKdn1rYuy",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TTFm9VabNHtUrfks9esDPNKgLCRxJsMZqX",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TTt5G1sakMZQnUknwDGhXSFQqt3mWtT1aM",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TU6KLDsjvooPVcUaxMmEeJfqZpeb9TvAvx",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TUZKXuaksVcDrfQfFcWrfkn3Jvqdp4H1Wx",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TUmect8WfALMfNCfWYYXJ45DkLZTY8Du1H",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TVvyKT63p66nqhQiNHX25izSUAvjcdER9X",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TWAY47W8ci9XtfMgvs4r2A7Z2NFGUDJqpp",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TWTXpMzBcojbpsGuj4HDwotPAPV2U3kkzv",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TWXZEfRXGGvvRWu4m8B9LXyifU7AZk3FJz",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TX3AA4gPgapsWc9qhyTWM9QGBfBL5QGVor",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TXGRttpC4PZkyid4WYFoWDJdekT1MmnGVC",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TXkCx2gaEWrtU3g88aYxrqHxeWYXX5UUtL",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TYE5mNXSQHuPAdCa1etk76BKybD4FKJto6",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX, USDT-TRC20 wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TYYs9zzumKUUSsX6F1AgdxDgUDY7HzgBza",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TYah6kK3TKwTdTVt4XWpwpFCayLmnbURRM",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TZ3SyzmxTmeBmNwMs7yVgaq1FPj6qkpEDs",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    },
+    {
+      "chain": "TRON",
+      "address": "TZ7wp7mcM2Qq4kmDNW3pS7ZZ8Y8ztXUVji",
+      "category": "CEX_CUSTODIAL",
+      "name": "OKX (wallet from Proof of Reserves)",
+      "isContract": false,
+      "sourceUrl": "https://www.okx.com/en-eu/proof-of-reserves/download",
+      "note": "OKX PoR 2026-11-01: TRX wallet, signed \"I am an OKX address\""
+    }
+  ]
+}
