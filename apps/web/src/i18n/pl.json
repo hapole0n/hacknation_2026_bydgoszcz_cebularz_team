@@ -235,7 +235,8 @@
       "labelSource": "Źródło etykiety",
       "contract": "Smart kontrakt",
       "noData": "Brak danych z blockchaina",
-      "skipped": "Adres z etykietą: historii nie pobrano"
+      "skipped": "Adres z etykietą: historii nie pobrano",
+      "unknown": "nie ustalono (brak danych)"
     },
     "searched": {
       "title": "Przeszukane źródła",

@@ -171,6 +171,16 @@ describe('buildReport', () => {
     expect(all(doc)).not.toMatch(/undefined|NaN/);
   });
 
+  it('an address nothing could classify is "nie ustalono", never an unhosted wallet', () => {
+    const r = base();
+    r.run.summaryJson!.subjects = [{ chain: 'ETH', address: CEX, category: 'UNHOSTED', isContract: null, labels: [], exclusions: [], known: false }];
+    const doc = buildReport(r);
+    const input = text(doc.sections.find((s) => s.id === 'input')!.blocks);
+    expect(input).toContain('nie ustalono');
+    expect(input).not.toContain('Niehostowany');
+    expect(doc.summary[1]).toContain('nie ustalono, czym jest ten adres');
+  });
+
   it('shows the verdict on a typed-in address in the inputs section and in one summary line', () => {
     const r = base();
     r.run.summaryJson!.subjects = [

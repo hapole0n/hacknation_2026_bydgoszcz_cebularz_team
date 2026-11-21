@@ -14,6 +14,9 @@ export interface AllowedHost {
 
 export class EgressBlockedError extends NoteError {}
 
+/** Extra time added to the rate-limit window: the provider's clock and ours are not the same. */
+const WINDOW_MARGIN_MS = 50;
+
 export interface EgressRequest {
   connectorId: string;
   caseId?: string;
@@ -57,7 +60,8 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 @Injectable()
 export class EgressClient {
   private readonly cache = new Map<string, { at: number; res: EgressResponse }>();
-  private readonly nextSlot = new Map<string, number>();
+  /** Slot times of the last N requests per host (N = the host's rate limit, at least 1). */
+  private readonly recent = new Map<string, number[]>();
 
   constructor(
     private readonly prisma: PrismaService,
@@ -128,13 +132,20 @@ export class EgressClient {
     return u;
   }
 
-  /** Reserves the next time slot for the host synchronously, so concurrent callers queue up in order. */
+  /**
+   * Reserves the next time slot for the host synchronously, so concurrent callers queue up in order. The limit is "at most N requests
+   * in ANY rolling window of N/rate seconds (+ a small margin for network jitter)": evenly spaced slots (1/rate apart) would let
+   * rate+1 requests fall into one second as the provider counts it, and Etherscan answers that with "Max calls per sec rate limit reached".
+   */
   private async waitForSlot(host: string) {
     const rate = this.cfg.allowlist.find((h) => h.host === host.toLowerCase())?.rateLimitPerSec;
     if (!rate) return;
+    const n = Math.max(1, Math.floor(rate));
+    const windowMs = (n / rate) * 1000 + WINDOW_MARGIN_MS;
     const now = Date.now();
-    const at = Math.max(now, this.nextSlot.get(host) ?? 0);
-    this.nextSlot.set(host, at + 1000 / rate);
+    const slots = this.recent.get(host) ?? [];
+    const at = slots.length >= n ? Math.max(now, slots[slots.length - n]! + windowMs) : now;
+    this.recent.set(host, [...slots, at].slice(-n));
     if (at > now) await sleep(at - now);
   }
 

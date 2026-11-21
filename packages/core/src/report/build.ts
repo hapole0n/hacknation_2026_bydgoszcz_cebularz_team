@@ -91,6 +91,8 @@ export interface ReportSubject {
   labels: { name: string | null; source: string; sourceUrl?: string | null }[];
   isContract: boolean | null;
   exclusions: { ruleId: string; pl: string; en: string }[];
+  /** false = neither a label nor the chain analysis could say what the address is (absent in older runs: known). */
+  known?: boolean;
 }
 export interface ReportInput {
   appName: string;
@@ -240,8 +242,8 @@ export function buildReport(input: ReportInput): ReportDoc {
               return [
                 s.address,
                 chainName(s.chain),
-                label(CATEGORIES_PL, s.category),
-                s.exclusions.length > 0 ? `wykluczony: ${s.exclusions.map((e) => `${e.pl} (${e.ruleId})`).join('; ')}` : 'nie wykluczony',
+                s.known === false ? 'nie ustalono' : label(CATEGORIES_PL, s.category),
+                s.known === false ? DASH : s.exclusions.length > 0 ? `wykluczony: ${s.exclusions.map((e) => `${e.pl} (${e.ruleId})`).join('; ')}` : 'nie wykluczony',
                 lab ? `${lab.name ?? DASH}${lab.source === 'heuristic' ? ' (heurystyka)' : lab.sourceUrl ? ` — ${lab.sourceUrl}` : ''}` : DASH,
                 c ? String(c.indicators.txCount) : noData,
                 c ? money(c.indicators.totals.inPln, c.indicators.totals.inEur, c.indicators.totals.unvalued) : DASH,
@@ -616,7 +618,7 @@ export function buildReport(input: ReportInput): ReportDoc {
     summary: [
       `Dla sprawy „${kase.title}” przeanalizowano ${kase.identifiers.length} ${plural(kase.identifiers.length, 'identyfikator', 'identyfikatory', 'identyfikatorów')}, przeszukując źródła: ${run.paramsJson.connectors.join(', ')} (analiza z ${fmtDate(run.startedAt)}).`,
       ...(subjects.length > 0
-        ? [`${subjects.length === 1 ? 'Badany adres' : 'Badane adresy'}: ${subjects.map((s) => `${shortAddr(s.address)} (${chainName(s.chain)}) — ${s.exclusions.length > 0 ? 'wykluczony' : 'nie wykluczony'}, ${label(CATEGORIES_PL, s.category).toLowerCase()}`).join('; ')}.`]
+        ? [`${subjects.length === 1 ? 'Badany adres' : 'Badane adresy'}: ${subjects.map((s) => `${shortAddr(s.address)} (${chainName(s.chain)}) — ${s.known === false ? 'nie ustalono, czym jest ten adres (brak danych)' : `${s.exclusions.length > 0 ? 'wykluczony' : 'nie wykluczony'}, ${label(CATEGORIES_PL, s.category).toLowerCase()}`}`).join('; ')}.`]
         : []),
       s2,
       s3,

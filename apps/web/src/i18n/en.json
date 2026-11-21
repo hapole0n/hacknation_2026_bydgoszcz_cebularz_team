@@ -223,7 +223,8 @@
       "labelSource": "Label source",
       "contract": "Smart contract",
       "noData": "No blockchain data",
-      "skipped": "Labelled address: history not fetched"
+      "skipped": "Labelled address: history not fetched",
+      "unknown": "undetermined (no data)"
     },
     "searched": {
       "title": "Sources searched",

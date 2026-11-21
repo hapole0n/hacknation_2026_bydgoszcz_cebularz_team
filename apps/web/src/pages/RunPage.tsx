@@ -227,11 +227,11 @@ function SubjectsPanel({ run, chainOf, onOpenAddress }: { run: RunResults['run']
                 </td>
                 <td className="px-3 py-2.5">{s.chain}</td>
                 <td className="px-3 py-2.5">
-                  <CategoryBadge category={s.category} />
+                  {s.known === false ? <span className="text-muted-foreground">{t('run.subjects.unknown')}</span> : <CategoryBadge category={s.category} />}
                   {s.isContract && s.category !== 'CONTRACT' && <p className="mt-1 text-xs text-muted-foreground">{t('run.subjects.contract')}</p>}
                 </td>
                 <td className="max-w-xs px-3 py-2.5">
-                  {s.exclusions.length === 0 ? t('run.subjects.notExcluded') : s.exclusions.map((e) => <p key={e.ruleId}><span className="font-medium">{t('run.subjects.excluded')}:</span> {loc(e, lang)} <span className="text-xs text-muted-foreground">({e.ruleId})</span></p>)}
+                  {s.known === false ? '—' : s.exclusions.length === 0 ? t('run.subjects.notExcluded') : s.exclusions.map((e) => <p key={e.ruleId}><span className="font-medium">{t('run.subjects.excluded')}:</span> {loc(e, lang)} <span className="text-xs text-muted-foreground">({e.ruleId})</span></p>)}
                 </td>
                 <td className="px-3 py-2.5">
                   {!label ? '—' : (

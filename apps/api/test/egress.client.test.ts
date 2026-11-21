@@ -139,12 +139,22 @@ describe('cache, rate limit, errors', () => {
     expect((await c2.get('http://sandbox-web/p', { ...req, headers: { Authorization: 'Bearer t' } })).fromCache).toBe(false);
   });
 
-  it('spaces requests to a host by its rate limit, in order, even when issued concurrently', async () => {
+  it('the rate limit of a host holds in ANY rolling second: never more than N requests, even when issued concurrently', async () => {
     const stamps: number[] = [];
     const f = vi.fn(async () => (stamps.push(Date.now()), new Response('x')));
-    const { client } = setup(f as unknown as typeof fetch, [{ host: 'slow.example', rateLimitPerSec: 20 }]); // 50 ms apart
-    await Promise.all([1, 2, 3].map((i) => client.get(`https://slow.example/${i}`, req)));
-    expect(stamps[2]! - stamps[0]!).toBeGreaterThanOrEqual(90);
+    const { client } = setup(f as unknown as typeof fetch, [{ host: 'slow.example', rateLimitPerSec: 2 }]);
+    await Promise.all([1, 2, 3, 4, 5].map((i) => client.get(`https://slow.example/${i}`, req)));
+    expect(stamps).toHaveLength(5);
+    // evenly spaced slots (500 ms) would put 3 requests into one second; here the third waits for the first one's window to pass
+    for (let i = 0; i + 2 < stamps.length; i++) expect(stamps[i + 2]! - stamps[i]!, `requests ${i} and ${i + 2}`).toBeGreaterThanOrEqual(1000);
+  });
+
+  it('a limit below one request a second spaces requests 1/rate apart', async () => {
+    const stamps: number[] = [];
+    const f = vi.fn(async () => (stamps.push(Date.now()), new Response('x')));
+    const { client } = setup(f as unknown as typeof fetch, [{ host: 'slow.example', rateLimitPerSec: 0.5 }]);
+    await Promise.all([1, 2].map((i) => client.get(`https://slow.example/${i}`, req)));
+    expect(stamps[1]! - stamps[0]!).toBeGreaterThanOrEqual(1990);
   });
 
   it('audits network failures (status -1) and rethrows', async () => {

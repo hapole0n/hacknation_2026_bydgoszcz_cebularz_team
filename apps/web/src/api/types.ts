@@ -162,7 +162,7 @@ export interface RunSummary {
   chainWarnings: { address: string; warnings: Note[] }[];
   identities: Identity[];
   /** The addresses typed in as identifiers, with the verdict on the address itself (absent in runs made before this field). */
-  subjects?: (AddressDto & { exclusions: { ruleId: string; pl: string; en: string }[] })[];
+  subjects?: (AddressDto & { exclusions: { ruleId: string; pl: string; en: string }[]; /** false = neither a label nor the chain analysis could say what the address is */ known?: boolean })[];
   /** What each source did with each identifier (absent in runs made before this field). */
   searches?: SearchLogEntry[];
   error?: Note;

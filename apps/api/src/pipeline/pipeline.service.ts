@@ -431,7 +431,7 @@ export class PipelineService {
       // Addresses the analyst typed in: their verdict is shown even when no page mentions them (so no link and no snapshot exist).
       const subjects = [...subjectCand.keys()].map((key) => {
         const a = addressRows.get(key)!;
-        return { chain: a.chain, address: a.address, category: a.category, labels: a.labels, isContract: a.isContract, exclusions: (exclusionsOf.get(key) ?? []).map((id) => ({ ruleId: id, pl: this.rules.rules.exclusions[id].pl, en: this.rules.rules.exclusions[id].en })) };
+        return { chain: a.chain, address: a.address, category: a.category, labels: a.labels, isContract: a.isContract, known: a.known, exclusions: (exclusionsOf.get(key) ?? []).map((id) => ({ ruleId: id, pl: this.rules.rules.exclusions[id].pl, en: this.rules.rules.exclusions[id].en })) };
       });
 
       const searches: SearchLogEntry[] = [
