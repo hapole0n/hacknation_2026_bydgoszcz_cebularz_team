@@ -62,7 +62,7 @@ describe('Etherscan adapter', () => {
 
   it('without a key it says so, clearly', async () => {
     const adapter = new EvmEtherscanAdapter(egressWith(vi.fn()));
-    expect(adapter.unavailableReason()).toMatch(/ETHERSCAN_API_KEY is not set in \.env/);
+    expect(adapter.unavailableReason()).toEqual({ code: 'CHAIN_KEY_MISSING', params: { key: 'ETHERSCAN_API_KEY', chain: 'Ethereum' } });
     await expect(adapter.history('ETH', ME, {})).rejects.toBeInstanceOf(ChainUnavailableError);
   });
 
@@ -116,7 +116,7 @@ describe('TronGrid adapter', () => {
   const T_PEER = 'TVj7M6fz1ToN76KaRB9ayzC6zqkn7NJvSp';
 
   it('without a key it says so, clearly', () => {
-    expect(new TronGridAdapter(egressWith(vi.fn())).unavailableReason()).toMatch(/TRONGRID_API_KEY is not set in \.env/);
+    expect(new TronGridAdapter(egressWith(vi.fn())).unavailableReason()).toMatchObject({ code: 'CHAIN_KEY_MISSING', params: { key: 'TRONGRID_API_KEY' } });
   });
 
   it('reads TRX and TRC-20 transfers (hex → base58), sends the key as a header', async () => {
@@ -195,8 +195,8 @@ describe('ChainRegistry modes', () => {
     expect(registry().list()).toEqual([
       { id: 'fixture', live: false, available: true, reason: null },
       { id: 'mempool.space', live: true, available: true, reason: null },
-      { id: 'etherscan', live: true, available: false, reason: expect.stringContaining('ETHERSCAN_API_KEY') },
-      { id: 'trongrid', live: true, available: false, reason: expect.stringContaining('TRONGRID_API_KEY') },
+      { id: 'etherscan', live: true, available: false, reason: { code: 'CHAIN_KEY_MISSING', params: { key: 'ETHERSCAN_API_KEY', chain: 'Ethereum' } } },
+      { id: 'trongrid', live: true, available: false, reason: { code: 'CHAIN_KEY_MISSING', params: { key: 'TRONGRID_API_KEY', chain: 'TRON' } } },
     ]);
   });
 
@@ -205,7 +205,7 @@ describe('ChainRegistry modes', () => {
     expect((await r.history('fixture', 'ETH', A1, {})).history?.provider).toBe('fixture');
     expect(await r.history('fixture', 'ETH', ME, {})).toEqual({ history: null });
     expect((await r.history('live', 'ETH', A1, {})).history?.provider).toBe('fixture');
-    expect((await r.history('live', 'ETH', ME, {})).note).toMatch(/ETHERSCAN_API_KEY is not set/);
+    expect((await r.history('live', 'ETH', ME, {})).notes).toEqual([{ code: 'CHAIN_KEY_MISSING', params: { key: 'ETHERSCAN_API_KEY', chain: 'Ethereum' } }]);
     expect((await r.history('off', 'ETH', A1, {})).history).toBeNull();
   });
 });
@@ -317,12 +317,12 @@ describe('ChainAnalysisService (stubbed histories)', () => {
     const down = new NbpService(egressWith(vi.fn(async () => reply('x', 503))));
     const { svc } = service({ [eth(8)]: hist(eth(8), [tr('a', eth(9), eth(8), 'USDT', 500)]) }, down);
     const { analysis } = await run(svc, eth(8));
-    expect(analysis?.warnings.join(' ')).toMatch(/PLN valuation unavailable.*NBP HTTP 503/);
+    expect(analysis?.warnings).toContainEqual({ code: 'NBP_HTTP', params: { status: 503 } });
     expect(analysis?.indicators.totals).toMatchObject({ inPln: 0, unvalued: 1 });
   });
 
   it('returns the registry note when there is no history', async () => {
-    const stub = { history: async () => ({ history: null, note: 'ETHERSCAN_API_KEY is not set in .env' }) } as unknown as ChainRegistry;
-    expect(await new ChainAnalysisService(stub, nbp(), labels).analyse({ mode: 'live', chain: 'ETH', address: ME, adAddresses: new Set(), ctx: {} })).toEqual({ note: 'ETHERSCAN_API_KEY is not set in .env' });
+    const stub = { history: async () => ({ history: null, notes: [{ code: 'CHAIN_KEY_MISSING' }] }) } as unknown as ChainRegistry;
+    expect(await new ChainAnalysisService(stub, nbp(), labels).analyse({ mode: 'live', chain: 'ETH', address: ME, adAddresses: new Set(), ctx: {} })).toEqual({ notes: [{ code: 'CHAIN_KEY_MISSING' }] });
   });
 });

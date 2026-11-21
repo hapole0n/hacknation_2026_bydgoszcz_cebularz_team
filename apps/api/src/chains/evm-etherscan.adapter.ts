@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { Chain, ChainHistory, ChainTransfer } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
+import { NoteError } from '../notes.js';
 import { ChainUnavailableError, scaled, toIso, tokenAsset, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 
 const BASE = 'https://api.etherscan.io/v2/api';
@@ -39,7 +40,7 @@ export class EvmEtherscanAdapter implements ChainAdapter {
   constructor(private readonly egress: EgressClient) {}
 
   supports = (chain: Chain) => chain === 'ETH';
-  unavailableReason = () => (process.env.ETHERSCAN_API_KEY ? undefined : 'ETHERSCAN_API_KEY is not set in .env — Ethereum on-chain lookups are disabled');
+  unavailableReason = () => (process.env.ETHERSCAN_API_KEY ? undefined : { code: 'CHAIN_KEY_MISSING', params: { key: 'ETHERSCAN_API_KEY', chain: 'Ethereum' } });
 
   async history(chain: Chain, address: string, ctx: AdapterCtx): Promise<ChainHistory> {
     const apikey = process.env.ETHERSCAN_API_KEY;
@@ -47,12 +48,15 @@ export class EvmEtherscanAdapter implements ChainAdapter {
     const call = async <T>(params: Record<string, string>, emptyOk = false): Promise<T> => {
       const url = `${BASE}?${new URLSearchParams({ chainid: '1', ...params, apikey })}`;
       const res = await this.egress.get(url, { connectorId: this.id, ...ctx });
-      if (!res.ok) throw new Error(`Etherscan HTTP ${res.status}`);
+      if (!res.ok) throw new NoteError({ code: 'PROVIDER_HTTP', params: { provider: 'Etherscan', status: res.status } }, `Etherscan HTTP ${res.status}`);
       const body = JSON.parse(res.text) as Envelope<T> & { jsonrpc?: string };
       if (body.jsonrpc) return body.result; // proxy module answers JSON-RPC
       if (body.status === '1') return body.result;
       if (emptyOk && Array.isArray(body.result)) return body.result; // "No transactions found"
-      throw new Error(`Etherscan: ${typeof body.result === 'string' ? body.result : body.message}`);
+      {
+        const detail = typeof body.result === 'string' ? body.result : String(body.message);
+        throw new NoteError({ code: 'PROVIDER_ERROR', params: { provider: 'Etherscan', detail } }, `Etherscan: ${detail}`);
+      };
     };
 
     const list = { address, sort: 'desc', page: '1', offset: String(PAGE) };

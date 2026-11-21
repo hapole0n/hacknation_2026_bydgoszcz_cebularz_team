@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { sameAddress, type Chain, type ChainHistory, type ChainTransfer } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
+import { NoteError } from '../notes.js';
 import { toIso, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 
 const BASE = 'https://mempool.space/api';
@@ -33,7 +34,7 @@ export class BtcMempoolAdapter implements ChainAdapter {
     let url = `${BASE}/address/${address}/txs`;
     for (let page = 0; page < MAX_PAGES; page++) {
       const res = await this.egress.get(url, { connectorId: this.id, ...ctx });
-      if (!res.ok) throw new Error(`mempool.space HTTP ${res.status}`);
+      if (!res.ok) throw new NoteError({ code: 'PROVIDER_HTTP', params: { provider: 'mempool.space', status: res.status } }, `mempool.space HTTP ${res.status}`);
       const batch = (JSON.parse(res.text) as Tx[]).filter((t) => t.status.confirmed && t.status.block_time);
       txs.push(...batch);
       if (batch.length < 25) break;

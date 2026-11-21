@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { tronAddressFromHex, type Chain, type ChainHistory, type ChainTransfer } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
+import { NoteError } from '../notes.js';
 import { ChainUnavailableError, scaled, tokenAsset, toIso, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 
 const BASE = 'https://api.trongrid.io';
@@ -35,7 +36,7 @@ export class TronGridAdapter implements ChainAdapter {
   constructor(private readonly egress: EgressClient) {}
 
   supports = (chain: Chain) => chain === 'TRON';
-  unavailableReason = () => (process.env.TRONGRID_API_KEY ? undefined : 'TRONGRID_API_KEY is not set in .env — TRON on-chain lookups are disabled');
+  unavailableReason = () => (process.env.TRONGRID_API_KEY ? undefined : { code: 'CHAIN_KEY_MISSING', params: { key: 'TRONGRID_API_KEY', chain: 'TRON' } });
 
   async history(chain: Chain, address: string, ctx: AdapterCtx): Promise<ChainHistory> {
     const key = process.env.TRONGRID_API_KEY;
@@ -43,7 +44,7 @@ export class TronGridAdapter implements ChainAdapter {
     const get = async <T>(path: string): Promise<T[]> => {
       const q = new URLSearchParams({ only_confirmed: 'true', limit: String(LIMIT), order_by: 'block_timestamp,desc' });
       const res = await this.egress.get(`${BASE}/v1/accounts/${address}/${path}?${q}`, { connectorId: this.id, ...ctx, headers: { 'TRON-PRO-API-KEY': key } });
-      if (!res.ok) throw new Error(`TronGrid HTTP ${res.status}`);
+      if (!res.ok) throw new NoteError({ code: 'PROVIDER_HTTP', params: { provider: 'TronGrid', status: res.status } }, `TronGrid HTTP ${res.status}`);
       return (JSON.parse(res.text) as Page<T>).data ?? [];
     };
     const [native, trc20] = await Promise.all([get<NativeTx>('transactions'), get<Trc20Tx>('transactions/trc20')]);

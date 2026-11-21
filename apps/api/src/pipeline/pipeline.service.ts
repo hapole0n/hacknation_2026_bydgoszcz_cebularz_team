@@ -23,6 +23,7 @@ import { DEFAULT_CONNECTORS, ConnectorRegistry } from '../connectors/connector.r
 import type { EvidenceDraft, SearchIdentifier } from '../connectors/connector.js';
 import type { Prisma } from '../generated/prisma/client.js';
 import { LabelService } from '../labels/label.service.js';
+import { NoteError, noteOf, type Note } from '../notes.js';
 import { APP_VERSION } from '../paths.js';
 import { PrismaService } from '../prisma.service.js';
 import { RulesService } from '../rules.service.js';
@@ -59,7 +60,6 @@ interface AddressRow {
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
 const SNIPPET_CHARS = 400;
-const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 @Injectable()
 export class PipelineService {
@@ -95,7 +95,7 @@ export class PipelineService {
       const ctx = { caseId, runId: run.id };
       const evidence: EvidenceRec[] = [];
       const traces: TraceRec[] = [];
-      const errors: { connector: string; message: string }[] = [];
+      const errors: { connector: string; round: number; note: Note }[] = [];
       const seen = new Set<string>();
       const people = idents.filter((i) => i.type !== 'ADDRESS');
 
@@ -134,14 +134,17 @@ export class PipelineService {
           try {
             for (const d of await c.search({ identifiers, ...ctx })) if (accept(d)) ingest(d, round, onlyKey);
           } catch (e) {
-            errors.push({ connector: c.id, message: round === 1 ? message(e) : `round ${round}: ${message(e)}` });
+            errors.push({ connector: c.id, round, note: noteOf(e) });
           }
         }
       };
 
       // Round 1: search by the case identifiers.
       await search(idents, 1, () => true);
-      if (errors.length === connectors.length) throw new Error(`all connectors failed: ${errors.map((e) => `${e.connector}: ${e.message}`).join('; ')}`);
+      if (errors.length === connectors.length) {
+        const detail = errors.map((e) => `${e.connector}: ${e.note.params?.detail ?? e.note.code}`).join('; ');
+        throw new NoteError({ code: 'ALL_CONNECTORS_FAILED', params: { detail } }, `all connectors failed: ${detail}`);
+      }
 
       const labelOf = (c: AddressCandidate) => (c.chain ? this.labels.lookup(c.chain, c.address) : undefined);
       const personal = (c: AddressCandidate) => c.chain !== null && !c.isExample && !(labelOf(c) && exclusionForCategory(labelOf(c)!.category));
@@ -182,20 +185,20 @@ export class PipelineService {
       // On-chain step for every address that may belong to a person (labelled institutions are not worth a lookup).
       const adAddresses = new Set(traces.filter((t) => t.sourceType === 'P2P_OFFER' || t.sourceType === 'SALE_AD').map((t) => t.cand.address));
       const analyses = new Map<string, ChainAnalysis>();
-      const chainNotes: { address: string; note: string }[] = [];
-      const chainWarnings: { address: string; warnings: string[] }[] = [];
+      const chainNotes: { address: string; notes: Note[] }[] = [];
+      const chainWarnings: { address: string; warnings: Note[] }[] = [];
       if (chainMode !== 'off') {
         for (const [key, trs] of byAddress) {
           const first = trs[0]!.cand;
           if (!personal(first) || trs.some((t) => t.cand.isExample)) continue;
           try {
-            const { analysis, note } = await this.chain.analyse({ mode: chainMode, chain: first.chain!, address: first.address, adAddresses, ctx });
+            const { analysis, notes } = await this.chain.analyse({ mode: chainMode, chain: first.chain!, address: first.address, adAddresses, ctx });
             if (analysis) {
               analyses.set(key, analysis);
               if (analysis.warnings.length > 0) chainWarnings.push({ address: first.address, warnings: analysis.warnings });
-            } else if (note) chainNotes.push({ address: first.address, note });
+            } else if (notes) chainNotes.push({ address: first.address, notes });
           } catch (e) {
-            chainNotes.push({ address: first.address, note: message(e) }); // a failing provider never fails the run
+            chainNotes.push({ address: first.address, notes: [noteOf(e)] }); // a failing provider never fails the run
           }
         }
       }
@@ -363,7 +366,7 @@ export class PipelineService {
         });
       });
     } catch (e) {
-      await this.prisma.run.update({ where: { id: run.id }, data: { status: 'FAILED', finishedAt: new Date(), summaryJson: json({ error: message(e) }) } });
+      await this.prisma.run.update({ where: { id: run.id }, data: { status: 'FAILED', finishedAt: new Date(), summaryJson: json({ error: noteOf(e) }) } });
       throw e;
     }
     return this.results(run.id);

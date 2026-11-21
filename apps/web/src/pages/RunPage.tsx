@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BAND_ORDER, BAND_STYLE } from '@/lib/bands';
 import { addressKey, formatDateTime, loc, shortAddress, shortHash } from '@/lib/format';
+import { noteText } from '@/lib/notes';
 import { cn } from '@/lib/utils';
 import { Link } from '@/router';
 
@@ -39,9 +40,9 @@ export function RunPage({ id }: { id: string }) {
   const drawerInfo = drawer ? view.addressInfo(drawer) : null;
 
   const notes: string[] = [
-    ...(summary?.connectorErrors.map((e) => t('run.connectorError', { connector: e.connector, message: e.message })) ?? []),
-    ...(summary?.chainNotes.map((n) => t('run.chainNote', { address: shortAddress(n.address), note: n.note })) ?? []),
-    ...(summary?.chainWarnings.flatMap((w) => w.warnings.map((x) => t('run.chainWarning', { address: shortAddress(w.address), warning: x }))) ?? []),
+    ...(summary?.connectorErrors.map((e) => t('run.connectorError', { connector: e.connector, message: (e.round > 1 ? `${t('run.round', { round: e.round })}: ` : '') + noteText(t, e.note) })) ?? []),
+    ...(summary?.chainNotes.map((n) => t('run.chainNote', { address: shortAddress(n.address), note: n.notes.map((x) => noteText(t, x)).join(' ') })) ?? []),
+    ...(summary?.chainWarnings.flatMap((w) => w.warnings.map((x) => t('run.chainWarning', { address: shortAddress(w.address), warning: noteText(t, x) }))) ?? []),
   ];
 
   return (
@@ -51,7 +52,7 @@ export function RunPage({ id }: { id: string }) {
         <h1 className="mt-2 font-serif text-3xl font-semibold">{kase.data?.title ?? '…'}</h1>
       </div>
 
-      {head.status === 'FAILED' && <ErrorNote title={t('run.failed')} message={summary?.error ?? ''} />}
+      {head.status === 'FAILED' && <ErrorNote title={t('run.failed')} message={summary?.error ? noteText(t, summary.error) : ''} />}
 
       <Panel className="grid gap-6 p-5 lg:grid-cols-[1fr_1fr]">
         <Particulars

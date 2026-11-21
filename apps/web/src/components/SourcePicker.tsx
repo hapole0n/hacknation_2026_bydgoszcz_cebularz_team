@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useChainAdapters, useConnectors, type RunOptions } from '@/api/client';
+import { noteText } from '@/lib/notes';
 import type { ChainMode } from '@/api/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -64,7 +65,7 @@ export function SourcePicker({ value, onChange }: { value: RunOptions; onChange:
             <ul className="mt-2 space-y-0.5">
               {(adapters.data ?? []).filter((a) => a.live).map((a) => (
                 <li key={a.id}>
-                  <span className="font-medium">{a.id}</span>: {a.available ? t('form.adapterReady') : t('form.adapterUnavailable', { reason: a.reason })}
+                  <span className="font-medium">{a.id}</span>: {a.available ? t('form.adapterReady') : t('form.adapterUnavailable', { reason: a.reason ? noteText(t, a.reason) : '' })}
                 </li>
               ))}
             </ul>

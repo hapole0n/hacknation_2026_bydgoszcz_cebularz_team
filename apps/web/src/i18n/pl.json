@@ -164,7 +164,8 @@
     },
     "connectorError": "Źródło „{{connector}}” zwróciło błąd: {{message}}",
     "chainNote": "Adres {{address}}: {{note}}",
-    "chainWarning": "Adres {{address}}: {{warning}}"
+    "chainWarning": "Adres {{address}}: {{warning}}",
+    "round": "runda {{round}}"
   },
   "bands": {
     "VERY_HIGH": "Bardzo wysokie",
@@ -370,7 +371,9 @@
     "in": "wpływ",
     "out": "wypływ",
     "unvalued": "Pozycje bez wyceny: {{count}} (brak kursu lub ceny).",
-    "truncated": "Historia obcięta do ostatniej strony wyników dostawcy."
+    "truncated": "Historia obcięta do ostatniej strony wyników dostawcy.",
+    "noValuation": "— (brak wyceny)",
+    "partialValuation": "częściowo: brak wyceny części transferów"
   },
   "tags": {
     "SWAP_DEX": "wymiana na DEX",
@@ -464,5 +467,17 @@
     },
     "noOther": "brak",
     "empty": "Nie znaleziono kont, które opublikowały ten adres."
+  },
+  "notes": {
+    "ERROR": "Błąd techniczny: {{detail}}",
+    "CHAIN_KEY_MISSING": "Brak klucza {{key}} w pliku .env — wyszukiwanie w sieci {{chain}} jest wyłączone.",
+    "PROVIDER_HTTP": "Dostawca danych {{provider}} zwrócił błąd HTTP {{status}}.",
+    "PROVIDER_ERROR": "Dostawca danych {{provider}} zwrócił błąd: {{detail}}",
+    "NBP_HTTP": "Wycena w PLN niedostępna: serwer NBP zwrócił błąd HTTP {{status}}.",
+    "NBP_NO_RATE": "Wycena w PLN niedostępna: brak kursu NBP {{currency}} sprzed dnia {{day}}.",
+    "HISTORY_TRUNCATED": "Historia obcięta do ostatniej strony wyników dostawcy.",
+    "UNVALUED_TRANSFERS": "Transfery bez wyceny: {{count}} (brak stablecoina lub źródła ceny).",
+    "EGRESS_BLOCKED": "Połączenie z hostem {{host}} zablokowane: brak go na liście dozwolonych.",
+    "ALL_CONNECTORS_FAILED": "Wszystkie źródła zwróciły błąd: {{detail}}"
   }
 }

@@ -228,9 +228,9 @@ describe('on-chain indicators (stage 6)', () => {
       const e2 = new EgressClient(prisma, noFetch);
       const live = new PipelineService(prisma, new RulesService(), labels, registry, new ChainAnalysisService(new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(e2), new EvmEtherscanAdapter(e2), new TronGridAdapter(e2)), new NbpService(e2), labels));
       const r = await live.run(caseIds[0]!, { ...runOptions, chain: 'live' });
-      const summary = r.run.summaryJson as { chainNotes: { address: string; note: string }[] };
+      const summary = r.run.summaryJson as { chainNotes: { address: string; notes: { code: string }[] }[] };
       // B1 (BTC) is attempted through mempool.space (the stub has no network → failure noted), AB (ETH) needs the key
-      expect(summary.chainNotes.find((n) => n.address === addr('AB'))?.note).toMatch(/ETHERSCAN_API_KEY is not set/);
+      expect(summary.chainNotes.find((n) => n.address === addr('AB'))?.notes).toContainEqual(expect.objectContaining({ code: 'CHAIN_KEY_MISSING' }));
       expect(r.run.status).toBe('DONE');
     } finally {
       if (keys.e) process.env.ETHERSCAN_API_KEY = keys.e;

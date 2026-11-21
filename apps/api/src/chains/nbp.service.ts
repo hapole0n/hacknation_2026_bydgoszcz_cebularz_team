@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { previousRate, warsawDate, type FxRates } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
+import { NoteError } from '../notes.js';
 import type { AdapterCtx } from './chain-adapter.js';
 
-export class NbpUnavailableError extends Error {}
+export class NbpUnavailableError extends NoteError {}
 
 type Code = 'USD' | 'EUR';
 interface Rate {
@@ -47,7 +48,7 @@ export class NbpService {
   private pick(code: Code, day: string): Rate {
     const list = [...this.rates.get(code)!].map(([date, mid]) => ({ date, mid })).sort((a, b) => a.date.localeCompare(b.date));
     const r = previousRate(list, day);
-    if (!r) throw new NbpUnavailableError(`no NBP ${code} rate before ${day}`);
+    if (!r) throw new NbpUnavailableError({ code: 'NBP_NO_RATE', params: { currency: code, day } }, `no NBP ${code} rate before ${day}`);
     return r;
   }
 
@@ -64,7 +65,7 @@ export class NbpService {
         res = await this.egress.get(url, { connectorId: 'nbp', ...ctx });
       }
       if (res.status === 404) continue; // no quotation in that range (holidays only)
-      if (!res.ok) throw new NbpUnavailableError(`NBP HTTP ${res.status}`);
+      if (!res.ok) throw new NbpUnavailableError({ code: 'NBP_HTTP', params: { status: res.status } }, `NBP HTTP ${res.status}`);
       for (const r of JSON.parse(res.text).rates as { effectiveDate: string; mid: number }[]) this.rates.get(code)!.set(r.effectiveDate, r.mid);
     }
     this.covered[code].push({ from, to });

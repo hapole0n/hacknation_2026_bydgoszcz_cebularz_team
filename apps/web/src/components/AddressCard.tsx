@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import type { AddressDto, ChainDto, EvidenceDto, LinkDto, RunResults, TraceDto } from '@/api/types';
+import type { AddressDto, ChainDto, EvidenceDto, LinkDto, Note, RunResults, TraceDto } from '@/api/types';
 import { BandChip, CategoryBadge, Particulars, SectionHeading, Tag } from '@/components/primitives';
 import { formatAmount, formatDate, formatDateTime, formatEur, formatPln, shortAddress } from '@/lib/format';
+import { noteText } from '@/lib/notes';
 
 const THRESHOLD_KEYS = [1000, 10000, 15000];
 
@@ -105,7 +106,7 @@ export function AddressCard({
         {!chain ? (
           <div className="rounded-lg border border-dashed p-4 text-sm">
             <p className="font-medium">{t('address.noChain')}</p>
-            {notes.map((n) => <p key={n.note} className="mt-1 text-muted-foreground">{n.note}</p>)}
+            {notes.flatMap((n) => n.notes).map((n, i) => <p key={i} className="mt-1 text-muted-foreground">{noteText(t, n)}</p>)}
             <p className="mt-1 text-muted-foreground">{t('address.noChainWhy', { mode: t(`run.chainModes.${run.paramsJson.chain}`) })}</p>
           </div>
         ) : (
@@ -116,10 +117,13 @@ export function AddressCard({
   );
 }
 
-function ChainSection({ chain, lang, warnings }: { chain: ChainDto; lang: string; warnings: string[] }) {
+function ChainSection({ chain, lang, warnings }: { chain: ChainDto; lang: string; warnings: Note[] }) {
   const { t } = useTranslation();
   const ind = chain.indicators;
   const tagsOf = Object.entries(ind.interactions);
+  // Never show 0,00 zł for money that could not be valued (e.g. NBP down): a dash, or a partial sum marked as such.
+  const money = (pln: number, eur: number, unvalued: number) =>
+    unvalued === 0 ? `${formatPln(pln, lang)} (${formatEur(eur, lang)})` : pln === 0 ? t('address.noValuation') : `${formatPln(pln, lang)} (${formatEur(eur, lang)}) — ${t('address.partialValuation')}`;
   return (
     <div className="space-y-6">
       <Particulars
@@ -127,8 +131,8 @@ function ChainSection({ chain, lang, warnings }: { chain: ChainDto; lang: string
           { label: t('address.kpi.tx'), value: ind.txCount },
           { label: t('address.kpi.first'), value: formatDate(ind.firstActivity, lang) },
           { label: t('address.kpi.last'), value: formatDate(ind.lastActivity, lang) },
-          { label: t('address.kpi.inPln'), value: `${formatPln(ind.totals.inPln, lang)} (${formatEur(ind.totals.inEur, lang)})` },
-          { label: t('address.kpi.outPln'), value: `${formatPln(ind.totals.outPln, lang)} (${formatEur(ind.totals.outEur, lang)})` },
+          { label: t('address.kpi.inPln'), value: money(ind.totals.inPln, ind.totals.inEur, ind.totals.unvalued) },
+          { label: t('address.kpi.outPln'), value: money(ind.totals.outPln, ind.totals.outEur, ind.totals.unvalued) },
           { label: t('address.kpi.stableIn'), value: `${formatAmount(ind.stablecoin.inUsd, lang)} USD` },
           { label: t('address.kpi.stableOut'), value: `${formatAmount(ind.stablecoin.outUsd, lang)} USD` },
           { label: t('address.kpi.counterparties'), value: `${ind.counterparties.total} (${t('address.kpi.known', { count: ind.counterparties.known })})` },
@@ -136,7 +140,7 @@ function ChainSection({ chain, lang, warnings }: { chain: ChainDto; lang: string
         ]}
       />
       {ind.totals.unvalued > 0 && <p className="text-sm text-muted-foreground">{t('address.unvalued', { count: ind.totals.unvalued })}</p>}
-      {warnings.map((w) => <p key={w} className="text-sm text-muted-foreground">{w}</p>)}
+      {warnings.filter((w) => w.code !== 'UNVALUED_TRANSFERS').map((w, i) => <p key={i} className="text-sm text-muted-foreground">{noteText(t, w)}</p>)}
 
       {tagsOf.length > 0 && (
         <div>

@@ -13,6 +13,7 @@ import {
   type Indicators,
 } from '@kropka/core';
 import { LabelService } from '../labels/label.service.js';
+import { noteOf, type Note } from '../notes.js';
 import type { AdapterCtx } from './chain-adapter.js';
 import { ChainRegistry, type ChainMode } from './chain.registry.js';
 import { NbpService } from './nbp.service.js';
@@ -44,7 +45,7 @@ export interface ChainAnalysis {
   indicators: Indicators;
   flows: FlowEntry[];
   counterparties: ClassifiedCounterparty[];
-  warnings: string[];
+  warnings: Note[];
 }
 
 @Injectable()
@@ -59,11 +60,11 @@ export class ChainAnalysisService {
    * On-chain step for one address: history → classification (bytecode, deposit sweep, service behaviour) →
    * NBP valuation → indicators and chronology. Returns `note` instead when no adapter has data.
    */
-  async analyse(input: { mode: ChainMode; chain: Chain; address: string; adAddresses: ReadonlySet<string>; ctx: AdapterCtx }): Promise<{ analysis?: ChainAnalysis; note?: string }> {
+  async analyse(input: { mode: ChainMode; chain: Chain; address: string; adAddresses: ReadonlySet<string>; ctx: AdapterCtx }): Promise<{ analysis?: ChainAnalysis; notes?: Note[] }> {
     const { mode, chain, address, ctx } = input;
-    const { history, note } = await this.registry.history(mode, chain, address, ctx);
-    if (!history) return { note };
-    const warnings: string[] = [];
+    const { history, notes } = await this.registry.history(mode, chain, address, ctx);
+    if (!history) return { notes };
+    const warnings: Note[] = [];
 
     const labelCategory = (a: string) => this.labels.lookup(chain, a)?.category;
     const classified = new Map<string, ClassifiedCounterparty>();
@@ -115,12 +116,12 @@ export class ChainAnalysisService {
     try {
       fx = await this.nbp.fxFor(times, ctx);
     } catch (e) {
-      warnings.push(`PLN valuation unavailable: ${e instanceof Error ? e.message : String(e)}`);
+      warnings.push(noteOf(e)); // PLN valuation unavailable
     }
     const valued = history.transfers.map((t) => valueTransfer(t, fx?.get(t.time)));
     const { indicators, flows } = analyseHistory({ chain, address, transfers: valued, categoryOf, adAddresses: input.adAddresses });
-    if (history.truncated) warnings.push('History truncated to the latest page returned by the provider.');
-    if (indicators.totals.unvalued > 0) warnings.push(`${indicators.totals.unvalued} transfer(s) could not be valued (no stablecoin / price source).`);
+    if (history.truncated) warnings.push({ code: 'HISTORY_TRUNCATED' });
+    if (indicators.totals.unvalued > 0) warnings.push({ code: 'UNVALUED_TRANSFERS', params: { count: indicators.totals.unvalued } });
 
     return {
       analysis: {

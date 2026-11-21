@@ -34,11 +34,17 @@ export interface ConnectorInfo {
   policy: { tosUrl: string; method: 'official_api' | 'public_page' | 'synthetic'; rateLimitPerSec: number; weightHint: number };
 }
 
+/** A backend message as a code + params, translated in the UI (`notes.<code>`). */
+export interface Note {
+  code: string;
+  params?: Record<string, string | number>;
+}
+
 export interface ChainAdapterInfo {
   id: string;
   live: boolean;
   available: boolean;
-  reason: string | null;
+  reason: Note | null;
 }
 
 export interface LabelInfo {
@@ -130,11 +136,11 @@ export interface Identity {
 
 export interface RunSummary {
   stats: { evidence: number; traces: number; links: number; chainSnapshots: number; identities: number };
-  connectorErrors: { connector: string; message: string }[];
-  chainNotes: { address: string; note: string }[];
-  chainWarnings: { address: string; warnings: string[] }[];
+  connectorErrors: { connector: string; round: number; note: Note }[];
+  chainNotes: { address: string; notes: Note[] }[];
+  chainWarnings: { address: string; warnings: Note[] }[];
   identities: Identity[];
-  error?: string;
+  error?: Note;
 }
 
 export interface RunResults {

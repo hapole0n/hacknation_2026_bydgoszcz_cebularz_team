@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type { Chain, ChainHistory } from '@kropka/core';
 import { BtcMempoolAdapter } from './btc-mempool.adapter.js';
-import { ChainUnavailableError, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
+import { noteOf, type Note } from '../notes.js';
+import type { AdapterCtx, ChainAdapter } from './chain-adapter.js';
 import { EvmEtherscanAdapter } from './evm-etherscan.adapter.js';
 import { FixtureChainAdapter } from './fixture.adapter.js';
 import { TronGridAdapter } from './tron-grid.adapter.js';
@@ -14,7 +15,7 @@ export const isChainMode = (v: unknown): v is ChainMode => v === 'fixture' || v 
 export interface HistoryResult {
   history: ChainHistory | null;
   /** Why there is no history: a missing key or a provider failure (shown to the analyst, never fatal). */
-  note?: string;
+  notes?: Note[];
 }
 
 @Injectable()
@@ -32,7 +33,7 @@ export class ChainRegistry {
 
   async history(mode: ChainMode, chain: Chain, address: string, ctx: AdapterCtx): Promise<HistoryResult> {
     if (mode === 'off') return { history: null };
-    const notes: string[] = [];
+    const notes: Note[] = [];
     for (const a of this.adapters) {
       if ((a.live && mode !== 'live') || !a.supports(chain)) continue;
       const reason = a.unavailableReason();
@@ -44,9 +45,9 @@ export class ChainRegistry {
         const history = await a.history(chain, address, ctx);
         if (history) return { history };
       } catch (e) {
-        notes.push(`${a.id}: ${e instanceof ChainUnavailableError ? e.message : e instanceof Error ? e.message : String(e)}`);
+        notes.push(noteOf(e));
       }
     }
-    return { history: null, note: notes.length > 0 ? notes.join('; ') : undefined };
+    return { history: null, notes: notes.length > 0 ? notes : undefined };
   }
 }

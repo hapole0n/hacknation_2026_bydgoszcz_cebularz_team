@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { Injectable } from '@nestjs/common';
 import { parse } from 'yaml';
+import { NoteError } from '../notes.js';
 import { repoPath } from '../paths.js';
 import { PrismaService } from '../prisma.service.js';
 
@@ -11,7 +12,7 @@ export interface AllowedHost {
   rateLimitPerSec?: number;
 }
 
-export class EgressBlockedError extends Error {}
+export class EgressBlockedError extends NoteError {}
 
 export interface EgressRequest {
   connectorId: string;
@@ -108,7 +109,7 @@ export class EgressClient {
     const allowed = (u.protocol === 'http:' || u.protocol === 'https:') && this.cfg.allowlist.some((h) => h.host === u.hostname.toLowerCase());
     if (!allowed) {
       await this.audit(req, u, 0, 0); // 0 = blocked by the allowlist
-      throw new EgressBlockedError(`egress to ${u.protocol}//${u.hostname} is not in the allowlist`);
+      throw new EgressBlockedError({ code: 'EGRESS_BLOCKED', params: { host: u.hostname } }, `egress to ${u.protocol}//${u.hostname} is not in the allowlist`);
     }
     return u;
   }

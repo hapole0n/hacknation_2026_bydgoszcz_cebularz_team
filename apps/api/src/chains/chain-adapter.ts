@@ -1,7 +1,8 @@
 import { type Chain, type ChainHistory } from '@kropka/core';
+import { NoteError, type Note } from '../notes.js';
 
 /** A live adapter that cannot run (typically: its API key is missing from .env). */
-export class ChainUnavailableError extends Error {}
+export class ChainUnavailableError extends NoteError {}
 
 export interface AdapterCtx {
   caseId?: string;
@@ -14,7 +15,7 @@ export interface ChainAdapter {
   readonly live: boolean;
   supports(chain: Chain): boolean;
   /** Why the adapter cannot be used right now (e.g. a missing API key); undefined = ready. */
-  unavailableReason(): string | undefined;
+  unavailableReason(): Note | undefined;
   /** null = this adapter has no data for the address (the next one is tried). */
   history(chain: Chain, address: string, ctx: AdapterCtx): Promise<ChainHistory | null>;
 }

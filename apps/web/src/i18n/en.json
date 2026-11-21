@@ -164,7 +164,8 @@
     },
     "connectorError": "Source \"{{connector}}\" returned an error: {{message}}",
     "chainNote": "Address {{address}}: {{note}}",
-    "chainWarning": "Address {{address}}: {{warning}}"
+    "chainWarning": "Address {{address}}: {{warning}}",
+    "round": "runda {{round}}"
   },
   "bands": {
     "VERY_HIGH": "Very high",
@@ -370,7 +371,9 @@
     "in": "inflow",
     "out": "outflow",
     "unvalued": "Items not valued: {{count}} (no rate or price).",
-    "truncated": "History cut to the latest page returned by the provider."
+    "truncated": "History cut to the latest page returned by the provider.",
+    "noValuation": "— (no valuation)",
+    "partialValuation": "partial: some transfers have no valuation"
   },
   "tags": {
     "SWAP_DEX": "DEX swap",
@@ -464,5 +467,17 @@
     },
     "noOther": "none",
     "empty": "No account that published this address was found."
+  },
+  "notes": {
+    "ERROR": "Technical error: {{detail}}",
+    "CHAIN_KEY_MISSING": "The {{key}} key is missing from .env — lookups on {{chain}} are disabled.",
+    "PROVIDER_HTTP": "Data provider {{provider}} returned HTTP error {{status}}.",
+    "PROVIDER_ERROR": "Data provider {{provider}} returned an error: {{detail}}",
+    "NBP_HTTP": "PLN valuation unavailable: the NBP server returned HTTP error {{status}}.",
+    "NBP_NO_RATE": "PLN valuation unavailable: no NBP {{currency}} rate before {{day}}.",
+    "HISTORY_TRUNCATED": "History truncated to the last page returned by the provider.",
+    "UNVALUED_TRANSFERS": "Transfers without a valuation: {{count}} (no stablecoin or price source).",
+    "EGRESS_BLOCKED": "Connection to host {{host}} blocked: it is not on the allowlist.",
+    "ALL_CONNECTORS_FAILED": "All sources returned an error: {{detail}}"
   }
 }
