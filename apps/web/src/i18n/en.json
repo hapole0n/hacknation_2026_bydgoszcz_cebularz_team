@@ -583,6 +583,7 @@
     "firstRun": "first analysis",
     "summaryParts": {
       "addressesAdded": "new addresses: {{n}}",
+      "addressesRemoved": "addresses gone: {{n}}",
       "scoreChanges": "score changes: {{n}}",
       "newTransactions": "new transactions: {{n}}",
       "newThresholds": "thresholds: {{n}}",

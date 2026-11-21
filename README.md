@@ -52,7 +52,19 @@ Zrzuty z przebiegu na danych syntetycznych (`docs/screenshots/`):
 | `06-kto-stoi-za-adresem.png` | wariant „adres na wejściu”: konta, które go opublikowały |
 | `07-raport-html.png`, `08-raport-decyzje-wnioski.png` | raport w aplikacji |
 | `09-…`, `10-…`, `11-raport-pdf-….png` | raport PDF (strony wyrenderowane z pliku) |
-| `12-dziennik-zapytan.png` | Dziennik zapytań (widok „tylko zablokowane i z błędem”; wiersze pokazowe) |
+| `12-dziennik-zapytan.png` | Dziennik zapytań: zdarzenia z rzeczywistych analiz (sandbox, NBP, Wayback, Gravatar, ENS) |
+| `13-sprawa-monitoring-i-zmiana.png` | sprawa: monitoring (wył. / 15 min / 1 h / 24 h, „Uruchom teraz”), historia analiz ze zmianami, przycisk „Demo: symuluj zmianę” |
+| `14-zmiany-od-poprzedniego-przebiegu.png` | blok „Zmiany od poprzedniego przebiegu”: zmiana adresu w tym samym źródle, nowy adres, nowe transakcje, przekroczone progi, sygnał wyjścia do gotówki |
+| `15-powiadomienia.png` | dzwonek z licznikiem i lista powiadomień |
+| `16-raport-sekcja-8-zmiany.png` | raport, sekcja 8 „Zmiany od poprzedniego przebiegu” |
+
+## Monitoring i zmiany w czasie
+- **Monitoring:** każda sprawa ma harmonogram (wyłączony / co 15 min / co godzinę / co 24 h) zapisany w bazie, więc przeżywa restart. Przycisk „Uruchom teraz” uruchamia analizę od razu. Historia analiz jest na stronie sprawy.
+- **Porównanie przebiegów:** każda kolejna analiza jest porównywana z poprzednią: nowe i zniknięte adresy, zmiany Wskaźnika Pewności **z podaniem reguły**, zmiany kategorii, nowe transakcje, nowe przekroczenia progów 1 000 / 10 000 / 15 000 EUR, nowe sygnały wyjścia do gotówki oraz **zmiana adresu w tym samym źródle**. Wynik jest w aplikacji („Zmiany od poprzedniego przebiegu”) i w raporcie (sekcja 8).
+- **Powiadomienia:** dzwonek w aplikacji (bez zewnętrznych usług): nowy adres z oceną ≥ 60, zmiana adresu, przekroczenie progu, nowy wskaźnik wyjścia do gotówki.
+- **Demo zmiany adresu:** na stronie sprawy demonstracyjnej „Demo: symuluj zmianę” podmienia stronę persony A w sztucznym internecie (inny, sztuczny adres). Kolejna analiza pokazuje różnicę i powiadomienia.
+- **Dodatkowe źródła (opt-in):** Wayback Machine (kopie stron: jaki adres był i kiedy), Gravatar (e-mail → profil; portfele tylko z kluczem `GRAVATAR_API_KEY`, bez klucza pomijane z adnotacją), ENS (adres ↔ nazwa `.eth` i rekordy tekstowe przez publiczny RPC). Podmioty syntetyczne obsługuje wyłącznie sztuczny internet.
+- **Lokalny AI (opcjonalny, domyślnie wyłączony):** model przez API zgodne z OpenAI (np. Ollama) podpowiada typ kontekstu tam, gdzie reguły słów kluczowych niczego nie znalazły. Podpowiedź jest oznaczona „Sugestia AI” i nie zmienia oceny.
 
 ## Zgodność i bezpieczeństwo
 - **Wyłącznie OSINT.** Jawne, legalne źródła; oficjalne API tam, gdzie istnieją; przestrzeganie regulaminów i robots.txt źródeł. Bez logowania na cudze konta, wycieków, omijania zabezpieczeń i skanowania podatności.

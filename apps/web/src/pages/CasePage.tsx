@@ -12,7 +12,7 @@ import { Link, navigate } from '@/router';
 /** One line for the history table: what the comparison with the previous run found. */
 function changesText(c: CaseDetail['runs'][number]['changes'], t: TFunction): string {
   if (!c) return t('changes.firstRun');
-  const parts = (['addressesAdded', 'sourceChanges', 'scoreChanges', 'newTransactions', 'newThresholds'] as const).filter((k) => c[k] > 0).map((k) => t(`changes.summaryParts.${k}`, { n: c[k] }));
+  const parts = (['addressesAdded', 'addressesRemoved', 'sourceChanges', 'scoreChanges', 'newTransactions', 'newThresholds'] as const).filter((k) => c[k] > 0).map((k) => t(`changes.summaryParts.${k}`, { n: c[k] }));
   return parts.length > 0 ? parts.join('; ') : t('changes.noChanges');
 }
 

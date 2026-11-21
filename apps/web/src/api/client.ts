@@ -64,6 +64,7 @@ export function useStartRun() {
       qc.setQueryData(['run', r.run.id], r);
       qc.invalidateQueries({ queryKey: ['cases'] });
       qc.invalidateQueries({ queryKey: ['case', r.run.caseId] });
+      qc.invalidateQueries({ queryKey: ['notifications'] }); // a run may ring the bell: show it now, not at the next poll
     },
   });
 }
