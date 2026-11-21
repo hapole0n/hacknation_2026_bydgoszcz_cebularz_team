@@ -1,10 +1,10 @@
 {
   "header": {
-    "source": "Public label of a centralised-exchange hot wallet (dawsbot/eth-labels, data/csv/accounts.csv @ d9b21aefeded56f7fce7208d6fa173d128526c1b)",
-    "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv",
-    "license": "MIT (dawsbot/eth-labels)",
+    "source": "Public label of a centralised-exchange hot wallet: brianleect/etherscan-labels (Etherscan mainnet labels, data/etherscan/combined/combinedAllLabels.json @ 923aba72c7e2d0682f7ae6194b6140bd90668dc9), cross-checked in dawsbot/eth-labels",
+    "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json",
+    "license": "MIT (brianleect/etherscan-labels; dawsbot/eth-labels)",
     "retrieved": "2026-11-21",
-    "note": "The dataset lists this address as \"exchange / Binance 14\" under chainId 480; EVM addresses are identical across EVM chains, so it is used for ETH too. The Ethereum-mainnet label itself was not independently confirmed in this run."
+    "note": "Ethereum-mainnet label CONFIRMED: the Etherscan dataset lists 0x28c6…1d60 as {\"name\":\"Binance 14\",\"labels\":[\"binance\"]} (scraped 2023-06, repo scraper is marked \"currently broken\" — the data is a snapshot). Cross-check: eth-labels lists the same address as \"exchange / Binance 14\" (its chainId is 480)."
   },
   "entries": [
     {
@@ -13,8 +13,8 @@
       "category": "CEX_CUSTODIAL",
       "name": "Binance 14 (hot wallet)",
       "isContract": false,
-      "sourceUrl": "https://github.com/dawsbot/eth-labels/blob/d9b21aefeded56f7fce7208d6fa173d128526c1b/data/csv/accounts.csv",
-      "note": "eth-labels row: chainId 480, label \"exchange\", nameTag \"Binance 14\""
+      "sourceUrl": "https://github.com/brianleect/etherscan-labels/blob/923aba72c7e2d0682f7ae6194b6140bd90668dc9/data/etherscan/combined/combinedAllLabels.json",
+      "note": "etherscan-labels: {\"name\":\"Binance 14\",\"labels\":[\"binance\"]}; eth-labels cross-check: exchange / Binance 14"
     }
   ]
 }

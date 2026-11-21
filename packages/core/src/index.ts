@@ -8,3 +8,6 @@ export * from './scoring/rules.js';
 export * from './scoring/score.js';
 export * from './identity.js';
 export * from './labels.js';
+export * from './chain/model.js';
+export * from './chain/classify.js';
+export * from './chain/indicators.js';

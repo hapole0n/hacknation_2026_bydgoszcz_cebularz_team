@@ -36,6 +36,7 @@
 - `pnpm --filter api exec prisma migrate dev` · `pnpm licenses:report` (regenerates LICENSES.md)
 - `pnpm test` needs Postgres (`docker compose up -d db` + migrations): the api acceptance test (`apps/api/test/pipeline.acceptance.test.ts`) runs the demo case against it. Tests never touch the internet — the sandbox is served from disk.
 - Demo-case spec: `fixtures/expected.json` (identifiers, expected addresses/scores/exclusions); synthetic addresses: `fixtures/addresses.json` (`node scripts/gen-fixture-addresses.mjs` makes new ones from fresh random keys — pages must then be updated; a test checks consistency).
+- `apps/api/test/live-smoke.test.ts` is the ONLY test that touches the internet: it runs when `ETHERSCAN_API_KEY` is in `.env` (bytecode of the Uniswap router / Binance 14, NBP rates, AuditLog) and is skipped otherwise. Never print the key.
 Keep these working. If you change them, update this section.
 
 ## Working rules for Claude Code
@@ -53,5 +54,8 @@ Keep these working. If you change them, update this section.
 - **TypeScript is pinned to ~6.0** (typescript-eslint does not support 7 yet).
 - `@olcys/core` is ESM too (relative imports end in `.js`) and is consumed from `dist/`: api's `predev`/`prebuild`/`pretest` hooks build it, so no manual step on a fresh clone. Core does no I/O: `parseRules(yamlText)` takes the YAML as a string, the api reads the file (`RulesService`).
 - Live connectors are opt-in per run (`connectors` in `POST /api/cases/:id/runs`); the default is the synthetic `sandbox` only, so a demo never queries real people. Every outbound request goes through `EgressClient` (allowlist, rate limit, cache, `AuditLog`).
+- On-chain step (P3): `POST /api/cases/:id/runs` takes `chain: "fixture" | "live" | "off"` (default `fixture` = offline synthetic histories from `fixtures/chain`). `live` tries fixtures first, then mempool.space (no key), Etherscan v2 (`ETHERSCAN_API_KEY`), TronGrid (`TRONGRID_API_KEY`); a missing key is reported as a note, never an error. `GET /api/chain-adapters` shows readiness.
+- Valuation: stablecoins 1:1 USD; other assets only if the transfer carries a price (fixtures do; no CoinGecko yet) — otherwise "unvalued". PLN/EUR from NBP table A, last business day BEFORE the (Warsaw) transaction date, cached per process. Tests use SYNTHETIC constant NBP rates (USD 4.00, EUR 4.40) served by `test/fixture-fetch.ts`.
+- Address classification order: label → bytecode (Etherscan `eth_getCode`) → exchange-deposit sweep heuristic → service-behaviour heuristic. TRON bytecode is not checked. The mempool.space adapter is verified against mocks only (the service was unreachable from the dev network).
 - pnpm blocks install scripts by default: approved ones live in `allowBuilds` in `pnpm-workspace.yaml` (`pnpm approve-builds <pkg>`).
 - Docker Hub may answer 429 on shared networks: `docker pull mirror.gcr.io/library/<image>` and `docker tag` it to the plain name.

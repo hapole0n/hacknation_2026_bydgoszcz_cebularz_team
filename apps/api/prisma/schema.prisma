@@ -90,7 +90,8 @@ model Run {
   status       RunStatus @default(PENDING)
   rulesVersion String
   appVersion   String
-  paramsJson   Json
+  paramsJson   Json // inputs: connectors, asOf, chain mode …
+  summaryJson  Json? // outputs: stats, connector / chain errors, identities of an address case
 
   case          Case            @relation(fields: [caseId], references: [id], onDelete: Cascade)
   evidence      Evidence[]

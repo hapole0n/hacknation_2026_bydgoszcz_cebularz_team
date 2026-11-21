@@ -1,0 +1,59 @@
+{
+  "_comment": "SYNTHETIC history of persona A1 (ETH): ETH in, swap to USDT via a DEX router, USDT to an exchange deposit address. Prices are synthetic.",
+  "chain": "ETH",
+  "address": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+  "isContract": false,
+  "transfers": [
+    {
+      "tx": "0xdec64e784dcc4694eaca47d1f466d2ba3cb638230c03cc07ab1a1aee525e1bee",
+      "time": "2026-09-20T09:00:00Z",
+      "from": "0x94b3A931777C2b91c1E83b4Dd4c4b92647423BB8",
+      "to": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "asset": "ETH",
+      "amount": 3,
+      "usdPrice": 2000
+    },
+    {
+      "tx": "0x0a826c7a145b604e9d3845f5b598328cd2f7b5bc987fdfdd0e4b942942a00fa6",
+      "time": "2026-10-05T14:30:00Z",
+      "from": "0x42891c5787A16eb83c055729f326C33436b04e89",
+      "to": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "asset": "ETH",
+      "amount": 3,
+      "usdPrice": 2000
+    },
+    {
+      "tx": "0xacc9dbea91c12633469ecf20dcb5329471b93ad1210a3aa3f4adf10a006cc538",
+      "time": "2026-10-12T10:00:00Z",
+      "from": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "to": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "asset": "ETH",
+      "amount": 6,
+      "usdPrice": 2000
+    },
+    {
+      "tx": "0xacc9dbea91c12633469ecf20dcb5329471b93ad1210a3aa3f4adf10a006cc538",
+      "time": "2026-10-12T10:00:00Z",
+      "from": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "to": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "asset": "USDT",
+      "amount": 11900
+    },
+    {
+      "tx": "0x33b43f8ccf115fb5ce041cadf915a17a749f06de6aca5bdfcf1372d721da7923",
+      "time": "2026-10-14T08:00:00Z",
+      "from": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "to": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "asset": "USDT",
+      "amount": 5900
+    },
+    {
+      "tx": "0x7f7b952f57cfd9dfbb1f7ab7497d1b6afa50a068cefbfcb913f0ad3a4a6b25d2",
+      "time": "2026-10-20T08:00:00Z",
+      "from": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "to": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "asset": "USDT",
+      "amount": 5900
+    }
+  ]
+}

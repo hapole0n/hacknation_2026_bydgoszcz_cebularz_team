@@ -1,5 +1,6 @@
 import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
 import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@olcys/core';
+import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
@@ -50,12 +51,19 @@ export class ApiController {
     private readonly prisma: PrismaService,
     private readonly pipeline: PipelineService,
     private readonly registry: ConnectorRegistry,
+    private readonly chains: ChainRegistry,
   ) {}
 
   /** Sources and their policies (terms of service, method, rate limit) — shown to the analyst. */
   @Get('connectors')
   connectors() {
     return this.registry.list().map(({ id, kind, version, policy }) => ({ id, kind, version, policy }));
+  }
+
+  /** On-chain data sources and whether each is ready (live ones need an API key in .env). */
+  @Get('chain-adapters')
+  chainAdapters() {
+    return this.chains.list();
   }
 
   @Post('cases')
@@ -79,14 +87,18 @@ export class ApiController {
     return kase;
   }
 
-  /** Runs the analysis synchronously and returns the results (fine at demo scale; scheduling comes with P6). */
+  /**
+   * Runs the analysis synchronously and returns the results (fine at demo scale; scheduling comes with P6).
+   * Body: { connectors?: string[], chain?: "fixture" | "live" | "off" } — live sources are opt-in, default is offline.
+   */
   @Post('cases/:id/runs')
   startRun(@Param('id') id: string, @Body() body: unknown) {
-    const connectors = isObj(body) ? body.connectors : undefined;
-    if (connectors !== undefined && !(Array.isArray(connectors) && connectors.every((c) => typeof c === 'string'))) {
+    const b = isObj(body) ? body : {};
+    if (b.connectors !== undefined && !(Array.isArray(b.connectors) && b.connectors.every((c) => typeof c === 'string'))) {
       throw new BadRequestException('connectors: expected a list of connector ids');
     }
-    return this.pipeline.run(id, { connectors: connectors as string[] | undefined });
+    if (b.chain !== undefined && !isChainMode(b.chain)) throw new BadRequestException('chain: expected "fixture", "live" or "off"');
+    return this.pipeline.run(id, { connectors: b.connectors as string[] | undefined, chain: b.chain });
   }
 
   @Get('runs/:id')

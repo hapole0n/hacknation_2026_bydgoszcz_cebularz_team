@@ -1,0 +1,248 @@
+{
+  "_comment": "SYNTHETIC history of persona T1 (TRON): many small USDT-TRC20 payments, three larger ones, then USDT to the kantor K1 (USDT -> cash pattern).",
+  "chain": "TRON",
+  "address": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+  "isContract": null,
+  "transfers": [
+    {
+      "tx": "0465d3fbf54082616bd6b8900fcc53ddbedad5e43c77cdf5e3e3b01e9902b0b9",
+      "time": "2026-10-10T12:00:00Z",
+      "from": "TFdMVB628ry13i8tiSrUApbnafr43oSUZX",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 150
+    },
+    {
+      "tx": "399d73855f3fce3a59562ac5fa07b91ef6b59f20afbcf74e5c03f4c3a096a8a7",
+      "time": "2026-10-11T12:00:00Z",
+      "from": "TPhzq89EdGWyFZ2Fd5yk3GrdopWhatpKxq",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 360
+    },
+    {
+      "tx": "946f428dcf8f8973683afa0ba5b10ffe254815bcdeb9376202f1e71ee1165267",
+      "time": "2026-10-12T12:00:00Z",
+      "from": "TUSX3wWKosiPbjqoo6KAJMSabisXAiypnv",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 240
+    },
+    {
+      "tx": "d780b8d0ca5d487785f525622f14f8c19a8a6c961d3dcdc01b24448d6a46e412",
+      "time": "2026-10-13T12:00:00Z",
+      "from": "TUS2GEtmbQ7zKiUWL8LBcS7gEt8S7cevan",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 450
+    },
+    {
+      "tx": "0e60be6987a863b5501269b17ff8607d8a07e4a51a760c78090acb7d12cd5d1a",
+      "time": "2026-10-14T12:00:00Z",
+      "from": "TSQSkD2YQ3uRPDv2ELHznbUdS8yA54kvGY",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 330
+    },
+    {
+      "tx": "71fe51928776509acba49f8093c97dad3bc510f45b7c743efde3dd47bedb9c14",
+      "time": "2026-10-15T12:00:00Z",
+      "from": "TUQqHNBPBo1iCMgHLK8y4QCxJcPNUHiuqZ",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 210
+    },
+    {
+      "tx": "8675fe98238dba1a743fa3b983abbfe3726170b3c2976396fe2fbc4380d2bb0c",
+      "time": "2026-10-16T12:00:00Z",
+      "from": "TXsVixXNVHmQabhhvpxN7Dx6ozhBuvc7cU",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 420
+    },
+    {
+      "tx": "57df8765a9a2712e122f36213e7a2aed050b1864a084bbae47d53a6ecaf1cb77",
+      "time": "2026-10-17T12:00:00Z",
+      "from": "TUEJgvT1mZ7HjHJh4GcJJa7Nkhxjshc3Ch",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 300
+    },
+    {
+      "tx": "5e8b5f721f6d88956477b0d4289595599f7f92c2cc9035cb751298c7d76de7b1",
+      "time": "2026-10-18T12:00:00Z",
+      "from": "TB29cUUnVzGZf1PZj8HX17UosK4deFarZd",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 180
+    },
+    {
+      "tx": "b498450fca946656bb247f1065c8bdbd5c15d5947e928448e418f437aa8beb64",
+      "time": "2026-10-19T12:00:00Z",
+      "from": "TXLpMMXosLZpNWSGamdhiTVkDdXduWBtkQ",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 390
+    },
+    {
+      "tx": "9ab26a02ae764943b51811d91825af22d73251995c6111725a5b0d7311445087",
+      "time": "2026-10-20T12:00:00Z",
+      "from": "TJENuZZSr5yhu1StENNBPUbd1zA3MwgdvA",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 270
+    },
+    {
+      "tx": "0521fa0a5b9206d41552d0706dc03c21cbf5d0f165181431e451173558e5494a",
+      "time": "2026-10-21T12:00:00Z",
+      "from": "TFNLDAKtNbDpFZyPhx1QQNq2UzZcgCEBCg",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 150
+    },
+    {
+      "tx": "a7950066e07b0d72406529c187c030ccb2d2900bc8aee8ed6e344ff969393875",
+      "time": "2026-10-22T12:00:00Z",
+      "from": "TSz2PSuYnzN2hCVvEBTZHeWpTThqWdGTEc",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 360
+    },
+    {
+      "tx": "91fa6ffbc14b04be403c00e0d1d241f8c2efc7994c47bd526e8774f2cd689574",
+      "time": "2026-10-23T12:00:00Z",
+      "from": "TWUtqkSKmAdahYBhZhUuigqPf5Tet9hW5X",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 240
+    },
+    {
+      "tx": "941b1e18f3efb61db3de92c53fa66a64175a78ea5d310196323848a00cf766af",
+      "time": "2026-10-24T12:00:00Z",
+      "from": "TLyfGVjisudAXRXeNukNUZ6Qvbvj6VxLAN",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 450
+    },
+    {
+      "tx": "88667aac61bd93b35f369e34d3a00ebaae388452401e095cb1c856fcf33ff3f9",
+      "time": "2026-10-25T12:00:00Z",
+      "from": "TJZ4r2EUt4K1W1ZhLCj1n3NfByhEzv7m68",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 330
+    },
+    {
+      "tx": "c3d246385fbfc4cd6cf1c1b50536c2668ba60eb660f4390fdafb1830818534ac",
+      "time": "2026-10-26T12:00:00Z",
+      "from": "TTUi7HXjr4Yru7aKGCgcodkyHKG1NH9HfB",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 210
+    },
+    {
+      "tx": "eb4805b060936259677edfe2f84580f21db313ecadca86619466e5afdca16df4",
+      "time": "2026-10-27T12:00:00Z",
+      "from": "TMFsqvF41MUmA9vfh7Mwm3GRFG7ZEt25Ry",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 420
+    },
+    {
+      "tx": "8b6c59ee2bc0c14513c788004da94e3a9db33e57c6477b228301fb0b102303b0",
+      "time": "2026-10-28T12:00:00Z",
+      "from": "TByJFB3sFSZBiuUvdkbJRHWs8fM7k1aSqK",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 300
+    },
+    {
+      "tx": "6eac6f4f118e44825f4c308e156e2fa66f77ee1895b0a4cffed415b5aef1b512",
+      "time": "2026-10-29T12:00:00Z",
+      "from": "TEthJ9N78suMkiaZEYHYAoaxPkzEHrBGrJ",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 180
+    },
+    {
+      "tx": "838ef2858f2151a0cd97874a5a2cbe9c25161d137d8efcd7ad97060b46205783",
+      "time": "2026-10-30T12:00:00Z",
+      "from": "TKJWpu68w8ukfVc9xjZDwsFvoYWqEqXtJS",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 390
+    },
+    {
+      "tx": "da636868092b404a5e6196bcf34c7698df048b468198818273a264df61aee278",
+      "time": "2026-10-31T12:00:00Z",
+      "from": "TA9hTuchcrxQ6Pq31NhuZJ1Xo1kqPoYeMC",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 270
+    },
+    {
+      "tx": "6119ee5558acb370c4e20c22162c7547f5113404ca6722d9c94456f7765dcd24",
+      "time": "2026-11-01T12:00:00Z",
+      "from": "TKxPrwt1QDz5xV6Gft2Kqvjd3Fq799DszR",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 150
+    },
+    {
+      "tx": "82a679994e357f9c3c1d5c92231603ba5efad215bfba56eeb3a4dca8cae13853",
+      "time": "2026-11-02T12:00:00Z",
+      "from": "TCAozWepeHdxEZdtXjfrPrVqy2VU14EwvV",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 360
+    },
+    {
+      "tx": "3d88b734ce987e5d9aac39bd9a51ca43b137f96c5265a1ae8f28f9fc55a565c4",
+      "time": "2026-11-01T12:00:00Z",
+      "from": "TUxBZrmvznncCS4J1UyqXD1q3UPDjcLHXG",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 4000
+    },
+    {
+      "tx": "a3a5c9dcb7f9baeffba45a21612b420825224a47dcb9a2902aba52e14f82ea36",
+      "time": "2026-11-02T18:00:00Z",
+      "from": "TXVH7bZj9NCiXKt6prqbCas67WMJcMLsYB",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 3500
+    },
+    {
+      "tx": "bfc6454898be3789f480671cdca6b31a012f3deb5f4fcced345b2b9dca1ba693",
+      "time": "2026-11-03T09:00:00Z",
+      "from": "TErrq8ZAT4WsAGMQdUvUYdstXqD88ktHAf",
+      "to": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "asset": "USDT",
+      "amount": 3000
+    },
+    {
+      "tx": "c5bce6a82a5ffb0d511af279bb539bd3b2f2274cad3daf9083364037a600481a",
+      "time": "2026-11-04T10:00:00Z",
+      "from": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "to": "TVj7M6fz1ToN76KaRB9ayzC6zqkn7NJvSp",
+      "asset": "USDT",
+      "amount": 6000
+    },
+    {
+      "tx": "48e01b9c0c1b9cf724418510918969f30bb918951b33c2dda1f33b5c6b16982d",
+      "time": "2026-11-05T10:00:00Z",
+      "from": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "to": "TVj7M6fz1ToN76KaRB9ayzC6zqkn7NJvSp",
+      "asset": "USDT",
+      "amount": 6000
+    },
+    {
+      "tx": "64c346e475bd436d65491e1a719d11dcfaaa2fa05e04695c25a366f49d5da8b5",
+      "time": "2026-11-07T10:00:00Z",
+      "from": "TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey",
+      "to": "TVj7M6fz1ToN76KaRB9ayzC6zqkn7NJvSp",
+      "asset": "USDT",
+      "amount": 5500
+    }
+  ]
+}

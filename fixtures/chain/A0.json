@@ -1,0 +1,26 @@
+{
+  "_comment": "SYNTHETIC history of the OLD address A0 (ETH), active around the 2021-03-02 snapshot of the personal site.",
+  "chain": "ETH",
+  "address": "0xF27cDf39fCD77693dAE98026C983D1cc7126b476",
+  "isContract": false,
+  "transfers": [
+    {
+      "tx": "0x457daaedacc7bec0601e404a07e1259a5548757935389a5e5f0c29027d74762b",
+      "time": "2021-02-20T10:00:00Z",
+      "from": "0xfB61e53832326907Cbae7B4E08d7c7eb3Cf098fD",
+      "to": "0xF27cDf39fCD77693dAE98026C983D1cc7126b476",
+      "asset": "ETH",
+      "amount": 0.5,
+      "usdPrice": 1900
+    },
+    {
+      "tx": "0x249eaae102478d41952a04df42eeb6a37abb11c48c1c7beb1baa1c4fc9954bea",
+      "time": "2021-03-10T16:20:00Z",
+      "from": "0xF27cDf39fCD77693dAE98026C983D1cc7126b476",
+      "to": "0xd68c60e9eC97d49d53276ee240fB2567971Ad55A",
+      "asset": "ETH",
+      "amount": 0.2,
+      "usdPrice": 1850
+    }
+  ]
+}

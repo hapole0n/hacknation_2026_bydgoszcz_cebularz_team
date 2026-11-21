@@ -1,6 +1,6 @@
 import { sha256 } from '@noble/hashes/sha2.js';
 import { keccak_256 } from '@noble/hashes/sha3.js';
-import { bytesToHex, utf8ToBytes } from '@noble/hashes/utils.js';
+import { bytesToHex, hexToBytes, utf8ToBytes } from '@noble/hashes/utils.js';
 import { bech32, bech32m, createBase58check } from '@scure/base';
 import type { Chain } from '../chain.js';
 
@@ -119,4 +119,9 @@ export function parseAddress(raw: string): ParseResult {
 /** Case-insensitive kinds are compared lowercase, base58 is case-sensitive. */
 export function addressKey(kind: AddressKind, address: string): string {
   return kind === 'ETH' || kind === 'ENS' || kind === 'BTC_BECH32' || kind === 'BTC_BECH32M' ? address.toLowerCase() : address;
+}
+
+/** TronGrid returns native-transaction addresses as hex (`41…`); convert to the Base58Check form used everywhere else. */
+export function tronAddressFromHex(hex: string): string {
+  return base58check.encode(hexToBytes(hex.replace(/^0x/, '')));
 }

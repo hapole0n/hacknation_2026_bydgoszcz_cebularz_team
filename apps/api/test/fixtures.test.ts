@@ -6,7 +6,7 @@ import { LabelService } from '../src/labels/label.service.js';
 import { repoPath } from '../src/paths.js';
 
 const read = (p: string) => readFileSync(repoPath(p), 'utf8');
-const addresses: Record<string, { chain: string; address: string }> = JSON.parse(read('fixtures/addresses.json'));
+const addresses: Record<string, { chain: string; address: string; onPages?: boolean }> = JSON.parse(read('fixtures/addresses.json'));
 delete (addresses as Record<string, unknown>)._comment;
 const expected = JSON.parse(read('fixtures/expected.json'));
 const index = JSON.parse(read('fixtures/sandbox-web/index.json'));
@@ -22,7 +22,7 @@ describe('sandbox fixtures', () => {
     const all = pageFiles.map((f) => read(`fixtures/sandbox-web/${f}`)).join('\n');
     for (const [name, a] of Object.entries(addresses)) {
       expect(parseAddress(a.address), name).toMatchObject({ ok: true });
-      expect(all, name).toContain(a.address);
+      if (a.onPages !== false) expect(all, name).toContain(a.address); // D1 lives in fixtures/chain only
     }
   });
 

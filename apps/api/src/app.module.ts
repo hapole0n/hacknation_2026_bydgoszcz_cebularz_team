@@ -1,5 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ApiController } from './api.controller.js';
+import { BtcMempoolAdapter } from './chains/btc-mempool.adapter.js';
+import { ChainAnalysisService } from './chains/chain-analysis.service.js';
+import { ChainRegistry } from './chains/chain.registry.js';
+import { EvmEtherscanAdapter } from './chains/evm-etherscan.adapter.js';
+import { FixtureChainAdapter } from './chains/fixture.adapter.js';
+import { NbpService } from './chains/nbp.service.js';
+import { TronGridAdapter } from './chains/tron-grid.adapter.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { GithubConnector } from './connectors/github.connector.js';
 import { SandboxConnector } from './connectors/sandbox.connector.js';
@@ -21,6 +28,13 @@ import { RulesService } from './rules.service.js';
     SandboxConnector,
     GithubConnector,
     ConnectorRegistry,
+    FixtureChainAdapter,
+    BtcMempoolAdapter,
+    EvmEtherscanAdapter,
+    TronGridAdapter,
+    ChainRegistry,
+    NbpService,
+    ChainAnalysisService,
     PipelineService,
   ],
 })

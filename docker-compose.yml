@@ -26,6 +26,10 @@ services:
 
   api:
     build: { context: ., dockerfile: apps/api/Dockerfile }
+    # API keys (ETHERSCAN_API_KEY, TRONGRID_API_KEY, GITHUB_TOKEN) come from the optional .env; the values below win.
+    env_file:
+      - path: .env
+        required: false
     environment:
       DATABASE_URL: postgresql://olcys:olcys@db:5432/olcys
       API_PORT: "3000"

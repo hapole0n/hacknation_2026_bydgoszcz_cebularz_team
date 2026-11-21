@@ -1,0 +1,40 @@
+{
+  "_comment": "SYNTHETIC exchange deposit address: forwards what it receives to Binance 14 (a public hot wallet).",
+  "chain": "ETH",
+  "address": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+  "isContract": false,
+  "transfers": [
+    {
+      "tx": "0x33b43f8ccf115fb5ce041cadf915a17a749f06de6aca5bdfcf1372d721da7923",
+      "time": "2026-10-14T08:00:00Z",
+      "from": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "to": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "asset": "USDT",
+      "amount": 5900
+    },
+    {
+      "tx": "0x8b6e918c9bf8884c39adf3cc5a1c1ebb6fb8f2054f7f534d442e1bc0ad6f1f99",
+      "time": "2026-10-14T10:00:00Z",
+      "from": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
+      "asset": "USDT",
+      "amount": 5899
+    },
+    {
+      "tx": "0x7f7b952f57cfd9dfbb1f7ab7497d1b6afa50a068cefbfcb913f0ad3a4a6b25d2",
+      "time": "2026-10-20T08:00:00Z",
+      "from": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47",
+      "to": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "asset": "USDT",
+      "amount": 5900
+    },
+    {
+      "tx": "0x0651d7634daaaac571266515ad2b86c971e1f17b0dccc880bdfc9bc168836016",
+      "time": "2026-10-20T10:00:00Z",
+      "from": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "to": "0x28C6c06298d514Db089934071355E5743bf21d60",
+      "asset": "USDT",
+      "amount": 5899
+    }
+  ]
+}
