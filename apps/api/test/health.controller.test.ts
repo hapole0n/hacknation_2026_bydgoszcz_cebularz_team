@@ -4,7 +4,7 @@ import { HealthController } from '../src/health.controller.js';
 import type { PrismaService } from '../src/prisma.service.js';
 import { RulesService } from '../src/rules.service.js';
 
-const rules = new RulesService(); // real config/scoring-rules.v1.yaml, parsed by @olcys/core
+const rules = new RulesService(); // real config/scoring-rules.v1.yaml, parsed by @kropka/core
 
 const withDb = (query: () => Promise<unknown>) => new HealthController({ $queryRaw: query } as unknown as PrismaService, rules);
 
@@ -22,7 +22,7 @@ describe('GET /api/health', () => {
 });
 
 describe('RulesService', () => {
-  it('loads the YAML through @olcys/core', () => {
+  it('loads the YAML through @kropka/core', () => {
     expect(rules.rules.base.OFFICIAL_PROFILE.score).toBe(85);
   });
 

@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { normalizeIdentifier, type FlowEntry, type IdentifierType, type Indicators } from '@olcys/core';
+import { normalizeIdentifier, type FlowEntry, type IdentifierType, type Indicators } from '@kropka/core';
 import { ApiController, parseCaseBody } from '../src/api.controller.js';
 import { BtcMempoolAdapter } from '../src/chains/btc-mempool.adapter.js';
 import { ChainAnalysisService } from '../src/chains/chain-analysis.service.js';

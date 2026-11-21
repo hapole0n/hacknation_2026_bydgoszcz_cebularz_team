@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { tronAddressFromHex, type Chain, type ChainHistory, type ChainTransfer } from '@olcys/core';
+import { tronAddressFromHex, type Chain, type ChainHistory, type ChainTransfer } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { ChainUnavailableError, scaled, tokenAsset, toIso, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 

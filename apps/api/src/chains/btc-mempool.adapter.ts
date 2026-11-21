@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { sameAddress, type Chain, type ChainHistory, type ChainTransfer } from '@olcys/core';
+import { sameAddress, type Chain, type ChainHistory, type ChainTransfer } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { toIso, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 

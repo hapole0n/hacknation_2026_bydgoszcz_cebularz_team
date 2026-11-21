@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { IdentifierType, TraceOrigin } from '@olcys/core';
+import type { IdentifierType, TraceOrigin } from '@kropka/core';
 
 export interface SearchIdentifier {
   id?: string;

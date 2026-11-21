@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { previousRate, warsawDate, type FxRates } from '@olcys/core';
+import { previousRate, warsawDate, type FxRates } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import type { AdapterCtx } from './chain-adapter.js';
 

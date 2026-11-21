@@ -10,7 +10,7 @@
 - Official task (Polish): `docs/OLCyS_zadanie.pdf`. Russian translation: `docs/TZ_RU.md`. Contest rules: `docs/OLCyS_regulamin.pdf`.
 - **PLAN.md is the source of truth** for scope, architecture, data model, scoring and timeline. `docs/research-notes.md` holds sources, thresholds and API limits.
 - Deadlines (Europe/Warsaw): HackTribe project entry **Sat 21.11 before 20:00**; final submission **Sun 22.11 11:00** (we aim for 10:30).
-- Working product name: **Pokrzywa** (may change — keep the name in ONE place: `apps/web/src/config/app.ts` + i18n).
+- Working product name: **KROPKA** (may change — keep the name in ONE place: `apps/web/src/config/app.ts` + i18n).
 
 ## Non-negotiable rules (from the task — breaking them can cost the win)
 1. **OSINT only.** Public, legal sources; official APIs where they exist; respect each source's terms of service and robots.txt; no logins to other people's accounts, no leaks, no scraping behind auth, no bypassing protections, no vulnerability scanning.
@@ -53,7 +53,7 @@ Keep these working. If you change them, update this section.
 - **Prisma is pinned to 7.10.1** (`latest` = 8 rc, which has no `prisma generate`). Config in `apps/api/prisma.config.ts`; client is generated into `apps/api/src/generated/prisma` (gitignored) by `postinstall`; PrismaClient needs the `@prisma/adapter-pg` adapter.
 - **NestJS 12 is ESM-only**: `apps/api` is `"type": "module"`, relative imports need the `.js` extension.
 - **TypeScript is pinned to ~6.0** (typescript-eslint does not support 7 yet).
-- `@olcys/core` is ESM too (relative imports end in `.js`) and is consumed from `dist/`: api's `predev`/`prebuild`/`pretest` hooks build it, so no manual step on a fresh clone. Core does no I/O: `parseRules(yamlText)` takes the YAML as a string, the api reads the file (`RulesService`).
+- `@kropka/core` is ESM too (relative imports end in `.js`) and is consumed from `dist/`: api's `predev`/`prebuild`/`pretest` hooks build it, so no manual step on a fresh clone. Core does no I/O: `parseRules(yamlText)` takes the YAML as a string, the api reads the file (`RulesService`).
 - Live connectors are opt-in per run (`connectors` in `POST /api/cases/:id/runs`); the default is the synthetic `sandbox` only, so a demo never queries real people. Every outbound request goes through `EgressClient` (allowlist, rate limit, cache, `AuditLog`).
 - On-chain step (P3): `POST /api/cases/:id/runs` takes `chain: "fixture" | "live" | "off"` (default `fixture` = offline synthetic histories from `fixtures/chain`). `live` tries fixtures first, then mempool.space (no key), Etherscan v2 (`ETHERSCAN_API_KEY`), TronGrid (`TRONGRID_API_KEY`); a missing key is reported as a note, never an error. `GET /api/chain-adapters` shows readiness.
 - Valuation: stablecoins 1:1 USD; other assets only if the transfer carries a price (fixtures do; no CoinGecko yet) — otherwise "unvalued". PLN/EUR from NBP table A, last business day BEFORE the (Warsaw) transaction date, cached per process. Tests use SYNTHETIC constant NBP rates (USD 4.00, EUR 4.40) served by `test/fixture-fetch.ts`.

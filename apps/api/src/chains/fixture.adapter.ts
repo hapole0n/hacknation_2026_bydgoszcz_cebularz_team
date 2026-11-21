@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Injectable } from '@nestjs/common';
-import { isChain, labelKey, parseAddress, type Chain, type ChainHistory, type ChainTransfer } from '@olcys/core';
+import { isChain, labelKey, parseAddress, type Chain, type ChainHistory, type ChainTransfer } from '@kropka/core';
 import { repoPath } from '../paths.js';
 import type { ChainAdapter } from './chain-adapter.js';
 

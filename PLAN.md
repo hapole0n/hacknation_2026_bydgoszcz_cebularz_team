@@ -1,4 +1,4 @@
-# PLAN.md — OŁCyŚ · working name "Pokrzywa"
+# PLAN.md — OŁCyŚ · working name "KROPKA"
 
 ## 0. Goal in one sentence
 An OSINT workstation for KAS analysts: from at least one identifier (name + surname, forum nick, messenger ID, social login, e-mail, crypto address) it searches public sources, extracts and validates crypto addresses, links them to the subject with an **explainable Confidence Score**, rejects false attributions (exchanges, custodial wallets, smart contracts, mixers, charities, example addresses), analyses on-chain activity including **fiat cash-out signals — with a focus on USDT → cash via P2P offers and kantors**, and produces a reproducible Polish report. Analyses can run cyclically and are compared over time.

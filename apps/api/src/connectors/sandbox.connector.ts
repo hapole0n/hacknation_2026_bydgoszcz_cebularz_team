@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { evaluateIdentity, findIdentifierInText, type TraceOrigin } from '@olcys/core';
+import { evaluateIdentity, findIdentifierInText, type TraceOrigin } from '@kropka/core';
 import { EgressClient } from '../egress/egress.client.js';
 import { htmlToText, sha256Hex, type ConnectorPolicy, type EvidenceDraft, type SearchInput, type SourceConnector } from './connector.js';
 

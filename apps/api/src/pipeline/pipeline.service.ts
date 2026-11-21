@@ -16,7 +16,7 @@ import {
   type ExclusionId,
   type IdentityRuleId,
   type SourceType,
-} from '@olcys/core';
+} from '@kropka/core';
 import { ChainAnalysisService, type ChainAnalysis } from '../chains/chain-analysis.service.js';
 import { DEFAULT_CHAIN_MODE, type ChainMode } from '../chains/chain.registry.js';
 import { DEFAULT_CONNECTORS, ConnectorRegistry } from '../connectors/connector.registry.js';

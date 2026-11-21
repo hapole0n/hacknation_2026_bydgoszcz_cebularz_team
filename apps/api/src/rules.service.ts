@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { Injectable } from '@nestjs/common';
-import { parseRules, type Rules } from '@olcys/core';
+import { parseRules, type Rules } from '@kropka/core';
 import { repoPath } from './paths.js';
 
 /** Loads the scoring rules once at startup; an invalid file stops the API (fail fast). */

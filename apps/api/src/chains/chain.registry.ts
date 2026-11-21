@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Chain, ChainHistory } from '@olcys/core';
+import type { Chain, ChainHistory } from '@kropka/core';
 import { BtcMempoolAdapter } from './btc-mempool.adapter.js';
 import { ChainUnavailableError, type AdapterCtx, type ChainAdapter } from './chain-adapter.js';
 import { EvmEtherscanAdapter } from './evm-etherscan.adapter.js';

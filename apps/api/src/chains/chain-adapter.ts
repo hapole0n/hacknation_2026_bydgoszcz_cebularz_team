@@ -1,4 +1,4 @@
-import { type Chain, type ChainHistory } from '@olcys/core';
+import { type Chain, type ChainHistory } from '@kropka/core';
 
 /** A live adapter that cannot run (typically: its API key is missing from .env). */
 export class ChainUnavailableError extends Error {}

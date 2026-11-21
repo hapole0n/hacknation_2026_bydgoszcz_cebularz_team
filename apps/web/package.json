@@ -1,12 +1,12 @@
 {
-  "name": "@olcys/web",
+  "name": "@kropka/web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "pnpm --filter @olcys/core build",
+    "predev": "pnpm --filter @kropka/core build",
     "dev": "vite",
-    "prebuild": "pnpm --filter @olcys/core build",
+    "prebuild": "pnpm --filter @kropka/core build",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run"
@@ -14,7 +14,7 @@
   "dependencies": {
     "@fontsource-variable/ibm-plex-sans": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.1",
-    "@olcys/core": "workspace:*",
+    "@kropka/core": "workspace:*",
     "@tanstack/react-query": "^5.108.1",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",

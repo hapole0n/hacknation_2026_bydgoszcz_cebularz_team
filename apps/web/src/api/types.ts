@@ -1,4 +1,4 @@
-import type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ScoreResult } from '@olcys/core';
+import type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ScoreResult } from '@kropka/core';
 
 export type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ScoreResult };
 

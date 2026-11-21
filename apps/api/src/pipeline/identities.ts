@@ -1,4 +1,4 @@
-import { normalizeIdentifier, type ScoreResult, type ScoringTrace, type SourceType } from '@olcys/core';
+import { normalizeIdentifier, type ScoreResult, type ScoringTrace, type SourceType } from '@kropka/core';
 
 export interface IdEvidence {
   id: string;

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Injectable } from '@nestjs/common';
-import { ADDRESS_CATEGORIES, isChain, labelKey, parseAddress, type Chain, type LabelEntry } from '@olcys/core';
+import { ADDRESS_CATEGORIES, isChain, labelKey, parseAddress, type Chain, type LabelEntry } from '@kropka/core';
 import { repoPath } from '../paths.js';
 
 export interface LabelSource {

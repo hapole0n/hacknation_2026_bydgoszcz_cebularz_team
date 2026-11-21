@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { extractAddresses, parseAddress } from '@olcys/core';
+import { extractAddresses, parseAddress } from '@kropka/core';
 import { LabelService } from '../src/labels/label.service.js';
 import { repoPath } from '../src/paths.js';
 

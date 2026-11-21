@@ -11,7 +11,7 @@ import {
   type CounterpartyInfo,
   type FlowEntry,
   type Indicators,
-} from '@olcys/core';
+} from '@kropka/core';
 import { LabelService } from '../labels/label.service.js';
 import type { AdapterCtx } from './chain-adapter.js';
 import { ChainRegistry, type ChainMode } from './chain.registry.js';

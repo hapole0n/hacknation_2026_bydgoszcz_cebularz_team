@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
-import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@olcys/core';
+import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { repoPath } from './paths.js';

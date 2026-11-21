@@ -2,7 +2,7 @@ import { sha256 } from '@noble/hashes/sha2.js';
 import { bytesToHex } from '@noble/hashes/utils.js';
 import { createBase58check } from '@scure/base';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { parseAddress, tronAddressFromHex, type ChainHistory } from '@olcys/core';
+import { parseAddress, tronAddressFromHex, type ChainHistory } from '@kropka/core';
 import { BtcMempoolAdapter } from '../src/chains/btc-mempool.adapter.js';
 import { ChainUnavailableError, STABLE_CONTRACTS, tokenAsset } from '../src/chains/chain-adapter.js';
 import { ChainAnalysisService, MAX_COUNTERPARTY_LOOKUPS } from '../src/chains/chain-analysis.service.js';

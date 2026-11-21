@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { normalizeIdentifier, type IdentifierType } from '@olcys/core';
+import { normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { sha256Hex, htmlToText } from '../src/connectors/connector.js';
 import { GithubConnector } from '../src/connectors/github.connector.js';
 import { SandboxConnector } from '../src/connectors/sandbox.connector.js';

@@ -109,7 +109,7 @@ export function ScoreLedger({
   );
 }
 
-const ANALYST_KEY = 'olcys.analyst';
+const ANALYST_KEY = 'kropka.analyst';
 
 /** The analyst's call on a link. Stored apart from the computed score, with name and time. */
 export function DecisionForm({ link, runId }: { link: LinkDto; runId: string }) {

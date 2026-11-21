@@ -1,4 +1,4 @@
-# Pokrzywa — Osintowy Łapacz Cyfrowych Śladów (OŁCyŚ)
+# KROPKA — Osintowy Łapacz Cyfrowych Śladów (OŁCyŚ)
 
 > HackNation 2026 · zadanie Ministerstwa Finansów / KAS · zespół **cebularz**
 > (nazwa robocza — może się zmienić)
