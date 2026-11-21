@@ -3,11 +3,11 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-21) — nie edytować ręcznie.
 Wszystkie komponenty są Open Source.
 
-## Podsumowanie (649 pakietów npm)
+## Podsumowanie (651 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
-| MIT | 537 |
+| MIT | 539 |
 | Apache-2.0 | 39 |
 | ISC | 39 |
 | BSD-3-Clause | 10 |
@@ -129,6 +129,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @nestjs/core | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/platform-express | 12.6.0 | MIT | https://nestjs.com |
 | @nestjs/schematics | 12.0.16 | MIT | https://github.com/nestjs/schematics#readme |
+| @noble/hashes | 2.4.0 | MIT | https://paulmillr.com/noble/ |
 | @nodelib/fs.scandir | 2.1.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
 | @nodelib/fs.stat | 2.0.5 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
 | @nodelib/fs.walk | 1.2.8 | MIT | https://github.com/nodelib/nodelib/tree/master#readme |
@@ -209,6 +210,7 @@ Pliki `config/labels/*.json` zawierają w nagłówku źródło, licencję i dat�
 | @radix-ui/rect | 1.1.3 | MIT | https://radix-ui.com/primitives |
 | @rolldown/binding-win32-x64-msvc | 1.2.19 | MIT | https://rolldown.rs/ |
 | @rolldown/pluginutils | 1.1.1 | MIT | https://github.com/rolldown/plugins/tree/main/packages/pluginutils#readme |
+| @scure/base | 2.4.0 | MIT | https://paulmillr.com/noble/#scure |
 | @sec-ant/readable-stream | 0.4.1 | MIT | https://github.com/Sec-ant/readable-stream |
 | @shadcn/registry | 0.2.1 | MIT | https://ui.shadcn.com/docs/registry |
 | @sindresorhus/is | 4.6.0 | MIT | https://github.com/sindresorhus/is#readme |

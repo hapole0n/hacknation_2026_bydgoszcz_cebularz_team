@@ -49,5 +49,6 @@ Keep these working. If you change them, update this section.
 - **Prisma is pinned to 7.10.1** (`latest` = 8 rc, which has no `prisma generate`). Config in `apps/api/prisma.config.ts`; client is generated into `apps/api/src/generated/prisma` (gitignored) by `postinstall`; PrismaClient needs the `@prisma/adapter-pg` adapter.
 - **NestJS 12 is ESM-only**: `apps/api` is `"type": "module"`, relative imports need the `.js` extension.
 - **TypeScript is pinned to ~6.0** (typescript-eslint does not support 7 yet).
+- `@olcys/core` is ESM too (relative imports end in `.js`) and is consumed from `dist/`: api's `predev`/`prebuild`/`pretest` hooks build it, so no manual step on a fresh clone. Core does no I/O: `parseRules(yamlText)` takes the YAML as a string, the api reads the file (`RulesService`).
 - pnpm blocks install scripts by default: approved ones live in `allowBuilds` in `pnpm-workspace.yaml` (`pnpm approve-builds <pkg>`).
 - Docker Hub may answer 429 on shared networks: `docker pull mirror.gcr.io/library/<image>` and `docker tag` it to the plain name.

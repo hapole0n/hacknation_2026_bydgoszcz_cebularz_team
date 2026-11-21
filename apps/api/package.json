@@ -5,15 +5,19 @@
   "type": "module",
   "scripts": {
     "postinstall": "prisma generate",
+    "predev": "pnpm --filter @olcys/core build",
     "dev": "nest start --watch",
+    "prebuild": "pnpm --filter @olcys/core build",
     "build": "nest build",
     "start": "node dist/main.js",
+    "pretest": "pnpm --filter @olcys/core build",
     "test": "vitest run"
   },
   "dependencies": {
     "@nestjs/common": "^12.6.0",
     "@nestjs/core": "^12.6.0",
     "@nestjs/platform-express": "^12.6.0",
+    "@olcys/core": "workspace:*",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "reflect-metadata": "^0.2.2",

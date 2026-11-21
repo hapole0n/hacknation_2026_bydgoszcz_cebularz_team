@@ -1,9 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { PrismaService } from './prisma.service.js';
+import { RulesService } from './rules.service.js';
 
 @Controller('health')
 export class HealthController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly rules: RulesService,
+  ) {}
 
   @Get()
   async check() {
@@ -11,6 +15,11 @@ export class HealthController {
       () => 'up' as const,
       () => 'down' as const,
     );
-    return { status: db === 'up' ? 'ok' : 'degraded', db, time: new Date().toISOString() };
+    return {
+      status: db === 'up' ? 'ok' : 'degraded',
+      db,
+      rulesVersion: this.rules.rules.version,
+      time: new Date().toISOString(),
+    };
   }
 }
