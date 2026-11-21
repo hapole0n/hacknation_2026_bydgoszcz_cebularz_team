@@ -19,7 +19,7 @@ import { repoPath } from '../src/paths.js';
 import type { Identity } from '../src/pipeline/identities.js';
 import { PipelineService } from '../src/pipeline/pipeline.service.js';
 import { PrismaService } from '../src/prisma.service.js';
-import { ReportService } from '../src/report/report.service.js';
+import { ReportService, TEMPLATE_VERSION } from '../src/report/report.service.js';
 import { RulesService } from '../src/rules.service.js';
 import { sandboxFetch } from './fixture-fetch.js';
 
@@ -407,6 +407,15 @@ describe('report (HTML view data, PDF, JSON) — stored with the run', () => {
     const again = await reports.file(results.run.id, 'PDF');
     expect(again.content.equals(f.content)).toBe(true);
     expect(await prisma.report.count({ where: { runId: results.run.id, format: 'PDF' } })).toBe(1);
+  });
+
+  it('a stored file made by another version of the renderer is not reused (cache key = data hash + template version)', async () => {
+    const [stored] = await prisma.report.findMany({ where: { runId: results.run.id, format: 'PDF' } });
+    expect(stored!.templateVersion).toBe(TEMPLATE_VERSION);
+    await prisma.report.update({ where: { id: stored!.id }, data: { templateVersion: 'older-renderer' } });
+    await reports.file(results.run.id, 'PDF');
+    const versions = (await prisma.report.findMany({ where: { runId: results.run.id, format: 'PDF' } })).map((r) => r.templateVersion).sort();
+    expect(versions).toEqual([TEMPLATE_VERSION, 'older-renderer'].sort());
   });
 
   it('JSON: the same data as the report document, with its hash', async () => {

@@ -251,6 +251,8 @@ model Report {
   createdAt DateTime     @default(now())
   path      String // download file name
   content   Bytes? // the rendered file itself
+  // The cache key is (data hash, template version): changing the renderer retires every stored file by itself.
+  templateVersion String @default("")
 
   run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
 
