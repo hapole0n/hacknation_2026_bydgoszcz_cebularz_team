@@ -249,7 +249,8 @@ model Report {
   format    ReportFormat
   sha256    String
   createdAt DateTime     @default(now())
-  path      String
+  path      String // download file name
+  content   Bytes? // the rendered file itself
 
   run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
 

@@ -15,6 +15,7 @@ import { HealthController } from './health.controller.js';
 import { LabelService } from './labels/label.service.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
+import { ReportService } from './report/report.service.js';
 import { RulesService } from './rules.service.js';
 
 @Module({
@@ -22,6 +23,7 @@ import { RulesService } from './rules.service.js';
   providers: [
     PrismaService,
     RulesService,
+    ReportService,
     LabelService,
     EgressConfig,
     EgressClient,

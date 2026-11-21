@@ -19,6 +19,7 @@ import { repoPath } from '../src/paths.js';
 import type { Identity } from '../src/pipeline/identities.js';
 import { PipelineService } from '../src/pipeline/pipeline.service.js';
 import { PrismaService } from '../src/prisma.service.js';
+import { ReportService } from '../src/report/report.service.js';
 import { RulesService } from '../src/rules.service.js';
 import { sandboxFetch } from './fixture-fetch.js';
 
@@ -44,7 +45,8 @@ const registry = new ConnectorRegistry(new SandboxConnector(egress), new GithubC
 const chains = new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(egress), new EvmEtherscanAdapter(egress), new TronGridAdapter(egress));
 const analysis = new ChainAnalysisService(chains, new NbpService(egress), labels);
 const pipeline = new PipelineService(prisma, new RulesService(), labels, registry, analysis);
-const api = new ApiController(prisma, pipeline, registry, chains);
+const reports = new ReportService(prisma, pipeline, registry);
+const api = new ApiController(prisma, pipeline, registry, chains, reports);
 const runOptions = { connectors: spec.run.connectors, chain: spec.run.chain, asOf: new Date(spec.run.asOf) };
 
 type Results = Awaited<ReturnType<PipelineService['results']>>;
@@ -359,5 +361,65 @@ describe('failure handling and input validation', () => {
     expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api']]);
     expect(api.chainAdapters().map((a) => [a.id, a.live])).toEqual([['fixture', false], ['mempool.space', true], ['etherscan', true], ['trongrid', true]]);
     expect(api.chainAdapters().find((a) => a.id === 'mempool.space')).toMatchObject({ available: true, reason: null });
+  });
+});
+
+describe('report (HTML view data, PDF, JSON) — stored with the run', () => {
+  it('the report document: five-sentence summary, every section, evidence hashes, deterministic SHA-256', async () => {
+    const a = await api.report(results.run.id);
+    const b = await api.report(results.run.id);
+    expect(a.sha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(b.sha256).toBe(a.sha256); // same data → same hash (the time of generation is not part of it)
+    expect(a.doc.summary).toHaveLength(5);
+    expect(a.doc.sections.map((s) => s.id)).toEqual(['input', 'sources', 'links', 'rejected', 'chain', 'chronology', 'decisions', 'conclusions', 'next', 'limits', 'meta']);
+    const text = JSON.stringify(a.doc);
+    for (const e of results.evidence) expect(text).toContain(e.sha256);
+    expect(text).toContain('Giełda (powiernicza)'); // rejected attributions carry their reason
+    expect(text).not.toMatch(/undefined|NaN|\{\{/);
+    expect(a.evidenceSha256).toBe(createHash('sha256').update(results.evidence.map((e) => e.sha256).sort().join('\n')).digest('hex'));
+  });
+
+  it('an analyst decision shows in its own section, never in the score, and changes the report hash', async () => {
+    const before = await api.report(results.run.id);
+    const link = results.links.find((l) => l.score >= 80)!;
+    await api.decide(link.id, { decision: 'CONFIRMED', analyst: 'Anna Kowalska', note: 'Zgodne z ogłoszeniem' });
+    try {
+      const after = await api.report(results.run.id);
+      expect(after.sha256).not.toBe(before.sha256);
+      const decisions = JSON.stringify(after.doc.sections.find((s) => s.id === 'decisions'));
+      expect(decisions).toContain('Anna Kowalska');
+      expect(JSON.stringify(after.doc.sections.find((s) => s.id === 'links'))).not.toContain('Anna Kowalska');
+      expect(JSON.stringify(after.doc.sections.find((s) => s.id === 'links'))).toBe(JSON.stringify(before.doc.sections.find((s) => s.id === 'links')));
+    } finally {
+      await api.decide(link.id, { decision: null });
+    }
+  });
+
+  it('PDF: a real PDF with embedded fonts, stored in the database once per data hash', async () => {
+    const f = await reports.file(results.run.id, 'PDF');
+    expect(f.content.subarray(0, 5).toString()).toBe('%PDF-');
+    expect(f.content.length).toBeGreaterThan(10_000);
+    expect(f.content.toString('latin1')).toContain('/FontFile2'); // TrueType embedded (Polish letters need it)
+    const rows = await prisma.report.findMany({ where: { runId: results.run.id, format: 'PDF' } });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.sha256).toBe((await api.report(results.run.id)).sha256);
+    expect(Buffer.from(rows[0]!.content!).equals(f.content)).toBe(true);
+    const again = await reports.file(results.run.id, 'PDF');
+    expect(again.content.equals(f.content)).toBe(true);
+    expect(await prisma.report.count({ where: { runId: results.run.id, format: 'PDF' } })).toBe(1);
+  });
+
+  it('JSON: the same data as the report document, with its hash', async () => {
+    const f = await reports.file(results.run.id, 'JSON');
+    const json = JSON.parse(f.content.toString('utf8'));
+    expect(json.sha256).toBe((await api.report(results.run.id)).sha256);
+    expect(json.doc.sections).toHaveLength(11);
+    expect(f.fileName).toMatch(/^kropka-raport-[0-9a-f]{8}\.json$/);
+  });
+
+  it('an address case also gets a report; an unknown run is a 404', async () => {
+    const r = await api.report(addressResults.run.id);
+    expect(JSON.stringify(r.doc.sections.find((s) => s.id === 'links'))).toContain('Konta, które opublikowały badany adres');
+    await expect(api.report('00000000-0000-0000-0000-000000000000')).rejects.toThrow(/not found/);
   });
 });

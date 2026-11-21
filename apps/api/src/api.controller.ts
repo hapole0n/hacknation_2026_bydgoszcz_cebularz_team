@@ -1,11 +1,12 @@
 import { readFileSync } from 'node:fs';
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query, StreamableFile } from '@nestjs/common';
 import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
+import { ReportService, type ReportFile } from './report/report.service.js';
 
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 const text = (v: unknown, field: string, max: number): string => {
@@ -64,6 +65,7 @@ export class ApiController {
     private readonly pipeline: PipelineService,
     private readonly registry: ConnectorRegistry,
     private readonly chains: ChainRegistry,
+    private readonly reports: ReportService,
   ) {}
 
   /** Sources and their policies (terms of service, method, rate limit) — shown to the analyst. */
@@ -144,5 +146,25 @@ export class ApiController {
   @Get('runs/:id')
   getRun(@Param('id') id: string) {
     return this.pipeline.results(id);
+  }
+
+  /** The report document (what the HTML view shows) with its SHA-256. */
+  @Get('runs/:id/report')
+  report(@Param('id') id: string) {
+    return this.reports.bundle(id);
+  }
+
+  @Get('runs/:id/report.pdf')
+  async reportPdf(@Param('id') id: string) {
+    return this.download(await this.reports.file(id, 'PDF'));
+  }
+
+  @Get('runs/:id/report.json')
+  async reportJson(@Param('id') id: string) {
+    return this.download(await this.reports.file(id, 'JSON'));
+  }
+
+  private download(f: ReportFile) {
+    return new StreamableFile(f.content, { type: f.contentType, disposition: `attachment; filename="${f.fileName}"` });
   }
 }

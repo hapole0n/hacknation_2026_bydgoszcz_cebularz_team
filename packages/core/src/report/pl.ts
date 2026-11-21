@@ -78,10 +78,10 @@ export const plural = (n: number, one: string, few: string, many: string) => (n 
 const tz = 'Europe/Warsaw';
 const dateFmt = new Intl.DateTimeFormat('pl-PL', { timeZone: tz, day: 'numeric', month: 'short', year: 'numeric' });
 const dateTimeFmt = new Intl.DateTimeFormat('pl-PL', { timeZone: tz, day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-const money = (currency: string) => new Intl.NumberFormat('pl-PL', { style: 'currency', currency });
+const money = (currency: string) => new Intl.NumberFormat('pl-PL', { style: 'currency', currency, useGrouping: 'always' });
 const plnFmt = money('PLN');
 const eurFmt = money('EUR');
-const numFmt = new Intl.NumberFormat('pl-PL', { maximumFractionDigits: 8 });
+const numFmt = new Intl.NumberFormat('pl-PL', { maximumFractionDigits: 8, useGrouping: 'always' });
 
 export const DASH = '—';
 export const fmtDate = (iso: string | null | undefined) => (iso ? dateFmt.format(new Date(iso)) : DASH);

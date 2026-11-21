@@ -171,8 +171,12 @@ const confidence = (band: string) =>
 const table = (columns: string[], rows: string[][], extra: { kind?: StatementKind; weights?: number[]; mono?: number[] } = {}): Block => ({ type: 'table', columns, rows, ...extra });
 const kv = (rows: [string, string][], kind?: StatementKind): Block => table(['Pozycja', 'Wartość'], rows, { kind, weights: [2, 5] });
 const chainName = (c: string) => label(CHAINS_PL, c);
-const names = (flows: FlowEntry[], categories: string[]) =>
-  unique(flows.filter((f) => f.counterparty.category && categories.includes(f.counterparty.category)).map((f) => f.counterparty.name ?? label(CATEGORIES_PL, f.counterparty.category!)));
+
+/** A counterparty by name (label list) or by its category, with a short address; plain address when nothing is known. */
+const party = (f: FlowEntry) => {
+  const name = f.counterparty.name ?? (f.counterparty.category ? label(CATEGORIES_PL, f.counterparty.category) : undefined);
+  return name ? `${name} (${shortAddr(f.counterparty.address)})` : shortAddr(f.counterparty.address);
+};
 
 /** Money that could not be valued is a dash, never 0,00 zł. */
 const money = (pln: number, eur: number, unvalued: number) =>
@@ -266,7 +270,7 @@ export function buildReport(input: ReportInput): ReportDoc {
     );
     const MAX_DETAILED = 12;
     for (const l of active.slice(0, MAX_DETAILED)) {
-      sec3.push({ type: 'heading', text: `${shortAddr(l.address.address)} (${chainName(l.address.chain)}) ← ${identityLabel(l)}: ${pct(l.score)}, ${label(BANDS_PL, l.band).toLowerCase()}` });
+      sec3.push({ type: 'heading', text: `Adres ${shortAddr(l.address.address)} (${chainName(l.address.chain)}) — ${identityLabel(l)}: ${pct(l.score)}, ${label(BANDS_PL, l.band).toLowerCase()}` });
       sec3.push(
         table(
           ['Reguła', 'Uzasadnienie', 'Dowody', 'Punkty'],
@@ -274,7 +278,7 @@ export function buildReport(input: ReportInput): ReportDoc {
             ...l.breakdownJson.map((b) => [b.ruleId, b.reasonPl, b.evidenceIds.length > 0 ? refs(b.evidenceIds) : DASH, signed(b.delta)]),
             ['WYNIK', `Suma punktów (reguły w wersji ${run.rulesVersion})`, DASH, pct(l.score)],
           ],
-          { kind: 'OBLICZENIE', weights: [4, 8, 2, 1.5] },
+          { kind: 'OBLICZENIE', weights: [6, 8, 2, 1.5] },
         ),
       );
       if (l.hintsJson.length > 0) sec3.push({ type: 'list', items: l.hintsJson.map((h) => `Co zmieniłoby wynik: ${h.pl}`) });
@@ -318,7 +322,7 @@ export function buildReport(input: ReportInput): ReportDoc {
       { type: 'text', text: 'Tych adresów nie przypisujemy osobie (0%). Kontakt z nimi jest jednak zapisany i może być tropem — np. kontakt z giełdą to podstawa do zapytania o dane KYC.', kind: 'OBLICZENIE', basis: 'reguły wykluczeń (EXCL_*)' },
       rejectedRows.size === 0
         ? { type: 'text', text: 'Brak odrzuconych przypisań.' }
-        : table(['Adres', 'Rodzaj', 'Powód odrzucenia', 'Identyfikator', 'Dowody'], [...rejectedRows.values()], { kind: 'OBLICZENIE', weights: [6, 3, 5, 4, 1.5], mono: [0] }),
+        : table(['Adres', 'Rodzaj', 'Powód odrzucenia', 'Identyfikator', 'Dowody'], [...rejectedRows.values()], { kind: 'OBLICZENIE', weights: [9, 3, 5, 4, 1.5], mono: [0] }),
       ...(hasMixer ? [{ type: 'text', text: 'Mikser ma 0% jako przypisanie osobie, ale jego użycie jest wskaźnikiem ryzyka i zasługuje na uwagę analityka.' } as Block] : []),
     ],
   });
@@ -328,7 +332,7 @@ export function buildReport(input: ReportInput): ReportDoc {
   if (input.chain.length === 0) sec5.push({ type: 'text', text: 'Brak danych z blockchaina dla adresów w tej analizie.' });
   for (const c of input.chain) {
     const i = c.indicators;
-    sec5.push({ type: 'heading', text: `${c.address.address} (${chainName(c.address.chain)}, ${label(CATEGORIES_PL, c.address.category)})` });
+    sec5.push({ type: 'heading', text: `${c.address.address} (${chainName(c.address.chain)}; ${label(CATEGORIES_PL, c.address.category).toLowerCase()})` });
     sec5.push(
       kv(
         [
@@ -378,7 +382,7 @@ export function buildReport(input: ReportInput): ReportDoc {
         c.flows.slice(0, MAX_FLOWS).map((f) => [
           fmtDate(f.time),
           f.direction === 'in' ? 'wpływ' : 'wypływ',
-          f.counterparty.name ? `${f.counterparty.name} (${shortAddr(f.counterparty.address)})` : shortAddr(f.counterparty.address),
+          party(f),
           `${fmtNum(f.amount)} ${f.asset}`,
           fmtPln(f.valuePln),
           f.tags.map((t) => label(TAGS_PL, t)).join(', ') || DASH,
@@ -440,11 +444,12 @@ export function buildReport(input: ReportInput): ReportDoc {
         text: `Przepływy z adresu ${shortAddr(c.address.address)} wskazują na możliwe wyjście do gotówki (${i.cashOut.patterns.map((p) => label(TAGS_PL, p)).join(', ')}): ${fmtPln(i.cashOut.totalPln)} (${fmtEur(i.cashOut.totalEur)}).`,
         basis: `${cashOutSource}. Poziom pewności: średni — to przesłanka, a nie dowód wypłaty gotówki.`,
       });
-    for (const t of i.thresholds.filter((x) => x.singleCrossedAt || x.cumulativeCrossedAt))
+    const crossed = i.thresholds.filter((x) => x.singleCrossedAt || x.cumulativeCrossedAt);
+    if (crossed.length > 0)
       sec8.push({
         type: 'text',
         kind: 'WNIOSEK',
-        text: `Dla adresu ${shortAddr(c.address.address)} przekroczono próg ${fmtNum(t.eur)} EUR (${[t.singleCrossedAt ? `pojedynczy transfer ${fmtDate(t.singleCrossedAt)}` : '', t.cumulativeCrossedAt ? `łącznie od ${fmtDate(t.cumulativeCrossedAt)}` : ''].filter(Boolean).join('; ')}).`,
+        text: `Dla adresu ${shortAddr(c.address.address)} przekroczono progi: ${crossed.map((t) => `${fmtNum(t.eur)} EUR (${[t.singleCrossedAt ? `pojedynczy transfer ${fmtDate(t.singleCrossedAt)}` : '', t.cumulativeCrossedAt ? `łącznie od ${fmtDate(t.cumulativeCrossedAt)}` : ''].filter(Boolean).join('; ')})`).join(', ')}.`,
         basis: `${THRESHOLD_NOTE.pl} Poziom pewności: średni.`,
       });
   }
@@ -457,9 +462,11 @@ export function buildReport(input: ReportInput): ReportDoc {
   // 9 — recommended next steps
   const steps: string[] = [];
   for (const c of input.chain) {
-    const cex = names(c.flows, ['CEX_CUSTODIAL', 'CEX_DEPOSIT']);
+    const cexFlows = c.flows.filter((f) => f.counterparty.category === 'CEX_CUSTODIAL' || f.counterparty.category === 'CEX_DEPOSIT');
+    const cex = unique(cexFlows.flatMap((f) => (f.counterparty.name ? [f.counterparty.name] : [])));
     if (cex.length > 0) steps.push(`Rozważyć zapytanie do giełdy (${cex.join(', ')}) o dane KYC dotyczące wpłat z adresu ${shortAddr(c.address.address)}.`);
-    const kantor = names(c.flows, ['CASP_KANTOR']);
+    else if (cexFlows.length > 0) steps.push(`Ustalić, do której giełdy należy adres depozytowy ${unique(cexFlows.map((f) => shortAddr(f.counterparty.address))).join(', ')}, i rozważyć zapytanie o dane KYC.`);
+    const kantor = unique(c.flows.filter((f) => f.counterparty.category === 'CASP_KANTOR').map((f) => f.counterparty.name ?? shortAddr(f.counterparty.address)));
     if (kantor.length > 0) steps.push(`Ustalić operatora kantoru (${kantor.join(', ')}) i zbadać rozliczenia z adresem ${shortAddr(c.address.address)}.`);
   }
   for (const l of active.filter((x) => x.band === 'MEDIUM')) steps.push(`Potwierdzić powiązanie adresu ${shortAddr(l.address.address)} drugim, niezależnym źródłem (${identityLabel(l)}).`);

@@ -25,7 +25,8 @@ export interface ClassifiedCounterparty {
   chain: Chain;
   address: string;
   category: AddressCategory;
-  name: string;
+  /** Proper name from a label list; heuristics have none (the UI shows the translated category instead). */
+  name?: string;
   source: 'label' | 'heuristic';
 }
 
@@ -93,12 +94,12 @@ export class ChainAnalysisService {
     for (const r of [...recipients.values()].sort((a, b) => b.n - a.n).slice(0, MAX_COUNTERPARTY_LOOKUPS)) {
       const { history: h2 } = await this.registry.history(mode, chain, r.address, ctx);
       if (!h2) continue;
-      const found: { category: AddressCategory; name: string } | undefined = h2.isContract
-        ? { category: 'CONTRACT', name: 'Smart contract (bytecode)' }
+      const found: { category: AddressCategory } | undefined = h2.isContract
+        ? { category: 'CONTRACT' }
         : detectCexDeposit(r.address, h2.transfers, labelCategory).isDeposit
-          ? { category: 'CEX_DEPOSIT', name: 'Exchange deposit address (sweeps to a labelled exchange wallet)' }
+          ? { category: 'CEX_DEPOSIT' }
           : looksLikeService(r.address, h2.transfers)
-            ? { category: 'UNKNOWN_SERVICE', name: 'Service-like address (many one-off counterparties)' }
+            ? { category: 'UNKNOWN_SERVICE' }
             : undefined;
       if (found) classified.set(normAddr(r.address), { chain, address: r.address, ...found, source: 'heuristic' });
     }
