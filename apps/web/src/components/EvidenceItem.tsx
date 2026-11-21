@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import type { EvidenceDto } from '@/api/types';
+import { AiSuggestions } from '@/components/AiSuggestions';
 import { formatDateTime, shortHash } from '@/lib/format';
 
 /** One piece of evidence: where it came from, when, the hash of its full content, and the stored snippet. */
@@ -27,6 +28,7 @@ export function EvidenceItem({ evidence, context }: { evidence: EvidenceDto; con
         SHA-256: {shortHash(evidence.sha256)}
       </p>
       <blockquote className="whitespace-pre-wrap break-words border-l-2 pl-3 text-foreground/90">{context ?? evidence.snippet}</blockquote>
+      <AiSuggestions evidence={evidence} />
     </div>
   );
 }

@@ -21,6 +21,7 @@ import {
   type RunDiffDoc,
   type SourceType,
 } from '@kropka/core';
+import { AiService } from '../ai/ai.service.js';
 import { ChainAnalysisService, type ChainAnalysis } from '../chains/chain-analysis.service.js';
 import { DEFAULT_CHAIN_MODE, type ChainMode } from '../chains/chain.registry.js';
 import { DEFAULT_CONNECTORS, ConnectorRegistry } from '../connectors/connector.registry.js';
@@ -42,6 +43,8 @@ interface EvidenceRec {
   snippet: string;
   matches: { identifierId: string; rules: IdentityRuleId[] }[];
   rejected: { raw: string; position: number; reason: string }[];
+  /** "Sugestia AI": a local model's opinion on the context; shown next to the evidence, never part of the score. */
+  aiSuggestions: { address: string; contextType: string; model: string }[];
   /** 1 = search by the case identifiers, 2 = reverse lookup of an address, 3 = pivot on the handle of a publisher, 4 = earlier copies of the pages found (web archive). */
   round: 1 | 2 | 3 | 4;
 }
@@ -50,6 +53,8 @@ interface TraceRec {
   evidenceId: string;
   cand: AddressCandidate;
   contextType: string;
+  /** No keyword matched: DISCUSSION is only the default (the case where the optional local model may suggest). */
+  unsure: boolean;
   sourceType: SourceType;
 }
 interface AddressRow {
@@ -66,6 +71,8 @@ const json = (v: unknown) => v as Prisma.InputJsonValue;
 const SNIPPET_CHARS = 400;
 /** Pages sent to the web archive per run (it is a rate-limited public service). */
 const MAX_ARCHIVED_PAGES = 10;
+/** Questions to the local model per run (it is a small model on a laptop GPU). */
+const MAX_AI_SUGGESTIONS = 12;
 
 type RunResults = Awaited<ReturnType<PipelineService['results']>>;
 
@@ -93,6 +100,7 @@ export class PipelineService {
     private readonly labels: LabelService,
     private readonly registry: ConnectorRegistry,
     private readonly chain: ChainAnalysisService,
+    private readonly ai: AiService,
   ) {}
 
   /**
@@ -144,8 +152,8 @@ export class PipelineService {
 
         const id = randomUUID();
         const mine = cands.map((cand): TraceRec => {
-          const contextType = classifyContext(cand.context).contextType;
-          return { id: randomUUID(), evidenceId: id, cand, contextType, sourceType: sourceTypeFor(contextType, draft.origin) };
+          const { contextType, fallback } = classifyContext(cand.context);
+          return { id: randomUUID(), evidenceId: id, cand, contextType, unsure: fallback, sourceType: sourceTypeFor(contextType, draft.origin) };
         });
         traces.push(...mine);
         evidence.push({
@@ -154,6 +162,7 @@ export class PipelineService {
           round,
           matches,
           rejected: extraction.rejected,
+          aiSuggestions: [],
           sourceType: mine[0]?.sourceType ?? sourceTypeFor('DISCUSSION', draft.origin),
           snippet: cands[0]?.context ?? extraction.text.slice(0, SNIPPET_CHARS),
         });
@@ -215,6 +224,24 @@ export class PipelineService {
         }
         for (const handle of handles) {
           await search([{ id: '', type: 'NICK', value: handle, normalized: handle }], 3, (d) => !!d.author?.handle && normalizeIdentifier('NICK', d.author.handle) === handle);
+        }
+      }
+
+      // Optional local model: a suggestion for contexts the keywords could not classify. Never touches the score; if the
+      // model is off the step is skipped, if it cannot be reached the run says so once and goes on.
+      if (this.ai.enabled()) {
+        let asked = 0;
+        suggest: for (const e of evidence) {
+          for (const t of traces.filter((x) => x.evidenceId === e.id && x.unsure && x.cand.chain)) {
+            if (asked++ >= MAX_AI_SUGGESTIONS) break suggest;
+            try {
+              const s = await this.ai.suggestContext(t.cand.context, ctx);
+              if (s) e.aiSuggestions.push({ address: t.cand.address, contextType: s.contextType, model: s.model });
+            } catch (err) {
+              connectorNotes.push({ connector: 'ai', round: 0, note: noteOf(err) });
+              break suggest;
+            }
+          }
         }
       }
 
@@ -370,6 +397,7 @@ export class PipelineService {
               round: e.round,
               matches: e.matches,
               rejected: e.rejected,
+              aiSuggestions: e.aiSuggestions,
             }),
           })),
         });

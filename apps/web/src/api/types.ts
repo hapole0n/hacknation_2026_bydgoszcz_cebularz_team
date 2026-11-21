@@ -114,6 +114,8 @@ export interface EvidenceDto {
     title: string | null;
     snapshotOf: string | null;
     round: 1 | 2 | 3 | 4;
+    /** "Sugestia AI": a local model's opinion on the context — shown next to the evidence, never part of the score. */
+    aiSuggestions?: { address: string; contextType: string; model: string }[];
   };
 }
 

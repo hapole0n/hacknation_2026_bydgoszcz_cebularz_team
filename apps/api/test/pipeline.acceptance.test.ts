@@ -30,7 +30,7 @@ delete (synthetic as Record<string, unknown>)._comment;
 const addr = (name: string): string => synthetic[name]?.address ?? spec.realAddresses[name];
 const key = (type: IdentifierType, value: string) => `${type}:${normalizeIdentifier(type, value)}`;
 
-const { prisma, cfg, fetched, egress, labels, registry, analysis, reports, pipeline, world, api } = makeApp();
+const { prisma, cfg, fetched, egress, labels, registry, analysis, reports, pipeline, world, ai, api } = makeApp();
 const runOptions = { connectors: spec.run.connectors, chain: spec.run.chain, asOf: new Date(spec.run.asOf) };
 
 type Results = Awaited<ReturnType<PipelineService['results']>>;
@@ -212,7 +212,7 @@ describe('on-chain indicators (stage 6)', () => {
       const noFetch = new EgressConfig();
       noFetch.fetchImpl = fetched; // live adapters still only see the offline stub
       const e2 = new EgressClient(prisma, noFetch);
-      const live = new PipelineService(prisma, new RulesService(), labels, registry, new ChainAnalysisService(new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(e2), new EvmEtherscanAdapter(e2), new TronGridAdapter(e2)), new NbpService(e2), labels));
+      const live = new PipelineService(prisma, new RulesService(), labels, registry, new ChainAnalysisService(new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(e2), new EvmEtherscanAdapter(e2), new TronGridAdapter(e2)), new NbpService(e2), labels), ai);
       const r = await live.run(caseIds[0]!, { ...runOptions, chain: 'live' });
       const summary = r.run.summaryJson as { chainNotes: { address: string; notes: { code: string }[] }[] };
       // B1 (BTC) is attempted through mempool.space (the stub has no network → failure noted), AB (ETH) needs the key
@@ -313,7 +313,7 @@ describe('failure handling and input validation', () => {
   it('a run whose connectors all fail is stored as FAILED with the reason', async () => {
     const broken = { id: 'broken', kind: 'web2', version: '0', policy: {}, search: async () => { throw new Error('boom'); } };
     const stub = { pick: () => [broken], list: () => [] } as unknown as ConnectorRegistry;
-    const failing = new PipelineService(prisma, new RulesService(), labels, stub, analysis);
+    const failing = new PipelineService(prisma, new RulesService(), labels, stub, analysis, ai);
     await expect(failing.run(caseIds[0]!, { connectors: ['broken'] })).rejects.toThrow(/all connectors failed.*boom/);
     const failed = await prisma.run.findFirst({ where: { caseId: caseIds[0], status: 'FAILED' } });
     expect(failed?.finishedAt).not.toBeNull();

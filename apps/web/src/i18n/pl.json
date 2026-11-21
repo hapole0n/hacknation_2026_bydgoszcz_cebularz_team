@@ -477,13 +477,16 @@
     "rounds": {
       "1": "wyszukanie po identyfikatorach",
       "2": "odwrotne wyszukanie adresu",
-      "3": "profil autora"
+      "3": "profil autora",
+      "4": "kopia z archiwum"
     },
     "author": "Autor",
     "snippet": "Fragment",
     "snapshotOf": "Archiwalna kopia strony",
     "empty": "Nie zebrano żadnych dowodów.",
-    "open": "Szczegóły dowodu"
+    "open": "Szczegóły dowodu",
+    "aiSuggestion": "Sugestia AI: {{type}}",
+    "aiHint": "Wygenerowane przez lokalny model — do weryfikacji. Nie zmienia oceny."
   },
   "identities": {
     "title": "Kto stoi za adresem",
@@ -512,7 +515,8 @@
     "UNVALUED_TRANSFERS": "Transfery bez wyceny: {{count}} (brak stablecoina lub źródła ceny).",
     "EGRESS_BLOCKED": "Połączenie z hostem {{host}} zablokowane: brak go na liście dozwolonych.",
     "ALL_CONNECTORS_FAILED": "Wszystkie źródła zwróciły błąd: {{detail}}",
-    "GRAVATAR_WALLETS_SKIPPED": "Gravatar: portfele kryptowalutowe pominięte — brak klucza {{key}} w pliku .env (profil został odczytany)."
+    "GRAVATAR_WALLETS_SKIPPED": "Gravatar: portfele kryptowalutowe pominięte — brak klucza {{key}} w pliku .env (profil został odczytany).",
+    "AI_UNAVAILABLE": "Lokalny model AI jest niedostępny ({{detail}}) — analiza przebiegła bez sugestii AI."
   },
   "report": {
     "open": "Raport",

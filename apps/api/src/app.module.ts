@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AiService } from './ai/ai.service.js';
 import { ApiController } from './api.controller.js';
 import { BtcMempoolAdapter } from './chains/btc-mempool.adapter.js';
 import { ChainAnalysisService } from './chains/chain-analysis.service.js';
@@ -30,6 +31,7 @@ import { RulesService } from './rules.service.js';
     RulesService,
     ReportService,
     LabelService,
+    AiService,
     EgressConfig,
     EgressClient,
     SandboxWorld,

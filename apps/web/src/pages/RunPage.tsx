@@ -9,6 +9,7 @@ import { GraphView } from '@/components/GraphView';
 import { BandChip, CategoryBadge, EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DecisionForm, LinkHeading, ScoreLedger } from '@/components/ScoreLedger';
 import { Button } from '@/components/ui/button';
+import { AiSuggestions } from '@/components/AiSuggestions';
 import { RunChanges } from '@/components/RunChanges';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BAND_ORDER, BAND_STYLE } from '@/lib/bands';
@@ -385,6 +386,7 @@ function EvidenceRow({ e, lang }: { e: EvidenceDto; lang: string }) {
           <details>
             <summary className="cursor-pointer text-xs text-steel underline underline-offset-2">{t('evidence.snippet')}</summary>
             <blockquote className="mt-1 whitespace-pre-wrap break-words border-l-2 pl-3 text-sm">{e.snippet}</blockquote>
+            <AiSuggestions evidence={e} />
             {e.metaJson.snapshotOf && <p className="mt-1 text-xs text-muted-foreground">{t('evidence.snapshotOf')}: {e.metaJson.snapshotOf}</p>}
           </details>
         </td>

@@ -1,3 +1,4 @@
+import { AiService } from '../src/ai/ai.service.js';
 import { ApiController } from '../src/api.controller.js';
 import { BtcMempoolAdapter } from '../src/chains/btc-mempool.adapter.js';
 import { ChainAnalysisService } from '../src/chains/chain-analysis.service.js';
@@ -45,9 +46,10 @@ export function makeApp(opts: FetchOptions = {}) {
   const registry = new ConnectorRegistry(new SandboxConnector(egress, world), new GithubConnector(egress), new WaybackConnector(egress), new GravatarConnector(egress), new EnsConnector(egress));
   const chains = new ChainRegistry(new FixtureChainAdapter(), new BtcMempoolAdapter(egress), new EvmEtherscanAdapter(egress), new TronGridAdapter(egress));
   const analysis = new ChainAnalysisService(chains, new NbpService(egress), labels);
-  const pipeline = new PipelineService(prisma, new RulesService(), labels, registry, analysis);
+  const ai = new AiService(egress);
+  const pipeline = new PipelineService(prisma, new RulesService(), labels, registry, analysis, ai);
   const reports = new ReportService(prisma, pipeline, registry);
   const scheduler = new SchedulerService(prisma, pipeline);
   const api = new ApiController(prisma, pipeline, registry, chains, reports, scheduler, world);
-  return { world, prisma, cfg, fetched, egress, labels, registry, chains, analysis, pipeline, reports, scheduler, api };
+  return { ai, world, prisma, cfg, fetched, egress, labels, registry, chains, analysis, pipeline, reports, scheduler, api };
 }
