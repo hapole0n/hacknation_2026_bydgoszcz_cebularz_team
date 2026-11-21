@@ -1,0 +1,16 @@
+{
+  "subtitle": "OSINT workstation for KAS analysts: linking public web traces to crypto addresses",
+  "language": "Language",
+  "health": {
+    "title": "System status",
+    "api": "API",
+    "db": "Database",
+    "loading": "Checking…",
+    "up": "up",
+    "down": "unavailable",
+    "ok": "ok",
+    "degraded": "degraded",
+    "unreachable": "API unreachable"
+  },
+  "scaffold": "Project scaffold is ready. The case form and analysis arrive in later phases."
+}

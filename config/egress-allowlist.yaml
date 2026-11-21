@@ -1,0 +1,19 @@
+# Outbound HTTP allowlist. Every external request goes through EgressClient and must match
+# one of these hosts — anything else is blocked and logged in AuditLog.
+# Keep in sync with README → "Zgodność i bezpieczeństwo".
+version: 1
+hosts:
+  - { host: api.etherscan.io,            purpose: "Ethereum: transactions, ERC-20 transfers, bytecode (eth_getCode)", rateLimitPerSec: 3 }
+  - { host: mempool.space,               purpose: "Bitcoin: address stats and transactions", rateLimitPerSec: 2 }
+  - { host: api.trongrid.io,             purpose: "TRON: transactions and TRC-20 (USDT) transfers", rateLimitPerSec: 10 }
+  - { host: api.github.com,              purpose: "GitHub public profiles, user search, code search", rateLimitPerSec: 1 }
+  - { host: raw.githubusercontent.com,   purpose: "GitHub profile README raw content", rateLimitPerSec: 1 }
+  - { host: api.gravatar.com,            purpose: "Gravatar public profile (crypto wallets) by e-mail hash", rateLimitPerSec: 1 }
+  - { host: web.archive.org,             purpose: "Wayback Machine CDX and archived snapshots", rateLimitPerSec: 1 }
+  - { host: t.me,                        purpose: "Telegram public channel preview (t.me/s/...)", rateLimitPerSec: 0.5 }
+  - { host: api.nbp.pl,                  purpose: "NBP exchange rates (EUR/PLN, USD/PLN) for PIT valuation", rateLimitPerSec: 2 }
+  - { host: ethereum-rpc.publicnode.com, purpose: "ENS resolution via public Ethereum RPC (configurable)", rateLimitPerSec: 2 }
+  - { host: api.coingecko.com,           purpose: "OPTIONAL historical crypto prices (first to cut)", rateLimitPerSec: 0.5 }
+  - { host: localhost,                   purpose: "sandbox-web (synthetic mini-internet) and local Ollama in dev" }
+  - { host: sandbox-web,                 purpose: "sandbox-web container hostname" }
+  - { host: ollama,                      purpose: "local LLM container hostname (optional)" }

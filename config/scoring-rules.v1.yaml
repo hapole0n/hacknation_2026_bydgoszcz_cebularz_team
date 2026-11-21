@@ -1,0 +1,49 @@
+# Confidence Score rules — v1
+# Base tiers follow the KAS annex (KROK 2–3) of the task; modifiers are our own.
+# Code maps every rule id to a predicate in packages/core. Changing a number here
+# changes the score; bump `version` on every change (the version is stored in each Run).
+version: "1.0.0"
+clamp: { min: 0, max: 100 }
+
+bands:
+  - { id: VERY_HIGH, min: 80, max: 100, pl: "Bardzo wysokie prawdopodobieństwo", en: "Very high probability" }
+  - { id: PROBABLE,  min: 60, max: 79,  pl: "Prawdopodobne", en: "Probable" }
+  - { id: MEDIUM,    min: 40, max: 59,  pl: "Średnie — wymaga potwierdzenia drugim śladem", en: "Medium — needs a second trace" }
+  - { id: LOW,       min: 10, max: 39,  pl: "Niskie / szum", en: "Low / noise" }
+  - { id: EXCLUDED,  min: 0,  max: 0,   pl: "Wykluczone (fałszywe trafienie)", en: "Excluded (false positive)" }
+
+base:
+  OFFICIAL_PROFILE:     { score: 85, pl: "Adres na oficjalnym, autorskim profilu podmiotu (własny GitHub, strona WWW, zweryfikowane konto)", en: "Address on the subject's own official profile" }
+  SALE_AD:              { score: 70, pl: "Adres w ogłoszeniu sprzedaży", en: "Address in a sale advert" }
+  P2P_OFFER:            { score: 70, pl: "Adres w ofercie P2P", en: "Address in a P2P offer" }
+  EMAIL_FOOTER:         { score: 70, pl: "Adres w stopce e-maila", en: "Address in an e-mail footer" }
+  MESSENGER_SETTLEMENT: { score: 70, pl: "Adres podany w komunikatorze w kontekście rozliczenia", en: "Address given in a messenger in a settlement context" }
+  FORUM_DISCUSSION:     { score: 50, pl: "Adres w dyskusji na forum branżowym lub w grupie tematycznej", en: "Address in a forum / topic group discussion" }
+  MASS_COMMENT:         { score: 25, pl: "Adres w masowych komentarzach (konkursy, promocje)", en: "Address in mass comments (contests, promotions)" }
+  GIVEAWAY:             { score: 25, pl: "Adres w poście typu giveaway", en: "Address in a giveaway post" }
+
+modifiers:
+  - { id: IDENT_EXACT_SAME_PLATFORM, delta: 10,  pl: "Identyfikator wejściowy dokładnie zgodny z autorem śladu na tej platformie", en: "Input identifier exactly matches the trace author on that platform" }
+  - { id: IDENT_EMAIL_EXACT,         delta: 10,  pl: "Adres e-mail dokładnie zgodny z wejściowym", en: "E-mail exactly matches the input" }
+  - { id: IDENT_NICK_VARIANT,        delta: -5,  pl: "Zgodność tylko z wariantem nicku (np. jan_kowalski / jankowalski)", en: "Match only on a nick variant" }
+  - { id: IDENT_NICK_OTHER_PLATFORM, delta: -10, pl: "Ten sam nick na innej platformie — możliwa inna osoba", en: "Same nick on another platform — may be another person" }
+  - { id: IDENT_NAME_ONLY,           delta: -20, pl: "Powiązanie wyłącznie przez imię i nazwisko", en: "Linked by name and surname only" }
+  - { id: SYNERGY_INDEPENDENT_SOURCES, delta: 15, pl: "Ten sam adres w co najmniej dwóch niezależnych źródłach (różne serwisy)", en: "Same address in at least two independent sources" }
+  - { id: CHAIN_ACTIVE_CONSISTENT,   delta: 5,   pl: "Aktywność adresu w blockchainie zbieżna w czasie ze śladem", en: "On-chain activity consistent in time with the trace" }
+  - { id: CHAIN_NEVER_USED,          delta: -10, pl: "Adres nigdy nie był używany w blockchainie", en: "Address never used on-chain" }
+  - { id: TRACE_OLDER_THAN_3Y,       delta: -5,  pl: "Ślad starszy niż 3 lata", en: "Trace older than 3 years" }
+  - { id: ADDRESS_MULTI_IDENTITY,    delta: -20, pl: "Ten sam adres przypisywany co najmniej 3 niepowiązanym tożsamościom (kopiuj-wklej, scam)", en: "Same address claimed by 3+ unrelated identities" }
+
+# Any exclusion sets the personal-attribution score to 0. The interaction is still recorded
+# and shown (e.g. "kontakt z giełdą X" as a cash-out indicator / KYC lead).
+exclusions:
+  - { id: EXCL_CEX,               pl: "Adres publiczny giełdy scentralizowanej (CEX) — nie jest prywatnym portfelem osoby", en: "Public address of a centralised exchange" }
+  - { id: EXCL_CUSTODIAL_DEPOSIT, pl: "Adres depozytowy giełdy (powierniczy) — klucze ma giełda; przesłanka do zapytania o dane KYC", en: "Exchange deposit (custodial) address — KYC lead" }
+  - { id: EXCL_CONTRACT,          pl: "Smart kontrakt (bytecode ≠ 0x) — nie jest kontem użytkownika", en: "Smart contract (bytecode != 0x)" }
+  - { id: EXCL_MIXER,             pl: "Mikser — usługa, nie osoba; korzystanie z miksera jest wskaźnikiem ryzyka", en: "Mixer — a service, not a person; usage is a risk indicator" }
+  - { id: EXCL_CHARITY,           pl: "Znany adres zbiórki charytatywnej", en: "Known charity / fundraising address" }
+  - { id: EXCL_EXAMPLE,           pl: "Adres przykładowy / z dokumentacji / burn", en: "Example / documentation / burn address" }
+
+hints:
+  - { when: "band == MEDIUM && !SYNERGY_INDEPENDENT_SOURCES", pl: "Drugie niezależne źródło podniosłoby wynik o 15 pp", en: "A second independent source would add 15 pp" }
+  - { when: "IDENT_NAME_ONLY", pl: "Potwierdzenie nickiem lub e-mailem usunęłoby karę −20 pp", en: "Confirming by nick or e-mail would remove the −20 pp penalty" }

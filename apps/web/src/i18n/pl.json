@@ -1,0 +1,16 @@
+{
+  "subtitle": "Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut",
+  "language": "Język",
+  "health": {
+    "title": "Stan systemu",
+    "api": "API",
+    "db": "Baza danych",
+    "loading": "Sprawdzanie…",
+    "up": "działa",
+    "down": "niedostępna",
+    "ok": "działa",
+    "degraded": "ograniczone",
+    "unreachable": "brak połączenia z API"
+  },
+  "scaffold": "Szkielet projektu jest gotowy. Formularz sprawy i analiza pojawią się w kolejnych fazach."
+}
