@@ -79,7 +79,7 @@
     },
     "connectorNotes": {
       "sandbox": "Pages, profiles, adverts and addresses are all artificial. Recommended for demonstrations.",
-      "github": "A user's profile and profile README; with a token also address search in code. Requests go to github.com.",
+      "github": "User profile and profile README; commits by author e-mail (public metadata, no token needed); with a token also address search in code. Requests go to github.com; synthetic e-mails (reserved domains) are served by the mini-internet.",
       "wayback": "Earlier copies of pages on which addresses were found: which address was on the page and when (date of the copy). Pages of the synthetic internet are looked up in its own archive, others at archive.org.",
       "gravatar": "Public Gravatar profile: name, verified accounts; crypto wallets only with GRAVATAR_API_KEY (without a key they are skipped, with a note). E-mails on reserved domains (example.org etc.) are answered only by the synthetic mini-internet.",
       "ens": "Address ↔ ENS name and text records (com.github, com.twitter, email, url) through a public RPC node. A reverse record counts only when the name resolves back to the same address.",

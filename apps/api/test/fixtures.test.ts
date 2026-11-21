@@ -16,9 +16,9 @@ function walk(dir: string): string[] {
 }
 const root = repoPath('fixtures/sandbox-web');
 const allFiles = walk(root).map((f) => relative(root, f).replaceAll('\\', '/')).filter((f) => !['index.html', 'index.json'].includes(f));
-// the web archive, Gravatar, ENS and the t.me pages (wayback/, gravatar/, ens/, tme/) are served by their own connectors; page variants are listed under their page in index.json
+// the web archive, Gravatar, ENS and the t.me pages (wayback/, gravatar/, ens/, tme/, github/) are served by their own connectors; page variants are listed under their page in index.json
 const variantFiles = index.pages.flatMap((p: { variants?: Record<string, { path: string }> }) => Object.values(p.variants ?? {}).map((v) => v.path.slice(1)));
-const pageFiles = allFiles.filter((f) => !/^(wayback|gravatar|ens|tme)\//.test(f) && !variantFiles.includes(f));
+const pageFiles = allFiles.filter((f) => !/^(wayback|gravatar|ens|tme|github)\//.test(f) && !variantFiles.includes(f));
 
 describe('sandbox fixtures', () => {
   it('every synthetic address is valid and published on at least one page', () => {

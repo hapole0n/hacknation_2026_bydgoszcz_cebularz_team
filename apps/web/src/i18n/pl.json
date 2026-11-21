@@ -79,7 +79,7 @@
     },
     "connectorNotes": {
       "sandbox": "Strony, profile, ogłoszenia i adresy wyłącznie sztuczne. Zalecane do demonstracji.",
-      "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com.",
+      "github": "Profil i plik README użytkownika; commity po adresie e-mail autora (publiczne metadane, bez tokenu); z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com; sztuczne adresy e-mail (domeny zarezerwowane) obsługuje mini-internet.",
       "wayback": "Wcześniejsze kopie stron, na których znaleziono adresy: jaki adres był na stronie i kiedy (data kopii). Strony sztucznego internetu sprawdza w jego własnym archiwum, pozostałe w archive.org.",
       "gravatar": "Publiczny profil Gravatar: nazwa, zweryfikowane konta; portfele kryptowalutowe tylko z kluczem GRAVATAR_API_KEY (bez klucza pomijamy je z adnotacją). Adresy e-mail z domen zarezerwowanych (example.org itd.) obsługuje wyłącznie sztuczny mini-internet.",
       "ens": "Adres ↔ nazwa ENS i rekordy tekstowe (com.github, com.twitter, email, url) przez publiczny węzeł RPC. Rekord odwrotny uznajemy tylko, gdy nazwa wskazuje z powrotem na ten sam adres.",
