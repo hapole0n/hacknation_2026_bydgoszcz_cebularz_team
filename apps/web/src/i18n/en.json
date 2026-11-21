@@ -71,11 +71,13 @@
     },
     "connectorNames": {
       "sandbox": "Synthetic mini-internet",
-      "github": "GitHub (public API)"
+      "github": "GitHub (public API)",
+      "wayback": "Wayback Machine (page archive)"
     },
     "connectorNotes": {
       "sandbox": "Pages, profiles, adverts and addresses are all artificial. Recommended for demonstrations.",
-      "github": "A user's profile and profile README; with a token also address search in code. Requests go to github.com."
+      "github": "A user's profile and profile README; with a token also address search in code. Requests go to github.com.",
+      "wayback": "Earlier copies of pages on which addresses were found: which address was on the page and when (date of the copy). Pages of the synthetic internet are looked up in its own archive, others at archive.org."
     },
     "chainTitle": "Blockchain data",
     "chain": {
@@ -152,6 +154,13 @@
     "trigger": {
       "manual": "Manual",
       "scheduled": "Scheduled"
+    },
+    "demoChange": {
+      "title": "Demo: change at a source",
+      "original": "The synthetic mini-internet is in its original state. Run the analysis, simulate the change, then run it again — you will see the differences and notifications.",
+      "changed": "The personal page of persona A now shows a NEW (synthetic) address. Run the analysis again: the comparison, notifications and section 8 of the report appear.",
+      "simulate": "Demo: simulate change",
+      "undo": "Undo the change"
     }
   },
   "run": {

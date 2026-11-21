@@ -44,6 +44,15 @@ export interface ConnectorPolicy {
   weightHint: number;
 }
 
+/** A page found by another source, handed to connectors that keep copies of pages (web archives). */
+export interface ArchiveSource {
+  url: string;
+  platform: string;
+  origin: TraceOrigin;
+  author?: { handle?: string; name?: string };
+  title?: string;
+}
+
 /** Plug-in interface for Web2 sources (PLAN §3.1). New sources implement this and register in ConnectorRegistry. */
 export interface SourceConnector {
   readonly id: string;
@@ -51,6 +60,8 @@ export interface SourceConnector {
   readonly version: string;
   readonly policy: ConnectorPolicy;
   search(input: SearchInput): Promise<EvidenceDraft[]>;
+  /** Optional: earlier copies of pages other sources found (web archives). Called with those pages after the first search round. */
+  archive?(sources: ArchiveSource[], input: SearchInput): Promise<EvidenceDraft[]>;
 }
 
 export const sha256Hex = (text: string) => createHash('sha256').update(text).digest('hex');

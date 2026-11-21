@@ -263,3 +263,9 @@ model Report {
 
   @@index([runId])
 }
+
+// Small key-value store for application state that must survive a restart (e.g. the sandbox "world version" of the demo).
+model Setting {
+  key   String @id
+  value Json
+}

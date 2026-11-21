@@ -84,6 +84,17 @@ export function useMarkNotificationsRead() {
   });
 }
 
+export const useDemoState = () => useQuery({ queryKey: ['demo-state'], queryFn: () => request<{ sandboxVersion: 1 | 2 }>('/demo/state') });
+
+/** "Demo: symuluj zmianę": the persona's page in the synthetic mini-internet shows another address (version 2); version 1 undoes it. */
+export function useDemoChange() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (version: 1 | 2) => request<{ sandboxVersion: 1 | 2 }>('/demo/change', { method: 'POST', body: { version } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['demo-state'] }),
+  });
+}
+
 export function useDemoCase() {
   const qc = useQueryClient();
   return useMutation({

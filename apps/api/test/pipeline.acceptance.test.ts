@@ -30,7 +30,7 @@ delete (synthetic as Record<string, unknown>)._comment;
 const addr = (name: string): string => synthetic[name]?.address ?? spec.realAddresses[name];
 const key = (type: IdentifierType, value: string) => `${type}:${normalizeIdentifier(type, value)}`;
 
-const { prisma, fetched, egress, labels, registry, analysis, reports, pipeline, api } = makeApp();
+const { prisma, fetched, egress, labels, registry, analysis, reports, pipeline, world, api } = makeApp();
 const runOptions = { connectors: spec.run.connectors, chain: spec.run.chain, asOf: new Date(spec.run.asOf) };
 
 type Results = Awaited<ReturnType<PipelineService['results']>>;
@@ -342,7 +342,7 @@ describe('failure handling and input validation', () => {
   });
 
   it('GET /connectors and /chain-adapters list sources, policies and readiness', () => {
-    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api']]);
+    expect(api.connectors().map((c) => [c.id, c.policy.method])).toEqual([['sandbox', 'synthetic'], ['github', 'official_api'], ['wayback', 'official_api']]);
     expect(api.chainAdapters().map((a) => [a.id, a.live])).toEqual([['fixture', false], ['mempool.space', true], ['etherscan', true], ['trongrid', true]]);
     expect(api.chainAdapters().find((a) => a.id === 'mempool.space')).toMatchObject({ available: true, reason: null });
   });
@@ -492,6 +492,110 @@ describe('an address typed in by the analyst is analysed on-chain even when no p
     expect(r.links).toHaveLength(0);
     expect(r.chain.map((c) => [c.address.address, c.address.category])).toEqual([[addr('D1'), 'CEX_DEPOSIT']]);
     expect(indicatorsOf(r, 'D1').txCount).toBeGreaterThan(0);
+  });
+});
+
+describe('address change over time (demo button "symuluj zmianę")', () => {
+  const change = spec.addressChange;
+  let caseId: string;
+  let before: Results;
+  let after: Results;
+  let diff: NonNullable<Awaited<ReturnType<typeof api.runDiff>>['diff']>;
+
+  beforeAll(async () => {
+    const created = await api.createCase({ ...spec.case, title: 'Demo — zmiana adresu' });
+    caseId = created.id;
+    caseIds.push(caseId);
+    world.version = 1;
+    before = await pipeline.run(caseId, runOptions);
+    await api.demoChange({ version: 2 }); // the page of the persona now shows A2
+    after = await pipeline.run(caseId, runOptions);
+    world.version = 1; // other tests share nothing, but leave the world as we found it
+    diff = (await api.runDiff(after.run.id)).diff!;
+  });
+
+  it('the endpoint switches the sandbox world and validates the version', async () => {
+    expect(await api.demoState()).toEqual({ sandboxVersion: 1 });
+    expect(await api.demoChange({ version: 2 })).toEqual({ sandboxVersion: 2 });
+    expect(await api.demoChange({})).toEqual({ sandboxVersion: 2 }); // default = the change
+    expect(await api.demoChange({ version: 1 })).toEqual({ sandboxVersion: 1 });
+    await expect(api.demoChange({ version: 3 })).rejects.toThrow(/version/);
+  });
+
+  it('the second run finds the new address on the SAME url, scored like any official profile', () => {
+    const a2 = addr(change.to);
+    const links = after.links.filter((l) => l.address.address === a2);
+    expect(links).toHaveLength(3); // nick, e-mail, messenger
+    for (const l of links) {
+      expect(l.score).toBe(change.newAddress.score);
+      expect(ruleIds(l)).toEqual(expect.arrayContaining(change.newAddress.rules));
+      expect(ruleIds(l)).not.toContain('SYNERGY_INDEPENDENT_SOURCES'); // one origin only
+    }
+    expect(before.links.some((l) => l.address.address === a2)).toBe(false);
+    expect(after.evidence.find((e) => e.url === `http://sandbox-web${change.url}`)!.snippet).toContain(a2);
+  });
+
+  it('RunDiff: new address, swap on the source, new transactions, threshold crossed, cash-out signal', () => {
+    expect(diff).toMatchObject({ fromRunId: before.run.id, toRunId: after.run.id, empty: false, params: { same: true } });
+    expect(diff.addresses.added.map((a) => [a.address, a.bestScore])).toEqual([[addr(change.to), change.newAddress.score]]);
+    expect(diff.addresses.removed).toEqual([]); // A1 is still on the README and in the e-mail footer
+    // … but one of its links got weaker, and the diff says which rules made the difference
+    const a1 = change.a1Change;
+    const weaker = diff.scoreChanges.find((s) => `${s.identifier.type}:${s.identifier.value.replace('@', '')}` === a1.identifier && s.address === addr(a1.address))!;
+    expect([weaker.fromScore, weaker.toScore]).toEqual([a1.from, a1.to]);
+    expect(weaker.rules.filter((r) => r.change === 'removed').map((r) => r.ruleId).sort()).toEqual([...a1.ruleRemoved].sort());
+    expect(weaker.rules.find((r) => r.change === 'added')!.ruleId).toBe(a1.ruleAdded);
+    expect(diff.scoreChanges).toHaveLength(1);
+    expect(diff.sourceChanges).toEqual([expect.objectContaining({ url: `http://sandbox-web${change.url}`, kind: 'swap', from: [{ chain: 'ETH', address: addr(change.from) }], to: [{ chain: 'ETH', address: addr(change.to) }] })]);
+    expect(diff.newTransactions).toEqual([expect.objectContaining({ address: addr(change.to), isNewAddress: true, count: change.newTransactions })]);
+    expect(diff.newThresholds.map((t) => [t.thresholdEur, t.kind]).sort()).toEqual(change.newThresholds.flatMap((t: { eur: number; kinds: string[] }) => t.kinds.map((k) => [t.eur, k])).sort());
+    expect(diff.newIndicators.filter((i) => i.cashOut).map((i) => i.tag)).toEqual(change.newCashOutTags);
+  });
+
+  it('the bell rings once per finding, in codes; "mark read" works; a re-run without a change rings nothing', async () => {
+    const mine = (await api.notifications('200')).items.filter((n) => n.caseId === caseId);
+    expect(mine.map((n) => n.kind).sort()).toEqual(change.notifications);
+    expect(mine.find((n) => n.kind === 'NEW_ADDRESS')!.params).toMatchObject({ chain: 'ETH', address: addr(change.to), score: change.newAddress.score });
+    expect(mine.find((n) => n.kind === 'ADDRESS_CHANGED')!.params).toMatchObject({ from: addr(change.from), to: addr(change.to) });
+    expect(mine.find((n) => n.kind === 'THRESHOLD_EXCEEDED')!.params).toMatchObject({ thresholdEur: 1000 });
+    expect(mine.every((n) => n.readAt === null && n.runId === after.run.id)).toBe(true);
+    await api.markRead({ ids: mine.map((n) => n.id) });
+
+    const again = await pipeline.run(caseId, runOptions); // the world is back at version 1: the page shows A1 again
+    const back = (await api.runDiff(again.run.id)).diff!;
+    expect(back.sourceChanges[0]).toMatchObject({ kind: 'swap', from: [{ address: addr(change.to) }], to: [{ address: addr(change.from) }] }); // swapped back
+    expect(back.addresses.removed.map((a) => a.address)).toEqual([addr(change.to)]);
+    const quiet = await pipeline.run(caseId, runOptions);
+    expect((await api.runDiff(quiet.run.id)).diff!.empty).toBe(true);
+    expect((await api.notifications('200')).items.filter((n) => n.caseId === caseId && n.runId === quiet.run.id)).toHaveLength(0);
+  });
+
+  it('section 8 of the report names the swap, the new address and the rule behind it', async () => {
+    const text = JSON.stringify((await api.report(after.run.id)).doc.sections.find((s) => s.id === 'changes'));
+    expect(text).toContain('zamiana adresu');
+    expect(text).toContain('Nowe adresy');
+    expect(text).toMatch(/1[\s ]000 EUR/);
+    expect(text).toContain('do adresu depozytowego giełdy');
+  });
+});
+
+describe('web archive (Wayback): earlier copies of the pages that carry addresses', () => {
+  it('adds snapshots with their dates as evidence (round 4) and changes no score: a copy of the same site is no second source', async () => {
+    const created = await api.createCase({ ...spec.case, title: 'Demo — Wayback' });
+    caseIds.push(created.id);
+    const withArchive = await pipeline.run(created.id, { ...runOptions, connectors: ['sandbox', 'wayback'] });
+    const snapshots = withArchive.evidence.filter((e) => e.connectorId === 'wayback');
+    expect(snapshots.map((e) => [(e.metaJson as { publishedAt: string }).publishedAt, (e.metaJson as { round: number }).round, (e.metaJson as { snapshotOf: string }).snapshotOf])).toEqual([
+      ['2021-03-02T10:15:00Z', 4, 'http://sandbox-web/jtestowy-site/index.html'],
+      ['2026-09-25T08:30:00Z', 4, 'http://sandbox-web/jtestowy-site/index.html'],
+    ]);
+    expect(snapshots[0]!.archiveUrl).toContain('/wayback/web/20210302101500id_/');
+    expect(withArchive.evidence).toHaveLength(spec.counts.evidence + 2);
+    expect(withArchive.traces.filter((t) => snapshots.some((e) => e.id === t.evidenceId)).map((t) => t.address).sort()).toEqual([addr('A0'), addr('A1')].sort());
+
+    const score = (r: Results) => r.links.map((l) => [key(l.identifier.type as IdentifierType, l.identifier.value), l.address.address, l.score] as const).sort().join('|');
+    expect(score(withArchive)).toBe(score(results)); // same links, same scores as the sandbox-only run
+    expect(fetched.requested.filter((u) => u.includes('web.archive.org'))).toEqual([]); // the real archive was never asked about a synthetic page
   });
 });
 

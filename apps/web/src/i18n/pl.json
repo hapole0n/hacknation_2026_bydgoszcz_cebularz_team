@@ -71,11 +71,13 @@
     },
     "connectorNames": {
       "sandbox": "Syntetyczny mini-internet",
-      "github": "GitHub (publiczne API)"
+      "github": "GitHub (publiczne API)",
+      "wayback": "Wayback Machine (archiwum stron)"
     },
     "connectorNotes": {
       "sandbox": "Strony, profile, ogłoszenia i adresy wyłącznie sztuczne. Zalecane do demonstracji.",
-      "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com."
+      "github": "Profil i plik README użytkownika; z tokenem także wyszukiwanie adresu w kodzie. Zapytania wychodzą do github.com.",
+      "wayback": "Wcześniejsze kopie stron, na których znaleziono adresy: jaki adres był na stronie i kiedy (data kopii). Strony sztucznego internetu sprawdza w jego własnym archiwum, pozostałe w archive.org."
     },
     "chainTitle": "Dane z blockchaina",
     "chain": {
@@ -152,6 +154,13 @@
     "trigger": {
       "manual": "Ręcznie",
       "scheduled": "Harmonogram"
+    },
+    "demoChange": {
+      "title": "Demo: zmiana w źródle",
+      "original": "Syntetyczny mini-internet jest w stanie pierwotnym. Uruchom analizę, symuluj zmianę, a potem uruchom ją ponownie — zobaczysz różnice i powiadomienia.",
+      "changed": "Strona osobista persony A pokazuje teraz NOWY (sztuczny) adres. Uruchom analizę ponownie: pojawi się porównanie, powiadomienia i sekcja 8 raportu.",
+      "simulate": "Demo: symuluj zmianę",
+      "undo": "Cofnij zmianę"
     }
   },
   "run": {

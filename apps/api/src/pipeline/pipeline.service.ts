@@ -24,7 +24,7 @@ import {
 import { ChainAnalysisService, type ChainAnalysis } from '../chains/chain-analysis.service.js';
 import { DEFAULT_CHAIN_MODE, type ChainMode } from '../chains/chain.registry.js';
 import { DEFAULT_CONNECTORS, ConnectorRegistry } from '../connectors/connector.registry.js';
-import type { EvidenceDraft, SearchIdentifier } from '../connectors/connector.js';
+import type { ArchiveSource, EvidenceDraft, SearchIdentifier } from '../connectors/connector.js';
 import type { Prisma } from '../generated/prisma/client.js';
 import { LabelService } from '../labels/label.service.js';
 import { NoteError, noteOf, type Note } from '../notes.js';
@@ -42,8 +42,8 @@ interface EvidenceRec {
   snippet: string;
   matches: { identifierId: string; rules: IdentityRuleId[] }[];
   rejected: { raw: string; position: number; reason: string }[];
-  /** 1 = search by the case identifiers, 2 = reverse lookup of an address, 3 = pivot on the handle of a publisher. */
-  round: 1 | 2 | 3;
+  /** 1 = search by the case identifiers, 2 = reverse lookup of an address, 3 = pivot on the handle of a publisher, 4 = earlier copies of the pages found (web archive). */
+  round: 1 | 2 | 3 | 4;
 }
 interface TraceRec {
   id: string;
@@ -64,6 +64,8 @@ interface AddressRow {
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
 const SNIPPET_CHARS = 400;
+/** Pages sent to the web archive per run (it is a rate-limited public service). */
+const MAX_ARCHIVED_PAGES = 10;
 
 type RunResults = Awaited<ReturnType<PipelineService['results']>>;
 
@@ -121,7 +123,7 @@ export class PipelineService {
       const seen = new Set<string>();
       const people = idents.filter((i) => i.type !== 'ADDRESS');
 
-      const ingest = (draft: EvidenceDraft, round: 1 | 2 | 3, onlyKey?: string) => {
+      const ingest = (draft: EvidenceDraft, round: 1 | 2 | 3 | 4, onlyKey?: string) => {
         const dedupe = draft.url ?? draft.resourceId ?? draft.sha256;
         if (seen.has(dedupe)) return;
         const extraction = extractAddresses(draft.text, { examples: this.labels.exampleAddresses() });
@@ -166,6 +168,22 @@ export class PipelineService {
       if (errors.length === connectors.length) {
         const detail = errors.map((e) => `${e.connector}: ${e.note.params?.detail ?? e.note.code}`).join('; ');
         throw new NoteError({ code: 'ALL_CONNECTORS_FAILED', params: { detail } }, `all connectors failed: ${detail}`);
+      }
+
+      // Round 4 (web archives): earlier copies of the pages that carry addresses — which address was there, and when.
+      const archives = connectors.filter((c) => c.archive);
+      if (archives.length > 0) {
+        const pages: ArchiveSource[] = evidence
+          .filter((e) => e.draft.url && !e.draft.snapshotOf && /^https?:/.test(e.draft.url) && traces.some((t) => t.evidenceId === e.id))
+          .slice(0, MAX_ARCHIVED_PAGES)
+          .map((e) => ({ url: e.draft.url!, platform: e.draft.platform, origin: e.draft.origin, author: e.draft.author, title: e.draft.title }));
+        for (const c of archives) {
+          try {
+            for (const d of await c.archive!(pages, { identifiers: idents, ...ctx })) ingest(d, 4);
+          } catch (e) {
+            errors.push({ connector: c.id, round: 4, note: noteOf(e) });
+          }
+        }
       }
 
       const labelOf = (c: AddressCandidate) => (c.chain ? this.labels.lookup(c.chain, c.address) : undefined);

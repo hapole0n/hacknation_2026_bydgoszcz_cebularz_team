@@ -40,5 +40,10 @@
     "address": "0x252aafd78396a159339cA08De603A82DB9c567C2",
     "onPages": false,
     "note": "Synthetic exchange DEPOSIT address: only receives from A1 and sweeps to Binance 14 (chain fixture only)"
+  },
+  "A2": {
+    "chain": "ETH",
+    "address": "0x65dF8FEC643203A4D0e95406a4741750BF3a5686",
+    "note": "Jan Testowy — NEW ETH address shown on the personal site in sandbox world version 2 (\"symuluj zmianę\"); history in fixtures/chain/A2.json"
   }
 }

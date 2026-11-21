@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { useCase, useSetSchedule, useStartRun } from '@/api/client';
+import { useCase, useDemoChange, useDemoState, useSetSchedule, useStartRun } from '@/api/client';
 import { SCHEDULE_OPTIONS, type CaseDetail } from '@/api/types';
 import { EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DEFAULT_RUN_OPTIONS, SourcePicker } from '@/components/SourcePicker';
@@ -21,6 +21,8 @@ export function CasePage({ id }: { id: string }) {
   const kase = useCase(id);
   const startRun = useStartRun();
   const setSchedule = useSetSchedule(id);
+  const demoState = useDemoState();
+  const demoChange = useDemoChange();
   const [options, setOptions] = useState(DEFAULT_RUN_OPTIONS);
   const lang = i18n.language;
 
@@ -107,6 +109,20 @@ export function CasePage({ id }: { id: string }) {
             </p>
             {setSchedule.isError && <ErrorNote title={t('form.errors.server')} message={setSchedule.error.message} />}
           </Panel>
+          {c.createdBy === 'demo' && demoState.data && (
+            <Panel className="space-y-2 border-dashed p-4">
+              <h2 className="text-sm font-semibold">{t('case.demoChange.title')}</h2>
+              <p className="text-sm text-muted-foreground">{demoState.data.sandboxVersion === 2 ? t('case.demoChange.changed') : t('case.demoChange.original')}</p>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" disabled={demoChange.isPending || demoState.data.sandboxVersion === 2} onClick={() => demoChange.mutate(2)}>
+                  {t('case.demoChange.simulate')}
+                </Button>
+                <Button variant="ghost" size="sm" disabled={demoChange.isPending || demoState.data.sandboxVersion === 1} onClick={() => demoChange.mutate(1)}>
+                  {t('case.demoChange.undo')}
+                </Button>
+              </div>
+            </Panel>
+          )}
           <SourcePicker value={options} onChange={setOptions} />
           <Button onClick={run} disabled={startRun.isPending || options.connectors.length === 0}>
             {startRun.isPending ? t('form.running') : c.runs.length > 0 ? t('case.runAgain') : t('case.runNow')}

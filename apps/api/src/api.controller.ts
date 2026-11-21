@@ -3,6 +3,7 @@ import { BadRequestException, Body, Controller, Get, NotFoundException, Param, P
 import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
+import { SandboxWorld, isSandboxVersion } from './connectors/sandbox-world.js';
 import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
@@ -75,6 +76,7 @@ export class ApiController {
     private readonly chains: ChainRegistry,
     private readonly reports: ReportService,
     private readonly scheduler: SchedulerService,
+    private readonly world: SandboxWorld,
   ) {}
 
   /** Sources and their policies (terms of service, method, rate limit) — shown to the analyst. */
@@ -123,6 +125,20 @@ export class ApiController {
   @Put('cases/:id/schedule')
   setSchedule(@Param('id') id: string, @Body() body: unknown) {
     return this.scheduler.setSchedule(id, parseScheduleBody(body));
+  }
+
+  /** State of the synthetic mini-internet: version 2 = the demo change has happened (the persona's site shows a new address). */
+  @Get('demo/state')
+  async demoState() {
+    return { sandboxVersion: await this.world.get() };
+  }
+
+  /** "Demo: symuluj zmianę": `{ version: 2 }` (default) makes the page change; `{ version: 1 }` undoes it. Affects only the sandbox. */
+  @Post('demo/change')
+  async demoChange(@Body() body: unknown) {
+    const version = isObj(body) && body.version !== undefined ? body.version : 2;
+    if (!isSandboxVersion(version)) throw new BadRequestException('version: 1 (original) or 2 (changed)');
+    return { sandboxVersion: await this.world.set(version) };
   }
 
   /** The analyst confirms / rejects a computed link (name + time stored); the computed score is never touched. */

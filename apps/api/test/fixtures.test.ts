@@ -15,11 +15,14 @@ function walk(dir: string): string[] {
   return readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? walk(join(dir, f)) : [join(dir, f)]));
 }
 const root = repoPath('fixtures/sandbox-web');
-const pageFiles = walk(root).map((f) => relative(root, f).replaceAll('\\', '/')).filter((f) => !['index.html', 'index.json'].includes(f));
+const allFiles = walk(root).map((f) => relative(root, f).replaceAll('\\', '/')).filter((f) => !['index.html', 'index.json'].includes(f));
+// the web archive (wayback/) is served by its own connector; page variants are listed under their page in index.json
+const variantFiles = index.pages.flatMap((p: { variants?: Record<string, { path: string }> }) => Object.values(p.variants ?? {}).map((v) => v.path.slice(1)));
+const pageFiles = allFiles.filter((f) => !f.startsWith('wayback/') && !variantFiles.includes(f));
 
 describe('sandbox fixtures', () => {
   it('every synthetic address is valid and published on at least one page', () => {
-    const all = pageFiles.map((f) => read(`fixtures/sandbox-web/${f}`)).join('\n');
+    const all = allFiles.map((f) => read(`fixtures/sandbox-web/${f}`)).join('\n');
     for (const [name, a] of Object.entries(addresses)) {
       expect(parseAddress(a.address), name).toMatchObject({ ok: true });
       if (a.onPages !== false) expect(all, name).toContain(a.address); // D1 lives in fixtures/chain only
@@ -28,12 +31,12 @@ describe('sandbox fixtures', () => {
 
   it('every valid address on any page is a known one (synthetic, or a labelled public institutional address)', () => {
     const known = new Set([...Object.values(addresses).map((a) => a.address), ...Object.values<string>(expected.realAddresses)]);
-    for (const f of pageFiles) {
+    for (const f of allFiles) {
       for (const a of extractAddresses(read(`fixtures/sandbox-web/${f}`)).addresses) expect(known, `${f}: ${a.address}`).toContain(a.address);
     }
   });
 
-  it('the catalogue lists exactly the page files', () => {
+  it('the catalogue lists exactly the page files (variants and the web archive are catalogued elsewhere)', () => {
     expect(index.pages.map((p: { path: string }) => p.path.slice(1)).sort()).toEqual([...pageFiles].sort());
   });
 

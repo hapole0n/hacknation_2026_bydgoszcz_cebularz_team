@@ -4,6 +4,7 @@ import { normalizeIdentifier, type IdentifierType } from '@kropka/core';
 import { sha256Hex, htmlToText } from '../src/connectors/connector.js';
 import { GithubConnector } from '../src/connectors/github.connector.js';
 import { SandboxConnector } from '../src/connectors/sandbox.connector.js';
+import { MemoryWorld } from './harness.js';
 import { EgressClient, EgressConfig } from '../src/egress/egress.client.js';
 import { repoPath } from '../src/paths.js';
 import type { PrismaService } from '../src/prisma.service.js';
@@ -29,7 +30,8 @@ describe('sandbox connector', () => {
   const setup = () => {
     const cfg = new EgressConfig();
     cfg.fetchImpl = sandboxFetch();
-    return { connector: new SandboxConnector(new EgressClient(prisma, cfg)), fetched: cfg.fetchImpl as ReturnType<typeof sandboxFetch> };
+    const world = new MemoryWorld(prisma);
+    return { connector: new SandboxConnector(new EgressClient(prisma, cfg), world), world, fetched: cfg.fetchImpl as ReturnType<typeof sandboxFetch> };
   };
 
   it('has a policy and implements the connector interface', () => {
@@ -65,6 +67,19 @@ describe('sandbox connector', () => {
     const { connector } = setup();
     const found = await connector.search({ identifiers: [ident('ADDRESS', addresses.AB.address)] });
     expect(found.map((d) => d.author?.handle)).toEqual(['jtestowy', 'krypto_okazje_77', 'bonus_airdrop']);
+  });
+
+  it('after the demo change (world version 2) the same URL shows the new address, published later', async () => {
+    const { connector, world } = setup();
+    const site = async () => (await connector.search({ identifiers: demo })).find((d) => new URL(d.url!).pathname === '/jtestowy-site/index.html')!;
+    expect((await site()).text).toContain(addresses.A1.address);
+    await world.set(2);
+    const changed = await site();
+    expect(changed.url).toBe('http://sandbox-web/jtestowy-site/index.html'); // the URL does not change, the content does
+    expect(changed.text).toContain(addresses.A2.address);
+    expect(changed.text).not.toContain(addresses.A1.address);
+    expect(changed.publishedAt).toBe('2026-11-20');
+    expect(changed.sha256).toBe(sha256Hex(readFileSync(repoPath('fixtures/sandbox-web/jtestowy-site/v2/index.html'), 'utf8')));
   });
 
   it('returns nothing for an unknown identifier', async () => {

@@ -113,7 +113,7 @@ export interface EvidenceDto {
     publishedAt: string | null;
     title: string | null;
     snapshotOf: string | null;
-    round: 1 | 2 | 3;
+    round: 1 | 2 | 3 | 4;
   };
 }
 

@@ -1,7 +1,7 @@
 {
-  "_comment": "Search index of the synthetic mini-internet (what a search engine would know). All people, pages and addresses are artificial. Order matters: it is the order in which evidence is collected.",
+  "_comment": "Search index of the synthetic mini-internet (what a search engine would know). All people, pages and addresses are artificial. Order matters: it is the order in which evidence is collected. A page may have `variants`: what it shows after the demo button \"symuluj zmianę\" (sandbox world version N) — same URL, other content.",
   "pages": [
-    { "path": "/jtestowy-site/index.html", "platform": "jtestowy.example.org", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy", "name": "Jan Testowy" }, "publishedAt": "2026-10-12", "title": "Strona osobista — Jan Testowy" },
+    { "path": "/jtestowy-site/index.html", "platform": "jtestowy.example.org", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy", "name": "Jan Testowy" }, "publishedAt": "2026-10-12", "title": "Strona osobista — Jan Testowy", "variants": { "2": { "path": "/jtestowy-site/v2/index.html", "publishedAt": "2026-11-20" } } },
     { "path": "/archive/20210302/jtestowy-site/index.html", "platform": "jtestowy.example.org", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy", "name": "Jan Testowy" }, "publishedAt": "2021-03-02", "snapshotOf": "/jtestowy-site/index.html", "title": "Strona osobista — archiwum 2021-03-02" },
     { "path": "/gitlike/jtestowy/README.html", "platform": "git.example.dev", "origin": "OWN_PROFILE", "author": { "handle": "jtestowy" }, "publishedAt": "2026-09-18", "title": "Profil README w serwisie z kodem" },
     { "path": "/listy/archiwum/2026-09/0042.eml", "platform": "listy.example.pl", "origin": "EMAIL", "author": { "name": "Jan Testowy" }, "publishedAt": "2026-09-30", "title": "Archiwum listy dyskusyjnej — wiadomość 0042" },

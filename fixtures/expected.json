@@ -89,6 +89,18 @@
       }
     }
   },
+  "addressChange": {
+    "_comment": "The demo button \"symuluj zmianę\" (sandbox world version 2): the personal site of Jan Testowy shows the NEW synthetic address A2 instead of A1 (same URL). The next run of the same case must show it in the comparison and ring the bell. A2's synthetic history: 3,000 USDT in (2026-11-10), 2,900 USDT to the exchange deposit address D1 (2026-11-14) = 12,000 PLN / ~2,727 EUR in, 11,600 PLN / ~2,636 EUR out at the synthetic NBP rates.",
+    "url": "/jtestowy-site/index.html",
+    "from": "A1",
+    "to": "A2",
+    "newAddress": { "address": "A2", "score": 100, "rules": ["BASE_OFFICIAL_PROFILE", "CHAIN_ACTIVE_CONSISTENT"], "why": "85 (official profile) + 10 (exact identifier or e-mail) + 5 (active within 90 days of the page date) = 100; one origin only, so no synergy" },
+    "a1Change": { "identifier": "MESSENGER:jtestowy_pl", "address": "A1", "from": 100, "to": 85, "ruleRemoved": ["BASE_OFFICIAL_PROFILE", "SYNERGY_INDEPENDENT_SOURCES"], "ruleAdded": "BASE_EMAIL_FOOTER", "why": "the Telegram handle was on the site (official profile) and in the e-mail footer; after the change only the footer still shows A1 with that handle" },
+    "newTransactions": 2,
+    "newThresholds": [{ "eur": 1000, "kinds": ["cumulative", "single"] }],
+    "newCashOutTags": ["TO_CEX_DEPOSIT"],
+    "notifications": ["ADDRESS_CHANGED", "NEW_ADDRESS", "NEW_CASH_OUT", "THRESHOLD_EXCEEDED"]
+  },
   "addressCase": {
     "_comment": "Input = one address (A1). The result is not a list of links but the identities behind the address: accounts that published it (scored) and, by pivoting on their handles, what else those accounts publish. The same nick on other platforms is listed separately and flagged — it may be another person.",
     "case": { "title": "Demo — adres A1", "identifiers": [{ "type": "ADDRESS", "value": "A1" }] },

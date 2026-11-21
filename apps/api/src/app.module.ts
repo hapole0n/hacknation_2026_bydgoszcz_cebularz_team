@@ -10,6 +10,8 @@ import { TronGridAdapter } from './chains/tron-grid.adapter.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { GithubConnector } from './connectors/github.connector.js';
 import { SandboxConnector } from './connectors/sandbox.connector.js';
+import { SandboxWorld } from './connectors/sandbox-world.js';
+import { WaybackConnector } from './connectors/wayback.connector.js';
 import { EgressClient, EgressConfig } from './egress/egress.client.js';
 import { HealthController } from './health.controller.js';
 import { LabelService } from './labels/label.service.js';
@@ -28,8 +30,10 @@ import { RulesService } from './rules.service.js';
     LabelService,
     EgressConfig,
     EgressClient,
+    SandboxWorld,
     SandboxConnector,
     GithubConnector,
+    WaybackConnector,
     ConnectorRegistry,
     FixtureChainAdapter,
     BtcMempoolAdapter,

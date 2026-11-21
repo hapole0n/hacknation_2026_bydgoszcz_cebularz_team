@@ -1,0 +1,24 @@
+{
+  "_comment": "SYNTHETIC history of the NEW address A2 (ETH): 3,000 USDT in, then 2,900 USDT to the exchange deposit address D1 (a cash-out signal and the 1,000 EUR threshold).",
+  "chain": "ETH",
+  "address": "0x65dF8FEC643203A4D0e95406a4741750BF3a5686",
+  "isContract": false,
+  "transfers": [
+    {
+      "tx": "0x20553a2b2a48453ede1eb5b283356b8beb2661fa82461d8061550a98e4a18791",
+      "time": "2026-11-10T09:00:00Z",
+      "from": "0xEeBA810d7F00D78C8955998C82BBBB3Ef091b93D",
+      "to": "0x65dF8FEC643203A4D0e95406a4741750BF3a5686",
+      "asset": "USDT",
+      "amount": 3000
+    },
+    {
+      "tx": "0x2e80206ac9769e34c46855de85ee808189f1ac2f240514073bda0bf389e21334",
+      "time": "2026-11-14T11:00:00Z",
+      "from": "0x65dF8FEC643203A4D0e95406a4741750BF3a5686",
+      "to": "0x252aafd78396a159339cA08De603A82DB9c567C2",
+      "asset": "USDT",
+      "amount": 2900
+    }
+  ]
+}
