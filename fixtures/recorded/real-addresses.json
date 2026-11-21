@@ -1,0 +1,104 @@
+{
+  "header": {
+    "source": "Etherscan API v2 (module=proxy, action=eth_getCode) and TronGrid (POST /wallet/getcontract), both public APIs, read through EgressClient",
+    "recordedAt": "2026-11-21T20:44:24.018Z",
+    "recorder": "scripts/record-real-addresses.mjs",
+    "license": "Facts read from public blockchains (bytecode present or not, contract metadata); no licence text applies to them. No API key is stored: URLs are saved without `apikey`.",
+    "notRecorded": "Transaction lists (txlist, tokentx, TronGrid transactions, transactions/trc20): their counterparties are other people's pseudonymous addresses. The replay answers them with an empty history.",
+    "trimmed": "Bytecode / ABI longer than 120 characters is cut and marked \"[trimmed N chars, sha256 …]\" (the sha256 is of the original string); nothing the adapters read is affected."
+  },
+  "addresses": [
+    {
+      "name": "BINANCE_14",
+      "chain": "ETH",
+      "address": "0x28C6c06298d514Db089934071355E5743bf21d60",
+      "what": "Binance 14 — exchange hot wallet (label: config/labels/exchanges.json)"
+    },
+    {
+      "name": "OKX_TRON_PoR",
+      "chain": "TRON",
+      "address": "TAX6SUmXCqA4TGmbrs5eU3spZYAnkcrVc6",
+      "what": "OKX — USDT-TRC20 wallet from the Proof of Reserves file (label: config/labels/exchanges-tron.json)"
+    },
+    {
+      "name": "UNISWAP_V2_ROUTER",
+      "chain": "ETH",
+      "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "what": "Uniswap V2: Router 02 — DEX contract (label: config/labels/dex.json)"
+    },
+    {
+      "name": "USDT_TRC20_CONTRACT",
+      "chain": "TRON",
+      "address": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+      "what": "Tether USDT (TRC-20) token contract — NO label: only the contract check can reject it"
+    },
+    {
+      "name": "NULL_ADDRESS",
+      "chain": "ETH",
+      "address": "0x0000000000000000000000000000000000000000",
+      "what": "Ethereum null address (burn) — technical address (label: config/labels/examples.json)"
+    }
+  ],
+  "responses": [
+    {
+      "method": "GET",
+      "url": "https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getCode&address=0x28C6c06298d514Db089934071355E5743bf21d60&tag=latest",
+      "status": 200,
+      "recordedAt": "2026-11-21T20:44:18.587Z",
+      "json": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x"
+      }
+    },
+    {
+      "method": "POST",
+      "url": "https://api.trongrid.io/wallet/getcontract",
+      "body": "{\"value\":\"TAX6SUmXCqA4TGmbrs5eU3spZYAnkcrVc6\",\"visible\":true}",
+      "status": 200,
+      "recordedAt": "2026-11-21T20:44:20.526Z",
+      "json": {}
+    },
+    {
+      "method": "GET",
+      "url": "https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getCode&address=0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D&tag=latest",
+      "status": 200,
+      "recordedAt": "2026-11-21T20:44:20.685Z",
+      "json": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x60806040526004361061018f5760003560e01c80638803dbee116100d6578063…[trimmed 43888 chars, sha256 34616dfed1c4e7ebb6c16ae271a1c51eb0454bb1e1774b2d405bd5eb8aaedb6c]"
+      }
+    },
+    {
+      "method": "POST",
+      "url": "https://api.trongrid.io/wallet/getcontract",
+      "body": "{\"value\":\"TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t\",\"visible\":true}",
+      "status": 200,
+      "recordedAt": "2026-11-21T20:44:22.165Z",
+      "json": {
+        "origin_address": "THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC",
+        "contract_address": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+        "abi": {
+          "trimmed": "abi omitted (5957 chars)"
+        },
+        "bytecode": "60806040526000600260146101000a81548160ff02191690831515021790555060…[trimmed 31150 chars, sha256 be14ded6b1416da8e5a7b5b2e5e7ad8525023ec5b24b38d960df9628016c1a3c]",
+        "consume_user_resource_percent": 30,
+        "name": "TetherToken",
+        "origin_energy_limit": 10000000,
+        "code_hash": "99bb60e56b4cd2642c6847e372b18b6e0f9514229e3086d3a042d60a4c7b78a9"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getCode&address=0x0000000000000000000000000000000000000000&tag=latest",
+      "status": 200,
+      "recordedAt": "2026-11-21T20:44:22.323Z",
+      "json": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x"
+      }
+    }
+  ]
+}
