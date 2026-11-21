@@ -1,6 +1,14 @@
-import type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ScoreResult } from '@kropka/core';
+import type { AddressCategory, Block as ReportBlock, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportDoc, ReportSection, ScoreResult, StatementKind } from '@kropka/core';
 
-export type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ScoreResult };
+export type { AddressCategory, BreakdownEntry, Chain, FlowEntry, Indicators, Localized, ReportBlock, ReportDoc, ReportSection, ScoreResult, StatementKind };
+
+/** `GET /runs/:id/report`: the report document and the SHA-256 of its data. */
+export interface ReportBundle {
+  generatedAt: string;
+  sha256: string;
+  evidenceSha256: string;
+  doc: ReportDoc;
+}
 
 export const IDENTIFIER_TYPES = ['NAME', 'NICK', 'MESSENGER', 'SOCIAL_LOGIN', 'EMAIL', 'ADDRESS'] as const;
 export type IdentifierType = (typeof IDENTIFIER_TYPES)[number];

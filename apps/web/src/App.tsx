@@ -5,6 +5,7 @@ import { LANGUAGES } from '@/i18n';
 import { CasePage } from '@/pages/CasePage';
 import { CasesPage } from '@/pages/CasesPage';
 import { NewCasePage } from '@/pages/NewCasePage';
+import { ReportPage } from '@/pages/ReportPage';
 import { RunPage } from '@/pages/RunPage';
 import { Link, matchPath, usePath } from '@/router';
 import { cn } from '@/lib/utils';
@@ -15,13 +16,13 @@ export function App() {
   const match = matchPath(path);
 
   const nav = [
-    { to: '/', label: t('app.navCases'), active: match.page === 'cases' || match.page === 'case' || match.page === 'run' },
+    { to: '/', label: t('app.navCases'), active: match.page === 'cases' || match.page === 'case' || match.page === 'run' || match.page === 'report' },
     { to: '/cases/new', label: t('app.navNew'), active: match.page === 'new' },
   ];
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b bg-card">
+      <header className="border-b bg-card print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-8 gap-y-2 px-6 py-3">
           <Link to="/" className="flex items-baseline gap-3">
             <span className="font-serif text-2xl font-semibold">{APP_NAME}</span>
@@ -51,6 +52,7 @@ export function App() {
         {match.page === 'new' && <NewCasePage />}
         {match.page === 'case' && <CasePage key={match.id} id={match.id!} />}
         {match.page === 'run' && <RunPage key={match.id} id={match.id!} />}
+        {match.page === 'report' && <ReportPage key={match.id} id={match.id!} />}
         {match.page === 'notFound' && (
           <div className="py-16">
             <h1 className="font-serif text-3xl font-semibold">{t('app.notFound')}</h1>

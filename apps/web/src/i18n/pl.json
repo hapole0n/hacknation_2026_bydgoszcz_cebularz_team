@@ -479,5 +479,13 @@
     "UNVALUED_TRANSFERS": "Transfery bez wyceny: {{count}} (brak stablecoina lub źródła ceny).",
     "EGRESS_BLOCKED": "Połączenie z hostem {{host}} zablokowane: brak go na liście dozwolonych.",
     "ALL_CONNECTORS_FAILED": "Wszystkie źródła zwróciły błąd: {{detail}}"
+  },
+  "report": {
+    "open": "Raport",
+    "back": "Wróć do wyników",
+    "downloadPdf": "Pobierz PDF",
+    "downloadJson": "Pobierz JSON",
+    "print": "Drukuj",
+    "polishOnly": "Raport jest sporządzany po polsku. PDF i JSON zawierają te same dane co ten widok."
   }
 }

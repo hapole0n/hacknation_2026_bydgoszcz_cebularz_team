@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { CaseDetail, CaseInput, CaseListItem, ChainAdapterInfo, ChainMode, ConnectorInfo, Decision, RunResults } from './types';
+import type { CaseDetail, CaseInput, CaseListItem, ChainAdapterInfo, ChainMode, ConnectorInfo, Decision, ReportBundle, RunResults } from './types';
 
 export class ApiError extends Error {
   constructor(
@@ -37,6 +37,7 @@ export interface RunOptions {
 export const useCases = () => useQuery({ queryKey: ['cases'], queryFn: () => request<CaseListItem[]>('/cases') });
 export const useCase = (id: string | undefined) => useQuery({ queryKey: ['case', id], queryFn: () => request<CaseDetail>(`/cases/${id}`), enabled: !!id });
 export const useRun = (id: string) => useQuery({ queryKey: ['run', id], queryFn: () => request<RunResults>(`/runs/${id}`) });
+export const useReport = (id: string) => useQuery({ queryKey: ['report', id], queryFn: () => request<ReportBundle>(`/runs/${id}/report`) });
 export const useConnectors = () => useQuery({ queryKey: ['connectors'], queryFn: () => request<ConnectorInfo[]>('/connectors'), staleTime: Infinity });
 export const useChainAdapters = () => useQuery({ queryKey: ['chain-adapters'], queryFn: () => request<ChainAdapterInfo[]>('/chain-adapters'), staleTime: 60_000 });
 

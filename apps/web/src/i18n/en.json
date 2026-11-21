@@ -479,5 +479,13 @@
     "UNVALUED_TRANSFERS": "Transfers without a valuation: {{count}} (no stablecoin or price source).",
     "EGRESS_BLOCKED": "Connection to host {{host}} blocked: it is not on the allowlist.",
     "ALL_CONNECTORS_FAILED": "All sources returned an error: {{detail}}"
+  },
+  "report": {
+    "open": "Report",
+    "back": "Back to results",
+    "downloadPdf": "Download PDF",
+    "downloadJson": "Download JSON",
+    "print": "Print",
+    "polishOnly": "The report is written in Polish. The PDF and JSON contain the same data as this view."
   }
 }

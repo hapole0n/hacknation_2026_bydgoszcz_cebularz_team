@@ -49,7 +49,10 @@ export function RunPage({ id }: { id: string }) {
     <div className="space-y-6">
       <div>
         <Link to={`/cases/${head.caseId}`} className="text-sm text-steel underline underline-offset-2">{t('run.backToCase')}</Link>
-        <h1 className="mt-2 font-serif text-3xl font-semibold">{kase.data?.title ?? '…'}</h1>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-serif text-3xl font-semibold">{kase.data?.title ?? '…'}</h1>
+          <Button asChild><Link to={`/runs/${id}/report`}>{t('report.open')}</Link></Button>
+        </div>
       </div>
 
       {head.status === 'FAILED' && <ErrorNote title={t('run.failed')} message={summary?.error ? noteText(t, summary.error) : ''} />}

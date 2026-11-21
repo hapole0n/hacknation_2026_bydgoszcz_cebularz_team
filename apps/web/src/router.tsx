@@ -36,7 +36,7 @@ export function Link({ to, onClick, children, ...rest }: { to: string; children:
 }
 
 export interface Match {
-  page: 'cases' | 'new' | 'case' | 'run' | 'notFound';
+  page: 'cases' | 'new' | 'case' | 'run' | 'report' | 'notFound';
   id?: string;
 }
 
@@ -47,5 +47,7 @@ export function matchPath(path: string): Match {
   if (c) return { page: 'case', id: c[1] };
   const r = /^\/runs\/([^/]+)$/.exec(path);
   if (r) return { page: 'run', id: r[1] };
+  const rep = /^\/runs\/([^/]+)\/report$/.exec(path);
+  if (rep) return { page: 'report', id: rep[1] };
   return { page: 'notFound' };
 }
