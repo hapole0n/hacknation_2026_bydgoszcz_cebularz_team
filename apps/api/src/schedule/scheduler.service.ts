@@ -49,14 +49,15 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   /**
    * Runs every case whose time has come, with the sources and chain mode of its latest run.
    * A tick that starts while another is still running does nothing. Returns the ids of the cases that were run.
+   * `only` restricts the tick to those cases (tests share the database with real cases and must not run them).
    */
-  async tick(now = new Date()): Promise<string[]> {
+  async tick(now = new Date(), only?: string[]): Promise<string[]> {
     if (this.ticking) return [];
     this.ticking = true;
     const started: string[] = [];
     try {
       const due = await this.prisma.case.findMany({
-        where: { scheduleEveryMin: { not: null }, nextRunAt: { lte: now } },
+        where: { scheduleEveryMin: { not: null }, nextRunAt: { lte: now }, ...(only ? { id: { in: only } } : {}) },
         select: { id: true, scheduleEveryMin: true, runs: { orderBy: { startedAt: 'desc' }, take: 1, select: { paramsJson: true } } },
       });
       for (const c of due) {

@@ -34,8 +34,8 @@ describe('monitoring: schedule + tick', () => {
 
     // a new instance = a restarted process: everything it needs is in the database
     const restarted = new SchedulerService(prisma, pipeline);
-    expect(await restarted.tick(new Date(t0.getTime() + 14 * MIN))).toEqual([]); // not due yet
-    expect(await restarted.tick(new Date(t0.getTime() + 16 * MIN))).toEqual([created.id]);
+    expect(await restarted.tick(new Date(t0.getTime() + 14 * MIN), [created.id])).toEqual([]); // not due yet
+    expect(await restarted.tick(new Date(t0.getTime() + 16 * MIN), [created.id])).toEqual([created.id]);
 
     const runs = await prisma.run.findMany({ where: { caseId: created.id }, orderBy: { startedAt: 'asc' } });
     expect(runs.map((r) => r.trigger)).toEqual(['manual', 'scheduled']);
@@ -44,14 +44,14 @@ describe('monitoring: schedule + tick', () => {
     const after = await prisma.case.findUniqueOrThrow({ where: { id: created.id } });
     expect(after.nextRunAt).toEqual(new Date(t0.getTime() + 31 * MIN)); // booked from the tick time
 
-    expect(await restarted.tick(new Date(t0.getTime() + 17 * MIN))).toEqual([]); // nothing is due twice
+    expect(await restarted.tick(new Date(t0.getTime() + 17 * MIN), [created.id])).toEqual([]); // nothing is due twice
   });
 
   it('switching the schedule off clears the due time; a tick never runs an unscheduled case; an unknown case is a 404', async () => {
     const id = caseIds[0]!;
     const off = await scheduler.setSchedule(id, null);
     expect(off).toMatchObject({ scheduleEveryMin: null, nextRunAt: null });
-    expect(await scheduler.tick(new Date('2030-01-01T00:00:00Z'))).not.toContain(id);
+    expect(await scheduler.tick(new Date('2030-01-01T00:00:00Z'), [id])).toEqual([]); // `only`: the database also holds real cases, which a test must never run
     await expect(scheduler.setSchedule('00000000-0000-0000-0000-000000000000', 15)).rejects.toThrow(/not found/);
   });
 
@@ -62,7 +62,7 @@ describe('monitoring: schedule + tick', () => {
     // the last run asks for a connector that does not exist, so the scheduled run is rejected before it starts
     await prisma.run.create({ data: { caseId: created.id, status: 'DONE', rulesVersion: 'x', appVersion: 'x', paramsJson: { connectors: ['nope'] } } });
     const due = new Date('2026-11-21T13:30:00Z');
-    expect(await scheduler.tick(due)).toEqual([]);
+    expect(await scheduler.tick(due, [created.id])).toEqual([]);
     const c = await prisma.case.findUniqueOrThrow({ where: { id: created.id } });
     expect(c.nextRunAt).toEqual(new Date(due.getTime() + 60 * MIN));
   });
