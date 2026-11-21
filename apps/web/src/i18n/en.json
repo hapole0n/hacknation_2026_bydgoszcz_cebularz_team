@@ -100,6 +100,15 @@
       "identifiers": "Add at least one identifier with a value.",
       "connectors": "Select at least one data source.",
       "server": "The server rejected the data"
+    },
+    "checkedBy_one": "Looked up by: {{list}}.",
+    "checkedBy_other": "Looked up by: {{list}}.",
+    "checkedByNone": "None of the ticked sources looks up this kind of identifier — the result for this field will be empty.",
+    "checkedByHint": "Sources that do: {{list}}. Tick them in “Data sources”.",
+    "needsKey": "needs the key {{key}} in .env (key missing)",
+    "conditions": {
+      "ethOnly": "Ethereum addresses only",
+      "ethName": ".eth names only"
     }
   },
   "identifierTypes": {

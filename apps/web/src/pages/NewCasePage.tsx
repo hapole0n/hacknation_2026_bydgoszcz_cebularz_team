@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCreateCase, useStartRun } from '@/api/client';
-import { IDENTIFIER_TYPES, type IdentifierType } from '@/api/types';
+import { useConnectors, useCreateCase, useStartRun } from '@/api/client';
+import { IDENTIFIER_TYPES, type ConnectorInfo, type IdentifierType } from '@/api/types';
 import { ErrorNote } from '@/components/primitives';
 import { DEFAULT_RUN_OPTIONS, SourcePicker } from '@/components/SourcePicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { checkersFor } from '@/lib/checkers';
+import { cn } from '@/lib/utils';
 import { navigate } from '@/router';
 
 interface Row {
@@ -96,6 +98,7 @@ export function NewCasePage() {
                 </Button>
               </div>
               <p className="mt-2 text-xs text-muted-foreground">{t(`identifierHints.${r.type}`)}</p>
+              <CheckedBy type={r.type} selected={options.connectors} />
             </li>
           ))}
         </ul>
@@ -112,5 +115,27 @@ export function NewCasePage() {
         <Button type="button" variant="outline" disabled={busy} onClick={() => void submit(false)}>{t('form.submitSave')}</Button>
       </div>
     </form>
+  );
+}
+
+/** Which of the sources ticked below look this kind of identifier up; a warning when none does (the result for it would be empty). */
+function CheckedBy({ type, selected }: { type: IdentifierType; selected: string[] }) {
+  const { t } = useTranslation();
+  const connectors = useConnectors().data;
+  if (!connectors) return null;
+  const { can, on, working } = checkersFor(connectors, type, selected);
+  const name = (c: ConnectorInfo) => t(`form.connectorNames.${c.id}`, { defaultValue: c.id });
+  const describe = (c: ConnectorInfo) =>
+    [name(c), c.conditions[type] && `(${t(`form.conditions.${c.conditions[type]}`)})`, c.missingKeys[type] && `— ${t('form.needsKey', { key: c.missingKeys[type] })}`].filter(Boolean).join(' ');
+  return (
+    <div className={cn('mt-2 text-xs', working.length === 0 ? 'rounded-md border border-l-4 border-l-band-medium bg-muted/40 p-2' : 'text-muted-foreground')} data-testid={`checked-by-${type}`}>
+      {on.length > 0 && <p>{t('form.checkedBy', { count: on.length, list: on.map(describe).join('; ') })}</p>}
+      {working.length === 0 && (
+        <>
+          <p className="font-medium">{t('form.checkedByNone')}</p>
+          {can.length > 0 && <p className="mt-0.5">{t('form.checkedByHint', { list: can.map(name).join(', ') })}</p>}
+        </>
+      )}
+    </div>
   );
 }
