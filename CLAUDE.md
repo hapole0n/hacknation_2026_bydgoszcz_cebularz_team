@@ -34,6 +34,8 @@
 - `pnpm install` · `pnpm dev` (api + web) · `pnpm test` · `pnpm lint` · `pnpm build`
 - `docker compose up -d db sandbox` · `docker compose up --build` (full stack)
 - `pnpm --filter api exec prisma migrate dev` · `pnpm licenses:report` (regenerates LICENSES.md)
+- `pnpm test` needs Postgres (`docker compose up -d db` + migrations): the api acceptance test (`apps/api/test/pipeline.acceptance.test.ts`) runs the demo case against it. Tests never touch the internet — the sandbox is served from disk.
+- Demo-case spec: `fixtures/expected.json` (identifiers, expected addresses/scores/exclusions); synthetic addresses: `fixtures/addresses.json` (`node scripts/gen-fixture-addresses.mjs` makes new ones from fresh random keys — pages must then be updated; a test checks consistency).
 Keep these working. If you change them, update this section.
 
 ## Working rules for Claude Code
@@ -50,5 +52,6 @@ Keep these working. If you change them, update this section.
 - **NestJS 12 is ESM-only**: `apps/api` is `"type": "module"`, relative imports need the `.js` extension.
 - **TypeScript is pinned to ~6.0** (typescript-eslint does not support 7 yet).
 - `@olcys/core` is ESM too (relative imports end in `.js`) and is consumed from `dist/`: api's `predev`/`prebuild`/`pretest` hooks build it, so no manual step on a fresh clone. Core does no I/O: `parseRules(yamlText)` takes the YAML as a string, the api reads the file (`RulesService`).
+- Live connectors are opt-in per run (`connectors` in `POST /api/cases/:id/runs`); the default is the synthetic `sandbox` only, so a demo never queries real people. Every outbound request goes through `EgressClient` (allowlist, rate limit, cache, `AuditLog`).
 - pnpm blocks install scripts by default: approved ones live in `allowBuilds` in `pnpm-workspace.yaml` (`pnpm approve-builds <pkg>`).
 - Docker Hub may answer 429 on shared networks: `docker pull mirror.gcr.io/library/<image>` and `docker tag` it to the plain name.
