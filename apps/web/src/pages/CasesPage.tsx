@@ -80,7 +80,7 @@ export function CasesPage() {
 
       <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <p>{t('cases.demoHint')}</p>
-        <Button variant="link" size="sm" className="px-0" onClick={() => loadDemo('address')} disabled={demo.isPending}>{t('cases.loadDemoAddress')}</Button>
+        <Button variant="link" size="sm" className="h-auto px-0 text-steel underline underline-offset-2" onClick={() => loadDemo('address')} disabled={demo.isPending}>{t('cases.loadDemoAddress')}</Button>
       </div>
     </div>
   );

@@ -1,0 +1,31 @@
+- generic [ref=f5e3]:
+  - banner [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - 'link "Pokrzywa Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut" [ref=f5e6] [cursor=pointer]':
+        - /url: /
+        - generic [ref=f5e7]: Pokrzywa
+        - generic [ref=f5e8]: "Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut"
+      - generic [ref=f5e9]:
+        - navigation "Menu" [ref=f5e10]:
+          - link "Sprawy" [ref=f5e11] [cursor=pointer]:
+            - /url: /
+          - link "Nowa sprawa" [ref=f5e12] [cursor=pointer]:
+            - /url: /cases/new
+        - group "Język" [ref=f5e13]:
+          - button "PL" [pressed] [ref=f5e14]
+          - button "EN" [ref=f5e15]
+  - main [ref=f5e16]:
+    - generic [ref=f5e17]:
+      - generic [ref=f5e18]:
+        - generic [ref=f5e19]:
+          - heading "Sprawy" [level=1] [ref=f5e20]
+          - paragraph [ref=f5e21]: Sprawa zbiera identyfikatory jednej osoby i kolejne analizy tych identyfikatorów.
+        - generic [ref=f5e22]:
+          - button "Nowa sprawa" [ref=f5e23]
+          - button "Załaduj sprawę demonstracyjną" [ref=f5e24]
+      - status [ref=f5e25]: Ładowanie…
+      - generic [ref=f5e26]:
+        - paragraph [ref=f5e27]: Sprawa demonstracyjna zawiera wyłącznie sztuczne dane (osoba „Jan Testowy”).
+        - 'button "Demonstracja: kto stoi za adresem?" [ref=f5e28]'
+  - contentinfo [ref=f5e29]:
+    - paragraph [ref=f5e30]: Wyniki są przesłankami analitycznymi, a nie rozstrzygnięciem. Dane w sprawach demonstracyjnych są sztuczne.

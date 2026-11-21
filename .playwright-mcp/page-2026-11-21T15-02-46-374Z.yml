@@ -1,0 +1,20 @@
+- generic [ref=f2e3]:
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - 'link "Pokrzywa Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut" [ref=f2e6] [cursor=pointer]':
+        - /url: /
+        - generic [ref=f2e7]: Pokrzywa
+        - generic [ref=f2e8]: "Stanowisko OSINT dla analityków KAS: powiązania śladów w sieci z adresami kryptowalut"
+      - generic [ref=f2e9]:
+        - navigation "Menu" [ref=f2e10]:
+          - link "Sprawy" [ref=f2e11] [cursor=pointer]:
+            - /url: /
+          - link "Nowa sprawa" [ref=f2e12] [cursor=pointer]:
+            - /url: /cases/new
+        - group "Język" [ref=f2e13]:
+          - button "PL" [pressed] [ref=f2e14]
+          - button "EN" [ref=f2e15]
+  - main [ref=f2e16]:
+    - status [ref=f2e17]: Ładowanie…
+  - contentinfo [ref=f2e18]:
+    - paragraph [ref=f2e19]: Wyniki są przesłankami analitycznymi, a nie rozstrzygnięciem. Dane w sprawach demonstracyjnych są sztuczne.

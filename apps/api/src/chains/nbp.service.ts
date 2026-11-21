@@ -12,6 +12,8 @@ interface Rate {
 }
 
 const DAY = 86_400_000;
+const RETRIES = 4;
+const RETRY_MS = 400;
 const CHUNK_DAYS = 90; // the NBP API refuses ranges longer than 93 days
 const LOOKBACK_DAYS = 10; // longer than any run of weekends + holidays
 const shift = (day: string, days: number) => new Date(Date.parse(`${day}T00:00:00Z`) + days * DAY).toISOString().slice(0, 10);
@@ -54,7 +56,13 @@ export class NbpService {
     const base = (process.env.NBP_API_BASE ?? 'https://api.nbp.pl/api').replace(/\/$/, '');
     for (let start = from; start <= to; start = shift(start, CHUNK_DAYS + 1)) {
       const end = shift(start, CHUNK_DAYS) < to ? shift(start, CHUNK_DAYS) : to;
-      const res = await this.egress.get(`${base}/exchangerates/rates/a/${code.toLowerCase()}/${start}/${end}/?format=json`, { connectorId: 'nbp', ...ctx });
+      const url = `${base}/exchangerates/rates/a/${code.toLowerCase()}/${start}/${end}/?format=json`;
+      let res = await this.egress.get(url, { connectorId: 'nbp', ...ctx });
+      // api.nbp.pl answers a sporadic 5xx; a short retry keeps PLN valuation from silently dropping out.
+      for (let attempt = 1; res.status >= 500 && attempt < RETRIES; attempt++) {
+        await new Promise((r) => setTimeout(r, RETRY_MS * attempt));
+        res = await this.egress.get(url, { connectorId: 'nbp', ...ctx });
+      }
       if (res.status === 404) continue; // no quotation in that range (holidays only)
       if (!res.ok) throw new NbpUnavailableError(`NBP HTTP ${res.status}`);
       for (const r of JSON.parse(res.text).rates as { effectiveDate: string; mid: number }[]) this.rates.get(code)!.set(r.effectiveDate, r.mid);

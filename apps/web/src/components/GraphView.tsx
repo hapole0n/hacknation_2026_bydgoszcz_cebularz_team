@@ -26,7 +26,8 @@ const STYLE: cytoscape.StylesheetJson = [
   { selector: 'node[?excluded]', style: { 'background-color': '#edeef0', 'border-style': 'dashed', 'border-color': '#5f6978', color: '#5f6978' } },
   { selector: 'node:selected', style: { 'underlay-color': '#2f5d8c', 'underlay-opacity': 0.25, 'underlay-padding': 6 } },
 
-  { selector: 'edge', style: { 'curve-style': 'bezier', width: 1.5, 'line-color': GREY, 'target-arrow-color': GREY, 'source-arrow-color': GREY, 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, label: 'data(label)', 'font-size': 10, 'font-family': 'IBM Plex Sans Variable, system-ui, sans-serif', color: INK, 'text-background-color': '#f5f6f8', 'text-background-opacity': 1, 'text-background-padding': '2px', 'text-rotation': 'autorotate' } },
+  { selector: 'edge', style: { 'curve-style': 'bezier', width: 1.5, 'line-color': GREY, 'target-arrow-color': GREY, 'source-arrow-color': GREY, 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'font-size': 10, 'font-family': 'IBM Plex Sans Variable, system-ui, sans-serif', color: INK, 'text-background-color': '#f5f6f8', 'text-background-opacity': 1, 'text-background-padding': '2px', 'text-rotation': 'autorotate' } },
+  { selector: 'edge[label]', style: { label: 'data(label)' } },
   { selector: 'edge[kind = "linked"]', style: { width: 2.5, 'line-color': (e: cytoscape.EdgeSingular) => bandHex(e.data('band')) ?? GREY, 'target-arrow-color': (e: cytoscape.EdgeSingular) => bandHex(e.data('band')) ?? GREY } },
   { selector: 'edge[kind = "mentioned_in"]', style: { width: 1, 'line-color': '#c3cad5', 'target-arrow-color': '#c3cad5' } },
   { selector: 'edge[kind = "transfer"]', style: { width: 1.5, 'line-color': '#b4531e', 'target-arrow-color': '#b4531e', 'source-arrow-color': '#b4531e', 'target-arrow-shape': 'triangle' } },
@@ -56,10 +57,10 @@ export function GraphView({ results, onOpenAddress }: { results: RunResults; onO
       container: container.current,
       elements: [...graph.nodes, ...graph.edges],
       style: STYLE,
-      layout: { name: 'breadthfirst', directed: true, roots: graph.roots.length > 0 ? graph.roots : undefined, spacingFactor: 1.25, padding: 24, animate: false } as cytoscape.LayoutOptions,
+      // shortcut: force-directed layout is fine up to ~100 nodes; beyond that fold more counterparties into "others".
+      layout: { name: 'cose', animate: false, randomize: false, fit: true, padding: 30, nodeDimensionsIncludeLabels: true, idealEdgeLength: () => 90, nodeRepulsion: () => 12000, numIter: 1500 } as cytoscape.LayoutOptions,
       minZoom: 0.2,
       maxZoom: 2.5,
-      wheelSensitivity: 0.25,
     });
     cy.on('tap', 'node', (e) => setSelected(e.target.data()));
     cy.on('tap', (e) => e.target === cy && setSelected(null));
