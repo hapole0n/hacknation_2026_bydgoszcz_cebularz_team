@@ -15,6 +15,9 @@ export function formatEur(value: number | null | undefined, lang: string): strin
   return new Intl.NumberFormat(locale(lang), { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
 }
 
+/** `1 000 EUR` — a round threshold, grouped, without cents. */
+export const formatEurInt = (value: number, lang: string) => `${new Intl.NumberFormat(locale(lang), { maximumFractionDigits: 0, useGrouping: 'always' }).format(value)} EUR`;
+
 export function formatAmount(value: number, lang: string): string {
   return new Intl.NumberFormat(locale(lang), { maximumFractionDigits: 6 }).format(value);
 }
@@ -41,3 +44,17 @@ export const shortHash = (hash: string) => `${hash.slice(0, 10)}…${hash.slice(
 export const addressKey = (a: string) => (/^(0x|bc1)/i.test(a) ? a.toLowerCase() : a);
 
 export const loc = (l: { pl: string; en: string }, lang: string) => (lang === 'en' ? l.en : l.pl);
+
+/** `02.10.2026` — a day as numbers, in Polish time. */
+export function formatDay(iso: string | null | undefined, lang: string): string {
+  if (!iso) return '—';
+  return new Intl.DateTimeFormat(locale(lang), { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Warsaw' }).format(new Date(iso));
+}
+
+/** `2026-10` of an instant in Warsaw time, and the number of its day. */
+export const warsawYearMonth = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', year: 'numeric', month: '2-digit' }).format(new Date(iso));
+export const warsawDayOfMonth = (iso: string) => Number(new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', day: 'numeric' }).format(new Date(iso)));
+export const daysInMonth = (yearMonth: string) => new Date(Number(yearMonth.slice(0, 4)), Number(yearMonth.slice(5, 7)), 0).getDate();
+
+/** `PAŹDZIERNIK 2026` */
+export const monthTitle = (yearMonth: string, lang: string) => new Intl.DateTimeFormat(locale(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${yearMonth}-15T12:00:00Z`)).toUpperCase();

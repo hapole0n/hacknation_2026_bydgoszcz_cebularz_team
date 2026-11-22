@@ -4,7 +4,7 @@ import { IDENTIFIER_TYPES, normalizeIdentifier, type IdentifierType } from '@kro
 import { ChainRegistry, isChainMode } from './chains/chain.registry.js';
 import { ConnectorRegistry } from './connectors/connector.registry.js';
 import { SandboxWorld, isSandboxVersion } from './connectors/sandbox-world.js';
-import { createCaseWithSignature } from './cases.js';
+import { createCaseWithSignature, summarizeRun } from './cases.js';
 import { repoPath } from './paths.js';
 import { PipelineService } from './pipeline/pipeline.service.js';
 import { PrismaService } from './prisma.service.js';
@@ -106,15 +106,26 @@ export class ApiController {
     return createCaseWithSignature(this.prisma, parseCaseBody(body));
   }
 
+  /** The register of cases; each carries the one-line `result` of its latest finished run (counted per address). */
   @Get('cases')
-  listCases() {
-    return this.prisma.case.findMany({
+  async listCases() {
+    const cases = await this.prisma.case.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
         identifiers: { select: { type: true, value: true } },
         _count: { select: { runs: true } },
         runs: { orderBy: { startedAt: 'desc' }, take: 1, select: { id: true, status: true, startedAt: true } },
       },
+    });
+    const runIds = cases.flatMap((c) => c.runs.filter((r) => r.status === 'DONE').map((r) => r.id));
+    const [links, snapshots] = await Promise.all([
+      this.prisma.link.findMany({ where: { runId: { in: runIds } }, select: { runId: true, addressId: true, band: true, score: true, excludedReason: true } }),
+      this.prisma.chainSnapshot.findMany({ where: { runId: { in: runIds } }, select: { runId: true, indicatorsJson: true } }),
+    ]);
+    return cases.map((c) => {
+      const run = c.runs[0];
+      const result = run?.status === 'DONE' ? summarizeRun(links.filter((l) => l.runId === run.id), snapshots.filter((s) => s.runId === run.id).map((s) => s.indicatorsJson)) : null;
+      return { ...c, result };
     });
   }
 

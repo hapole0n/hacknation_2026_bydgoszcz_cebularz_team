@@ -1,6 +1,6 @@
 import { useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 
-/** Minimal client-side router (4 routes) — no dependency needed. */
+/** Minimal client-side router — no dependency needed. */
 const listeners = new Set<() => void>();
 const subscribe = (fn: () => void) => {
   listeners.add(fn);
@@ -36,19 +36,30 @@ export function Link({ to, onClick, children, ...rest }: { to: string; children:
 }
 
 export interface Match {
-  page: 'cases' | 'new' | 'case' | 'run' | 'report' | 'audit' | 'notFound';
+  page: 'new' | 'cases' | 'case' | 'run' | 'address' | 'graph' | 'report' | 'audit' | 'notifications' | 'notFound';
   id?: string;
+  /** Address card only: the address and its network. */
+  chain?: string;
+  address?: string;
 }
 
+/** Routes: `/` new case, `/cases` register, `/cases/:id`, `/runs/:id` (+ `/address/:chain/:address`, `/graph`, `/report`), `/audit`, `/notifications`. */
 export function matchPath(path: string): Match {
-  if (path === '/' || path === '') return { page: 'cases' };
-  if (path === '/cases/new') return { page: 'new' };
+  if (path === '/' || path === '' || path === '/cases/new') return { page: 'new' };
+  if (path === '/cases') return { page: 'cases' };
   if (path === '/audit') return { page: 'audit' };
+  if (path === '/notifications') return { page: 'notifications' };
   const c = /^\/cases\/([^/]+)$/.exec(path);
   if (c) return { page: 'case', id: c[1] };
   const r = /^\/runs\/([^/]+)$/.exec(path);
   if (r) return { page: 'run', id: r[1] };
+  const a = /^\/runs\/([^/]+)\/address\/([^/]+)\/([^/]+)$/.exec(path);
+  if (a) return { page: 'address', id: a[1], chain: decodeURIComponent(a[2]!), address: decodeURIComponent(a[3]!) };
+  const g = /^\/runs\/([^/]+)\/graph$/.exec(path);
+  if (g) return { page: 'graph', id: g[1] };
   const rep = /^\/runs\/([^/]+)\/report$/.exec(path);
   if (rep) return { page: 'report', id: rep[1] };
   return { page: 'notFound' };
 }
+
+export const addressPath = (runId: string, chain: string, address: string) => `/runs/${runId}/address/${encodeURIComponent(chain)}/${encodeURIComponent(address)}`;

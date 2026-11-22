@@ -742,3 +742,17 @@ describe('file reference, proceedings number and query time', () => {
     expect(sources).toMatch(/\d\d:\d\d:\d\d/);
   });
 });
+
+describe('the case register carries the one-line result of the latest run', () => {
+  it('counts addresses (not links): the demo case has 3 very high, 1 medium, 2 low, 4 excluded, 1 cash-out signal', async () => {
+    const mine = (await api.listCases()).find((c) => c.id === caseIds[0])!;
+    expect(mine.signature).toMatch(/^KR\/\d{4}\/\d{4}$/);
+    expect(mine.result).toEqual({ bands: { VERY_HIGH: 3, PROBABLE: 0, MEDIUM: 1, LOW: 2 }, excluded: 4, cashOut: 2 });
+  });
+
+  it('a case that was never run has no result', async () => {
+    const fresh = await api.createCase({ title: 'Test — bez analizy', identifiers: [{ type: 'NICK', value: 'bezanalizy' }] });
+    caseIds.push(fresh.id);
+    expect((await api.listCases()).find((c) => c.id === fresh.id)!.result).toBeNull();
+  });
+});

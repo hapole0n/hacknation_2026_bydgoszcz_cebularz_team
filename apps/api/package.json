@@ -14,6 +14,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@expo-google-fonts/ibm-plex-mono": "^0.4.2",
+    "@expo-google-fonts/vt323": "^0.4.1",
     "@kropka/core": "workspace:*",
     "@nestjs/common": "^12.6.0",
     "@nestjs/core": "^12.6.0",

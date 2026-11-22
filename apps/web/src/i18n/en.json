@@ -7,7 +7,9 @@
     "footer": "Results are analytical premises, not a ruling. Data in demonstration cases is synthetic.",
     "notFound": "No such page",
     "notFoundBody": "The address is wrong or the case was removed.",
-    "navAudit": "Request log"
+    "navAudit": "Request log",
+    "prototype": "PROTOTYPE · SYNTHETIC DATA",
+    "time": "Time"
   },
   "common": {
     "loading": "Loading…",
@@ -30,8 +32,8 @@
     "calc": "Calculation result"
   },
   "cases": {
-    "title": "Cases",
-    "lead": "A case holds the identifiers of one person and the successive analyses of those identifiers.",
+    "title": "Case register",
+    "lead": "All cases with their reference, proceedings number, latest result and monitoring state.",
     "new": "New case",
     "loadDemo": "Load the demonstration case",
     "loadDemoAddress": "Demonstration: who is behind an address?",
@@ -43,10 +45,23 @@
       "identifiers": "Identifiers",
       "createdAt": "Created",
       "lastRun": "Latest analysis",
-      "runs": "Analyses"
+      "runs": "Analyses",
+      "signature": "Reference",
+      "person": "Person / entity",
+      "basis": "Basis",
+      "result": "Result",
+      "monitoring": "Monitoring"
     },
     "noRuns": "not run yet",
-    "moreIdentifiers": "+{{count}} more"
+    "moreIdentifiers": "+{{count}} more",
+    "register": "Case register ({{count}})",
+    "status_one": "In the register: {{count}} case",
+    "status_other": "In the register: {{count}} cases",
+    "filter": "Search the register:",
+    "filterPlaceholder": "reference, person, basis or identifier",
+    "noMatch": "No case matches.",
+    "runsCount_one": "{{count}} analysis",
+    "runsCount_other": "{{count}} analyses"
   },
   "form": {
     "title": "New case",
@@ -100,7 +115,10 @@
       "title": "Enter a case name.",
       "identifiers": "Add at least one identifier with a value.",
       "connectors": "Select at least one data source.",
-      "server": "The server rejected the data"
+      "server": "The server rejected the data",
+      "invalid": "Correct the marked identifiers.",
+      "address": "invalid address (wrong checksum or format)",
+      "format": "invalid format for this kind of identifier"
     },
     "checkedBy_one": "Looked up by: {{list}}.",
     "checkedBy_other": "Looked up by: {{list}}.",
@@ -112,7 +130,8 @@
       "ethName": ".eth names only"
     },
     "rate_one": "limit {{count}} request per second",
-    "rate_other": "limit {{count, number}} requests per second"
+    "rate_other": "limit {{count, number}} requests per second",
+    "liveTag": "LIVE"
   },
   "identifierTypes": {
     "NAME": "Name and surname",
@@ -163,7 +182,8 @@
       "off": "Off",
       "15": "Every 15 minutes",
       "60": "Every hour",
-      "1440": "Every 24 hours"
+      "1440": "Every 24 hours",
+      "offShort": "off"
     },
     "nextRun": "Next analysis",
     "nextRunOff": "Monitoring is off.",
@@ -177,6 +197,13 @@
       "changed": "The personal page of persona A now shows a NEW (synthetic) address. Run the analysis again: the comparison, notifications and section 8 of the report appear.",
       "simulate": "Demo: simulate change",
       "undo": "Undo the change"
+    },
+    "windowTitle": "Case {{signature}}",
+    "basis": "Proceedings number / basis",
+    "scheduleShort": {
+      "15": "every 15 min",
+      "60": "every 1 h",
+      "1440": "every 24 h"
     }
   },
   "run": {
@@ -236,7 +263,8 @@
       "columns": {
         "source": "Source",
         "query": "What was searched",
-        "result": "Result"
+        "result": "Result",
+        "time": "Time"
       },
       "round": {
         "2": "addresses found in the sources: who else publishes them ({{queries}})",
@@ -350,11 +378,13 @@
       "category": "Type",
       "reason": "Reason for rejection",
       "mentionedWith": "Mentioned with",
-      "evidence": "Evidence"
+      "evidence": "Evidence",
+      "labelSource": "Label source"
     },
     "empty": "No address was rejected.",
     "recorded": "Interaction recorded",
-    "labelSource": "Label source"
+    "labelSource": "Label source",
+    "mentions": "Mentions ({{count}})"
   },
   "categories": {
     "UNHOSTED": "Unhosted (a person's wallet)",
@@ -467,7 +497,73 @@
     "unvalued": "Items not valued: {{count}} (no rate or price).",
     "truncated": "History cut to the latest page returned by the provider.",
     "noValuation": "— (no valuation)",
-    "partialValuation": "partial: some transfers have no valuation"
+    "partialValuation": "partial: some transfers have no valuation",
+    "windowTitle": "Case {{signature}} — address {{chain}}",
+    "taskbar": "Address {{address}}",
+    "status": "Rates: NBP, table A · blockchain: {{chain}} · as of {{time}}",
+    "backToResult": "Analysis result",
+    "copy": "Copy address",
+    "copied": "Copied",
+    "copiedNotice": "Address copied to the clipboard.",
+    "scoreTag": "CONFIDENCE SCORE {{score}}",
+    "cashOutTag": "CASH-OUT SIGNAL",
+    "excludedTag": "EXCLUDED FROM ATTRIBUTION",
+    "basisText": "Basis of attribution: {{sources}}. Content of the sources saved {{date}}; SHA-256 hashes are in the report.",
+    "excludedText": "The address is excluded from attribution to a person: {{reason}}",
+    "noBasis": "No trace of this address in the sources searched.",
+    "tiles": {
+      "in": "RECEIVED",
+      "out": "SENT",
+      "left": "REMAINING",
+      "toService": "TO A CASH-OUT SERVICE",
+      "onAddress": "on the address"
+    },
+    "course": "Course of transactions — {{range}}",
+    "legend": {
+      "in": "inflow",
+      "cash": "transfer to a cash-out service",
+      "out": "other outflow"
+    },
+    "stripLabel": "Days with transactions: {{month}}",
+    "tx": {
+      "in": "RECEIVED",
+      "out": "SENT",
+      "from": "from",
+      "to": "to",
+      "fact": "{{chain}} blockchain, transaction confirmed",
+      "calc": "{{amount}} × {{rate}} PLN · NBP mean rate of the last business day before {{date}}"
+    },
+    "unknownSender": "an unidentified sender",
+    "unknownRecipient": "an unidentified recipient",
+    "unknownParty": "unidentified counterparty",
+    "valuationNote": "Valuation: NBP mean rate (table A) of the last business day preceding the day of the transaction, under art. 11a of the PIT Act; stablecoins are valued as USD.",
+    "thresholdsTitle": "Thresholds — art. 35(1) of the AML Act",
+    "thresholdDesc": {
+      "1000": "a transaction in virtual currency",
+      "10000": "in total to cash-out services",
+      "15000": "an occasional transaction"
+    },
+    "thState": {
+      "single": "EXCEEDED · a single transfer of {{date}} (max. {{max}})",
+      "cumulative": "EXCEEDED · cumulatively since {{date}}",
+      "below": "{{pct}}% · {{eur}}"
+    },
+    "counterparties": "Counterparties",
+    "cpIn_one": "{{count}} inflow",
+    "cpIn_other": "{{count}} inflows",
+    "cpOut_one": "{{count}} outgoing transfer",
+    "cpOut_other": "{{count}} outgoing transfers",
+    "nextSteps": "Recommended further steps",
+    "actions": {
+      "askOperator": "Ask the operator of {{name}} for the customer's data (transfers of {{dates}})",
+      "askOperatorAny": "Ask the operators of the cash-out services for the customer's data (transfers of {{dates}})",
+      "traceInflows": "Establish the source of the inflows of {{dates}}",
+      "monitoring": "Switch monitoring on — the next transfer to a cash-out service will raise a notification",
+      "monitoringOn": "Monitoring is active — the next transfer to a cash-out service will raise a notification",
+      "repeatValuation": "Repeat the analysis when NBP rates are available — to complete the PLN valuations",
+      "keepEvidence": "Keep the evidence with its SHA-256 hashes and repeat the analysis right before using the result"
+    },
+    "unknownParties": "unidentified counterparties ({{count}})"
   },
   "tags": {
     "SWAP_DEX": "DEX swap",
@@ -522,7 +618,10 @@
     "bestScore": "Highest score",
     "excludedNote": "Excluded from personal attribution.",
     "others_one": "+{{count}} other address",
-    "others_other": "+{{count}} other addresses"
+    "others_other": "+{{count}} other addresses",
+    "windowTitle": "Case {{signature}} — link graph",
+    "taskbar": "Link graph",
+    "status": "Click a node of the graph to see its details."
   },
   "evidence": {
     "title": "Sources and evidence",
@@ -548,7 +647,9 @@
     "empty": "No evidence was collected.",
     "open": "Evidence details",
     "aiSuggestion": "AI suggestion: {{type}}",
-    "aiHint": "Generated by a local model — to be verified. It does not change the score."
+    "aiHint": "Generated by a local model — to be verified. It does not change the score.",
+    "show": "Show the source evidence",
+    "titleCount": "Source evidence ({{count}})"
   },
   "identities": {
     "title": "Who is behind the address",
@@ -564,7 +665,8 @@
       "other": "Other addresses of this account"
     },
     "noOther": "none",
-    "empty": "No account that published this address was found."
+    "empty": "No account that published this address was found.",
+    "titleCount": "Accounts that published the address ({{count}})"
   },
   "notes": {
     "ERROR": "Technical error: {{detail}}",
@@ -586,7 +688,10 @@
     "downloadPdf": "Download PDF",
     "downloadJson": "Download JSON",
     "print": "Print",
-    "polishOnly": "The report is written in Polish. The PDF and JSON contain the same data as this view."
+    "polishOnly": "The report is written in Polish. The PDF and JSON contain the same data as this view.",
+    "windowTitle": "Analysis report",
+    "taskbar": "Report",
+    "status": "Report · SHA-256 of the data {{sha}}…"
   },
   "audit": {
     "title": "Request log",
@@ -601,12 +706,14 @@
       "host": "Host",
       "path": "Path (no query)",
       "status": "Result",
-      "duration": "Duration"
+      "duration": "Duration",
+      "basis": "Basis"
     },
     "status": {
       "blocked": "Blocked",
       "error": "Network error"
-    }
+    },
+    "requests": "Requests ({{count}})"
   },
   "changes": {
     "title": "Changes since the previous run",
@@ -666,6 +773,226 @@
     "NEW_ADDRESS": "New address {{chain}} {{address}} with a score of {{score}}%.",
     "ADDRESS_CHANGED": "Address changed on {{platform}}: {{from}} → {{to}}.",
     "THRESHOLD_EXCEEDED": "Address {{chain}} {{address}} crossed the {{thresholdEur}} EUR threshold ({{at}}).",
-    "NEW_CASH_OUT": "New cash-out indicator for address {{chain}} {{address}}: {{tags}}."
+    "NEW_CASH_OUT": "New cash-out indicator for address {{chain}} {{address}}: {{tags}}.",
+    "lead": "Notifications are created in the application after a further analysis: a new address, a changed address in a source, an exceeded threshold or a new cash-out signal. Nothing is sent outside the application.",
+    "list": "Notifications ({{count}})",
+    "new": "NEW",
+    "status": "Unread: {{count}}"
+  },
+  "menu": {
+    "label": "Menu",
+    "case": "Case",
+    "view": "View",
+    "report": "Report",
+    "help": "Help",
+    "new": "New case",
+    "cases": "Case register",
+    "audit": "Request log",
+    "notifications": "Notifications",
+    "language": "Language",
+    "lang": {
+      "pl": "Polish",
+      "en": "English"
+    },
+    "reportView": "Report (on screen)",
+    "reportPdf": "PDF report",
+    "reportJson": "JSON report",
+    "graph": "Link graph",
+    "noRun": "The report is available once an analysis is open",
+    "shortcuts": "Keyboard shortcuts",
+    "settings": "Settings",
+    "shortcutBar": "Keyboard shortcuts"
+  },
+  "keys": {
+    "F1": "Help: keyboard shortcuts",
+    "F2": "New case",
+    "F3": "Copy address (address card)",
+    "F4": "Case register",
+    "F5": "Run the analysis again (case, result)",
+    "F6": "Link graph (result) / show on the graph (address card)",
+    "F7": "PDF report: download",
+    "F8": "Request log",
+    "F9": "Notifications",
+    "F10": "Settings",
+    "Esc": "Back to the previous screen",
+    "short": {
+      "F1": "Help",
+      "F2": "New case",
+      "F3": "Copy address",
+      "F4": "Case register",
+      "F5": "Run again",
+      "F6": "Graph",
+      "F6g": "Show on graph",
+      "F7": "PDF report",
+      "F8": "Request log",
+      "F9": "Notifications",
+      "F10": "Settings",
+      "Esc": "Cases",
+      "back": "Back"
+    },
+    "taken": "The browser keeps {{key}} for itself — use {{alt}}."
+  },
+  "help": {
+    "title": "Keyboard shortcuts",
+    "intro": "Function keys work on every screen; some of them apply to one screen only.",
+    "key": "Key",
+    "alt": "Alternative",
+    "action": "Action",
+    "browser": "If the browser keeps a function key for itself (e.g. F6 or F10), the program notices it and shows the Alt+digit alternative in the labels. The alternative always works."
+  },
+  "settings": {
+    "title": "Settings",
+    "analyst": "Analyst's name",
+    "analystHint": "Stored in this browser only; shown next to the \"Confirm / Reject\" decisions and in the report.",
+    "keys": "Function keys",
+    "keysNone": "The browser has not taken any function key.",
+    "keysTaken": "The browser keeps for itself: {{list}}. The labels show the alternative.",
+    "keysReset": "Restore the F keys"
+  },
+  "start": {
+    "windowTitle": "New case",
+    "console1Name": "KROPKA",
+    "console1": "analysis of cryptocurrency traces in open sources (prototype)",
+    "console2": "Scope: publicly available sources and official APIs only · every request is recorded in the request log",
+    "console3": "Scoring rules v{{rules}} · Blockchain: Ethereum, Tron, Bitcoin · Exchange rates: NBP, table A",
+    "systemReady": "system ready",
+    "enter": "Enter the person's details",
+    "lead": "Paste the identifiers you know: full name, e-mail address, nick, messenger ID or a cryptocurrency address. Separate several entries with commas — the system recognises their kind itself.",
+    "placeholder": "e.g. jan.testowy@example.org, jtestowy",
+    "submit": "Start the analysis (Enter)",
+    "recognised": "Recognised identifiers ({{count}}):",
+    "none": "no data entered",
+    "basis": "Proceedings number / basis (optional):",
+    "basisPlaceholder": "e.g. RKS-2026/0412 (fictitious)",
+    "basisHint": "Stored with the case, in the request log and in the report.",
+    "optSynthetic": "Test sources (synthetic internet, synthetic data)",
+    "optLive": "Open sources, live ({{count}})",
+    "optChain": "Blockchain — current data (Ethereum, Tron)",
+    "optMonitor": "Monitoring: repeat the analysis every 24 h",
+    "liveWarning": "Live sources selected: requests will be sent to public external services and recorded in the request log. Use them only for data you are allowed to process.",
+    "advanced": "Advanced settings",
+    "advancedTitle": "Case name",
+    "titleHint": "When empty, the case is named after the first full name, or else the first identifier.",
+    "typesTitle": "Kind of each identifier",
+    "typesHint": "The system detects the kind automatically. Change it here by hand — e.g. to say that a nick is a social-network login.",
+    "detected": "detected",
+    "demoLead": "Demonstration version:",
+    "demoOpen": "open the demonstration case",
+    "demoNote": "all data is synthetic.",
+    "flow": "Course of the analysis",
+    "step1": "Identifiers of the person",
+    "step2": "Search of open sources and blockchain",
+    "step3": "Scoring of attributions by rules v{{rules}}",
+    "step4": "PDF report: facts, calculations, conclusions",
+    "register": "Case register",
+    "registerAll": "Show the whole register →",
+    "ready": "Ready.",
+    "busy": "Analysis in progress…"
+  },
+  "bandNames": {
+    "VERY_HIGH": "VERY HIGH",
+    "PROBABLE": "PROBABLE",
+    "MEDIUM": "MEDIUM",
+    "LOW": "LOW",
+    "EXCLUDED": "EXCLUDED"
+  },
+  "categoryTags": {
+    "UNHOSTED": "UNHOSTED WALLET",
+    "CEX_CUSTODIAL": "EXCHANGE",
+    "CEX_DEPOSIT": "EXCHANGE DEPOSIT ADDRESS",
+    "CONTRACT": "CONTRACT",
+    "DEX": "DEX CONTRACT",
+    "CASP_KANTOR": "EXCHANGE OFFICE",
+    "PAYMENT_GATEWAY": "PAYMENT GATEWAY",
+    "CRYPTO_CARD": "CRYPTO CARD",
+    "MIXER": "MIXER",
+    "CHARITY": "FUNDRAISER",
+    "SANCTIONED": "SANCTIONED",
+    "EXAMPLE_BURN": "EXAMPLE ADDRESS",
+    "UNKNOWN_SERVICE": "SERVICE"
+  },
+  "result": {
+    "windowTitle": "Case {{signature}} — analysis result",
+    "caseLine": "Case {{signature}} · {{title}} · analysis no. {{n}} of {{date}} · stage:",
+    "steps": {
+      "data": "Data",
+      "search": "Search",
+      "score": "Scoring",
+      "result": "Result",
+      "report": "Report"
+    },
+    "verdict": {
+      "veryHigh_one": "Established {{count}} address with a very high confidence score",
+      "veryHigh_other": "Established {{count}} addresses with a very high confidence score",
+      "probable_one": "Established {{count}} address probably attributable to the person",
+      "probable_other": "Established {{count}} addresses probably attributable to the person",
+      "medium_one": "Found {{count}} address that needs confirmation by a second source",
+      "medium_other": "Found {{count}} addresses that need confirmation by a second source",
+      "low_one": "Found only {{count}} address with a low confidence score",
+      "low_other": "Found only {{count}} addresses with a low confidence score",
+      "identities_one": "Established {{count}} account that published the address under examination",
+      "identities_other": "Established {{count}} accounts that published the address under examination",
+      "onlyExcluded_one": "{{count}} address excluded from attribution to a person — no address of the person established",
+      "onlyExcluded_other": "{{count}} addresses excluded from attribution to a person — no address of the person established",
+      "subjects_one": "Examined {{count}} address given by the analyst",
+      "subjects_other": "Examined {{count}} addresses given by the analyst",
+      "nothing": "No cryptocurrency address found in the sources searched",
+      "failed": "The analysis ended with an error"
+    },
+    "counters": {
+      "found": "addresses found",
+      "band": "confidence score {{range}}",
+      "cashOut": "cash-out signals",
+      "excluded": "excluded from attribution"
+    },
+    "disclaimer": "The result is a premise for further action, not evidence in proceedings. Every score has its reasoning point by point — the \"Reasoning\" button next to the address.",
+    "assigned": "Addresses attributed to the person ({{count}})",
+    "cols": {
+      "score": "Confidence score",
+      "address": "Address",
+      "network": "Network",
+      "basis": "Basis of attribution"
+    },
+    "reasoningButton": "Reasoning",
+    "showReasoning": "Show the reasoning of the score of address {{address}}",
+    "reasoning": "Reasoning of the score — address {{address}}",
+    "identifier": "Identifier",
+    "pickIdentifier": "Choice of identifier",
+    "scoreLine": "Confidence score {{score}}/100",
+    "bandRange": "range {{range}} ({{band}})",
+    "total": "TOTAL",
+    "totalClamped": "{{raw}} → capped at {{total}}",
+    "hint": "Hint",
+    "conclusionTag": "CONCLUSION",
+    "conclusion": {
+      "VERY_HIGH": "The address very probably belongs to the person.",
+      "PROBABLE": "The address probably belongs to the person — verification recommended.",
+      "MEDIUM": "A possible attribution — it needs confirmation by a second source.",
+      "LOW": "A weak premise — the attribution is hardly credible.",
+      "EXCLUDED": "The address is excluded from attribution to a person."
+    },
+    "addressCard": "Address card",
+    "cashOut": "Cash-out signals ({{count}})",
+    "cashOutText": "Transfers to addresses of cash-out services: {{count}}, in total ≈ {{pln}} (≈ {{eur}}).",
+    "thresholdCrossed": "THRESHOLD {{eur}} EXCEEDED — art. 35(1) of the AML Act",
+    "single": "a single transfer of {{date}} (max. {{max}})",
+    "cumulative": "cumulatively since {{date}}",
+    "txCourse": "Course of the address's transactions",
+    "excluded": "Excluded from attribution to a person ({{count}})",
+    "searched": "Sources searched ({{count}})",
+    "status": "Analysis no. {{n}} finished {{time}} · rules v{{rules}} · sources: {{sources}}, errors: {{errors}}",
+    "rerun": "Run again",
+    "monitor24": "Check every 24 h",
+    "monitorOther": "Checking every {{minutes}} min",
+    "addressesLine": "Addresses: {{list}}",
+    "excludedOnly": "EXCLUDED",
+    "none": "no addresses",
+    "cashOutCount_one": "{{count}} cash-out signal",
+    "cashOutCount_other": "{{count}} cash-out signals"
+  },
+  "statement": {
+    "fact": "FACT",
+    "calc": "CALCULATION",
+    "conclusion": "CONCLUSION"
   }
 }

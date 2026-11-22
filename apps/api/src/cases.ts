@@ -28,3 +28,28 @@ export async function createCaseWithSignature(prisma: PrismaService, data: NewCa
     return tx.case.create({ data: { ...rest, signature: `KR/${year}/${String(n).padStart(4, '0')}`, identifiers: { create: identifiers } }, include: { identifiers: true } });
   });
 }
+
+export interface RunResultSummary {
+  /** Addresses assigned to a person, by the band of their best link. */
+  bands: { VERY_HIGH: number; PROBABLE: number; MEDIUM: number; LOW: number };
+  /** Addresses whose every link is an exclusion (exchange, contract, service …). */
+  excluded: number;
+  /** Addresses with a fiat cash-out signal. */
+  cashOut: number;
+}
+
+/** The one-line result of a run for the case register: counted per address (not per identifier), best link wins. */
+export function summarizeRun(links: { addressId: string; band: string; score: number; excludedReason: string | null }[], indicators: unknown[]): RunResultSummary {
+  const best = new Map<string, { band: string; score: number; excluded: boolean }>();
+  for (const l of links) {
+    const prev = best.get(l.addressId);
+    const excluded = !!l.excludedReason;
+    if (!prev || (prev.excluded && !excluded) || (prev.excluded === excluded && l.score > prev.score)) best.set(l.addressId, { band: l.band, score: l.score, excluded });
+  }
+  const out: RunResultSummary = { bands: { VERY_HIGH: 0, PROBABLE: 0, MEDIUM: 0, LOW: 0 }, excluded: 0, cashOut: indicators.filter((i) => (i as { cashOut?: { detected?: boolean } }).cashOut?.detected).length };
+  for (const b of best.values()) {
+    if (b.excluded || b.band === 'EXCLUDED') out.excluded++;
+    else if (b.band in out.bands) out.bands[b.band as keyof RunResultSummary['bands']]++;
+  }
+  return out;
+}
