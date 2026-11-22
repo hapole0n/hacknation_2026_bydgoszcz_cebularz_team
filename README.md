@@ -1,5 +1,20 @@
 # KROPKA — Osintowy Łapacz Cyfrowych Śladów (OŁCyŚ)
 
+**Przypisuje adresy kryptowalutowe do osoby wyłącznie na podstawie jawnych źródeł — z wyjaśnialnym Wskaźnikiem Pewności, wykrywaniem wyjścia do gotówki i raportem po polsku.**
+
+[![CI](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/actions/workflows/ci.yml/badge.svg)](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/actions/workflows/ci.yml)
+[![Licencja: wszelkie prawa zastrzeżone](https://img.shields.io/badge/licencja-wszelkie%20prawa%20zastrze%C5%BCone-lightgrey)](LICENSE)
+
+![Wynik analizy w KROPCE — sprawa demonstracyjna na danych syntetycznych](docs/screenshots/03-wynik.png)
+
+### Szybki start
+
+```bash
+docker compose up --build
+```
+
+Potem otwórz **http://localhost:5173** i wybierz „otwórz sprawę demonstracyjną” (dane syntetyczne; w sieci pobierane są tylko publiczne kursy NBP). Pełna instalacja, tryb deweloperski i testy: rozdział [Instalacja i uruchomienie](#instalacja-i-uruchomienie).
+
 > HackNation 2026 · zadanie Ministerstwa Finansów / KAS · zespół **cebularz**
 > Nazwa robocza „KROPKA” może się zmienić (jedno miejsce w kodzie: `packages/core/src/app.ts`).
 > **Co jest zrobione, a co nie — tabela wymagań z testami: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md).**
