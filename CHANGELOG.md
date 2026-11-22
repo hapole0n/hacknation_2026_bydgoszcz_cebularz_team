@@ -8,6 +8,8 @@ KROPKA (HackNation 2026, OŁCyŚ). One release per project phase (see `PLAN.md`,
 - One field for all identifiers with automatic type detection; case signature `KR/YYYY/NNNN` (automatic, per year; migration backfills old cases); "Numer postępowania / podstawa" in the case, request log and report; analyst comment on every decision; query time in "Przeszukane źródła".
 - Light PDF report in the same fonts and palette (fonts and OFL texts vendored in `apps/api/assets/fonts`); licence generator re-checks the font licences.
 - 22 new screenshots from real runs on a clean database; docs updated; git flow `develop` ← `feat/*`, GitHub Actions CI, PR and issue templates, `SECURITY.md`.
+- README title block (badges, main screenshot, quick start); annotated tags `v0.1.0`…`v0.9.0` with GitHub releases.
+- Fix: a stored run keeps the address classification of its own time (`summaryJson.addresses`), so old runs and reports no longer change when a later run reclassifies an address, and the run diff can see category changes; address upserts in sorted order (no deadlock between concurrent runs). This was the cause of the flaky test `9. reproducible…`.
 
 ## [0.8.0] — P7 · 2026-11-21 — acceptance and publication
 
