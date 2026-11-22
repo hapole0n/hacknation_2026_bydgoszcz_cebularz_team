@@ -895,7 +895,7 @@
     "console3": "Reguły oceny v{{rules}} · Blockchain: Ethereum, Tron, Bitcoin · Kursy walut: NBP, tabela A",
     "systemReady": "system gotowy",
     "enter": "Wprowadź dane osoby",
-    "lead": "Wklej znane identyfikatory: imię i nazwisko, adres e-mail, nick, identyfikator komunikatora lub adres kryptowaluty. Kilka pozycji rozdziel przecinkiem — system sam rozpozna ich rodzaj.",
+    "lead": "Wklej identyfikatory oddzielone przecinkiem: imię i nazwisko, e-mail, nick, komunikator lub adres krypto. System sam rozpozna ich rodzaj.",
     "placeholder": "np. jan.testowy@example.org, jtestowy",
     "submit": "Rozpocznij analizę (Enter)",
     "recognised": "Rozpoznane identyfikatory ({{count}}):",

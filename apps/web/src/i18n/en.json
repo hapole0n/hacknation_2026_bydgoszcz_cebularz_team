@@ -857,7 +857,7 @@
     "console3": "Scoring rules v{{rules}} · Blockchain: Ethereum, Tron, Bitcoin · Exchange rates: NBP, table A",
     "systemReady": "system ready",
     "enter": "Enter the person's details",
-    "lead": "Paste the identifiers you know: full name, e-mail address, nick, messenger ID or a cryptocurrency address. Separate several entries with commas — the system recognises their kind itself.",
+    "lead": "Paste identifiers separated by commas: full name, e-mail, nickname, messenger or crypto address. The system recognises their type.",
     "placeholder": "e.g. jan.testowy@example.org, jtestowy",
     "submit": "Start the analysis (Enter)",
     "recognised": "Recognised identifiers ({{count}}):",
