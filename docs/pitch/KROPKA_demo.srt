@@ -1,0 +1,56 @@
+1
+00:00:00,600 --> 00:00:08,090
+KROPKA. Narzędzie dla analityka KAS, które odpowiada na pytanie: kto stoi za adresem kryptowaluty.
+
+2
+00:00:08,340 --> 00:00:15,767
+Etap 1. Analityk wkleja to, co wie o osobie. Może być to nick, adres e-mail i konto na Telegramie.
+
+3
+00:00:15,767 --> 00:00:19,830
+System sam rozpoznaje typ każdego identyfikatora.
+
+4
+00:00:19,980 --> 00:00:30,430
+Etap 2. KROPKA przeszukuje jawne źródła i blockchain. Każde zapytanie ma czas i wynik, więc pusty wynik znaczy: przeszukano, nie znaleziono.
+
+5
+00:00:30,980 --> 00:00:38,170
+Etap 3. 10 adresów w 13 dowodach. 3 z nich mają bardzo wysoki Wskaźnik Pewności.
+
+6
+00:00:38,720 --> 00:00:49,070
+Etap 4. Każdy punkt oceny ma regułę i dowód: +85 za oficjalny profil, +15 za dwa niezależne źródła.
+
+7
+00:00:49,620 --> 00:01:02,610
+Etap 5. Giełdy, kontrakty i zbiórki odrzucamy z podaniem powodu. Kantor nie jest osobą, ale przelewy do niego to przesłanka wypłaty do gotówki.
+
+8
+00:01:02,800 --> 00:01:17,270
+Etap 6. Karta adresu w sieci TRON: przyjęte i wysłane USDT, wycena w złotych według kursu NBP i przekroczone progi z art. 35 ustawy AML.
+
+9
+00:01:17,960 --> 00:01:23,430
+Etap 7. Graf pokazuje powiązania między osobą, źródłami i adresami.
+
+10
+00:01:23,980 --> 00:01:30,490
+Raport ma etykiety: fakt, obliczenie albo wniosek, a do tego skrót danych i wersję reguł.
+
+11
+00:01:31,040 --> 00:01:39,110
+Monitoring: gdy osoba zmieni adres na swojej stronie, kolejna analiza to wykryje i powiadomi analityka.
+
+12
+00:01:39,660 --> 00:01:50,090
+Szukanie odwrotne: mając tylko adres, KROPKA znajduje konta, które go publikują, i oznacza, gdy ten sam nick należy do innej osoby.
+
+13
+00:01:50,640 --> 00:01:56,910
+Dziennik zapytań zapisuje, kiedy i dokąd pytano. Całość działa lokalnie, bez chmury.
+
+14
+00:01:56,780 --> 00:01:57,790
+Dziękuję.
+

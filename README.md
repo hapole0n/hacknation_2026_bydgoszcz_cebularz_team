@@ -1,11 +1,74 @@
-# KROPKA — Osintowy Łapacz Cyfrowych Śladów (OŁCyŚ)
+<a id="readme-top"></a>
 
-**Przypisuje adresy kryptowalutowe do osoby wyłącznie na podstawie jawnych źródeł — z wyjaśnialnym Wskaźnikiem Pewności, wykrywaniem wyjścia do gotówki i raportem po polsku.**
+<div align="center">
 
-[![CI](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/actions/workflows/ci.yml/badge.svg)](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/actions/workflows/ci.yml)
-[![Licencja: wszelkie prawa zastrzeżone](https://img.shields.io/badge/licencja-wszelkie%20prawa%20zastrze%C5%BCone-lightgrey)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/ci.yml?style=for-the-badge&label=CI)](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team/actions/workflows/ci.yml)
+[![Licencja: wszelkie prawa zastrzeżone](https://img.shields.io/badge/licencja-wszelkie_prawa_zastrze%C5%BCone-lightgrey?style=for-the-badge)](LICENSE)
+![HackNation 2026](https://img.shields.io/badge/HackNation-2026-1C2F7A?style=for-the-badge)
+[![Zadanie MF i KAS: OŁCyŚ](https://img.shields.io/badge/zadanie-MF_i_KAS%3A_O%C5%81Cy%C5%9A-2F6F6F?style=for-the-badge)](docs/OLCyS_zadanie.pdf)
+![Zespół cebularz](https://img.shields.io/badge/zesp%C3%B3%C5%82-cebularz-8A2B0E?style=for-the-badge)
 
-![Wynik analizy w KROPCE — sprawa demonstracyjna na danych syntetycznych](docs/screenshots/03-wynik.png)
+</div>
+
+<br />
+<div align="center">
+  <img src="docs/readme/banner.png" alt="KROPKA — Osintowy Łapacz Cyfrowych Śladów (OŁCyŚ)" width="860">
+
+  <p align="center">
+    <strong>Przypisuje adresy kryptowalutowe do osoby wyłącznie na podstawie jawnych źródeł — z wyjaśnialnym Wskaźnikiem Pewności, wykrywaniem wyjścia do gotówki i raportem po polsku.</strong>
+    <br />
+    <br />
+    <a href="docs/pitch/KROPKA_demo.mp4"><strong>Obejrzyj wideo demo (2 min) »</strong></a>
+    <br />
+    <br />
+    <a href="docs/pitch/KROPKA_HackNation2026.pdf">Prezentacja PDF</a>
+    &nbsp;|&nbsp;
+    <a href="docs/ZGODNOSC.md">Wymagania i testy</a>
+    &nbsp;|&nbsp;
+    <a href="docs/screenshots">Zrzuty ekranu</a>
+  </p>
+</div>
+
+<details>
+  <summary><strong>Spis treści</strong></summary>
+  <ol>
+    <li><a href="#szybki-start">Szybki start</a></li>
+    <li>
+      <a href="#opis-projektu">Opis projektu</a>
+      <ul>
+        <li><a href="#zbudowano-z">Zbudowano z</a></li>
+      </ul>
+    </li>
+    <li><a href="#zalozenia-projektu">Założenia projektu</a></li>
+    <li>
+      <a href="#parametry-wyszukiwania">Parametry wyszukiwania</a>
+      <ul>
+        <li><a href="#identyfikatory-wejsciowe">Identyfikatory wejściowe</a></li>
+        <li><a href="#zrodla-konektory">Źródła (konektory) i ich polityki</a></li>
+        <li><a href="#blockchain">Blockchain</a></li>
+        <li><a href="#wskaznik-pewnosci">Wskaźnik Pewności</a></li>
+      </ul>
+    </li>
+    <li><a href="#architektura">Architektura</a></li>
+    <li>
+      <a href="#instalacja-i-uruchomienie">Instalacja i uruchomienie</a>
+      <ul>
+        <li><a href="#wymagania">Wymagania</a></li>
+        <li><a href="#uruchomienie-jednym-poleceniem">Uruchomienie jednym poleceniem</a></li>
+        <li><a href="#tryb-deweloperski-i-testy">Tryb deweloperski i testy</a></li>
+      </ul>
+    </li>
+    <li><a href="#scenariusz-demonstracyjny">Scenariusz demonstracyjny</a></li>
+    <li><a href="#przyklady">Przykłady</a></li>
+    <li><a href="#zgodnosc-i-bezpieczenstwo">Zgodność i bezpieczeństwo</a></li>
+    <li><a href="#ograniczenia-i-znane-braki">Ograniczenia i znane braki</a></li>
+    <li><a href="#mapa-drogowa">Mapa drogowa</a></li>
+    <li><a href="#licencje-komponentow">Licencje wykorzystanych komponentów</a></li>
+    <li><a href="#wykorzystane-zasoby">Wykorzystane zasoby</a></li>
+    <li><a href="#dokumentacja-techniczna">Dokumentacja techniczna</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ol>
+</details>
 
 ### Szybki start
 
@@ -15,11 +78,11 @@ docker compose up --build
 
 Potem otwórz **http://localhost:5173** i wybierz „otwórz sprawę demonstracyjną” (dane syntetyczne; w sieci pobierane są tylko publiczne kursy NBP). Pełna instalacja, tryb deweloperski i testy: rozdział [Instalacja i uruchomienie](#instalacja-i-uruchomienie).
 
-> HackNation 2026 · zadanie Ministerstwa Finansów / KAS · zespół **cebularz**
-> Nazwa robocza „KROPKA” może się zmienić (jedno miejsce w kodzie: `packages/core/src/app.ts`).
-> **Co jest zrobione, a co nie — tabela wymagań z testami: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md).**
+<a id="opis-projektu"></a>
 
 ## Opis projektu — jaki problem rozwiązuje i w jaki sposób
+
+![Wynik analizy w KROPCE: sprawa demonstracyjna na danych syntetycznych](docs/screenshots/03-wynik.png)
 
 **Problem.** Adres kryptowalutowy to ciąg znaków, który sam nie mówi, do kogo należy. Ludzie jednak czasem publikują go otwarcie: w profilu, w ogłoszeniu „sprzedam USDT za gotówkę”, na forum, w stopce e-maila. Analityk Krajowej Administracji Skarbowej, który zajmuje się taką osobą, musiałby ręcznie przeszukać wiele serwisów, sprawdzić, czy znaleziony adres w ogóle da się przypisać człowiekowi (adres giełdy, kontrakt czy zbiórka charytatywna nie należą do osoby), a potem obejrzeć historię transakcji i ocenić, czy środki wychodzą na gotówkę.
 
@@ -37,6 +100,25 @@ To narzędzie dostarcza **przesłanki do dalszej weryfikacji, a nie dowody**. Ws
 
 **Co jest przeszukiwane naprawdę.** Prawdziwe źródła: GitHub, Gravatar, ENS, Wayback Machine i (domyślnie wyłączony) Telegram, a po stronie blockchaina — Etherscan, TronGrid, mempool.space oraz kursy NBP. Fora, portale ogłoszeniowe P2P i serwisy społecznościowe w demonstracji **symuluje sztuczny „mini-internet”** (`fixtures/sandbox-web`, dane w całości zmyślone): do tych serwisów nie ma prawdziwych konektorów. Szczegóły: [Ograniczenia](#ograniczenia-i-znane-braki).
 
+### Zbudowano z
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
+[![Docker Compose](https://img.shields.io/badge/Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/compose/)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+<a id="zalozenia-projektu"></a>
+
 ## Założenia projektu
 
 - **Wyłącznie OSINT** — jawne i legalne źródła, oficjalne API tam, gdzie istnieją, bez logowania na cudze konta, wycieków, omijania zabezpieczeń i skanowania podatności (rozdz. 7 zadania).
@@ -48,7 +130,11 @@ To narzędzie dostarcza **przesłanki do dalszej weryfikacji, a nie dowody**. Ws
 - **Zgodnie z art. 11a ustawy o PIT** wartość w PLN liczymy po kursie średnim NBP z ostatniego dnia roboczego *przed* dniem transakcji (dzień kalendarzowy czasu polskiego). Progi AML: ustawa z 1.03.2018 r. o przeciwdziałaniu praniu pieniędzy, art. 35 ust. 1 (numerację punktów do weryfikacji w ISAP) — jako przesłanki analityczne.
 - To **prototyp** dla jednego analityka w sieci lokalnej: bez uwierzytelniania i ról.
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
 ## Parametry wyszukiwania
+
+<a id="identyfikatory-wejsciowe"></a>
 
 ### Identyfikatory wejściowe
 Co najmniej jeden, dowolnej kombinacji. Każdy jest normalizowany (np. e-mail do małych liter, `@` z handle zdjęty, adres do postaci kanonicznej; adres z błędną sumą kontrolną jest odrzucany już przy wprowadzaniu).
@@ -63,6 +149,8 @@ Co najmniej jeden, dowolnej kombinacji. Każdy jest normalizowany (np. e-mail do
 | `ADDRESS` — publiczny adres krypto (BTC, ETH, TRON, nazwa ENS) | adres z `fixtures/addresses.json` |
 
 Dla identyfikatora `ADDRESS` wynikiem nie jest lista powiązań, lecz **konta, które ten adres opublikowały** (z oceną), oraz to, co jeszcze te konta publikują.
+
+<a id="zrodla-konektory"></a>
 
 ### Źródła (konektory) i ich polityki
 Wybór źródeł jest per analiza; domyślnie tylko sztuczny `sandbox`. Polityka (metoda, regulamin, limit) jest zapisana w kodzie konektora i widoczna w aplikacji; wagę (`weightHint`) widzi analityk, ale **ocenę liczy typ źródła, nie konektor**.
@@ -82,19 +170,22 @@ Każda analiza przechodzi cztery rundy: **(1)** szukanie po identyfikatorach, **
 Tryb per analiza: `fixture` (domyślny, syntetyczne historie z `fixtures/chain`, offline), `live` (najpierw fixtures, potem Etherscan v2 / TronGrid / mempool.space) lub `off`. Brak klucza API to adnotacja w wyniku, nigdy awaria. Klasyfikacja adresu: etykieta → bytecode (`eth_getCode` w Ethereum, kontrola kontraktu w TRON) → heurystyka adresu depozytowego giełdy → heurystyka usługi (wielu jednorazowych kontrahentów).
 Progi: **1 000 / 10 000 / 15 000 EUR** (pojedyncza transakcja i suma skumulowana wypływów w stronę usług cash-out), wartość w PLN i EUR wg NBP tabela A; stablecoiny 1:1 do USD, inne aktywa tylko gdy transfer niesie cenę, inaczej „bez wyceny”.
 
+<a id="wskaznik-pewnosci"></a>
+
 ### Wskaźnik Pewności — wersja reguł **1.1.0** (`config/scoring-rules.v1.yaml`)
 `wynik = clamp(0…100, baza(typ źródła) + Σ modyfikatory)`; jeśli zachodzi którykolwiek wyjątek — **0** (wykluczone). Wersja reguł jest zapisywana w każdym przebiegu.
 
 | Baza wg typu źródła | pkt |
 |---|---|
 | Oficjalny profil / własna strona | 85 |
-| Ogłoszenie sprzedaży · oferta P2P · stopka e-maila · komunikator (rozliczenie) | 70 |
+| Ogłoszenie sprzedaży, oferta P2P, stopka e-maila, komunikator (rozliczenie) | 70 |
 | Dyskusja na forum | 50 |
-| Masowy komentarz · giveaway | 25 |
+| Masowy komentarz, giveaway | 25 |
 
 | Modyfikator | pkt |
 |---|---|
-| Identyfikator dokładnie zgodny z autorem śladu na tej platformie (`IDENT_EXACT_SAME_PLATFORM`) · e-mail zgodny dokładnie (`IDENT_EMAIL_EXACT`) | +10 |
+| Identyfikator dokładnie zgodny z autorem śladu na tej platformie (`IDENT_EXACT_SAME_PLATFORM`) | +10 |
+| E-mail zgodny dokładnie (`IDENT_EMAIL_EXACT`) | +10 |
 | Ten sam adres w ≥ 2 **niezależnych** serwisach (`SYNERGY_INDEPENDENT_SOURCES`) — powtórzenia w jednym serwisie się nie liczą | +15 |
 | Aktywność adresu w blockchainie zbieżna ze śladem (`CHAIN_ACTIVE_CONSISTENT`, ±90 dni) | +5 |
 | Adres nigdy nieużywany w blockchainie (`CHAIN_NEVER_USED`) | −10 |
@@ -104,9 +195,31 @@ Progi: **1 000 / 10 000 / 15 000 EUR** (pojedyncza transakcja i suma skumulowana
 | Ślad starszy niż 3 lata (`TRACE_OLDER_THAN_3Y`) | −5 |
 | Adres przypisywany ≥ 3 niepowiązanym tożsamościom — kopiuj-wklej, scam (`ADDRESS_MULTI_IDENTITY`) | −20 |
 
-**Wyjątki (→ 0):** `EXCL_CEX` giełda · `EXCL_CUSTODIAL_DEPOSIT` adres depozytowy giełdy · `EXCL_CONTRACT` smart kontrakt / router DEX · `EXCL_MIXER` mikser · `EXCL_CHARITY` zbiórka · `EXCL_EXAMPLE` adres przykładowy / burn · `EXCL_SERVICE` kantor, bramka płatnicza, wydawca karty.
-**Pasma:** 80–100 bardzo wysokie · 60–79 prawdopodobne · 40–59 średnie (wymaga potwierdzenia drugim śladem) · 10–39 niskie / szum · 0 wykluczone.
+**Wyjątki** (wynik 0, adres wykluczony z przypisania):
+
+| Reguła | Rodzaj adresu |
+|---|---|
+| `EXCL_CEX` | giełda |
+| `EXCL_CUSTODIAL_DEPOSIT` | adres depozytowy giełdy |
+| `EXCL_CONTRACT` | smart kontrakt / router DEX |
+| `EXCL_MIXER` | mikser |
+| `EXCL_CHARITY` | zbiórka |
+| `EXCL_EXAMPLE` | adres przykładowy / burn |
+| `EXCL_SERVICE` | kantor, bramka płatnicza, wydawca karty |
+
+**Pasma wyniku:**
+
+| Wynik | Pasmo |
+|---|---|
+| 80–100 | bardzo wysokie |
+| 60–79 | prawdopodobne |
+| 40–59 | średnie (wymaga potwierdzenia drugim śladem) |
+| 10–39 | niskie / szum |
+| 0 | wykluczone |
+
 **Podpowiedzi** mówią, co zmieniłoby wynik (np. „drugie niezależne źródło podniosłoby wynik o 15 pp”). Decyzja analityka (potwierdzam / odrzucam, kto, kiedy, dlaczego) jest zapisywana **osobno** i nigdy nie zmienia obliczonego wyniku.
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
 
 ## Architektura
 
@@ -118,8 +231,8 @@ Progi: **1 000 / 10 000 / 15 000 EUR** (pojedyncza transakcja i suma skumulowana
    │   │   │                        ekstrakcja i walidacja adresów, klasyfikacja kontekstu,
    │   │   │                        Wskaźnik Pewności, wskaźniki blockchain, różnice, raport
    │   │   └─► PostgreSQL 16  (sprawy, przebiegi, dowody, powiązania, raporty, dziennik zapytań)
-   │   └─────► EgressClient: allowlista · limit na host · cache · dziennik ──► publiczne API
-   └─────────► fixtures/sandbox-web (sztuczny internet, :8088) · opcjonalnie Ollama (lokalny LLM)
+   │   └─────► EgressClient: allowlista, limit na host, cache, dziennik ──► publiczne API
+   └─────────► fixtures/sandbox-web (sztuczny internet, :8088), opcjonalnie Ollama (lokalny LLM)
 ```
 
 | Moduł | Rola |
@@ -134,11 +247,18 @@ Progi: **1 000 / 10 000 / 15 000 EUR** (pojedyncza transakcja i suma skumulowana
 Technologie: Node.js / TypeScript (`strict`), NestJS 12, Prisma 7, PostgreSQL 16, React + Vite + Tailwind + shadcn/ui, react-i18next, Cytoscape.js, TanStack Query, Vitest, pnpm workspaces, Docker Compose.
 Nowe źródło lub sieć dodaje się przez implementację `SourceConnector` / `ChainAdapter` i `register()`.
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
 ## Instalacja i uruchomienie
 
-**Wymagane:** Docker Desktop (Compose v2). Do trybu deweloperskiego dodatkowo: Node.js ≥ 22.12 i pnpm 12 (`corepack enable`).
+### Wymagania
 
-**Jedno polecenie** (baza, sztuczny internet, API z migracjami, interfejs):
+- Docker Desktop (Compose v2).
+- Do trybu deweloperskiego dodatkowo: Node.js ≥ 22.12 i pnpm 12 (`corepack enable`).
+
+### Uruchomienie jednym poleceniem
+
+Baza, sztuczny internet, API z migracjami i interfejs:
 
 ```bash
 docker compose up --build
@@ -146,7 +266,7 @@ docker compose up --build
 
 Potem: interfejs **http://localhost:5173**, API http://localhost:3000/api/health (`{"status":"ok","db":"up",…}`), sztuczny internet http://localhost:8088. Plik `.env` jest opcjonalny (klucze do źródeł na żywo): `cp .env.example .env`.
 
-Tryb deweloperski i testy:
+### Tryb deweloperski i testy
 
 ```bash
 pnpm install
@@ -158,8 +278,12 @@ pnpm lint
 pnpm licenses:report     # regeneruje LICENSES.md
 ```
 
+### Klucze i lokalny model (opcjonalnie)
+
 Klucze (`.env`, nigdy w repozytorium): `ETHERSCAN_API_KEY`, `TRONGRID_API_KEY` (historia Ethereum i TRON na żywo), `GITHUB_TOKEN`, `GRAVATAR_API_KEY`, `TELEGRAM_LIVE`, `AI_ENABLED` / `AI_BASE_URL` / `AI_MODEL`. Bez nich aplikacja działa na danych syntetycznych.
 Opcjonalny lokalny model: uruchom Ollama (lub inny serwer zgodny z API OpenAI) osobno i ustaw `AI_ENABLED=true`, `AI_BASE_URL`, `AI_MODEL`; usługi Ollama nie ma w `docker-compose.yml`.
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
 
 ## Scenariusz demonstracyjny
 
@@ -182,7 +306,22 @@ Wszystko na danych syntetycznych — osoba **„Jan Testowy”** (nick `jtestowy
 4. **Wariant „adres na wejściu”:** „Demonstracja: kto stoi za adresem?” — konta, które adres opublikowały, z oceną.
 5. **Część „na żywo”** (opcjonalnie, z kluczem Etherscan): nowa sprawa z identyfikatorem `ADDRESS` = publiczny portfel giełdy lub router Uniswap (adresy z `fixtures/expected.json` → `realAddresses`), blockchain: „live” — adres z etykiety (giełda, router) jest odrzucany od razu i bez zapytania; adres kontraktu bez etykiety (np. kontrakt USDT w TRON) jest odrzucany po kontroli kontraktu. Dziennik zapytań pokazuje każde wychodzące zapytanie.
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+<a id="przyklady"></a>
+
 ## Przykłady (zrzuty ekranu / logi)
+
+<table>
+  <tr>
+    <td width="50%" valign="top"><img src="docs/screenshots/01-nowa-sprawa.png" alt="Ekran Nowa sprawa"><br /><sub><b>Nowa sprawa:</b> jedno pole na wszystkie identyfikatory</sub></td>
+    <td width="50%" valign="top"><img src="docs/screenshots/10-kto-stoi-za-adresem.png" alt="Szukanie odwrotne"><br /><sub><b>Kto stoi za adresem:</b> konta, które opublikowały adres</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="docs/screenshots/08-karta-adresu-przebieg.png" alt="Karta adresu"><br /><sub><b>Karta adresu:</b> przebieg transakcji, wycena NBP, progi AML</sub></td>
+    <td width="50%" valign="top"><img src="docs/screenshots/09-graf.png" alt="Graf powiązań"><br /><sub><b>Graf powiązań:</b> identyfikatory, adresy, źródła i kontrahenci</sub></td>
+  </tr>
+</table>
 
 Zrzuty z rzeczywistego przebiegu aplikacji na **czystej bazie** i danych syntetycznych (`docs/screenshots/`):
 
@@ -236,6 +375,10 @@ MESSENGER:jtestowy_pl → BINANCE_14 (portfel giełdy)     0  wykluczone
 ```
 (Nazwy testów w repozytorium są po angielsku; powyżej skrócone i przetłumaczone.)
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+<a id="zgodnosc-i-bezpieczenstwo"></a>
+
 ## Zgodność i bezpieczeństwo
 
 - **Wyłącznie OSINT.** Jawne, legalne źródła; oficjalne API tam, gdzie istnieją; regulaminy źródeł sprawdzane ręcznie przy dodawaniu konektora. Bez logowania na cudze konta, wycieków, omijania zabezpieczeń i skanowania podatności.
@@ -263,6 +406,8 @@ MESSENGER:jtestowy_pl → BINANCE_14 (portfel giełdy)     0  wykluczone
 - **Atrybucja:** dane Ethereum pochodzą z Etherscan API — stopka każdego ekranu zawiera napis „Powered by Etherscan.io APIs”.
 - **Klucze** tylko w `.env` (szablon: `.env.example`), nigdy w repozytorium.
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
 ## Ograniczenia i znane braki
 
 Pełna lista: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md). Najważniejsze:
@@ -276,16 +421,40 @@ Pełna lista: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md). Najważniejsze:
 - **AI** sprawdzone tylko na atrapie modelu; wybór modelu nierozstrzygnięty; serwera Ollama nie ma w `docker-compose.yml`.
 - **Retencja i usuwanie:** pole `retentionDays` jest zapisywane, ale nic go nie egzekwuje; API nie ma usuwania sprawy. Brak uwierzytelniania.
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+## Mapa drogowa
+
+- [x] Pełny scenariusz zadania w siedmiu etapach, od identyfikatorów do raportu
+- [x] Szukanie odwrotne: kto opublikował adres
+- [x] Ślad gotówki: wycena według NBP i progi AML
+- [x] Analizy cykliczne z wykrywaniem zmian w czasie
+- [ ] Pilotaż na zanonimizowanych sprawach KAS
+- [ ] Etykiety kantorów od KAS
+- [ ] Telegram na żywo po ocenie prawnej
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+<a id="licencje-komponentow"></a>
+
 ## Licencje wykorzystanych komponentów
 
 **Licencja projektu:** [`LICENSE`](LICENSE) — Copyright © 2026 Oleh Kropyva, wszelkie prawa zastrzeżone; kod udostępniony do oceny w konkursie HackNation 2026 (w razie nagrodzenia prawa majątkowe przechodzą na Skarb Państwa — Ministerstwo Finansów zgodnie z Regulaminem). Wiążący jest tekst pliku `LICENSE`.
 
 Wszystkie zależności są Open Source; pełna lista z licencjami, obrazy Docker, czcionki oraz źródła i licencje list etykiet: [`LICENSES.md`](LICENSES.md) (generowany: `pnpm licenses:report`).
 
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
 ## Wykorzystane zasoby
 
 Źródła, progi, formaty i limity API: [`docs/research-notes.md`](docs/research-notes.md). W skrócie:
-ustawa o przeciwdziałaniu praniu pieniędzy (art. 35 ust. 1) · ustawa o PIT (art. 11a) · API NBP (tabela A) · Etherscan API v2 (Powered by Etherscan.io APIs) · TronGrid · mempool.space · GitHub REST · Gravatar API · ENS · Wayback CDX · listy etykiet: `dawsbot/eth-labels` (MIT), `brianleect/etherscan-labels` (MIT), dokumentacja wdrożeń Uniswap, publiczny plik Proof of Reserves OKX, wpis „Our Commitment To Transparency” Binance (pełne źródła i licencje w nagłówkach `config/labels/*.json`).
+
+- **Przepisy:** ustawa o przeciwdziałaniu praniu pieniędzy (art. 35 ust. 1), ustawa o PIT (art. 11a).
+- **API:** NBP (tabela A), Etherscan API v2 (Powered by Etherscan.io APIs), TronGrid, mempool.space, GitHub REST, Gravatar API, ENS, Wayback CDX.
+- **Listy etykiet:** `dawsbot/eth-labels` (MIT), `brianleect/etherscan-labels` (MIT), dokumentacja wdrożeń Uniswap, publiczny plik Proof of Reserves OKX, wpis „Our Commitment To Transparency” Binance (pełne źródła i licencje w nagłówkach `config/labels/*.json`).
+- **Układ tego README:** [Best-README-Template](https://github.com/othneildrew/Best-README-Template).
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
 
 ## Dokumentacja techniczna
 
@@ -299,3 +468,14 @@ ustawa o przeciwdziałaniu praniu pieniędzy (art. 35 ust. 1) · ustawa o PIT (a
 - **Raport:** `GET /api/runs/:id/report` (dokument + SHA-256 danych), `/report.pdf`, `/report.json`; PDF powstaje lokalnie (pdfmake, osadzone czcionki IBM Plex Mono i VT323), bez przeglądarki i bez wysyłania danych na zewnątrz.
 - **Główne endpointy API:** `GET /api/connectors`, `GET /api/chain-adapters`, `POST /api/cases`, `POST /api/cases/:id/runs` (`connectors`, `chain`), `GET /api/runs/:id`, `GET /api/runs/:id/diff`, `POST /api/links/:id/decision`, `PUT /api/cases/:id/schedule`, `GET /api/audit-log`, `GET /api/notifications`.
 - **Dodawanie reguł i etykiet:** reguły oceny — `config/scoring-rules.v1.yaml` (każda zmiana = nowa wersja); listy etykiet — nowy plik w `config/labels/` z nagłówkiem (`source`, `license`, `retrieved`), bez którego aplikacja nie wystartuje.
+- **Nazwa aplikacji** „KROPKA” jest zdefiniowana w jednym miejscu: `packages/core/src/app.ts`.
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
+
+## Kontakt
+
+- **Autor:** Oleh Kropyva, zespół cebularz (HackNation 2026, stolik 8f)
+- **E-mail:** [mail@kropyva.com](mailto:mail@kropyva.com)
+- **Repozytorium:** [github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team](https://github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team)
+
+<p align="right">(<a href="#readme-top">powrót na górę</a>)</p>
