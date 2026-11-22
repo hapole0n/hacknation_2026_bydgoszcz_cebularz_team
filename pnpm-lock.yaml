@@ -181,9 +181,6 @@ importers:
       '@fontsource/ibm-plex-mono':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource/ibm-plex-sans':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@fontsource/vt323':
         specifier: ^5.3.0
         version: 5.3.0
@@ -599,9 +596,6 @@ packages:
 
   '@fontsource/ibm-plex-mono@5.3.0':
     resolution: {integrity: sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==}
-
-  '@fontsource/ibm-plex-sans@5.3.0':
-    resolution: {integrity: sha512-CbE4CbbEEZJX860XyUiRpsksXIQR8Rp2XDva2VO53NJox9tVNtusrysd2x5YkUEY3ErQ66W1IiiQL8/wihhw5w==}
 
   '@fontsource/vt323@5.3.0':
     resolution: {integrity: sha512-3w33Rg/0+R1587HQfz4t7Q7e0GGeCqr3wmzIwqdGInUnrGEwMA5eX39GP4Z9wpTQnwfhVOhYuxuRwRUeIcicbw==}
@@ -3283,8 +3277,6 @@ snapshots:
       levn: 0.4.1
 
   '@fontsource/ibm-plex-mono@5.3.0': {}
-
-  '@fontsource/ibm-plex-sans@5.3.0': {}
 
   '@fontsource/vt323@5.3.0': {}
 

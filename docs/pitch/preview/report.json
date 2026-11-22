@@ -1,120 +1,251 @@
 {
-  "generatedAt": "2026-11-22T02:52:42.094Z",
+  "generatedAt": "2026-11-22T03:54:58.739Z",
   "ok": true,
   "pdf": {
     "file": "KROPKA_HackNation2026.pdf",
     "pages": 10,
-    "bytes": 1733653,
+    "bytes": 707327,
     "fonts": [
-      "IBMPlexMono-Medium",
-      "VT323-Regular",
-      "IBMPlexSans-Regular",
-      "IBMPlexSans-SemiBold",
-      "IBMPlexMono-SemiBold",
-      "IBMPlexSans-Medium"
+      "IBMPlexMono-Bold",
+      "IBMPlexMono-Regular",
+      "VT323-Regular"
     ]
   },
-  "callouts": [
-    {
-      "ref": "P2.verdict",
-      "scale": 0.843
-    },
-    {
-      "ref": "P2.score",
-      "scale": 0.843
-    },
-    {
-      "ref": "P2.basis",
-      "scale": 0.843
-    },
-    {
-      "ref": "P3.official",
-      "scale": 0.963
-    },
-    {
-      "ref": "P3.synergy",
-      "scale": 0.963
-    },
-    {
-      "ref": "P3.total",
-      "scale": 0.963
-    },
-    {
-      "ref": "P5.totals",
-      "scale": 0.871
-    },
-    {
-      "ref": "P5.axis",
-      "scale": 0.871
-    },
-    {
-      "ref": "P5b.thresholds",
-      "scale": 1
-    }
-  ],
   "productFrames": [
     {
       "slide": 1,
       "shot": "P1",
-      "displayedWidth": 936,
-      "naturalCssWidth": 948,
-      "scale": 0.987
-    },
-    {
-      "slide": 3,
-      "shot": "P2",
-      "displayedWidth": 946,
-      "naturalCssWidth": 1122,
-      "scale": 0.843
+      "scale": 1.267,
+      "aspectError": 0.025,
+      "windowFrames": 1,
+      "size": "750x936"
     },
     {
       "slide": 4,
-      "shot": "P8",
-      "displayedWidth": 492,
-      "naturalCssWidth": 574,
-      "scale": 0.857
+      "shot": "P11",
+      "scale": 1.832,
+      "aspectError": 0.241,
+      "windowFrames": 1,
+      "size": "1015x870"
     },
     {
       "slide": 5,
-      "shot": "P3",
-      "displayedWidth": 790,
-      "naturalCssWidth": 820,
-      "scale": 0.963
+      "shot": "P9",
+      "scale": 1.574,
+      "aspectError": 0.222,
+      "windowFrames": 1,
+      "size": "916x870"
     },
     {
       "slide": 6,
-      "shot": "P4",
-      "displayedWidth": 940,
-      "naturalCssWidth": 1122,
-      "scale": 0.838
-    },
-    {
-      "slide": 7,
-      "shot": "P6a",
-      "displayedWidth": 728,
-      "naturalCssWidth": 860,
-      "scale": 0.847
-    },
-    {
-      "slide": 7,
-      "shot": "P6b",
-      "displayedWidth": 728,
-      "naturalCssWidth": 860,
-      "scale": 0.847
-    },
-    {
-      "slide": 8,
       "shot": "P5",
-      "displayedWidth": 646,
-      "naturalCssWidth": 742,
-      "scale": 0.871
+      "scale": 1.333,
+      "aspectError": 0.196,
+      "windowFrames": 1,
+      "size": "989x870"
+    },
+    {
+      "slide": 7,
+      "shot": "P3",
+      "scale": 1.668,
+      "aspectError": 0.016,
+      "windowFrames": 1,
+      "size": "734x936"
     },
     {
       "slide": 8,
-      "shot": "P5b",
-      "displayedWidth": 344,
-      "naturalCssWidth": 344,
-      "scale": 1
+      "shot": "P4",
+      "scale": 1.422,
+      "aspectError": 0.166,
+      "windowFrames": 1,
+      "size": "816x870"
+    }
+  ],
+  "layout": [
+    {
+      "slide": "s01",
+      "name": "P1",
+      "scale": 1.267,
+      "clientW": 750,
+      "clientH": 936,
+      "appW": 750,
+      "marks": []
+    },
+    {
+      "slide": "s04",
+      "name": "P11",
+      "scale": 1.832,
+      "clientW": 1015,
+      "clientH": 870,
+      "appW": 1027,
+      "marks": [
+        {
+          "key": "email",
+          "n": 1,
+          "x": 70.8,
+          "y": 316.2,
+          "w": 858,
+          "h": 125.9,
+          "lineY": 379.1
+        },
+        {
+          "key": "messenger",
+          "n": 2,
+          "x": 70.8,
+          "y": 459.1,
+          "w": 842.6,
+          "h": 125.9,
+          "lineY": 522
+        },
+        {
+          "key": "reverse",
+          "n": 3,
+          "x": 70.8,
+          "y": 601.9,
+          "w": 842.6,
+          "h": 202.8,
+          "lineY": 703.3
+        }
+      ]
+    },
+    {
+      "slide": "s05",
+      "name": "P9",
+      "scale": 1.573,
+      "clientW": 916,
+      "clientH": 870,
+      "appW": 928,
+      "marks": [
+        {
+          "key": "first",
+          "n": 1,
+          "x": 37.6,
+          "y": 65.9,
+          "w": 840.4,
+          "h": 253.6,
+          "lineY": 192.7
+        },
+        {
+          "key": "second",
+          "n": 2,
+          "x": 37.6,
+          "y": 322.4,
+          "w": 840.4,
+          "h": 253.6,
+          "lineY": 449.2
+        },
+        {
+          "key": "sameNick",
+          "n": 3,
+          "x": 37.6,
+          "y": 578.8,
+          "w": 840.4,
+          "h": 253.6,
+          "lineY": 705.6
+        }
+      ]
+    },
+    {
+      "slide": "s06",
+      "name": "P5",
+      "scale": 1.332,
+      "clientW": 989,
+      "clientH": 870,
+      "appW": 1001,
+      "marks": [
+        {
+          "key": "cashTag",
+          "n": 1,
+          "x": 10.7,
+          "y": 93.3,
+          "w": 378.9,
+          "h": 44,
+          "lineY": 115.2
+        },
+        {
+          "key": "outTile",
+          "n": 2,
+          "x": 486.3,
+          "y": 291.1,
+          "w": 489,
+          "h": 153.9,
+          "lineY": 424.7
+        },
+        {
+          "key": "novStrip",
+          "n": 3,
+          "x": 49.3,
+          "y": 692.1,
+          "w": 890,
+          "h": 37.3,
+          "lineY": 710.8
+        }
+      ]
+    },
+    {
+      "slide": "s07",
+      "name": "P3",
+      "scale": 1.669,
+      "clientW": 734,
+      "clientH": 936,
+      "appW": 734,
+      "marks": [
+        {
+          "key": "official",
+          "n": 1,
+          "x": 37.1,
+          "y": 334.2,
+          "w": 660.3,
+          "h": 139.2,
+          "lineY": 403.7
+        },
+        {
+          "key": "synergy",
+          "n": 2,
+          "x": 37.1,
+          "y": 580.3,
+          "w": 660.3,
+          "h": 139.2,
+          "lineY": 649.9
+        },
+        {
+          "key": "total",
+          "n": 3,
+          "x": 37.1,
+          "y": 824.5,
+          "w": 660.3,
+          "h": 77.8,
+          "lineY": 863.4
+        }
+      ]
+    },
+    {
+      "slide": "s08",
+      "name": "P4",
+      "scale": 1.421,
+      "clientW": 816,
+      "clientH": 870,
+      "appW": 828,
+      "marks": [
+        {
+          "key": "exchange",
+          "n": 1,
+          "x": 36.1,
+          "y": 267,
+          "w": 743.7,
+          "h": 174.5,
+          "lineY": 354.3
+        },
+        {
+          "key": "kantor",
+          "n": 2,
+          "x": 36.1,
+          "y": 584,
+          "w": 743.7,
+          "h": 250,
+          "lineY": 709
+        }
+      ]
     }
   ],
   "issues": []

@@ -2,150 +2,132 @@
   "P1": {
     "file": "assets/shots/P1.png",
     "dsf": 2,
+    "own": true,
     "caption": "Nowa sprawa: jedno pole, typ rozpoznawany automatycznie",
     "frame": {
-      "w": 948,
-      "h": 1096.1
+      "w": 592,
+      "h": 739
     },
-    "boxes": {
-      "recognised": {
-        "x": 27,
-        "y": 478.1,
-        "w": 586.4,
-        "h": 52
-      }
-    }
+    "boxes": {}
   },
   "P2": {
     "file": "assets/shots/P2.png",
     "dsf": 2,
+    "own": false,
     "caption": "Wynik analizy: werdykt, liczniki, adresy przypisane osobie",
     "frame": {
       "w": 1122,
       "h": 652.5
     },
-    "boxes": {
-      "verdict": {
-        "x": 14,
-        "y": 14,
-        "w": 1094,
-        "h": 46
-      },
-      "counters": {
-        "x": 14,
-        "y": 72,
-        "w": 382,
-        "h": 120
-      },
-      "score": {
-        "x": 43,
-        "y": 296.5,
-        "w": 196,
-        "h": 40.5
-      },
-      "basis": {
-        "x": 469,
-        "y": 298.9,
-        "w": 486,
-        "h": 35.8
-      },
-      "table": {
-        "x": 29,
-        "y": 247,
-        "w": 1064,
-        "h": 376.5
-      }
-    }
+    "boxes": {}
   },
   "P3": {
     "file": "assets/shots/P3.png",
     "dsf": 2,
-    "caption": "Uzasadnienie oceny: każdy punkt z regułą, dowodem i etykietą",
+    "own": true,
+    "caption": "Uzasadnienie oceny: każdy punkt z regułą i oznaczeniem",
     "frame": {
-      "w": 820,
-      "h": 574
+      "w": 440,
+      "h": 560.8
     },
     "boxes": {
       "official": {
         "x": 27,
-        "y": 188,
-        "w": 766,
-        "h": 91.6
+        "y": 205,
+        "w": 386,
+        "h": 73.8,
+        "lineY": 241.9
       },
       "synergy": {
         "x": 27,
-        "y": 371.3,
-        "w": 766,
-        "h": 72.4
+        "y": 352.5,
+        "w": 386,
+        "h": 73.8,
+        "lineY": 389.4
       },
       "total": {
         "x": 27,
-        "y": 512,
-        "w": 766,
-        "h": 37
+        "y": 498.8,
+        "w": 386,
+        "h": 37,
+        "lineY": 517.3
       }
     }
   },
   "P4": {
     "file": "assets/shots/P4.png",
     "dsf": 2,
-    "caption": "Wykluczone z przypisania osobie: powód i źródło etykiety",
+    "own": false,
+    "caption": "Wykluczone z przypisania osobie",
     "frame": {
-      "w": 1122,
-      "h": 561
+      "w": 574,
+      "h": 612.1
     },
     "boxes": {
-      "table": {
-        "x": 29,
-        "y": 139.5,
-        "w": 1064,
-        "h": 392.5
+      "exchange": {
+        "x": 31,
+        "y": 193.5,
+        "w": 512,
+        "h": 111.5,
+        "lineY": 249.3
+      },
+      "kantor": {
+        "x": 31,
+        "y": 416.5,
+        "w": 512,
+        "h": 164.6,
+        "lineY": 498.8
       }
     }
   },
   "P5": {
     "file": "assets/shots/P5.png",
     "dsf": 2,
-    "caption": "Karta adresu TRON: sumy w USDT i złotych, oś dni",
+    "own": false,
+    "caption": "Karta adresu TRON: przesłanka wypłaty, sumy, oś dni",
     "frame": {
       "w": 742,
       "h": 653
     },
     "boxes": {
-      "totals": {
+      "cashTag": {
         "x": 14,
-        "y": 119,
-        "w": 714,
-        "h": 211
+        "y": 76,
+        "w": 272.4,
+        "h": 21,
+        "lineY": 86.5
       },
-      "axis": {
-        "x": 29,
-        "y": 385,
-        "w": 684,
-        "h": 191
+      "outTile": {
+        "x": 371,
+        "y": 224.5,
+        "w": 355,
+        "h": 103.5,
+        "lineY": 318.8
+      },
+      "novStrip": {
+        "x": 43,
+        "y": 525.5,
+        "w": 656,
+        "h": 16,
+        "lineY": 533.5
       }
     }
   },
   "P5b": {
     "file": "assets/shots/P5b.png",
     "dsf": 2,
+    "own": false,
     "caption": "Progi AML: art. 35 ust. 1 ustawy AML",
     "frame": {
       "w": 344,
       "h": 535
     },
-    "boxes": {
-      "thresholds": {
-        "x": 14,
-        "y": 24,
-        "w": 316,
-        "h": 497
-      }
-    }
+    "boxes": {}
   },
   "P6a": {
     "file": "assets/shots/P6a.png",
     "dsf": 2,
+    "own": false,
     "caption": "Raport: strona pierwsza",
     "frame": {
       "w": 860,
@@ -156,6 +138,7 @@
   "P6b": {
     "file": "assets/shots/P6b.png",
     "dsf": 2,
+    "own": false,
     "caption": "Raport: Powiązane adresy i Wskaźnik Pewności",
     "frame": {
       "w": 860,
@@ -166,6 +149,7 @@
   "P7": {
     "file": "assets/shots/P7.png",
     "dsf": 2,
+    "own": false,
     "caption": "Dziennik zapytań",
     "frame": {
       "w": 1122,
@@ -176,17 +160,77 @@
   "P8": {
     "file": "assets/shots/P8.png",
     "dsf": 2,
+    "own": false,
     "caption": "Zmiany od poprzedniego przebiegu",
     "frame": {
       "w": 574,
       "h": 236.8
     },
+    "boxes": {}
+  },
+  "P9": {
+    "file": "assets/shots/P9.png",
+    "dsf": 2,
+    "own": false,
+    "caption": "Konta, które opublikowały adres",
+    "frame": {
+      "w": 582,
+      "h": 553
+    },
     "boxes": {
-      "addressSwap": {
-        "x": 45,
-        "y": 93.8,
-        "w": 484,
-        "h": 67
+      "first": {
+        "x": 29,
+        "y": 47,
+        "w": 524,
+        "h": 151,
+        "lineY": 122.5
+      },
+      "second": {
+        "x": 29,
+        "y": 210,
+        "w": 524,
+        "h": 151,
+        "lineY": 285.5
+      },
+      "sameNick": {
+        "x": 29,
+        "y": 373,
+        "w": 524,
+        "h": 151,
+        "lineY": 448.5
+      }
+    }
+  },
+  "P11": {
+    "file": "assets/shots/P11.png",
+    "dsf": 2,
+    "own": false,
+    "caption": "Przeszukane źródła",
+    "frame": {
+      "w": 554,
+      "h": 475
+    },
+    "boxes": {
+      "email": {
+        "x": 43,
+        "y": 177,
+        "w": 459.7,
+        "h": 60,
+        "lineY": 207
+      },
+      "messenger": {
+        "x": 43,
+        "y": 255,
+        "w": 451.3,
+        "h": 60,
+        "lineY": 285
+      },
+      "reverse": {
+        "x": 43,
+        "y": 333,
+        "w": 451.3,
+        "h": 102,
+        "lineY": 384
       }
     }
   }

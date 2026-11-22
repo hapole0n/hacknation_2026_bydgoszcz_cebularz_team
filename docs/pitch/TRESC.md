@@ -1,131 +1,151 @@
-# KROPKA — prezentacja dla jury (treść slajdów)
+# KROPKA — prezentacja dla jury (treść slajdów, wersja 3)
 
-Język: polski. 10 slajdów, 16:9 (1920×1080). Dane w przykładach są syntetyczne (sprawa demonstracyjna „Jan Testowy”).
-Układ: siatka 12 kolumn (patrz prompt). Zrzuty P1–P8 opisane na końcu pliku.
+Język: polski. 10 slajdów (maksimum), 16:9 (1920×1080). Dane w przykładach są syntetyczne (sprawa demonstracyjna „Jan Testowy”).
+Styl: Win95 jak w poprzedniej wersji, wzorzec w `docs/pitch/win95/` (`deck.css`, `slides/*.html`). Zrzuty produktu stoją jako osobne okno produktu na pulpicie, obok okna prezentacji. Wzorzec: `win95/makieta.html`, `makieta-a.png` (slajd tekstowy) i `makieta-b.png` (slajd ze zrzutem).
+
+**Zasada czytelności — obowiązuje na każdym slajdzie:**
+- Jeden slajd to jedna myśl. Juror ma ją zrozumieć w 5 sekund.
+- Nagłówek ma najwyżej 7 słów (VT323, co najmniej 84 px).
+- Najwyżej 3 punkty po najwyżej 8 słów, tekst co najmniej 32 px.
+- Drobny druk (24 px) tylko na źródła i zastrzeżenia, najwyżej jedna linia na slajd.
+- Żadnych tabel ani akapitów.
+- Zrzut pokazuje tylko element, o którym mówi slajd: duży (skala 1,3–2,0) i wypełniający kolumnę. Numery 1–3 w szynie między oknami są tymi samymi numerami co punkty po lewej. Osobnej legendy nie ma.
+
+Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KROPKA pokazuje, KTO stoi za adresem, także za nielegalnym kantorem P2P, na podstawie Telegrama, e-maila i ogłoszeń.
 
 ---
 
-## 01 · Okładka (tło granatowe)
-- Eyebrow: HACKNATION 2026 · ZADANIE MF / KAS — OŁCyŚ
-- Tytuł (znak słowny, VT323): KROPKA
-- Podtytuł: Od śladu w sieci do adresu kryptowaluty — z oceną pewności, uzasadnieniem i raportem dla analityka KAS.
-- Autor: Oleh Kropyva · zespół cebularz · stolik 8f · Bydgoszcz, 22.11.2026
-- Wizual: P1 (okno „Nowa sprawa”), kolumny 7–12, może wychodzić poza prawą krawędź slajdu.
-- Notatka: Dzień dobry. Nazywam się Oleh Kropyva, zespół cebularz. KROPKA odpowiada na jedno pytanie analityka KAS: czyj jest dany adres kryptowaluty i skąd to wiemy.
+## 01 · Okładka
+- Układ: okno + produkt. Okno produktu to P1 (własny pasek tytułu), bez numerów.
+- Pasek tytułu okna: KROPKA — Osintowy Łapacz Cyfrowych Śladów
+- Pole sunken u góry (24 px): HackNation 2026 · Bydgoszcz · zadanie MF i KAS (OŁCyŚ)
+- Znak słowny (VT323, ok. 180 px): KROPKA
+- Linia z kursorem (VT323): > Kto stoi za adresem?
+- Jedno zdanie (32 px): Od Telegrama i e-maila do adresu kryptowaluty — dla analityka KAS.
+- Autor (muted): Oleh Kropyva · zespół cebularz · stolik 8f
+- Notatka: Dzień dobry, nazywam się Oleh Kropyva, zespół cebularz. KROPKA odpowiada na pytanie, którego nie rozwiąże sam blockchain: kto stoi za adresem kryptowaluty. Wystarczy nick, e-mail albo kanał na Telegramie.
 
 ## 02 · Problem
-- Eyebrow: PROBLEM
-- Nagłówek: Ślad w sieci jest. Powiązania z adresem kryptowaluty — brak.
-- Trzy karty z dużą liczbą (po 4 kolumny):
-  1. **20 tys.** — tyle osób rocznie wykazuje kryptowaluty w PIT-38, przy ok. 2,5 mln Polaków, którzy je mają. Źródło: Bankier.pl, za danymi MF.
-  2. **58%** — nielegalnego wolumenu kryptowalut w 2024 r. przeszło przez sieć TRON. Źródło: TRM Labs, 2025 Crypto Crime Report.
-  3. **30.09.2027** — pierwsza wymiana danych DAC8, wyłącznie o transakcjach przez dostawców usług. Źródło: Komisja Europejska.
-- Pas na dole (pełna szerokość): Portfele prywatne i transakcje P2P omijają pośredników. Dziś analityk łączy nick, e-mail czy ogłoszenie z adresem ręcznie — bez wspólnej skali oceny i bez zapisu, co sprawdzono.
-- Notatka: Według danych MF kryptowaluty w PIT-38 wykazuje rocznie około 20 tysięcy osób, a ma je około 2,5 miliona Polaków. 58% nielegalnego wolumenu w 2024 roku to sieć TRON. DAC8 da dane od 2027 roku, ale tylko tam, gdzie jest pośrednik — portfele prywatne i P2P zostają poza nim.
+- Układ: pełne okno, bez zrzutu.
+- Pasek tytułu okna: Problem
+- Nagłówek: Kantor P2P nie jest w rejestrze
+- Trzy pola sunken w rzędzie: duża liczba (VT323, ok. 150 px) + podpis (32 px):
+  1. **20 tys.** — wykazuje krypto w PIT-38, a ma je 2,5 mln
+  2. **58%** (kolor alert) — nielegalnego wolumenu w 2024 r.: sieć TRON
+  3. **2027** — DAC8: tylko pośrednicy, bez P2P
+- Pas na dole (ramka przerywana, 32 px): Ślad kantoru jest na Telegramie, w ogłoszeniu i w e-mailu.
+- Drobny druk (jedna linia): Źródła: Bankier.pl (dane MF), TRM Labs, Komisja Europejska.
+- Notatka: Kryptowaluty w PIT-38 wykazuje około 20 tysięcy osób rocznie, a ma je około 2,5 miliona Polaków. 58% nielegalnego wolumenu w 2024 roku przeszło przez sieć TRON. DAC8 da dane dopiero od 2027 roku i tylko od pośredników. Kantor P2P nie jest w żadnym rejestrze, ale ogłasza się na Telegramie i forach.
 
-## 03 · Rozwiązanie
-- Eyebrow: ROZWIĄZANIE
-- Nagłówek: Jedno pole, cztery kroki, jeden raport.
-- Kolumny 1–5: cztery kroki pionowo, numer + tytuł + jedno zdanie:
-  - 01 Identyfikatory — imię i nazwisko, e-mail, nick, komunikator lub adres; typ rozpoznawany automatycznie.
-  - 02 Przeszukanie — źródła otwarte (GitHub, Gravatar, ENS, Wayback, Telegram) i blockchain (Ethereum, Tron, Bitcoin).
-  - 03 Ocena — Wskaźnik Pewności 0–100 według załącznika KAS; fałszywe przypisania odrzucone z powodem.
-  - 04 Raport — PDF, HTML i JSON z podziałem FAKT · OBLICZENIE · WNIOSEK; monitoring zmian.
-- Kolumny 6–12: P2 z objaśnieniami: ① werdykt jednym zdaniem ② Wskaźnik Pewności ③ podstawa przypisania.
-- Notatka: Analityk wkleja to, co ma; system sam rozpoznaje typ danych, przeszukuje źródła i blockchain, liczy wskaźnik według załącznika KAS i składa raport. Każde zapytanie trafia do Dziennika zapytań.
+## 03 · Istota rozwiązania
+- Układ: pełne okno, dokładnie jak `win95/makieta-a.png`.
+- Pasek tytułu okna: Istota — kto, a nie dokąd
+- Nagłówek w dwóch liniach (VT323, ok. 104 px): Blockchain pokazuje: DOKĄD. / KROPKA pokazuje: KTO.
+- Dwa pola sunken obok siebie:
+  - Lewe: [ NARZĘDZIA BLOCKCHAIN ] / adres → przepływy / Odpowiadają, dokąd płyną środki z adresu. / (muted) np. Chainalysis Reactor, TRM, Arkham
+  - Prawe (zaznaczone granatową ramką): [ KROPKA ] / @Telegram · e-mail · ogłoszenie → osoba → adres / Odpowiada, kto stoi za adresem — także za kantorem P2P.
+- Pas na dole: Nie zastępujemy tych narzędzi: dajemy im adres i uzasadnienie, od których zaczyna się śledzenie.
+- Notatka: To jest sedno. Chainalysis, TRM czy Arkham pokazują, dokąd płyną pieniądze z adresu. KROPKA odpowiada wcześniej: kto za tym adresem stoi. Szukamy go tam, gdzie kantor naprawdę działa: na Telegramie, w ogłoszeniach i w e-mailach.
 
-## 04 · Scenariusz demonstracyjny
-- Eyebrow: SCENARIUSZ (DANE SYNTETYCZNE)
-- Nagłówek: Jan Testowy: od 3 identyfikatorów do 3 pewnych adresów.
-- Rząd liczb ze strzałkami (pełna szerokość): **3** identyfikatory → **13** dowodów → **10** adresów → **3** adresy ze wskaźnikiem 80–100.
-- Trzy karty (po 4 kolumny):
-  - 4 wykluczone — giełda Binance, kontrakt DEX, zbiórka, kantor; każdy z powodem i źródłem etykiety.
-  - 2 przesłanki wypłaty — 3 przelewy do kantoru USDT ↔ gotówka, łącznie ≈ 68 800 zł.
-  - Monitoring — zmiana adresu na stronie osoby wykryta przy kolejnej analizie, z powiadomieniem. Wizual w karcie: P8 (wycinek).
-- Notatka: Trzy identyfikatory dają trzynaście dowodów i dziesięć adresów; trzy mają bardzo wysoki wskaźnik. Cztery odrzucamy, ale kantor zostaje jako kontrahent: trzy przelewy na około 68,8 tys. zł. Przy kolejnej analizie system wykrywa zmianę adresu i powiadamia analityka.
+## 04 · Telegram i e-mail → adres
+- Układ: okno + produkt. Okno produktu to P11 z rysowaną ramką „KROPKA — Przeszukane źródła”.
+- Pasek tytułu okna: Źródła
+- Nagłówek: E-mail i @Telegram → adres
+- Punkty (numery = numery na zrzucie):
+  - [1] E-mail → GitHub, Gravatar, stopki wiadomości
+  - [2] @Telegram → kanały i ogłoszenia P2P
+  - [3] Adres → kto jeszcze go publikuje
+- Drobny druk: Telegram na żywo po ocenie prawnej; w demo dane syntetyczne.
+- Numery na P11: ① wiersz „Adres e-mail” ② wiersz „Komunikator (Telegram i inne)” ③ wiersz „kto jeszcze je publikuje”
+- Notatka: To nasza główna różnica. Z e-maila sprawdzamy commity na GitHubie, profil Gravatar i stopki wiadomości. Z identyfikatora komunikatora sprawdzamy kanały i ogłoszenia, a każdy znaleziony adres sprawdzamy odwrotnie. Każde zapytanie trafia do Dziennika zapytań.
 
-## 05 · Wskaźnik Pewności
-- Eyebrow: KRYTERIUM · WSKAŹNIK PEWNOŚCI
-- Nagłówek: Ocena 0–100 według załącznika KAS — każdy punkt z uzasadnieniem.
-- Kolumny 1–6: tabela przedziałów:
-  | Przedział | Ślad w źródle |
-  |---|---|
-  | 80–100 | oficjalny profil osoby |
-  | 60–79 | ogłoszenie, oferta P2P, stopka e-mail, rozliczenie w komunikatorze |
-  | 40–59 | dyskusja na forum |
-  | 10–39 | masowe komentarze, giveaway |
-  | 0 | giełda, zbiórka, mikser, kontrakt |
-  | +15 | co najmniej 2 niezależne źródła |
-  Pod tabelą: Reguły w pliku YAML (v1.1.0): wagi zmienia KAS bez programisty; wersja reguł trafia do każdego raportu.
-- Kolumny 7–12: P3 z objaśnieniami: ① +85 oficjalny profil [FAKT] ② +15 dwa niezależne źródła ③ suma 115 → 100.
-- Notatka: Oficjalny profil to 80–100, oferta P2P 60–79, forum 40–59, masowe komentarze 10–39, a giełdy, zbiórki, miksery i kontrakty dostają 0. Za dwa niezależne źródła jest +15. Każdy punkt widać w uzasadnieniu, z oznaczeniem, czy to fakt, czy obliczenie.
+## 05 · Kto stoi za adresem?
+- Układ: okno + produkt. Okno produktu to P9 z rysowaną ramką „KROPKA — Kto stoi za adresem?”.
+- Pasek tytułu okna: Szukanie odwrotne
+- Nagłówek: Masz adres? Szukamy, kto go publikuje
+- Punkty:
+  - [1] Konto, które opublikowało adres — z oceną
+  - [2] Inne adresy tego konta: sieć kantoru
+  - [3] Ten sam nick to nie ta sama osoba
+- Numery na P9: ① pierwsza karta konta (wskaźnik 90) ② druga karta (75) ③ karta „ten sam nick na innej platformie; możliwa inna osoba”
+- Notatka: Gdy analityk ma tylko adres, na przykład z przelewu, KROPKA szuka odwrotnie: kto ten adres publikuje i jakie inne adresy publikują te same konta. Tak od jednego ogłoszenia dochodzimy do całej sieci kantoru. Zbieżność nicków nie wystarcza i system to wprost oznacza.
 
-## 06 · Odrzucanie fałszywych przypisań
-- Eyebrow: KRYTERIUM · ODRZUCANIE FAŁSZYWYCH PRZYPISAŃ
-- Nagłówek: Giełdy, kontrakty i zbiórki odrzucamy — zawsze z powodem i źródłem.
-- Kolumny 1–5: pięć reguł (etykieta + jedno zdanie):
-  - GIEŁDA — etykiety z publicznych zbiorów i list Proof of Reserves
-  - KONTRAKT — w blockchainie zapisany kod programu, a nie portfel
-  - DEPOZYT — adres przekazuje środki dalej na giełdę
-  - ZBIÓRKA, PRZYKŁAD — publiczne listy i adresy techniczne
-  - INNA OSOBA — ten sam adres u wielu tożsamości: −20 pkt
-- Kolumny 6–12: P4.
-- Pas na dole: Test na 5 prawdziwych adresach publicznych (Binance, OKX, Uniswap, kontrakt USDT na TRON, adres zerowy): 5 z 5 wykluczonych z poprawnym powodem.
-- Notatka: Giełdy rozpoznajemy po publicznych etykietach, kontrakty po kodzie w blockchainie, adresy depozytowe po tym, że przekazują środki na giełdę. Sprawdziliśmy to na pięciu prawdziwych adresach — wszystkie wykluczone z poprawnym powodem.
+## 06 · Ślad gotówki — kantor P2P
+- Układ: okno + produkt, dokładnie jak `win95/makieta-b.png`. Okno produktu to P5 z rysowaną ramką „KROPKA — Karta adresu TEonzw…GZey”.
+- Pasek tytułu okna: Ślad gotówki — kantor P2P
+- Nagłówek: Od ogłoszenia do gotówki
+- Punkty:
+  - [1] Przesłanka wypłaty do gotówki — oznaczona automatycznie
+  - [2] 68 800 zł do kantoru USDT ↔ gotówka
+  - [3] Przelewy na osi dni, w złotych wg kursu NBP
+- Ramka przerywana: [ PROGI AML ] 1 000 · 10 000 · 15 000 EUR — przekroczone
+- Drobny druk: Dane demonstracyjne, kantor syntetyczny.
+- Numery na P5: ① etykieta „! PRZESŁANKA WYPŁATY DO GOTÓWKI” ② pole „DO USŁUGI WYPŁATY 68 800,35 zł” ③ wiersz listopada na osi dni
+- Notatka: Kantor zostawia ślad w blockchainie: wiele małych wpływów USDT i przelewy na adres z ogłoszenia „USDT za gotówkę”. Każdą transakcję wyceniamy w złotych kursem NBP i pilnujemy progów z art. 35 ustawy AML. Gdy kantor zmieni adres na kanale, monitoring to wykryje i powiadomi analityka.
 
-## 07 · Raport
-- Eyebrow: KRYTERIUM · PRZEJRZYSTOŚĆ RAPORTU
-- Nagłówek: Raport dla osoby bez wiedzy IT — fakt, obliczenie i wniosek osobno.
-- Kolumny 1–6:
-  - FAKT — to, co mówi źródło albo blockchain, z odnośnikiem i czasem pobrania
-  - OBLICZENIE — wynik reguły programu; da się go odtworzyć
-  - WNIOSEK — poziom pewności; wymaga weryfikacji przez człowieka
-  - potem 4 krótkie punkty: 12 sekcji · PDF, HTML i JSON z tymi samymi danymi / skrót SHA-256 danych i wersja reguł / decyzje analityka zapisane osobno, z komentarzem / Dziennik zapytań: kiedy, w jakiej sprawie, dokąd, z jakim wynikiem
-- Kolumny 7–12: P6a i P6b jako dwie nachodzące na siebie kartki raportu.
-- Notatka: Każde zdanie raportu ma etykietę FAKT, OBLICZENIE albo WNIOSEK. W raporcie jest skrót SHA-256 danych i wersja reguł, a decyzje analityka są zapisane osobno.
+## 07 · Wskaźnik Pewności
+- Układ: okno + produkt. Okno produktu to P3 (własny pasek tytułu), kadr wąski i skupiony.
+- Pasek tytułu okna: Wskaźnik Pewności
+- Nagłówek: Każdy punkt ma powód
+- Punkty:
+  - [1] +85 — adres na oficjalnym profilu
+  - [2] +15 — dwa niezależne źródła
+  - [3] Wynik 100: bardzo wysoki
+- Ramka przerywana (30 px): Skala z załącznika KAS: oferta P2P i komunikator 60–79, profil 80–100, giełda 0.
+- Numery na P3: ① `official` ② `synergy` ③ `total`
+- Notatka: Wskaźnik liczymy według przedziałów z załącznika KAS. Oferta P2P i rozliczenie w komunikatorze to 60 do 79 punktów, oficjalny profil 80 do 100. Za dwa niezależne źródła jest +15. Każdy punkt widać w uzasadnieniu, z oznaczeniem, czy to fakt, obliczenie, czy wniosek.
 
-## 08 · Ślad pieniędzy
-- Eyebrow: ŚLAD PIENIĘDZY
-- Nagłówek: Od adresu do gotówki: wycena NBP, progi AML, przelewy do kantoru.
-- Kolumny 1–8: P5 z objaśnieniami: ① sumy w USDT i złotych ② oś dni: wpływy i przelewy do kantoru ③ progi AML.
-- Kolumny 9–12: trzy fakty:
-  - Wycena w PLN — kurs średni NBP z dnia poprzedzającego transakcję (art. 11a ustawy o PIT)
-  - Progi AML — 1 000 / 10 000 / 15 000 EUR, pojedynczo i łącznie (art. 35 ust. 1 ustawy AML)
-  - Monitoring — ponowna analiza co 15 min, 1 h lub 24 h; porównanie przebiegów; powiadomienia
-- Notatka: Każdą transakcję wyceniamy w złotych kursem NBP z dnia poprzedzającego. System pilnuje progów z art. 35 ustawy AML, pojedynczo i łącznie, a monitoring powiadamia o zmianach.
+## 08 · Odrzucanie fałszywych przypisań
+- Układ: okno + produkt. Okno produktu to P4 z rysowaną ramką „KROPKA — Wykluczone z przypisania”.
+- Pasek tytułu okna: Odrzucanie przypisań
+- Nagłówek: Odrzucamy z powodem
+- Punkty:
+  - [1] Giełda — publiczna etykieta, 0 pkt
+  - [2] Kantor — usługa, nie osoba
+- Duża liczba (VT323, ok. 140 px): 5 z 5 + podpis (30 px): prawdziwych adresów wykluczonych poprawnie
+- Drobny druk: Binance, OKX, Uniswap, kontrakt USDT, adres zerowy.
+- Numery na P4: ① wiersz GIEŁDA ② wiersz KANTOR
+- Notatka: Giełdy rozpoznajemy po publicznych etykietach, kontrakty po kodzie w blockchainie. Kantor nie jest portfelem osoby, więc go nie przypisujemy, ale przelewy do niego zapisujemy jako przesłankę wypłaty. Na pięciu prawdziwych adresach publicznych test dał pięć na pięć.
 
-## 09 · Oryginalność i wdrożenie
-- Eyebrow: KRYTERIA · ORYGINALNOŚĆ I WDROŻENIE
-- Nagłówek: Punkt startowy dla analizy blockchain — gotowy do pracy w sieci KAS.
-- Kolumny 1–7: tabela porównania:
-  | | Analiza blockchain (np. Chainalysis Reactor, TRM, Arkham) | KROPKA |
-  |---|---|---|
-  | Pytanie | Dokąd płyną środki z adresu? | Czyj to adres i skąd to wiemy? |
-  | Wejście | adres, transakcja | nick, e-mail, komunikator, ogłoszenie |
-  | Ocena | etykiety i modele dostawcy | jawne reguły z załącznika KAS |
-  | Wdrożenie | licencja komercyjna | lokalnie, komponenty open source |
-- Kolumny 8–12: architektura (lista): monorepo — NestJS, Prisma, PostgreSQL, React / docker compose — jedna komenda, bez chmury / AI tylko lokalne (Ollama), domyślnie wyłączone / ruch wychodzący tylko do dozwolonych hostów, każde zapytanie w dzienniku / ponad 400 testów; każde wymaganie zadania ma test
-- Pas na dole: KROPKA nie zastępuje tych narzędzi — dostarcza im adres i uzasadnienie, od których zaczyna się śledzenie przepływów.
-- Notatka: Narzędzia takie jak Chainalysis Reactor, TRM czy Arkham odpowiadają, dokąd płyną środki. My odpowiadamy wcześniej: czyj to adres i skąd to wiemy — według jawnych reguł KAS. Całość działa lokalnie, bez chmury.
+## 09 · Raport i wdrożenie
+- Układ: pełne okno; po lewej pole sunken, po prawej okno potomne prezentacji „ARCHITEKTURA.TXT” (element prezentacji, nie zrzut). Oba na tę samą wysokość.
+- Pasek tytułu okna: Raport i wdrożenie
+- Nagłówek: Raport, który da się sprawdzić
+- Lewe pole, trzy wiersze (etykieta + 3–5 słów, 32 px):
+  - [FAKT] źródło, odnośnik, czas pobrania
+  - [OBLICZENIE] reguła — da się powtórzyć
+  - [WNIOSEK] ocena — sprawdza człowiek
+- ARCHITEKTURA.TXT (lista, pierwsza pozycja zaznaczona, 32 px):
+  - Lokalnie, bez chmury
+  - Każde zapytanie w dzienniku
+  - SHA-256 i wersja reguł w raporcie
+  - Ponad 400 testów
+- Notatka: Raport jest napisany dla osoby bez wiedzy IT: każde zdanie ma etykietę fakt, obliczenie albo wniosek. Skrót SHA-256 i wersja reguł pozwalają sprawdzić, że raport opisuje dokładnie te dane. Całość działa lokalnie w Dockerze, bez chmury.
 
-## 10 · Koniec (tło granatowe)
-- Nagłówek: Dziękuję za uwagę. Pytania?
-- Kolumny 1–7, „Co dalej”: 1 Pilotaż na zanonimizowanych sprawach KAS i strojenie wag / 2 Etykiety KAS: własne listy adresów i dane z wniosków do giełd / 3 Kolejne sieci i źródła — po ocenie prawnej / 4 Integracja z systemami KAS: logowanie, eksport do akt
-- Kolumny 8–12, karta kontaktowa: zdjęcie (assets/oleh.jpg — tylko jeśli plik istnieje), Oleh Kropyva · zespół cebularz · stolik 8f · mail@kropyva.com · github.com/hapole0n/hacknation_2026_bydgoszcz_cebularz_team + kod QR do repozytorium.
-- Notatka: Dalsze kroki: pilotaż, etykiety KAS, kolejne sieci po ocenie prawnej i integracja. Dziękuję — chętnie odpowiem na pytania.
+## 10 · Koniec
+- Układ: pełne okno jak w poprzedniej wersji (`win95/slides/dalej.html`), z mniejszą ilością tekstu.
+- Pasek tytułu okna: Koniec
+- Nagłówek (VT323, duży): Dziękuję za uwagę!
+- Linia z kursorem: Pytania?
+- CO DALEJ (lista, pierwsza pozycja zaznaczona, 32 px):
+  - [1] Pilotaż na sprawach KAS
+  - [2] Etykiety kantorów od KAS
+  - [3] Telegram na żywo po ocenie prawnej
+- Po prawej: OLEH.JPG (tylko jeśli plik istnieje) i KONTAKT: Oleh Kropyva · mail@kropyva.com · kod QR do repozytorium (pod kodem krótko: github.com/hapole0n).
+- Notatka: Dalsze kroki to pilotaż na zanonimizowanych sprawach, etykiety kantorów od KAS i Telegram na żywo po ocenie prawnej. Dziękuję, chętnie odpowiem na pytania.
 
 ---
 
-## Zrzuty dla prezentacji (P1–P8)
-Robione od nowa, nie z docs/screenshots: Playwright, deviceScaleFactor 2, czysta baza z samą sprawą demonstracyjną, wycinki przez `locator.screenshot()`.
-- P1 — okno „Nowa sprawa” z wpisanymi trzema identyfikatorami i listą rozpoznanych (samo okno, bez pulpitu i paska zadań).
-- P2 — wynik analizy: werdykt, liczniki i tabela „Adresy przypisane osobie”.
-- P3 — panel „Uzasadnienie oceny” dla adresu 0x8ae1…3A47 (od nagłówka do sumy).
-- P4 — tabela „Wykluczone z przypisania osobie”.
-- P5 — karta adresu TRON: nagłówek, cztery sumy, oś dni i początek listy transakcji; osobno ramka progów AML.
-- P6a, P6b — raport (widok HTML): pierwsza strona oraz sekcja „Powiązane adresy i Wskaźnik Pewności”.
-- P7 — Dziennik zapytań (rezerwowy).
-- P8 — „Zmiany od poprzedniego przebiegu” po „Demo: symuluj zmianę”.
+## Zrzuty dla prezentacji
+Robione przez `scripts/pitch/capture.mjs`: Playwright, deviceScaleFactor 2, czysta baza z samą sprawą demonstracyjną, `locator.screenshot()` lub `clip`.
+Każdy kadr jest **skupiony**: tylko element, o którym mówi slajd. Wolno ukryć elementy drugorzędne (kody reguł, przełączniki „Dowody”, „Rozbicie oceny”, adresy URL, linki). Nigdy nie wolno zmieniać liczb ani tekstów. Szerokość widoku dobieramy tak, żeby kadr wypełnił okno produktu w skali 1,3–2,0 (okładka: co najmniej 1,2).
+- P1 — okno „Nowa sprawa”: pasek tytułu, „> Wprowadź dane osoby”, pole z trzema identyfikatorami i lista rozpoznanych. Bez pól wyboru i linków na dole. Slajd 01.
+- P3 — „Uzasadnienie oceny” dla 0x8ae1…3A47 (wąski kadr, bez kodów reguł i przełączników „Dowody”). Slajd 07.
+- P4 — „Wykluczone z przypisania osobie” (wąski kadr). Slajd 08.
+- P5 — karta adresu TRON: adres, etykieta przesłanki, cztery sumy, oś dni. Slajd 06.
+- P9 (nowy) — „Demonstracja: kto stoi za adresem?” → „Konta, które opublikowały adres”: trzy pierwsze karty, bez adresów URL i przełączników. Slajd 05.
+- P11 (nowy) — „Przeszukane źródła” na stronie analizy: tabela źródło / czego szukano / wynik. Slajd 04.
+- Rezerwowe (bez zmian): P2, P5b, P6a, P6b, P7, P8.
 
 ## Źródła liczb ze slajdu 02
 - Bankier.pl: https://www.bankier.pl/wiadomosc/2-5-mln-Polakow-ma-krypto-a-20-tys-placi-podatki-Dlaczego-lepiej-to-zrobic-9123341.html

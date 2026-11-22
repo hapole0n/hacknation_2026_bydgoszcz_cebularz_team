@@ -8,276 +8,266 @@
 <body>
 
 <!-- 01 · Okładka -->
-<section class="slide dark" id="s01">
-  <p class="eyebrow">HackNation 2026 · zadanie MF / KAS — OŁCyŚ</p>
-  <h1 class="wordmark">KROPKA</h1>
-  <p class="cover-sub">Od śladu w sieci do adresu kryptowaluty — z oceną pewności, uzasadnieniem i raportem dla analityka KAS.</p>
-  <p class="cover-by"><b>Oleh Kropyva</b> · zespół cebularz · stolik 8f<br>Bydgoszcz, 22.11.2026</p>
-  <div class="bleed" data-bleed style="left:972px;top:80px;width:948px;height:888px">
-    <img data-shot="P1" src="assets/shots/P1.png" style="display:block;width:936px;margin:12px 0 0 12px" alt="Okno „Nowa sprawa” z trzema identyfikatorami">
+<section class="slide" id="s01">
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="KROPKA — Osintowy Łapacz Cyfrowych Śladów"></div>
+      <div class="body spread" style="padding:30px 36px 34px">
+        <div class="sunken"><p class="muted">HackNation 2026 · Bydgoszcz · zadanie MF i KAS (OŁCyŚ)</p></div>
+        <h1 class="hero" data-head>KROPKA</h1>
+        <div class="flow"><p class="vt" style="font-size:76px">&gt; Kto stoi za adresem?</p><div class="cursor"></div></div>
+        <p class="t32b">Od Telegrama i e-maila do adresu kryptowaluty — dla analityka KAS.</p>
+        <p class="m32">Oleh Kropyva · zespół cebularz · stolik 8f</p>
+      </div>
+    </div>
+    <div class="app own" data-shot="P1"><div class="client"><img src="assets/shots/P1.png" alt="Okno „Nowa sprawa”: trzy identyfikatory i lista rozpoznanych typów"></div></div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>01 / 10</span></footer>
+  <div class="task" data-n="1"></div>
 </section>
 
 <!-- 02 · Problem -->
 <section class="slide" id="s02">
-  <p class="eyebrow">Problem</p>
-  <h1 class="title">Ślad w sieci jest. Powiązania z adresem kryptowaluty — brak.</h1>
-  <div class="content">
-    <div style="grid-column:1/-1;display:grid;grid-template-rows:1fr 140px;row-gap:40px;height:100%">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:24px;min-height:0">
-        <article class="card stat">
-          <div class="label">PIT-38</div>
-          <div class="big">20 tys.</div>
-          <p class="t">Tyle osób rocznie wykazuje kryptowaluty w PIT-38 — przy ok. 2,5 mln Polaków, którzy je mają.</p>
-          <p class="src">Źródło: Bankier.pl, za danymi MF</p>
-        </article>
-        <article class="card stat">
-          <div class="label">Sieć TRON</div>
-          <div class="big">58%</div>
-          <p class="t">nielegalnego wolumenu kryptowalut w 2024 r. przeszło przez sieć TRON.</p>
-          <p class="src">Źródło: TRM Labs, 2025 Crypto Crime Report</p>
-        </article>
-        <article class="card stat">
-          <div class="label">DAC8</div>
-          <div class="big">2027</div>
-          <p class="t">30.09.2027 — pierwsza wymiana danych DAC8, wyłącznie o transakcjach przez dostawców usług.</p>
-          <p class="src">Źródło: Komisja Europejska</p>
-        </article>
+  <div class="desk">
+    <div class="win" style="width:1832px">
+      <div class="tbar" data-title="Problem"></div>
+      <div class="body" style="padding:30px 44px 34px">
+        <h2 class="head84" data-head>Kantor P2P nie jest w rejestrze</h2>
+        <div class="row" style="flex:1;min-height:0;gap:28px">
+          <div class="sunken panel"><p class="vt" style="font-size:150px">20 tys.</p><p class="t32">wykazuje krypto w <span style="white-space:nowrap">PIT-38</span>, a ma je 2,5 mln</p></div>
+          <div class="sunken panel"><p class="vt alert" style="font-size:150px">58%</p><p class="t32">nielegalnego wolumenu w 2024 r.: sieć TRON</p></div>
+          <div class="sunken panel"><p class="vt" style="font-size:150px">2027</p><p class="t32">DAC8: tylko pośrednicy, bez P2P</p></div>
+        </div>
+        <div class="dash"><p class="t32">Ślad kantoru jest na Telegramie, w ogłoszeniu i w e-mailu.</p></div>
+        <p class="muted">Źródła: Bankier.pl (dane MF), TRM Labs, Komisja Europejska.</p>
       </div>
-      <div class="band"><p>Portfele prywatne i transakcje P2P omijają pośredników. Dziś analityk łączy nick, e-mail czy ogłoszenie z adresem ręcznie — bez wspólnej skali oceny i bez zapisu, co sprawdzono.</p></div>
     </div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>02 / 10</span></footer>
+  <div class="task" data-n="2"></div>
 </section>
 
-<!-- 03 · Rozwiązanie -->
+<!-- 03 · Istota rozwiązania -->
 <section class="slide" id="s03">
-  <p class="eyebrow">Rozwiązanie</p>
-  <h1 class="title">Jedno pole, cztery kroki, jeden raport.</h1>
-  <div class="content">
-    <div class="steps" style="grid-column:1/span 5" data-col>
-      <div class="step"><span class="n">01</span><div><h3>Identyfikatory</h3><p>Nazwisko, e-mail, nick lub adres; typ rozpoznawany automatycznie.</p></div></div>
-      <div class="step"><span class="n">02</span><div><h3>Przeszukanie</h3><p>GitHub, Gravatar, ENS, Wayback, Telegram oraz blockchain: Ethereum, Tron, Bitcoin.</p></div></div>
-      <div class="step"><span class="n">03</span><div><h3>Ocena</h3><p>Wskaźnik 0–100 według załącznika KAS; fałszywe przypisania odrzucone z powodem.</p></div></div>
-      <div class="step"><span class="n">04</span><div><h3>Raport</h3><p>PDF, HTML i JSON z podziałem FAKT · OBLICZENIE · WNIOSEK; monitoring zmian.</p></div></div>
+  <div class="desk">
+    <div class="win" style="width:1832px">
+      <div class="tbar" data-title="Istota — kto, a nie dokąd"></div>
+      <div class="body" style="gap:34px;padding:34px 44px 40px">
+        <div data-head><p class="duo" style="color:#2a2a2a">Blockchain pokazuje: DOKĄD.</p><p class="duo" style="color:#1c2f7a">KROPKA pokazuje: KTO.</p></div>
+        <div class="row" style="flex:1;min-height:0">
+          <div class="sunken panel">
+            <p class="tag">[ NARZĘDZIA BLOCKCHAIN ]</p>
+            <p class="vt" style="font-size:64px;color:#2a2a2a">adres → przepływy</p>
+            <p class="t32">Odpowiadają, dokąd płyną środki z adresu.</p>
+            <p class="muted">np. Chainalysis Reactor, TRM, Arkham</p>
+          </div>
+          <div class="sunken panel sel">
+            <p class="tag">[ KROPKA ]</p>
+            <p class="vt" style="font-size:64px">@Telegram · e-mail · ogłoszenie → osoba → adres</p>
+            <p class="t32">Odpowiada, kto stoi za adresem — także za kantorem P2P.</p>
+          </div>
+        </div>
+        <div class="dash"><p class="t32">Nie zastępujemy tych narzędzi: dajemy im adres i uzasadnienie, od których zaczyna się śledzenie.</p></div>
+      </div>
     </div>
-    <figure class="exh lp" style="grid-column:6/span 7;height:668px;padding-left:40px" data-col>
-      <img data-shot="P2" src="assets/shots/P2.png" style="width:946px" alt="Wynik analizy">
-      <span class="co" data-ref="P2.verdict" data-ax="0" data-ay="0.5" data-dx="-28">1</span>
-      <span class="co" data-ref="P2.score" data-ax="0" data-ay="0.5" data-dx="-28">2</span>
-      <span class="co" data-ref="P2.basis" data-ax="0.9" data-ay="0.5">3</span>
-      <figcaption class="cap"><span class="ci"><span class="nb">1</span>werdykt jednym zdaniem</span> <span class="ci"><span class="nb">2</span>Wskaźnik Pewności</span> <span class="ci"><span class="nb">3</span>podstawa przypisania</span></figcaption>
-    </figure>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>03 / 10</span></footer>
+  <div class="task" data-n="3"></div>
 </section>
 
-<!-- 04 · Scenariusz demonstracyjny -->
+<!-- 04 · Telegram i e-mail → adres -->
 <section class="slide" id="s04">
-  <p class="eyebrow">Scenariusz (dane syntetyczne)</p>
-  <h1 class="title">Jan Testowy: od 3 identyfikatorów do 3 pewnych adresów.</h1>
-  <div class="content">
-    <div style="grid-column:1/-1;display:grid;grid-template-rows:190px 1fr;row-gap:28px;height:100%">
-      <div class="numrow">
-        <div><div class="big">3</div><p class="lab">identyfikatory</p></div><div class="arrow"><svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M0 6H22M17 1L22 6L17 11"/></svg></div>
-        <div><div class="big">13</div><p class="lab">dowodów</p></div><div class="arrow"><svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M0 6H22M17 1L22 6L17 11"/></svg></div>
-        <div><div class="big">10</div><p class="lab">adresów</p></div><div class="arrow"><svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M0 6H22M17 1L22 6L17 11"/></svg></div>
-        <div><div class="big">3</div><p class="lab">adresy ze wskaźnikiem 80–100</p></div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:24px;min-height:0">
-        <article class="card" data-col>
-          <div class="label alert">Wykluczone</div>
-          <div style="display:flex;gap:20px;align-items:flex-start;margin-top:8px"><span class="big alert">4</span><p>wykluczone — giełda Binance, kontrakt DEX, zbiórka, kantor; każde z powodem i źródłem etykiety.</p></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:auto"><span class="tag alert">[ GIEŁDA ]</span><span class="tag alert">[ KONTRAKT DEX ]</span><span class="tag alert">[ ZBIÓRKA ]</span><span class="tag alert">[ KANTOR ]</span></div>
-        </article>
-        <article class="card" data-col>
-          <div class="label alert">Przesłanki wypłaty</div>
-          <div style="display:flex;gap:20px;align-items:flex-start;margin-top:8px"><span class="big alert">2</span><p class="bal">przesłanki wypłaty — 3 przelewy do kantoru USDT <svg class="ico" viewBox="0 0 28 12" aria-hidden="true"><path d="M6 6H22M6 1L1 6L6 11M22 1L27 6L22 11"/></svg> gotówka.</p></div>
-          <div style="margin-top:auto"><div class="alert" style="font:600 54px/1.25 var(--mono)"><svg class="ico" viewBox="0 0 20 14" aria-hidden="true"><path d="M1 4.5C4 0.5 7 0.5 10 4.5S16 8.5 19 4.5M1 11.5C4 7.5 7 7.5 10 11.5S16 15.5 19 11.5"/></svg> 68 800 zł</div><p class="sm muted">łącznie, kurs średni NBP</p></div>
-        </article>
-        <article class="card" data-col>
-          <div class="label">Monitoring</div>
-          <p class="bal" style="font-size:30px;margin:8px 0 16px">Zmiana adresu na stronie osoby wykryta przy kolejnej analizie, z powiadomieniem.</p>
-          <div style="margin-top:auto;border:1px solid var(--line);border-radius:6px;overflow:hidden;line-height:0"><img data-shot="P8" src="assets/shots/P8.png" style="display:block;width:100%" alt="Zmiany od poprzedniego przebiegu"></div>
-        </article>
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="Źródła"></div>
+      <div class="body" style="padding:30px 36px 34px">
+        <h2 class="head84" data-head>E-mail i @Telegram → adres</h2>
+        <div class="pts">
+          <div class="pt"><b class="badge">1</b><span>E-mail → GitHub, Gravatar, stopki wiadomości</span></div>
+          <div class="pt"><b class="badge">2</b><span>@Telegram → kanały i ogłoszenia P2P</span></div>
+          <div class="pt"><b class="badge">3</b><span>Adres → kto jeszcze go publikuje</span></div>
+        </div>
+        <p class="muted">Telegram na żywo po ocenie prawnej; w demo dane syntetyczne.</p>
       </div>
     </div>
+    <div class="app drawn" data-shot="P11" data-title="KROPKA — Przeszukane źródła" data-marks="email messenger reverse"><div class="tbar"></div><div class="client"><img src="assets/shots/P11.png" alt="Przeszukane źródła: e-mail, komunikator, szukanie odwrotne"></div></div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>04 / 10</span></footer>
+  <div class="task" data-n="4"></div>
 </section>
 
-<!-- 05 · Wskaźnik Pewności -->
+<!-- 05 · Kto stoi za adresem? -->
 <section class="slide" id="s05">
-  <p class="eyebrow">Kryterium · Wskaźnik Pewności</p>
-  <h1 class="title">Ocena 0–100 według załącznika KAS — każdy punkt z uzasadnieniem.</h1>
-  <div class="content">
-    <div style="grid-column:1/span 6;display:grid;grid-template-rows:533px 1fr;row-gap:24px;height:100%" data-col>
-      <div class="tbl" style="grid-template-columns:160px 1fr;grid-template-rows:52px 77px 96px repeat(4,77px)">
-        <div class="h">Przedział</div><div class="h">Ślad w źródle</div>
-        <div class="mono k">80–100</div><div>oficjalny profil osoby</div>
-        <div class="mono k">60–79</div><div>ogłoszenie, oferta P2P, stopka <span style="white-space:nowrap">e-mail</span>, rozliczenie w komunikatorze</div>
-        <div class="mono k">40–59</div><div>dyskusja na forum</div>
-        <div class="mono k">10–39</div><div>masowe komentarze, giveaway</div>
-        <div class="mono k alert">0</div><div>giełda, zbiórka, mikser, kontrakt</div>
-        <div class="mono k">+15</div><div>co najmniej 2 niezależne źródła</div>
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="Szukanie odwrotne"></div>
+      <div class="body" style="padding:30px 36px 34px">
+        <h2 class="head84" data-head>Masz adres? Szukamy, kto go publikuje</h2>
+        <div class="pts">
+          <div class="pt"><b class="badge">1</b><span>Konto, które opublikowało adres — z oceną</span></div>
+          <div class="pt"><b class="badge">2</b><span>Inne adresy tego konta: sieć kantoru</span></div>
+          <div class="pt"><b class="badge">3</b><span>Ten sam nick to nie ta sama osoba</span></div>
+        </div>
       </div>
-      <div class="band" style="padding:0 28px"><p class="sm">Reguły w pliku YAML (v1.1.0): wagi zmienia KAS bez programisty; wersja reguł trafia do każdego raportu.</p></div>
     </div>
-    <figure class="exh lp" style="grid-column:7/span 6;justify-self:end;height:668px;padding-left:40px" data-col>
-      <img data-shot="P3" src="assets/shots/P3.png" style="width:790px" alt="Uzasadnienie oceny">
-      <span class="co" data-ref="P3.official" data-ax="0" data-ay="0" data-dy="26" data-dx="-27">1</span>
-      <span class="co" data-ref="P3.synergy" data-ax="0" data-ay="0" data-dy="26" data-dx="-27">2</span>
-      <span class="co" data-ref="P3.total" data-ax="0" data-ay="0.5" data-dx="-27">3</span>
-      <figcaption class="cap"><span class="ci"><span class="nb">1</span>+85 oficjalny profil [FAKT]</span> <span class="ci"><span class="nb">2</span>+15 dwa niezależne źródła</span> <span class="ci"><span class="nb">3</span>suma 115 <svg class="ico" viewBox="0 0 24 12" aria-hidden="true"><path d="M0 6H22M17 1L22 6L17 11"/></svg> 100</span></figcaption>
-    </figure>
+    <div class="app drawn" data-shot="P9" data-title="KROPKA — Kto stoi za adresem?" data-marks="first second sameNick"><div class="tbar"></div><div class="client"><img src="assets/shots/P9.png" alt="Konta, które opublikowały adres"></div></div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>05 / 10</span></footer>
+  <div class="task" data-n="5"></div>
 </section>
 
-<!-- 06 · Odrzucanie fałszywych przypisań -->
+<!-- 06 · Ślad gotówki -->
 <section class="slide" id="s06">
-  <p class="eyebrow">Kryterium · Odrzucanie fałszywych przypisań</p>
-  <h1 class="title">Giełdy, kontrakty i zbiórki odrzucamy — zawsze z powodem i źródłem.</h1>
-  <div class="content">
-    <div style="grid-column:1/-1;display:grid;grid-template-rows:1fr 110px;row-gap:24px;height:100%">
-      <div style="display:grid;grid-template-columns:706px 1fr;column-gap:24px;min-height:0">
-        <div class="steps" data-col>
-          <div><span class="tag alert">[ GIEŁDA ]</span><p>etykiety z publicznych zbiorów i list Proof of Reserves</p></div>
-          <div><span class="tag alert">[ KONTRAKT ]</span><p>w blockchainie zapisany kod programu, a nie portfel</p></div>
-          <div><span class="tag alert">[ DEPOZYT ]</span><p>adres przekazuje środki dalej na giełdę</p></div>
-          <div><span class="tag alert">[ ZBIÓRKA, PRZYKŁAD ]</span><p>publiczne listy i adresy techniczne</p></div>
-          <div><span class="tag" style="color:var(--accent)">[ INNA OSOBA ]</span><p>ten sam adres u wielu tożsamości: −20 pkt</p></div>
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="Ślad gotówki — kantor P2P"></div>
+      <div class="body" style="padding:30px 36px 34px">
+        <h2 class="head84" data-head>Od ogłoszenia do gotówki</h2>
+        <div class="pts" style="font-size:32px">
+          <div class="pt"><b class="badge">1</b><span>Przesłanka wypłaty do gotówki — oznaczona automatycznie</span></div>
+          <div class="pt"><b class="badge">2</b><span>68 800 zł do kantoru USDT ↔ gotówka</span></div>
+          <div class="pt"><b class="badge">3</b><span>Przelewy na osi dni, w złotych wg kursu NBP</span></div>
         </div>
-        <figure class="exh" style="justify-self:end;height:100%" data-col>
-          <img data-shot="P4" src="assets/shots/P4.png" style="width:940px" alt="Wykluczone z przypisania osobie">
-          <figcaption class="cap">Wykluczone z przypisania osobie: powód i źródło etykiety</figcaption>
-        </figure>
+        <div class="dash"><p class="tagred">[ PROGI AML ]</p><p class="t32">1 000 · 10 000 · 15 000 EUR — przekroczone</p></div>
+        <p class="muted">Dane demonstracyjne, kantor syntetyczny.</p>
       </div>
-      <div class="band navy" style="gap:32px"><span class="big" style="color:#fff;font-size:72px">5 z 5</span><p>Test na 5 prawdziwych adresach publicznych (Binance, OKX, Uniswap, kontrakt USDT na TRON, adres zerowy): wszystkie wykluczone z poprawnym powodem.</p></div>
     </div>
+    <div class="app drawn" data-shot="P5" data-title="KROPKA — Karta adresu TEonzw…GZey" data-marks="cashTag outTile novStrip"><div class="tbar"></div><div class="client"><img src="assets/shots/P5.png" alt="Karta adresu TRON: przesłanka wypłaty do gotówki, sumy i oś dni"></div></div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>06 / 10</span></footer>
+  <div class="task" data-n="6"></div>
 </section>
 
-<!-- 07 · Raport -->
+<!-- 07 · Wskaźnik Pewności -->
 <section class="slide" id="s07">
-  <p class="eyebrow">Kryterium · Przejrzystość raportu</p>
-  <h1 class="title">Raport dla osoby bez wiedzy IT — fakt, obliczenie i wniosek osobno.</h1>
-  <div class="content">
-    <div style="grid-column:1/span 6;display:flex;flex-direction:column;justify-content:space-between" data-col>
-      <div style="display:grid;grid-template-columns:230px 1fr;row-gap:44px;align-items:start">
-        <div><span class="chip">FAKT</span></div><p>to, co mówi źródło albo blockchain, z odnośnikiem i czasem pobrania</p>
-        <div><span class="chip">OBLICZENIE</span></div><p>wynik reguły programu; da się go odtworzyć</p>
-        <div><span class="chip">WNIOSEK</span></div><p>poziom pewności; wymaga weryfikacji przez człowieka</p>
-      </div>
-      <ul style="margin:0;padding:24px 0 0;list-style:none;border-top:2px solid var(--ink);display:flex;flex-direction:column;gap:12px">
-        <li>12 sekcji · PDF, HTML i JSON z tymi samymi danymi</li>
-        <li>skrót SHA-256 danych i wersja reguł</li>
-        <li>decyzje analityka zapisane osobno, z komentarzem</li>
-        <li>Dziennik zapytań: kiedy, w jakiej sprawie, dokąd, z jakim wynikiem</li>
-      </ul>
-    </div>
-    <div style="grid-column:7/span 6;position:relative" data-col>
-      <figure class="exh" style="position:absolute;left:0;top:0;padding:0;overflow:hidden;width:730px"><img data-shot="P6a" src="assets/shots/P6a.png" style="width:728px" alt="Raport, strona pierwsza"></figure>
-      <figure class="exh" style="position:absolute;left:122px;top:118px;padding:0;overflow:hidden;width:730px"><img data-shot="P6b" src="assets/shots/P6b.png" style="width:728px" alt="Raport, Powiązane adresy i Wskaźnik Pewności"></figure>
-      <p class="cap" style="position:absolute;left:122px;top:634px;width:730px;padding:0">Raport (widok HTML): strona pierwsza i sekcja 3</p>
-    </div>
-  </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>07 / 10</span></footer>
-</section>
-
-<!-- 08 · Ślad pieniędzy -->
-<section class="slide" id="s08">
-  <p class="eyebrow">Ślad pieniędzy</p>
-  <h1 class="title">Od adresu do gotówki: wycena NBP, progi AML, przelewy do kantoru.</h1>
-  <div class="content">
-    <div style="grid-column:1/span 8;display:flex;gap:24px;align-items:stretch" data-col>
-      <figure class="exh lp" style="padding-left:40px;height:668px;flex:none;width:700px">
-        <img data-shot="P5" src="assets/shots/P5.png" style="width:646px" alt="Karta adresu TRON">
-        <span class="co" data-ref="P5.totals" data-ax="0" data-ay="0.5" data-dx="-26">1</span>
-        <span class="co" data-ref="P5.axis" data-ax="0" data-ay="0.5" data-dx="-26">2</span>
-        <figcaption class="cap"><span class="ci"><span class="nb">1</span>sumy w USDT i złotych</span> <span class="ci"><span class="nb">2</span>oś dni: wpływy i przelewy do kantoru</span></figcaption>
-      </figure>
-      <figure class="exh lp" style="padding-left:40px;height:668px;flex:none;width:398px;display:flex;flex-direction:column">
-        <img data-shot="P5b" src="assets/shots/P5b.png" style="width:344px" alt="Progi AML">
-        <span class="co" data-ref="P5b.thresholds" data-ax="0" data-ay="0.5" data-dx="-26">3</span>
-        <figcaption class="cap" style="margin-top:auto"><span class="nb">3</span>progi AML, art. 35 ust. 1</figcaption>
-      </figure>
-    </div>
-    <div style="grid-column:9/span 4;display:flex;flex-direction:column;gap:24px" data-col>
-      <article class="card" style="flex:1;background:var(--tint);border:0"><div class="label">Wycena w PLN</div><p>kurs średni NBP z dnia poprzedzającego transakcję (art. 11a ustawy o PIT)</p></article>
-      <article class="card" style="flex:1;background:var(--tint);border:0"><div class="label">Progi AML</div><p>1 000 / 10 000 / 15 000 EUR, pojedynczo i łącznie (art. 35 ust. 1 ustawy AML)</p></article>
-      <article class="card" style="flex:1;background:var(--tint);border:0"><div class="label">Monitoring</div><p class="bal">ponowna analiza co 15 min, 1 h lub 24 h; porównanie przebiegów; powiadomienia</p></article>
-    </div>
-  </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>08 / 10</span></footer>
-</section>
-
-<!-- 09 · Oryginalność i wdrożenie -->
-<section class="slide" id="s09">
-  <p class="eyebrow">Kryteria · Oryginalność i wdrożenie</p>
-  <h1 class="title">Punkt startowy dla analizy blockchain — gotowy do pracy w sieci KAS.</h1>
-  <div class="content">
-    <div style="grid-column:1/-1;display:grid;grid-template-rows:1fr 100px;row-gap:24px;height:100%">
-      <div style="display:grid;grid-template-columns:998px 1fr;column-gap:24px;min-height:0">
-        <div class="tbl" style="grid-template-columns:180px 1fr 1fr;grid-template-rows:auto repeat(4,1fr)" data-col>
-          <div class="h"></div><div class="h" style="text-transform:none;font-size:24px">Analiza blockchain (np. Chainalysis Reactor, TRM, Arkham)</div><div class="h" style="color:var(--accent)">KROPKA</div>
-          <div class="k">Pytanie</div><div>Dokąd płyną środki z adresu?</div><div class="k" style="color:var(--accent)">Czyj to adres i skąd to wiemy?</div>
-          <div class="k">Wejście</div><div>adres, transakcja</div><div class="k" style="color:var(--accent)">nick, e-mail, komunikator, ogłoszenie</div>
-          <div class="k">Ocena</div><div>etykiety i modele dostawcy</div><div class="k" style="color:var(--accent)">jawne reguły z załącznika KAS</div>
-          <div class="k">Wdrożenie</div><div>licencja komercyjna</div><div class="k" style="color:var(--accent)">lokalnie, komponenty open source</div>
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="Wskaźnik Pewności"></div>
+      <div class="body" style="padding:30px 36px 34px">
+        <h2 class="head84" data-head>Każdy punkt ma powód</h2>
+        <div class="pts">
+          <div class="pt"><b class="badge">1</b><span>+85 — adres na oficjalnym profilu</span></div>
+          <div class="pt"><b class="badge">2</b><span>+15 — dwa niezależne źródła</span></div>
+          <div class="pt"><b class="badge">3</b><span>Wynik 100: bardzo wysoki</span></div>
         </div>
-        <article class="card" style="background:var(--tint);border:0" data-col>
-          <div class="label">Architektura</div>
-          <ul style="margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;justify-content:space-between;flex:1;gap:8px">
-            <li>monorepo — NestJS, Prisma, PostgreSQL, React</li>
-            <li>docker compose — jedna komenda, bez chmury</li>
-            <li>AI tylko lokalne (Ollama), domyślnie wyłączone</li>
-            <li>ruch wychodzący tylko do dozwolonych hostów, każde zapytanie w dzienniku</li>
-            <li>ponad 400 testów; każde wymaganie zadania ma test</li>
-          </ul>
-        </article>
+        <div class="dash"><p class="t32" style="font-size:36px">Skala z załącznika KAS: oferta P2P i komunikator 60–79, profil 80–100, giełda 0.</p></div>
       </div>
-      <div class="band navy"><p>KROPKA nie zastępuje tych narzędzi — dostarcza im adres i uzasadnienie, od których zaczyna się śledzenie przepływów.</p></div>
+    </div>
+    <div class="app own" data-shot="P3" data-marks="official synergy total"><div class="client"><img src="assets/shots/P3.png" alt="Uzasadnienie oceny: +85, +15, wynik 100"></div></div>
+  </div>
+  <div class="task" data-n="7"></div>
+</section>
+
+<!-- 08 · Odrzucanie fałszywych przypisań -->
+<section class="slide" id="s08">
+  <div class="desk rail">
+    <div class="win left">
+      <div class="tbar" data-title="Odrzucanie przypisań"></div>
+      <div class="body" style="padding:30px 36px 34px">
+        <h2 class="head84" data-head>Odrzucamy z powodem</h2>
+        <div class="pts">
+          <div class="pt"><b class="badge">1</b><span>Giełda — publiczna etykieta, 0 pkt</span></div>
+          <div class="pt"><b class="badge">2</b><span>Kantor — usługa, nie osoba</span></div>
+        </div>
+        <div class="sunken" style="padding:18px 28px"><p class="vt" style="font-size:140px">5 z 5</p><p class="t32">prawdziwych adresów wykluczonych poprawnie</p></div>
+        <p class="muted">Binance, OKX, Uniswap, kontrakt USDT, adres zerowy.</p>
+      </div>
+    </div>
+    <div class="app drawn" data-shot="P4" data-title="KROPKA — Wykluczone z przypisania" data-marks="exchange kantor"><div class="tbar"></div><div class="client"><img src="assets/shots/P4.png" alt="Wykluczone z przypisania osobie: giełda i kantor"></div></div>
+  </div>
+  <div class="task" data-n="8"></div>
+</section>
+
+<!-- 09 · Raport i wdrożenie -->
+<section class="slide" id="s09">
+  <div class="desk">
+    <div class="win" style="width:1832px">
+      <div class="tbar" data-title="Raport i wdrożenie"></div>
+      <div class="body" style="padding:30px 44px 40px">
+        <h2 class="head84" data-head>Raport, który da się sprawdzić</h2>
+        <div class="row" style="flex:1;min-height:0;gap:40px">
+          <div class="sunken" style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-evenly;padding:30px 40px">
+            <div><p class="tag">[ FAKT ]</p><p class="t32" data-pt style="font-size:36px">źródło, odnośnik, czas pobrania</p></div>
+            <div><p class="tag">[ OBLICZENIE ]</p><p class="t32" data-pt style="font-size:36px">reguła — da się powtórzyć</p></div>
+            <div><p class="tag">[ WNIOSEK ]</p><p class="t32" data-pt style="font-size:36px">ocena — sprawdza człowiek</p></div>
+          </div>
+          <div class="child" style="flex:1;min-width:0">
+            <div class="ctb"><p class="ctt">ARCHITEKTURA.TXT</p></div>
+            <div class="list" data-list="4">
+              <p class="itemsel">Lokalnie, bez chmury</p>
+              <p class="item">Każde zapytanie w dzienniku</p>
+              <p class="item">SHA-256 i wersja reguł w raporcie</p>
+              <p class="item">Ponad 400 testów</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>09 / 10</span></footer>
+  <div class="task" data-n="9"></div>
 </section>
 
 <!-- 10 · Koniec -->
-<section class="slide dark" id="s10">
-  <p class="eyebrow">Co dalej · kontakt</p>
-  <h1 class="title">Dziękuję za uwagę. Pytania?</h1>
-  <div class="content">
-    <div style="grid-column:1/span 7;display:grid;grid-template-rows:repeat(4,1fr)" data-col>
-      <div class="row"><span class="n">1</span><p>Pilotaż na zanonimizowanych sprawach KAS i strojenie wag</p></div>
-      <div class="row"><span class="n">2</span><p>Etykiety KAS: własne listy adresów i dane z wniosków do giełd</p></div>
-      <div class="row"><span class="n">3</span><p>Kolejne sieci i źródła — po ocenie prawnej</p></div>
-      <div class="row"><span class="n">4</span><p>Integracja z systemami KAS: logowanie, eksport do akt</p></div>
+<section class="slide" id="s10">
+  <div class="desk">
+    <div class="win" style="width:1832px">
+      <div class="tbar" data-title="Koniec"></div>
+      <div class="body" style="padding:30px 44px 40px">
+        <div class="row" style="flex:1;min-height:0;gap:36px">
+          <div style="width:780px;flex:none;display:flex;flex-direction:column;justify-content:space-between;gap:22px">
+            <h2 class="vt" data-head style="font-size:150px;line-height:0.88">Dziękuję<br>za uwagę!</h2>
+            <div class="flow"><p class="vt" style="font-size:96px">Pytania?</p><div class="cursor"></div></div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <p class="tag">CO DALEJ</p>
+              <div class="list" data-list="3" style="flex:none;height:300px">
+                <p class="itemsel">[1] Pilotaż na sprawach KAS</p>
+                <p class="item">[2] Etykiety kantorów od KAS</p>
+                <p class="item">[3] Telegram na żywo po ocenie prawnej</p>
+              </div>
+            </div>
+          </div>
+          <div class="child" data-photo-box style="width:460px;flex:none">
+            <div class="ctb"><p class="ctt">OLEH.JPG</p></div>
+            <div style="flex:1;min-height:0"><img data-photo src="assets/oleh.jpg" alt="Oleh Kropyva" style="display:block;width:100%;height:100%;object-fit:cover;object-position:50% 22%"></div>
+          </div>
+          <div class="child" style="flex:1;min-width:0">
+            <div class="ctb"><p class="ctt">KONTAKT</p></div>
+            <div class="sunken" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:24px 28px">
+              <div><p class="t32b">Oleh Kropyva</p><p class="t32">mail@kropyva.com</p></div>
+              <img src="assets/qr.svg" alt="Kod QR: repozytorium projektu" style="display:block;width:250px;height:250px">
+              <p class="muted">github.com/hapole0n</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <article class="card" style="grid-column:8/span 5;padding:28px 32px;justify-content:space-between" data-col>
-      <div style="display:flex;gap:28px;align-items:flex-start">
-        <img class="photo" data-photo src="assets/oleh.jpg" alt="Oleh Kropyva">
-        <div><p style="font-weight:600">Oleh Kropyva</p><p class="sm muted">zespół cebularz<br>stolik 8f</p><p class="sm mono" style="margin-top:12px;font-size:24px">mail@kropyva.com</p></div>
-      </div>
-      <div style="display:flex;gap:28px;align-items:center">
-        <img class="qr" src="assets/qr.svg" alt="Kod QR: repozytorium projektu">
-        <p class="mono" style="font-size:22px;line-height:1.4;overflow-wrap:normal;text-wrap:wrap">github.com/<wbr>hapole0n/<wbr>hacknation_<wbr>2026_<wbr>bydgoszcz_<wbr>cebularz_<wbr>team</p>
-      </div>
-    </article>
   </div>
-  <footer class="foot"><span><b class="wm">KROPKA</b> · HackNation 2026 · zespół cebularz</span><span>10 / 10</span></footer>
+  <div class="task" data-n="10"></div>
 </section>
 
 <script>
-// Polish typography: a one-letter word stays with the next word, and a dash stays with the previous one.
+// The chrome of the windows and the task bar are built here (the same on every slide); the screenshot windows and the annotations are laid out by `pnpm pitch`
+// (scripts/pitch/build.mjs) from docs/pitch/assets/shots.json. Triangles and arrows are drawn: the deck's fonts have no such glyphs.
+const TRI_D = '<svg class="tri" viewBox="0 0 16 12"><path d="M0 0H16L8 12Z"/></svg>';
+const TRI_U = '<svg class="tri" viewBox="0 0 16 12"><path d="M0 12H16L8 0Z"/></svg>';
+const ARROW = '<svg class="g" viewBox="0 0 24 12"><path d="M0 6H22M16 1L22 6L16 11"/></svg>';
+const DOUBLE = '<svg class="g" viewBox="0 0 28 12"><path d="M5 6H23M6 1L1 6L6 11M22 1L27 6L22 11"/></svg>';
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tbl > div').forEach((c) => { if (c.textContent.trim()) c.innerHTML = `<span style="display:block;text-wrap:balance">${c.innerHTML}</span>`; });
+  document.querySelectorAll('.tbar').forEach((bar) => {
+    const title = bar.dataset.title ?? bar.closest('.app')?.dataset.title ?? '';
+    bar.innerHTML = `<div class="btn"><p class="btxt">—</p></div><p class="ttl"></p><div class="btn">${TRI_D}</div><div class="btn">${TRI_U}</div>`;
+    bar.querySelector('.ttl').textContent = title;
+  });
+  document.querySelectorAll('.task').forEach((task) => {
+    const n = Number(task.dataset.n);
+    const blocks = Array.from({ length: 10 }, (_, i) => `<div class="${i < n ? 'on' : 'off'}"></div>`).join('');
+    task.innerHTML = `<div class="tbtn"><p class="tbt">KROPKA</p></div><div class="tbtn"><p class="tbt">HackNation 2026</p></div><div class="tbtn"><p class="tbt">cebularz</p></div><div class="tray">${blocks}<p class="pg">${String(n).padStart(2, '0')}/10</p></div>`;
+  });
+  // Polish typography (a one-letter word stays with the next word, a dash with the previous one) and the drawn arrows
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-    if (n.parentElement.closest('script,style')) continue;
-    n.textContent = n.textContent.replace(/(^|\s)([zwiaouZWIAOU\d])\s+/g, '$1$2\u00a0').replace(/\b(art|ust|ok|pkt|nr)\.\s+/g, '$1.\u00a0').replace(/\s+—/g, '\u00a0—');
+  const nodes = [];
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) if (!n.parentElement.closest('script,style')) nodes.push(n);
+  for (const n of nodes) {
+    n.textContent = n.textContent.replace(/(^|\s)([zwiaouZWIAOU\d])\s+/g, '$1$2 ').replace(/\s+—/g, ' —');
+    if (/[→↔]/.test(n.textContent)) {
+      const holder = document.createElement('span');
+      holder.innerHTML = n.textContent.replace(/↔/g, DOUBLE).replace(/→/g, ARROW);
+      n.replaceWith(...holder.childNodes);
+    }
   }
 });
 </script>

@@ -21,7 +21,6 @@ const REVIEWED = {
   'caniuse-lite': 'CC-BY-4.0 (wymaga uznania autorstwa). Dane przeglądarek z caniuse.com © Alexis Deveria i współautorzy, https://creativecommons.org/licenses/by/4.0/ — używane tylko przy budowaniu (browserslist), niezmienione.',
   '@fontsource/ibm-plex-mono': 'OFL-1.1 — czcionka interfejsu, patrz „Czcionki”.',
   '@fontsource/vt323': 'OFL-1.1 — czcionka nagłówków interfejsu, patrz „Czcionki”.',
-  '@fontsource/ibm-plex-sans': 'OFL-1.1 — czcionka prezentacji dla jury (docs/pitch), patrz „Czcionki”.',
 };
 const needsReview = /MPL|EPL|CC-BY|OFL|LGPL|CDDL/i;
 const forbidden = /AGPL|(^|[^L])GPL|SSPL|BUSL|UNKNOWN|UNLICENSED|Commercial|SEE LICENSE/i;
@@ -46,7 +45,6 @@ const webFont = (name) => {
 };
 webFont('@fontsource/ibm-plex-mono');
 webFont('@fontsource/vt323');
-webFont('@fontsource/ibm-plex-sans');
 
 // Label sets and data: the headers are required by LabelService, so the table is complete by construction.
 const labelDir = root('config/labels');
@@ -94,9 +92,8 @@ Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SI
 
 | Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
 |---|---|---|---|
-| IBM Plex Mono (\`@fontsource/ibm-plex-mono\`; pliki \`apps/api/assets/fonts/ibm-plex-mono/*.woff\`) | SIL OFL-1.1 | ${plexCopyright} | cały interfejs i tekst raportu PDF |
-| VT323 (\`@fontsource/vt323\`; plik \`apps/api/assets/fonts/vt323/VT323-Regular.ttf\`) | SIL OFL-1.1 | ${vtCopyright} | duże nagłówki interfejsu i raportu PDF, znak słowny w prezentacji |
-| IBM Plex Sans (\`@fontsource/ibm-plex-sans\`) | SIL OFL-1.1 | IBM Corp. (patrz LICENSE w pakiecie) | tekst prezentacji dla jury (\`docs/pitch\`); IBM Plex Mono z interfejsu służy tam do etykiet i liczb |
+| IBM Plex Mono (\`@fontsource/ibm-plex-mono\`; pliki \`apps/api/assets/fonts/ibm-plex-mono/*.woff\`) | SIL OFL-1.1 | ${plexCopyright} | cały interfejs, tekst raportu PDF i prezentacji (\`docs/pitch\`) |
+| VT323 (\`@fontsource/vt323\`; plik \`apps/api/assets/fonts/vt323/VT323-Regular.ttf\`) | SIL OFL-1.1 | ${vtCopyright} | duże nagłówki interfejsu i raportu PDF, nagłówki prezentacji |
 
 ## Zbiory danych i etykiet
 

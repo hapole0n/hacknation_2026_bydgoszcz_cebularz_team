@@ -4,43 +4,43 @@ Plik generowany przez `pnpm pitch` z `TRESC.md` (pole „Notatka” każdego sla
 
 ## 01 · Okładka
 
-Dzień dobry. Nazywam się Oleh Kropyva, zespół cebularz. KROPKA odpowiada na jedno pytanie analityka KAS: czyj jest dany adres kryptowaluty i skąd to wiemy.
+Dzień dobry, nazywam się Oleh Kropyva, zespół cebularz. KROPKA odpowiada na pytanie, którego nie rozwiąże sam blockchain: kto stoi za adresem kryptowaluty. Wystarczy nick, e-mail albo kanał na Telegramie.
 
 ## 02 · Problem
 
-Według danych MF kryptowaluty w PIT-38 wykazuje rocznie około 20 tysięcy osób, a ma je około 2,5 miliona Polaków. 58% nielegalnego wolumenu w 2024 roku to sieć TRON. DAC8 da dane od 2027 roku, ale tylko tam, gdzie jest pośrednik — portfele prywatne i P2P zostają poza nim.
+Kryptowaluty w PIT-38 wykazuje około 20 tysięcy osób rocznie, a ma je około 2,5 miliona Polaków. 58% nielegalnego wolumenu w 2024 roku przeszło przez sieć TRON. DAC8 da dane dopiero od 2027 roku i tylko od pośredników. Kantor P2P nie jest w żadnym rejestrze, ale ogłasza się na Telegramie i forach.
 
-## 03 · Rozwiązanie
+## 03 · Istota rozwiązania
 
-Analityk wkleja to, co ma; system sam rozpoznaje typ danych, przeszukuje źródła i blockchain, liczy wskaźnik według załącznika KAS i składa raport. Każde zapytanie trafia do Dziennika zapytań.
+To jest sedno. Chainalysis, TRM czy Arkham pokazują, dokąd płyną pieniądze z adresu. KROPKA odpowiada wcześniej: kto za tym adresem stoi. Szukamy go tam, gdzie kantor naprawdę działa: na Telegramie, w ogłoszeniach i w e-mailach.
 
-## 04 · Scenariusz demonstracyjny
+## 04 · Telegram i e-mail → adres
 
-Trzy identyfikatory dają trzynaście dowodów i dziesięć adresów; trzy mają bardzo wysoki wskaźnik. Cztery odrzucamy, ale kantor zostaje jako kontrahent: trzy przelewy na około 68,8 tys. zł. Przy kolejnej analizie system wykrywa zmianę adresu i powiadamia analityka.
+To nasza główna różnica. Z e-maila sprawdzamy commity na GitHubie, profil Gravatar i stopki wiadomości. Z identyfikatora komunikatora sprawdzamy kanały i ogłoszenia, a każdy znaleziony adres sprawdzamy odwrotnie. Każde zapytanie trafia do Dziennika zapytań.
 
-## 05 · Wskaźnik Pewności
+## 05 · Kto stoi za adresem?
 
-Oficjalny profil to 80–100, oferta P2P 60–79, forum 40–59, masowe komentarze 10–39, a giełdy, zbiórki, miksery i kontrakty dostają 0. Za dwa niezależne źródła jest +15. Każdy punkt widać w uzasadnieniu, z oznaczeniem, czy to fakt, czy obliczenie.
+Gdy analityk ma tylko adres, na przykład z przelewu, KROPKA szuka odwrotnie: kto ten adres publikuje i jakie inne adresy publikują te same konta. Tak od jednego ogłoszenia dochodzimy do całej sieci kantoru. Zbieżność nicków nie wystarcza i system to wprost oznacza.
 
-## 06 · Odrzucanie fałszywych przypisań
+## 06 · Ślad gotówki — kantor P2P
 
-Giełdy rozpoznajemy po publicznych etykietach, kontrakty po kodzie w blockchainie, adresy depozytowe po tym, że przekazują środki na giełdę. Sprawdziliśmy to na pięciu prawdziwych adresach — wszystkie wykluczone z poprawnym powodem.
+Kantor zostawia ślad w blockchainie: wiele małych wpływów USDT i przelewy na adres z ogłoszenia „USDT za gotówkę”. Każdą transakcję wyceniamy w złotych kursem NBP i pilnujemy progów z art. 35 ustawy AML. Gdy kantor zmieni adres na kanale, monitoring to wykryje i powiadomi analityka.
 
-## 07 · Raport
+## 07 · Wskaźnik Pewności
 
-Każde zdanie raportu ma etykietę FAKT, OBLICZENIE albo WNIOSEK. W raporcie jest skrót SHA-256 danych i wersja reguł, a decyzje analityka są zapisane osobno.
+Wskaźnik liczymy według przedziałów z załącznika KAS. Oferta P2P i rozliczenie w komunikatorze to 60 do 79 punktów, oficjalny profil 80 do 100. Za dwa niezależne źródła jest +15. Każdy punkt widać w uzasadnieniu, z oznaczeniem, czy to fakt, obliczenie, czy wniosek.
 
-## 08 · Ślad pieniędzy
+## 08 · Odrzucanie fałszywych przypisań
 
-Każdą transakcję wyceniamy w złotych kursem NBP z dnia poprzedzającego. System pilnuje progów z art. 35 ustawy AML, pojedynczo i łącznie, a monitoring powiadamia o zmianach.
+Giełdy rozpoznajemy po publicznych etykietach, kontrakty po kodzie w blockchainie. Kantor nie jest portfelem osoby, więc go nie przypisujemy, ale przelewy do niego zapisujemy jako przesłankę wypłaty. Na pięciu prawdziwych adresach publicznych test dał pięć na pięć.
 
-## 09 · Oryginalność i wdrożenie
+## 09 · Raport i wdrożenie
 
-Narzędzia takie jak Chainalysis Reactor, TRM czy Arkham odpowiadają, dokąd płyną środki. My odpowiadamy wcześniej: czyj to adres i skąd to wiemy — według jawnych reguł KAS. Całość działa lokalnie, bez chmury.
+Raport jest napisany dla osoby bez wiedzy IT: każde zdanie ma etykietę fakt, obliczenie albo wniosek. Skrót SHA-256 i wersja reguł pozwalają sprawdzić, że raport opisuje dokładnie te dane. Całość działa lokalnie w Dockerze, bez chmury.
 
 ## 10 · Koniec
 
-Dalsze kroki: pilotaż, etykiety KAS, kolejne sieci po ocenie prawnej i integracja. Dziękuję — chętnie odpowiem na pytania.
+Dalsze kroki to pilotaż na zanonimizowanych sprawach, etykiety kantorów od KAS i Telegram na żywo po ocenie prawnej. Dziękuję, chętnie odpowiem na pytania.
 
 ## Źródła liczb ze slajdu 02
 

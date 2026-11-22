@@ -3,7 +3,7 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-22) — nie edytować ręcznie.
 Wszystkie komponenty zewnętrzne są Open Source; licencja własnego kodu projektu: plik `LICENSE`. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
 
-## Podsumowanie (498 pakietów npm)
+## Podsumowanie (497 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
@@ -13,7 +13,7 @@ Wszystkie komponenty zewnętrzne są Open Source; licencja własnego kodu projek
 | BSD-2-Clause | 8 |
 | BSD-3-Clause | 7 |
 | BlueOak-1.0.0 | 4 |
-| OFL-1.1 | 3 |
+| OFL-1.1 | 2 |
 | MPL-2.0 | 2 |
 | Unlicense | 2 |
 | MIT and ISC | 1 |
@@ -31,7 +31,6 @@ Silnego copyleftu (GPL / AGPL / SSPL) ani licencji nieznanych wśród zależnoś
 | `lightningcss-win32-x64-msvc` | MPL-2.0, jak `lightningcss` (binarium dla Windows, tylko narzędzie budowania). |
 | `@fontsource/ibm-plex-mono` | OFL-1.1 — czcionka interfejsu, patrz „Czcionki”. |
 | `@fontsource/vt323` | OFL-1.1 — czcionka nagłówków interfejsu, patrz „Czcionki”. |
-| `@fontsource/ibm-plex-sans` | OFL-1.1 — czcionka prezentacji dla jury (docs/pitch), patrz „Czcionki”. |
 
 ## Komponenty spoza npm (obrazy Docker i usługi)
 
@@ -50,9 +49,8 @@ Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SI
 
 | Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
 |---|---|---|---|
-| IBM Plex Mono (`@fontsource/ibm-plex-mono`; pliki `apps/api/assets/fonts/ibm-plex-mono/*.woff`) | SIL OFL-1.1 | Copyright © 2017 IBM Corp. with Reserved Font Name "Plex" | cały interfejs i tekst raportu PDF |
-| VT323 (`@fontsource/vt323`; plik `apps/api/assets/fonts/vt323/VT323-Regular.ttf`) | SIL OFL-1.1 | Copyright 2011, The VT323 Project Authors | duże nagłówki interfejsu i raportu PDF, znak słowny w prezentacji |
-| IBM Plex Sans (`@fontsource/ibm-plex-sans`) | SIL OFL-1.1 | IBM Corp. (patrz LICENSE w pakiecie) | tekst prezentacji dla jury (`docs/pitch`); IBM Plex Mono z interfejsu służy tam do etykiet i liczb |
+| IBM Plex Mono (`@fontsource/ibm-plex-mono`; pliki `apps/api/assets/fonts/ibm-plex-mono/*.woff`) | SIL OFL-1.1 | Copyright © 2017 IBM Corp. with Reserved Font Name "Plex" | cały interfejs, tekst raportu PDF i prezentacji (`docs/pitch`) |
+| VT323 (`@fontsource/vt323`; plik `apps/api/assets/fonts/vt323/VT323-Regular.ttf`) | SIL OFL-1.1 | Copyright 2011, The VT323 Project Authors | duże nagłówki interfejsu i raportu PDF, nagłówki prezentacji |
 
 ## Zbiory danych i etykiet
 
@@ -106,7 +104,6 @@ Pozostałe dane:
 | @eslint/object-schema | 3.0.5 | Apache-2.0 | https://github.com/eslint/rewrite/tree/main/packages/object-schema#readme |
 | @eslint/plugin-kit | 0.7.3 | Apache-2.0 | https://github.com/eslint/rewrite/tree/main/packages/plugin-kit#readme |
 | @fontsource/ibm-plex-mono | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/ibm-plex-mono |
-| @fontsource/ibm-plex-sans | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/ibm-plex-sans |
 | @fontsource/vt323 | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/vt323 |
 | @humanfs/core | 0.19.2 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
 | @humanfs/node | 0.16.8 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
