@@ -43,7 +43,7 @@ function Block({ b, section }: { b: ReportBlock; section: ReportSection }) {
     case 'heading':
       return <h3 className="m-0 mt-5 text-[14px] font-semibold">{b.text}</h3>;
     case 'list':
-      return <ul className="my-2 flex list-disc flex-col gap-1 pl-5 text-[14px]">{b.items.map((i) => <li key={i}>{i}</li>)}</ul>;
+      return <ul className="my-2 flex list-disc flex-col gap-1 pl-5 text-[14px]">{b.items.map((item, n) => <li key={`${n}-${item}`}>{item}</li>)}</ul>;
     case 'table':
       return <Table b={b} section={section} />;
     case 'text':
@@ -114,7 +114,7 @@ function ReportBody({ run }: { run: NonNullable<ReturnType<typeof useReport>['da
       </dl>
 
       <h2 className="m-0 mt-8 font-vt text-[34px] font-normal leading-none text-navy">Podsumowanie</h2>
-      <ol className="mt-2 flex list-decimal flex-col gap-1.5 pl-5 text-[15px] leading-relaxed">{doc.summary.map((s) => <li key={s}>{s}</li>)}</ol>
+      <ol className="mt-2 flex list-decimal flex-col gap-1.5 pl-5 text-[15px] leading-relaxed">{doc.summary.map((s, n) => <li key={`${n}-${s}`}>{s}</li>)}</ol>
 
       <h2 className="m-0 mt-8 text-[16px] font-semibold">Jak czytać ten raport</h2>
       <ul className="m-0 mt-2 flex list-none flex-col gap-1.5 p-0 text-[14px]">

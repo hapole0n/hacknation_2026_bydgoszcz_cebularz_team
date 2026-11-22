@@ -744,8 +744,11 @@ describe('file reference, proceedings number and query time', () => {
 });
 
 describe('the case register carries the one-line result of the latest run', () => {
-  it('counts addresses (not links): the demo case has 3 very high, 1 medium, 2 low, 4 excluded, 1 cash-out signal', async () => {
-    const mine = (await api.listCases()).find((c) => c.id === caseIds[0])!;
+  it('counts addresses (not links): the demo case has 3 very high, 1 medium, 2 low, 4 excluded, 2 cash-out signals', async () => {
+    const own = await api.createCase({ ...spec.case, title: 'Test — rejestr' });
+    caseIds.push(own.id);
+    await pipeline.run(own.id, runOptions);
+    const mine = (await api.listCases()).find((c) => c.id === own.id)!;
     expect(mine.signature).toMatch(/^KR\/\d{4}\/\d{4}$/);
     expect(mine.result).toEqual({ bands: { VERY_HIGH: 3, PROBABLE: 0, MEDIUM: 1, LOW: 2 }, excluded: 4, cashOut: 2 });
   });

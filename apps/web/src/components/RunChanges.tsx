@@ -4,7 +4,7 @@ import { useRunDiff } from '@/api/client';
 import type { AddrRef, RunDiffDoc } from '@/api/types';
 import { CategoryTag } from '@/components/shared';
 import { GroupBox, Tag } from '@/components/win/controls';
-import { formatDateTime, formatEur, loc, shortAddress, signed } from '@/lib/format';
+import { formatDateTime, formatEurInt, loc, shortAddress, signed } from '@/lib/format';
 
 const addr = (a: AddrRef) => `${a.chain} ${shortAddress(a.address)}`;
 const addrs = (xs: AddrRef[]) => xs.map(addr).join(', ');
@@ -117,7 +117,7 @@ export function RunChanges({ runId }: { runId: string }) {
             <Group title={t('changes.newThresholds')}>
               {d.newThresholds.map((x) => (
                 <li key={`${x.chain}:${x.address}:${x.thresholdEur}:${x.kind}`}>
-                  <span className={mono}>{addr(x)}</span>: <b className="text-alert">{formatEur(x.thresholdEur, lang)}</b> — {t(`changes.thresholdKind.${x.kind}`)}, {formatDateTime(x.at, lang)}
+                  <span className={mono}>{addr(x)}</span>: <b className="text-alert">{formatEurInt(x.thresholdEur, lang)}</b> — {t(`changes.thresholdKind.${x.kind}`)}, {formatDateTime(x.at, lang)}
                 </li>
               ))}
             </Group>
@@ -127,7 +127,7 @@ export function RunChanges({ runId }: { runId: string }) {
               {d.valuationCompleted!.map((v) => (
                 <li key={`${v.chain}:${v.address}`}>
                   <span className={mono}>{addr(v)}</span>: {t('changes.valuationNote', { count: v.previouslyUnvalued })}{' '}
-                  {v.thresholds.map((x) => `${formatEur(x.thresholdEur, lang)} — ${t(`changes.thresholdKind.${x.kind}`)}, ${formatDateTime(x.at, lang)}`).join('; ')}
+                  {v.thresholds.map((x) => `${formatEurInt(x.thresholdEur, lang)} — ${t(`changes.thresholdKind.${x.kind}`)}, ${formatDateTime(x.at, lang)}`).join('; ')}
                 </li>
               ))}
             </Group>

@@ -202,12 +202,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@expo-google-fonts/ibm-plex-mono':
-        specifier: ^0.4.2
-        version: 0.4.2
-      '@expo-google-fonts/vt323':
-        specifier: ^0.4.1
-        version: 0.4.1
       '@kropka/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -587,12 +581,6 @@ packages:
   '@eslint/plugin-kit@0.7.3':
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
-
-  '@expo-google-fonts/ibm-plex-mono@0.4.2':
-    resolution: {integrity: sha512-Dlk7pBVjH13tNo2urBUcYpHnpGayEs8Uz06tKT3Gl+AenXzzbjtyzmx4PWi7HCJHsrIFvMWd79+W78NBbyrNKQ==}
-
-  '@expo-google-fonts/vt323@0.4.1':
-    resolution: {integrity: sha512-Mk1GmaJa3lAVJ4H7byGkuvAoB7snfYknMqMstMwTTmg3mofYiSZNmP/QrNPYsVeTh9HpA2cvXmZ+zuQD0UGPRQ==}
 
   '@fontsource/ibm-plex-mono@5.3.0':
     resolution: {integrity: sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==}
@@ -3184,10 +3172,6 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
-
-  '@expo-google-fonts/ibm-plex-mono@0.4.2': {}
-
-  '@expo-google-fonts/vt323@0.4.1': {}
 
   '@fontsource/ibm-plex-mono@5.3.0': {}
 

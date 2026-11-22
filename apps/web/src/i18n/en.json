@@ -353,12 +353,12 @@
   "decision": {
     "title": "Analyst's decision",
     "note": "The decision is stored separately and never changes the computed score.",
-    "analyst": "Analyst",
+    "analyst": "Analyst's name:",
     "analystPlaceholder": "Full name",
-    "comment": "Comment",
-    "commentPlaceholder": "Reason for the decision (optional)",
-    "confirm": "Confirm",
-    "reject": "Reject",
+    "comment": "Analyst's comment:",
+    "commentPlaceholder": "e.g. confirmed in a talk with the exchange office (fictitious)",
+    "confirm": "Confirm attribution",
+    "reject": "Reject attribution",
     "withdraw": "Withdraw the decision",
     "state": {
       "CONFIRMED": "Confirmed",

@@ -150,7 +150,7 @@ Opcjonalny lokalny model: uruchom Ollama (lub inny serwer zgodny z API OpenAI) o
 
 Wszystko na danych syntetycznych — osoba **„Jan Testowy”** (nick `jtestowy`, e-mail `jan.testowy@example.org`, Telegram `@jtestowy_pl`) i pułapka: inna osoba z tym samym nickiem na innym forum.
 
-1. Strona główna → **„Załaduj sprawę demonstracyjną”** → otwórz sprawę → **uruchom analizę** (źródło: sztuczny internet, blockchain: syntetyczny).
+1. Ekran „Nowa sprawa” (strona główna) → link **„otwórz sprawę demonstracyjną”**: aplikacja zakłada sprawę `KR/RRRR/NNNN` i od razu uruchamia analizę na źródłach syntetycznych (przy ponownym kliknięciu otwiera ostatnią analizę). Własną sprawę zakłada się, wpisując identyfikatory w jedno pole (rodzaj jest rozpoznawany automatycznie) i naciskając Enter.
 2. Obowiązkowe siedem etapów z zadania i to, co widać:
 
 | # | Etap | Co pokazuje aplikacja (wynik zweryfikowany testem `Z-29`, `Z-17`) |
@@ -163,29 +163,34 @@ Wszystko na danych syntetycznych — osoba **„Jan Testowy”** (nick `jtestowy
 | 6 | Wskaźniki blockchain | A1: ETH → wymiana na DEX → USDT → adres depozytowy giełdy; T1: wiele małych wpływów USDT → kantor i adres z ogłoszenia (**USDT → gotówka**); przekroczone progi 1 000 / 10 000 / 15 000 EUR, wartości w PLN, chronologia |
 | 7 | Źródła i wynik | karta adresu ze źródłami, graf powiązań, **raport** HTML / PDF / JSON z podziałem FAKT / OBLICZENIE / WNIOSEK i skrótem SHA-256 |
 
-3. **Monitoring i zmiana w czasie:** na stronie sprawy ustaw harmonogram (co 15 min / 1 h / 24 h) lub „Uruchom teraz”; przycisk **„Demo: symuluj zmianę”** podmienia stronę persony (ten sam URL, inny sztuczny adres). Kolejna analiza pokazuje blok „Zmiany od poprzedniego przebiegu”, powiadomienia (dzwonek) i sekcję 8 raportu.
+3. **Monitoring i zmiana w czasie:** na stronie sprawy ustaw harmonogram (co 15 min / 1 h / 24 h) albo na ekranie wyniku zaznacz „Sprawdzaj co 24 h”; **F5** („Uruchom ponownie”) uruchamia analizę od razu; przycisk **„Demo: symuluj zmianę”** (strona sprawy) podmienia stronę persony (ten sam URL, inny sztuczny adres). Kolejna analiza pokazuje blok „Zmiany od poprzedniego przebiegu”, powiadomienia (dzwonek) i sekcję 8 raportu.
 4. **Wariant „adres na wejściu”:** „Demonstracja: kto stoi za adresem?” — konta, które adres opublikowały, z oceną.
 5. **Część „na żywo”** (opcjonalnie, z kluczem Etherscan): nowa sprawa z identyfikatorem `ADDRESS` = publiczny portfel giełdy lub router Uniswap (adresy z `fixtures/expected.json` → `realAddresses`), blockchain: „live” — adres z etykiety (giełda, router) jest odrzucany od razu i bez zapytania; adres kontraktu bez etykiety (np. kontrakt USDT w TRON) jest odrzucany po kontroli kontraktu. Dziennik zapytań pokazuje każde wychodzące zapytanie.
 
 ## Przykłady (zrzuty ekranu / logi)
 
-Zrzuty z przebiegu na danych syntetycznych (`docs/screenshots/`; będą odświeżone po zmianie wyglądu):
+Zrzuty z rzeczywistego przebiegu aplikacji na **czystej bazie** i danych syntetycznych (`docs/screenshots/`):
 
 | Plik | Co pokazuje |
 |---|---|
-| `01-nowa-sprawa.png` | formularz nowej sprawy, wybór źródeł |
-| `02-wyniki.png` | wyniki: powiązania, Wskaźnik Pewności i rozbicie na reguły |
-| `03-graf.png` | graf powiązań (Cytoscape.js) |
-| `04-karta-adresu.png` | karta adresu: źródła, wskaźniki blockchain |
-| `05-odrzucone.png` | odrzucone przypisania z powodem |
-| `06-kto-stoi-za-adresem.png` | wariant „adres na wejściu”: konta, które go opublikowały |
-| `07-raport-html.png`, `08-raport-decyzje-wnioski.png` | raport w aplikacji |
-| `09-raport-pdf-strona-1.png`, `10-raport-pdf-ocena.png`, `11-raport-pdf-decyzje.png` | raport PDF (strony wyrenderowane z pliku) |
-| `12-dziennik-zapytan.png` | dziennik zapytań: zdarzenia z rzeczywistych analiz |
-| `13-sprawa-monitoring-i-zmiana.png` | monitoring, historia analiz, przycisk „Demo: symuluj zmianę” |
-| `14-zmiany-od-poprzedniego-przebiegu.png` | zmiana adresu w tym samym źródle, nowy adres, nowe transakcje, przekroczone progi |
-| `15-powiadomienia.png` | dzwonek z licznikiem i lista powiadomień |
-| `16-raport-sekcja-8-zmiany.png` | raport, sekcja 8 „Zmiany od poprzedniego przebiegu” |
+| `01-nowa-sprawa.png` | ekran „Nowa sprawa”: jedno pole na wszystkie identyfikatory z automatycznym rozpoznaniem rodzaju, pole „Numer postępowania / podstawa”, wybór źródeł |
+| `02-ustawienia-zaawansowane.png` | „Ustawienia zaawansowane”: nazwa sprawy, ręczna zmiana rodzaju identyfikatora, wybór źródeł z ich politykami, tryb blockchain |
+| `03-wynik.png` | „Wynik analizy”: werdykt, liczniki, adresy przypisane osobie z Wskaźnikiem Pewności |
+| `04-uzasadnienie-i-decyzja.png` | okno „Uzasadnienie oceny”: rozbicie punktowe z oznaczeniami [FAKT] / [OBLICZENIE], komentarz analityka, „Potwierdź / Odrzuć przypisanie” |
+| `05-przeslanki-wyplaty-wykluczone.png` | przesłanki wypłaty do gotówki z przekroczonymi progami oraz adresy wykluczone z przypisania (z powodem i źródłem etykiety) |
+| `06-przeszukane-zrodla.png` | „Przeszukane źródła”: co każde źródło zrobiło z każdym identyfikatorem i o której godzinie |
+| `07-karta-adresu.png`, `08-karta-adresu-przebieg.png` | „Karta adresu”: sumy, przebieg transakcji z wyceną NBP, progi AML, kontrahenci, rekomendowane czynności |
+| `09-graf.png` | graf powiązań (Cytoscape.js) |
+| `10-kto-stoi-za-adresem.png` | wariant „adres na wejściu”: konta, które go opublikowały |
+| `11-raport-html.png`, `12-raport-decyzje.png` | raport w aplikacji, z decyzjami analityka |
+| `13-raport-pdf-strona-1.png`, `14-raport-pdf-ocena.png`, `15-raport-pdf-decyzje.png` | raport PDF (jasny, te same czcionki i kolory; strony wyrenderowane z pliku) |
+| `16-dziennik-zapytan.png` | Dziennik zapytań: zapytania z rzeczywistych analiz, z sygnaturą sprawy i numerem postępowania |
+| `17-rejestr-spraw.png` | Rejestr spraw: sygnatura, podstawa, ostatni wynik, monitoring |
+| `18-sprawa-monitoring-i-zmiana.png` | sprawa: harmonogram monitoringu, historia analiz, przycisk „Demo: symuluj zmianę” |
+| `19-zmiany-od-poprzedniego-przebiegu.png` | blok „Zmiany od poprzedniego przebiegu”: zmiana adresu w tym samym źródle, nowy adres, nowe transakcje, przekroczone progi |
+| `20-powiadomienia.png` | powiadomienia po zmianie |
+| `21-raport-sekcja-zmiany.png` | raport, sekcja „Zmiany od poprzedniego przebiegu” |
+| `22-pomoc-skroty.png` | klawisze F1–F10 i zamienniki Alt+cyfra |
 
 **Rozbicie punktowe** (fragment wyniku przebiegu demonstracyjnego; te liczby sprawdza test `Z-17` na podstawie `fixtures/expected.json`):
 
@@ -240,6 +245,7 @@ MESSENGER:jtestowy_pl → BINANCE_14 (portfel giełdy)     0  wykluczone
 - **AI wyłącznie lokalne i opcjonalne** (domyślnie wyłączone), przez API zgodne z OpenAI — model wymienia się konfiguracją (`AI_BASE_URL`, `AI_MODEL`). Podpowiada tylko typ kontekstu tam, gdzie reguły słów kluczowych nic nie znalazły; oznaczone „Sugestia AI”, nie zmienia oceny.
 - **Minimalizacja danych.** Zapisujemy fragmenty ±200 znaków i SHA-256 pełnej treści, nie całe strony. Decyzje analityka są osobno i nie zmieniają wyniku.
 - **Podstawy prawne użyte w narzędziu:** art. 35 ust. 1 ustawy o przeciwdziałaniu praniu pieniędzy (progi 1 000 / 10 000 / 15 000 EUR — jako przesłanki analityczne, nie kwalifikacja prawna); art. 11a ust. 1 ustawy o PIT (kurs NBP z ostatniego dnia roboczego przed dniem transakcji); regulaminy źródeł (linki w tabeli konektorów). Brzmienie przepisów i numerację punktów należy zweryfikować w ISAP przed użyciem produkcyjnym.
+- **Atrybucja:** dane Ethereum pochodzą z Etherscan API — stopka każdego ekranu zawiera napis „Powered by Etherscan.io APIs”.
 - **Klucze** tylko w `.env` (szablon: `.env.example`), nigdy w repozytorium.
 
 ## Ograniczenia i znane braki
@@ -254,7 +260,6 @@ Pełna lista: [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md). Najważniejsze:
 - **Raport tylko po polsku**; interfejs PL / EN. Przejście przez interfejs sprawdzaliśmy ręcznie, bez automatycznych testów w przeglądarce.
 - **AI** sprawdzone tylko na atrapie modelu; wybór modelu nierozstrzygnięty; serwera Ollama nie ma w `docker-compose.yml`.
 - **Retencja i usuwanie:** pole `retentionDays` jest zapisywane, ale nic go nie egzekwuje; API nie ma usuwania sprawy. Brak uwierzytelniania.
-- Dane z Etherscan wymagają atrybucji („Powered by Etherscan.io APIs”) — w interfejsie jej jeszcze nie ma; zaplanowana w stopce przy zmianie wyglądu (`docs/REDESIGN.md`).
 
 ## Licencje wykorzystanych komponentów
 
@@ -273,6 +278,7 @@ ustawa o przeciwdziałaniu praniu pieniędzy (art. 35 ust. 1) · ustawa o PIT (a
 - [`docs/ZGODNOSC.md`](docs/ZGODNOSC.md) — wymaganie → realizacja → test → status.
 - [`docs/OLCyS_zadanie.pdf`](docs/OLCyS_zadanie.pdf), [`docs/TZ_RU.md`](docs/TZ_RU.md) — treść zadania i jej tłumaczenie.
 - **Testy:** `packages/core/test` (logika), `apps/api/test` (przebieg na bazie PostgreSQL; `zadanie.acceptance.test.ts` — po jednym teście na wymaganie; `real-addresses.test.ts` — odrzucanie fałszywych trafień na pięciu prawdziwych adresach publicznych z nagranych odpowiedzi API, bez sieci), `apps/web/test`. Nagrywanie odpowiedzi: `node scripts/record-real-addresses.mjs`.
+- **Interfejs:** wygląd klasycznego okna z terminalowymi akcentami (specyfikacja: [`docs/design/SPEC.md`](docs/design/SPEC.md); czcionki IBM Plex Mono i VT323 serwowane lokalnie). Ekrany: Nowa sprawa (`/`), Rejestr spraw (F4), Wynik analizy, Karta adresu, Graf (F6), Raport, Dziennik zapytań (F8), Powiadomienia (F9). Każda sprawa dostaje **sygnaturę `KR/RRRR/NNNN`** (numeracja automatyczna, osobno w każdym roku); opcjonalny **numer postępowania / podstawa** zapisuje się w sprawie, w Dzienniku zapytań i w raporcie; decyzję „Potwierdź / Odrzuć przypisanie” uzupełnia komentarz analityka. **Klawisze:** F1 pomoc, F2 nowa sprawa, F3 kopiuj adres, F4 rejestr, F5 uruchom ponownie, F6 graf, F7 raport PDF, F8 dziennik, F9 powiadomienia, F10 ustawienia, Esc wstecz. Gdy przeglądarka zachowuje któryś klawisz dla siebie (np. F6 lub F10), aplikacja to wykrywa i w etykietach pokazuje zamiennik **Alt+cyfra** (Alt+6, Alt+0); zamienniki działają zawsze.
 - **Monitoring i zmiany:** harmonogram w bazie (`Case.scheduleEveryMin`, `nextRunAt`) wykonuje jedno okresowe sprawdzenie w procesie API (`SCHEDULER_TICK_MS`, domyślnie 30 s); po każdym przebiegu powstaje różnica z poprzednim (nowe / zniknięte adresy, zmiany oceny z podaniem reguły, nowe transakcje, przekroczone progi, zmiana adresu w tym samym źródle) i powiadomienia w aplikacji (dzwonek): nowy adres z oceną ≥ 60, zmiana adresu, nowy próg, nowy sygnał wyjścia do gotówki.
 - **Raport:** `GET /api/runs/:id/report` (dokument + SHA-256 danych), `/report.pdf`, `/report.json`; PDF powstaje lokalnie (pdfmake, osadzona czcionka Roboto), bez przeglądarki i bez wysyłania danych na zewnątrz.
 - **Główne endpointy API:** `GET /api/connectors`, `GET /api/chain-adapters`, `POST /api/cases`, `POST /api/cases/:id/runs` (`connectors`, `chain`), `GET /api/runs/:id`, `GET /api/runs/:id/diff`, `POST /api/links/:id/decision`, `PUT /api/cases/:id/schedule`, `GET /api/audit-log`, `GET /api/notifications`.

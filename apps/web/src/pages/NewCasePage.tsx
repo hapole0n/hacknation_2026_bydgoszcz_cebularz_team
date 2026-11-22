@@ -182,7 +182,7 @@ export function NewCasePage() {
                 <p className="m-0 mb-2 max-w-[80ch] text-[13px] leading-relaxed">{t('start.typesHint')}</p>
                 <div className="flex flex-col gap-1.5">
                   {parsed.map((p) => (
-                    <div key={p.value} className="grid grid-cols-[minmax(0,1fr)_220px] items-center gap-3">
+                    <div key={p.value} className="grid grid-cols-[minmax(0,1fr)_300px] items-center gap-3">
                       <span className="[overflow-wrap:anywhere]">{p.value}</span>
                       <select aria-label={`${t('form.type')}: ${p.value}`} className={`${inputClass} min-h-[44px]`} value={p.type} onChange={(e) => setOverrides((o) => ({ ...o, [p.value]: e.target.value as IdentifierType }))}>
                         {IDENTIFIER_TYPES.map((ty) => (
