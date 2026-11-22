@@ -5,8 +5,8 @@
     "own": true,
     "caption": "Nowa sprawa: jedno pole, typ rozpoznawany automatycznie",
     "frame": {
-      "w": 592,
-      "h": 739
+      "w": 615,
+      "h": 661.3
     },
     "boxes": {}
   },
@@ -212,26 +212,92 @@
     },
     "boxes": {
       "email": {
-        "x": 43,
+        "x": 34,
         "y": 177,
-        "w": 459.7,
+        "w": 486,
         "h": 60,
         "lineY": 207
       },
       "messenger": {
-        "x": 43,
+        "x": 34,
         "y": 255,
-        "w": 451.3,
+        "w": 486,
         "h": 60,
         "lineY": 285
       },
       "reverse": {
-        "x": 43,
+        "x": 34,
         "y": 333,
-        "w": 451.3,
+        "w": 486,
         "h": 102,
         "lineY": 384
       }
     }
+  },
+  "P9c": {
+    "file": "assets/shots/P9c.png",
+    "dsf": 2,
+    "caption": "Konta, które opublikowały adres",
+    "frame": {
+      "w": 582,
+      "h": 448
+    },
+    "boxes": {
+      "first": {
+        "x": 29,
+        "y": 47,
+        "w": 524,
+        "h": 98,
+        "lineY": 96
+      },
+      "second": {
+        "x": 29,
+        "y": 157,
+        "w": 524,
+        "h": 98,
+        "lineY": 206
+      },
+      "sameNick": {
+        "x": 29,
+        "y": 267,
+        "w": 524,
+        "h": 151,
+        "lineY": 342.5
+      }
+    },
+    "note": "P9 bez wierszy „Inne adresy tego konta: brak” w kartach 1 i 2 (wycięte z obrazu, reszta bez zmian)"
+  },
+  "P3c": {
+    "file": "assets/shots/P3c.png",
+    "dsf": 2,
+    "caption": "Uzasadnienie oceny: każdy punkt z regułą i oznaczeniem",
+    "frame": {
+      "w": 415,
+      "h": 395
+    },
+    "boxes": {
+      "official": {
+        "x": 14,
+        "y": 59,
+        "w": 386,
+        "h": 74,
+        "lineY": 96
+      },
+      "synergy": {
+        "x": 14,
+        "y": 206,
+        "w": 386,
+        "h": 74,
+        "lineY": 243
+      },
+      "total": {
+        "x": 14,
+        "y": 353,
+        "w": 386,
+        "h": 37,
+        "lineY": 371
+      }
+    },
+    "note": "P3 przycięty do wskaźnika i punktów oceny (bez paska tytułu i nagłówka z adresem; tytuł rysuje prezentacja)"
   }
 }
