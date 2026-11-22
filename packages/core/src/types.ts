@@ -26,6 +26,8 @@ export interface SearchLogEntry {
   queries?: number;
   /** ERROR: what went wrong; SKIPPED_NO_KEY: `{ code: 'KEY_MISSING', params: { key } }`. */
   note?: { code: string; params?: Record<string, string | number> };
+  /** When the source answered (ISO time; rounds 2-4: the last lookup). Absent in runs made before this field. */
+  at?: string;
 }
 
 export const SOURCE_TYPES = [

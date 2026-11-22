@@ -15,7 +15,8 @@
         "type": "MESSENGER",
         "value": "@jtestowy_pl"
       }
-    ]
+    ],
+    "basis": "DEMO-2026/001 (postępowanie demonstracyjne, dane syntetyczne)"
   },
   "address": {
     "title": "Demo — adres A1",
@@ -24,6 +25,7 @@
         "type": "ADDRESS",
         "value": "0x8ae181fBc9E8Ce4f43cd993F03fDbD25070b3A47"
       }
-    ]
+    ],
+    "basis": "DEMO-2026/002 (postępowanie demonstracyjne, dane syntetyczne)"
   }
 }

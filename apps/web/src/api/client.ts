@@ -35,6 +35,9 @@ export interface RunOptions {
   chain: ChainMode;
 }
 
+export const fetchCase = (id: string) => request<CaseDetail>(`/cases/${id}`);
+export const putSchedule = (caseId: string, everyMinutes: number | null) => request(`/cases/${caseId}/schedule`, { method: 'PUT', body: { everyMinutes } });
+export const useHealth = () => useQuery({ queryKey: ['health'], queryFn: () => request<{ status: string; rulesVersion: string }>('/health'), staleTime: Infinity });
 export const useCases = () => useQuery({ queryKey: ['cases'], queryFn: () => request<CaseListItem[]>('/cases') });
 // A case under monitoring gets new runs by itself: poll while the page is open.
 export const useCase = (id: string | undefined) =>

@@ -3,10 +3,13 @@ import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useCase, useDemoChange, useDemoState, useSetSchedule, useStartRun } from '@/api/client';
 import { SCHEDULE_OPTIONS, type CaseDetail } from '@/api/types';
-import { EmptyState, ErrorNote, LoadState, Panel, Particulars } from '@/components/primitives';
 import { DEFAULT_RUN_OPTIONS, SourcePicker } from '@/components/SourcePicker';
-import { Button } from '@/components/ui/button';
+import { Particulars } from '@/components/shared';
+import { Screen, type ShortcutItem } from '@/components/win/chrome';
+import { BevelButton, DataTable, EmptyState, ErrorNote, GroupBox, LoadState, VtHeading, inputClass } from '@/components/win/controls';
 import { formatDate, formatDateTime } from '@/lib/format';
+import { useShortcuts } from '@/lib/keys';
+import { openDialog } from '@/lib/ui';
 import { Link, navigate } from '@/router';
 
 /** One line for the history table: what the comparison with the previous run found. */
@@ -16,6 +19,7 @@ function changesText(c: CaseDetail['runs'][number]['changes'], t: TFunction): st
   return parts.length > 0 ? parts.join('; ') : t('changes.noChanges');
 }
 
+/** One case: its particulars, the history of analyses, monitoring and the button that runs a new analysis. */
 export function CasePage({ id }: { id: string }) {
   const { t, i18n } = useTranslation();
   const kase = useCase(id);
@@ -27,109 +31,151 @@ export function CasePage({ id }: { id: string }) {
   const lang = i18n.language;
 
   const run = () => startRun.mutate({ caseId: id, options }, { onSuccess: (r) => navigate(`/runs/${r.run.id}`) });
+  const canRun = !startRun.isPending && options.connectors.length > 0;
+  useShortcuts({ F5: canRun ? run : undefined, Esc: () => navigate('/cases') });
 
-  if (!kase.data) return <LoadState isPending={kase.isPending} error={kase.error} onRetry={() => kase.refetch()} />;
   const c = kase.data;
+  const shortcuts: ShortcutItem[] = [
+    { id: 'F1', label: t('keys.short.F1'), onClick: () => openDialog('help') },
+    { id: 'F2', label: t('keys.short.F2'), to: '/' },
+    { id: 'F4', label: t('keys.short.F4'), to: '/cases' },
+    { id: 'F5', label: t('keys.short.F5'), onClick: canRun ? run : undefined },
+    { id: 'F8', label: t('keys.short.F8'), to: '/audit' },
+    { id: 'Esc', label: t('keys.short.Esc'), to: '/cases' },
+  ];
 
   return (
-    <div className="space-y-8">
-      <div>
-        <Link to="/" className="text-sm text-steel underline underline-offset-2">{t('common.back')}: {t('cases.title')}</Link>
-        <h1 className="mt-2 font-serif text-3xl font-semibold">{c.title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {t('case.createdAt')} {formatDate(c.createdAt, lang)}; {t('case.createdBy').toLowerCase()}: {c.createdBy}
-        </p>
-      </div>
+    <Screen
+      title={c ? t('case.windowTitle', { signature: c.signature }) : t('common.loading')}
+      windowLabel={c?.signature ?? '…'}
+      shortcuts={shortcuts}
+      status={startRun.isPending ? t('start.busy') : t('start.ready')}
+      toolbar={
+        <>
+          <BevelButton onClick={() => navigate('/')}>F2 · {t('keys.short.F2')}</BevelButton>
+          <BevelButton primary disabled={!canRun} onClick={run}>
+            F5 · {c && c.runs.length > 0 ? t('case.runAgain') : t('case.runNow')}
+          </BevelButton>
+          <BevelButton onClick={() => navigate('/cases')}>Esc · {t('keys.short.F4')}</BevelButton>
+        </>
+      }
+    >
+      {!c ? (
+        <LoadState pending={kase.isPending} error={kase.error} onRetry={() => void kase.refetch()} retryLabel={t('common.retry')} loadingLabel={t('common.loading')} errorLabel={t('common.loadError')} />
+      ) : (
+        <>
+          <div className="flex flex-col gap-2.5">
+            <VtHeading>&gt; {c.signature}</VtHeading>
+            <p className="m-0 text-[15px] font-semibold">{c.title}</p>
+            <Particulars
+              items={[
+                { label: t('case.basis'), value: c.basis ?? '—' },
+                { label: t('case.createdAt'), value: `${formatDate(c.createdAt, lang)}; ${t('case.createdBy').toLowerCase()}: ${c.createdBy}` },
+              ]}
+            />
+          </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_24rem]">
-        <div className="space-y-8">
-          <section>
-            <h2 className="mb-3 text-base font-semibold">{t('case.identifiers')}</h2>
-            <Panel className="p-4">
-              <Particulars items={c.identifiers.map((i) => ({ label: t(`identifierTypes.${i.type}`), value: <span className="font-medium">{i.value}</span> }))} />
-            </Panel>
-          </section>
+          <div className="flex flex-wrap items-start gap-[22px]">
+            <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-[22px]">
+              <GroupBox id="c-ident" title={t('case.identifiers')}>
+                <div className="sunken py-1.5 text-[15px]">
+                  {c.identifiers.map((i) => (
+                    <div key={i.id} className="grid grid-cols-[190px_minmax(0,1fr)] gap-3 px-3.5 py-[5px]">
+                      <span className="font-semibold text-navy">[{t(`identifierTypes.${i.type}`).toUpperCase()}]</span>
+                      <span className="[overflow-wrap:anywhere]">{i.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </GroupBox>
 
-          <section>
-            <h2 className="mb-3 text-base font-semibold">{t('case.history')}</h2>
-            {c.runs.length === 0 ? (
-              <EmptyState title={t('case.noRuns')} />
-            ) : (
-              <Panel className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b text-left text-muted-foreground">
-                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.startedAt')}</th>
-                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.status')}</th>
-                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.trigger')}</th>
-                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.changes')}</th>
-                      <th scope="col" className="px-4 py-2.5 font-medium">{t('case.columns.rules')}</th>
-                      <th scope="col" className="px-4 py-2.5 font-medium"><span className="sr-only">{t('case.columns.open')}</span></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {c.runs.map((r) => (
-                      <tr key={r.id} className="border-b last:border-b-0">
-                        <td className="px-4 py-3 tabular-nums">{formatDateTime(r.startedAt, lang)}</td>
-                        <td className="px-4 py-3">{t(`common.status.${r.status}`)}</td>
-                        <td className="px-4 py-3">{t(`case.trigger.${r.trigger}`)}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{changesText(r.changes, t)}</td>
-                        <td className="px-4 py-3 tabular-nums">{r.rulesVersion}</td>
-                        <td className="px-4 py-3 text-right">
-                          <Link to={`/runs/${r.id}`} className="text-steel underline underline-offset-2">{t('case.open')}</Link>
-                        </td>
+              <GroupBox id="c-hist" title={t('case.history')}>
+                {c.runs.length === 0 ? (
+                  <EmptyState title={t('case.noRuns')} />
+                ) : (
+                  <DataTable minWidth={720} caption={t('case.history')}>
+                    <thead>
+                      <tr>
+                        <th scope="col">{t('case.columns.startedAt')}</th>
+                        <th scope="col">{t('case.columns.status')}</th>
+                        <th scope="col">{t('case.columns.trigger')}</th>
+                        <th scope="col">{t('case.columns.changes')}</th>
+                        <th scope="col">{t('case.columns.rules')}</th>
+                        <th scope="col">
+                          <span className="sr-only">{t('case.columns.open')}</span>
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Panel>
-            )}
-          </section>
-        </div>
+                    </thead>
+                    <tbody>
+                      {c.runs.map((r) => (
+                        <tr key={r.id}>
+                          <td className="whitespace-nowrap">{formatDateTime(r.startedAt, lang)}</td>
+                          <td>{t(`common.status.${r.status}`)}</td>
+                          <td>{t(`case.trigger.${r.trigger}`)}</td>
+                          <td className="text-sub">{changesText(r.changes, t)}</td>
+                          <td>{r.rulesVersion}</td>
+                          <td className="text-right">
+                            <Link to={`/runs/${r.id}`} className="font-semibold">
+                              {t('case.open')}
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </DataTable>
+                )}
+              </GroupBox>
+            </div>
 
-        <aside className="space-y-5">
-          <Panel className="space-y-2 p-4">
-            <h2 className="text-sm font-semibold">{t('case.scheduleTitle')}</h2>
-            <p className="text-sm text-muted-foreground">{t('case.scheduleHint')}</p>
-            <label className="block text-sm">
-              <span className="mr-2">{t('case.scheduleLabel')}</span>
-              <select
-                className="rounded-md border bg-background px-2 py-1.5 text-sm"
-                value={c.scheduleEveryMin ?? ''}
-                disabled={setSchedule.isPending}
-                onChange={(e) => setSchedule.mutate(e.target.value === '' ? null : Number(e.target.value))}
-              >
-                {SCHEDULE_OPTIONS.map((m) => (
-                  <option key={m ?? 'off'} value={m ?? ''}>{t(`case.schedule.${m ?? 'off'}`)}</option>
-                ))}
-              </select>
-            </label>
-            <p className="text-sm text-muted-foreground" aria-live="polite">
-              {c.scheduleEveryMin && c.nextRunAt ? `${t('case.nextRun')}: ${formatDateTime(c.nextRunAt, lang)}` : t('case.nextRunOff')}
-            </p>
-            {setSchedule.isError && <ErrorNote title={t('form.errors.server')} message={setSchedule.error.message} />}
-          </Panel>
-          {c.createdBy === 'demo' && demoState.data && (
-            <Panel className="space-y-2 border-dashed p-4">
-              <h2 className="text-sm font-semibold">{t('case.demoChange.title')}</h2>
-              <p className="text-sm text-muted-foreground">{demoState.data.sandboxVersion === 2 ? t('case.demoChange.changed') : t('case.demoChange.original')}</p>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" disabled={demoChange.isPending || demoState.data.sandboxVersion === 2} onClick={() => demoChange.mutate(2)}>
-                  {t('case.demoChange.simulate')}
-                </Button>
-                <Button variant="ghost" size="sm" disabled={demoChange.isPending || demoState.data.sandboxVersion === 1} onClick={() => demoChange.mutate(1)}>
-                  {t('case.demoChange.undo')}
-                </Button>
-              </div>
-            </Panel>
-          )}
+            <div className="flex min-w-0 flex-[1_1_380px] flex-col gap-[22px]">
+              <GroupBox id="c-monitor" title={t('case.scheduleTitle')}>
+                <p className="m-0 mb-2 text-[13px] leading-relaxed">{t('case.scheduleHint')}</p>
+                <label htmlFor="schedule" className="mb-1 block text-[14px] font-semibold">
+                  {t('case.scheduleLabel')}
+                </label>
+                <select
+                  id="schedule"
+                  className={inputClass}
+                  value={c.scheduleEveryMin ?? ''}
+                  disabled={setSchedule.isPending}
+                  onChange={(e) => setSchedule.mutate(e.target.value === '' ? null : Number(e.target.value))}
+                >
+                  {SCHEDULE_OPTIONS.map((m) => (
+                    <option key={m ?? 'off'} value={m ?? ''}>
+                      {t(`case.schedule.${m ?? 'off'}`)}
+                    </option>
+                  ))}
+                </select>
+                <p className="m-0 mt-2 text-[13px]" aria-live="polite">
+                  {c.scheduleEveryMin && c.nextRunAt ? `${t('case.nextRun')}: ${formatDateTime(c.nextRunAt, lang)}` : t('case.nextRunOff')}
+                </p>
+                {setSchedule.isError && <ErrorNote title={t('form.errors.server')} message={setSchedule.error.message} />}
+              </GroupBox>
+
+              {c.createdBy === 'demo' && demoState.data && (
+                <GroupBox id="c-demo" title={t('case.demoChange.title')}>
+                  <p className="m-0 mb-2 text-[13px] leading-relaxed">{demoState.data.sandboxVersion === 2 ? t('case.demoChange.changed') : t('case.demoChange.original')}</p>
+                  <div className="flex flex-wrap gap-2">
+                    <BevelButton disabled={demoChange.isPending || demoState.data.sandboxVersion === 2} onClick={() => demoChange.mutate(2)}>
+                      {t('case.demoChange.simulate')}
+                    </BevelButton>
+                    <BevelButton disabled={demoChange.isPending || demoState.data.sandboxVersion === 1} onClick={() => demoChange.mutate(1)}>
+                      {t('case.demoChange.undo')}
+                    </BevelButton>
+                  </div>
+                </GroupBox>
+              )}
+            </div>
+          </div>
+
           <SourcePicker value={options} onChange={setOptions} />
-          <Button onClick={run} disabled={startRun.isPending || options.connectors.length === 0}>
-            {startRun.isPending ? t('form.running') : c.runs.length > 0 ? t('case.runAgain') : t('case.runNow')}
-          </Button>
+          <div>
+            <BevelButton primary onClick={run} disabled={!canRun}>
+              {startRun.isPending ? t('form.running') : c.runs.length > 0 ? t('case.runAgain') : t('case.runNow')}
+            </BevelButton>
+          </div>
           {startRun.isError && <ErrorNote title={t('form.errors.server')} message={startRun.error.message} />}
-        </aside>
-      </div>
-    </div>
+        </>
+      )}
+    </Screen>
   );
 }

@@ -40,6 +40,20 @@ export function normalizeIdentifier(type: IdentifierType, value: string): string
   }
 }
 
+/**
+ * Guesses the kind of identifier from its text (the "one field" of the new-case form): an address (valid or not: the checksum error is
+ * reported when it is normalised), an e-mail, a messenger handle (`@name`, `t.me/name`), a name (contains a space) or else a nick.
+ * A social-network login looks like a nick, so it is never guessed: the analyst picks it in the advanced settings.
+ */
+export function detectIdentifierType(text: string): IdentifierType {
+  const v = text.trim();
+  if (parseAddress(v).ok || /^(0x[0-9a-fA-F]{40}|T[1-9A-HJ-NP-Za-km-z]{33}|bc1[0-9a-zA-Z]{20,80}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/.test(v)) return 'ADDRESS';
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'EMAIL';
+  if (/^(@|(?:https?:\/\/)?t\.me\/)/i.test(v)) return 'MESSENGER';
+  if (/\s/.test(v)) return 'NAME';
+  return 'NICK';
+}
+
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /** Token-boundary search: "jtestowy" is not found in "jtestowy_pl", "jtestowy.example.org" or "x@jtestowy.pl". */

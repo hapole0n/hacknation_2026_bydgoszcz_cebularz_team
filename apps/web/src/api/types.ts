@@ -18,16 +18,31 @@ export type RunStatus = 'PENDING' | 'RUNNING' | 'DONE' | 'FAILED';
 
 export interface CaseListItem {
   id: string;
+  /** File reference KR/YYYY/NNNN. */
+  signature: string;
+  /** "Numer postępowania / podstawa". */
+  basis: string | null;
   title: string;
   createdAt: string;
   createdBy: string;
   identifiers: { type: IdentifierType; value: string }[];
+  scheduleEveryMin: number | null;
   _count: { runs: number };
   runs: { id: string; status: RunStatus; startedAt: string }[];
+  /** One line of the latest finished run (counted per address); null when there is none. */
+  result: CaseResult | null;
+}
+
+export interface CaseResult {
+  bands: { VERY_HIGH: number; PROBABLE: number; MEDIUM: number; LOW: number };
+  excluded: number;
+  cashOut: number;
 }
 
 export interface CaseDetail {
   id: string;
+  signature: string;
+  basis: string | null;
   title: string;
   createdAt: string;
   createdBy: string;
@@ -191,6 +206,8 @@ export interface AuditRow {
   at: string;
   caseId: string | null;
   caseTitle: string | null;
+  caseSignature: string | null;
+  caseBasis: string | null;
   runId: string | null;
   connectorId: string;
   host: string;
@@ -209,5 +226,6 @@ export interface AuditLogPage {
 
 export interface CaseInput {
   title: string;
+  basis?: string;
   identifiers: { type: IdentifierType; value: string }[];
 }

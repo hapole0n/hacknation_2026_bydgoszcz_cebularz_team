@@ -1,101 +1,162 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/ibm-plex-sans";
-@import "@fontsource-variable/source-serif-4";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-ext-400.css";
+@import "@fontsource/ibm-plex-mono/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-ext-600.css";
+@import "@fontsource/ibm-plex-mono/latin-700.css";
+@import "@fontsource/ibm-plex-mono/latin-ext-700.css";
+@import "@fontsource/vt323/latin-400.css";
+@import "@fontsource/vt323/latin-ext-400.css";
 
+/* KROPKA look (docs/design/SPEC.md): a classic desktop window with terminal accents. Fonts are local (@fontsource); no external font host is used. */
 @theme inline {
-  /* Plex Sans for the interface and tables (tabular figures), Source Serif for case titles and the big percentage. Both local. */
-  --font-sans: 'IBM Plex Sans Variable', system-ui, sans-serif;
-  --font-heading: var(--font-sans);
-  --font-serif: 'Source Serif 4 Variable', Georgia, serif;
+  --font-sans: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --font-vt: 'VT323', monospace;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-steel: var(--steel);
-
-  /* The score bands. Colour never stands alone: every band also carries its name. */
-  --color-band-very-high: #1f6f4a;
-  --color-band-probable: #4a6a1f;
-  --color-band-medium: #8a5d0a;
-  --color-band-low: #55637a;
-  --color-band-excluded: #5f6978;
-  --color-band-very-high-tint: #e3f1ea;
-  --color-band-probable-tint: #eaf1dc;
-  --color-band-medium-tint: #faf0d9;
-  --color-band-low-tint: #e8ecf2;
-  --color-band-excluded-tint: #edeef0;
-
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
-  --radius-2xl: 6px;
-}
-
-:root {
-  --background: #f5f6f8;
-  --foreground: #16233b;
-  --card: #ffffff;
-  --card-foreground: #16233b;
-  --popover: #ffffff;
-  --popover-foreground: #16233b;
-  --primary: #16233b;
-  --primary-foreground: #ffffff;
-  --secondary: #e9ecf1;
-  --secondary-foreground: #16233b;
-  --muted: #eef0f4;
-  --muted-foreground: #56627a;
-  --accent: #e7edf5;
-  --accent-foreground: #16233b;
-  --destructive: #a32a2a;
-  --border: #d5dae2;
-  --input: #c3cad5;
-  --ring: #2f5d8c;
-  --steel: #2f5d8c;
-  --radius: 4px;
+  --color-desktop: #2f6f6f;
+  --color-face: #c3c3c3;
+  --color-face-pressed: #b7b7b7;
+  --color-paper: #ffffff;
+  --color-navy: #1c2f7a;
+  --color-navy-dark: #0e1a4d;
+  --color-ink: #2a2a2a;
+  --color-shadow: #6e6e6e;
+  --color-light: #dfdfdf;
+  --color-rule: #9a9a9a;
+  --color-alert: #8a2b0e;
+  --color-sub: #555555; /* secondary text on paper */
+  --color-sub-face: #444444; /* secondary text on the face */
+  --color-day: #dbdbdb; /* an empty day of the month strip */
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
   html {
-    @apply font-sans;
-    font-feature-settings: 'tnum' 1, 'cv11' 1;
+    background: #2f6f6f;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    margin: 0;
+    background: #2f6f6f;
+    color: #2a2a2a;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--color-navy);
+  }
+  a:hover {
+    color: var(--color-navy-dark);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #6a6a6a;
   }
   :focus-visible {
-    outline: 2px solid var(--steel);
+    outline: 2px solid var(--color-navy);
     outline-offset: 2px;
   }
+  .sel :focus-visible,
+  .bg-navy :focus-visible {
+    outline-color: #fff;
+  }
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    * {
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
   }
 }
 
-/* The score "ledger": rule lines with right-aligned points and a double rule above the total. */
-.ledger-total {
-  border-top: 4px double var(--foreground);
+@layer components {
+  /* Raised bevel: the window and every button. */
+  .bevel {
+    background: var(--color-face);
+    border: 2px solid;
+    border-color: #fff #2a2a2a #2a2a2a #fff;
+    box-shadow: inset -1px -1px 0 #6e6e6e, inset 1px 1px 0 #dfdfdf;
+  }
+  /* Pressed bevel: the current tab / button. */
+  .bevel-pressed {
+    background: var(--color-face-pressed);
+    border: 2px solid;
+    border-color: #2a2a2a #fff #fff #2a2a2a;
+    box-shadow: inset 1px 1px 0 #6e6e6e;
+  }
+  /* The main action of a screen. */
+  .bevel-default {
+    outline: 1px solid #2a2a2a;
+    font-weight: 700;
+  }
+  /* Sunken panel / input: paper with an inset edge. */
+  .sunken {
+    background: #fff;
+    border: 2px solid;
+    border-color: #6e6e6e #fff #fff #6e6e6e;
+    box-shadow: inset 1px 1px 0 #2a2a2a;
+  }
+  /* A thin strip of the status bar. */
+  .cell {
+    border: 1px solid;
+    border-color: #6e6e6e #fff #fff #6e6e6e;
+  }
+  /* Group box: an etched frame, the title sits on the top line. */
+  .groupbox {
+    position: relative;
+    margin-top: 10px;
+    border: 1px solid #6e6e6e;
+    box-shadow: inset 1px 1px 0 #fff, 1px 1px 0 #fff;
+  }
+  .groupbox > .groupbox-title {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    margin: 0;
+    padding: 0 6px;
+    background: var(--color-face);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  /* Data table: bold header with a double rule, dashed row rules. */
+  .dt {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .dt th {
+    padding: 9px 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 3px double #2a2a2a;
+  }
+  .dt td {
+    padding: 9px 12px;
+    vertical-align: top;
+  }
+  .dt tbody tr:not(:last-child) > td,
+  .dt tbody tr:not(:last-child) > th {
+    border-bottom: 1px dashed #9a9a9a;
+  }
+  .dt.compact td {
+    padding: 7px 12px;
+  }
+  .dt tr.sel {
+    background: var(--color-navy);
+    color: #fff;
+  }
+  .dt tr.sel a,
+  .dt tr.sel .text-alert,
+  .dt tr.sel .text-navy {
+    color: #fff;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff;
+  }
 }

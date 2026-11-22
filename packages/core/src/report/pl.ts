@@ -86,6 +86,8 @@ const numFmt = new Intl.NumberFormat('pl-PL', { maximumFractionDigits: 8, useGro
 
 export const DASH = '—';
 export const fmtDate = (iso: string | null | undefined) => (iso ? dateFmt.format(new Date(iso)) : DASH);
+const timeFmt = new Intl.DateTimeFormat('pl-PL', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+export const fmtTime = (iso: string | null | undefined) => (iso ? timeFmt.format(new Date(iso)) : DASH);
 export const fmtDateTime = (iso: string | null | undefined) => (iso ? dateTimeFmt.format(new Date(iso)) : DASH);
 export const fmtPln = (v: number | null | undefined) => (v === null || v === undefined ? DASH : plnFmt.format(v));
 export const fmtEur = (v: number | null | undefined) => (v === null || v === undefined ? DASH : eurFmt.format(v));
