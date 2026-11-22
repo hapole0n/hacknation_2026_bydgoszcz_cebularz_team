@@ -453,7 +453,14 @@ describe('Z-29…Z-31 — scenario, report and legality (task sections 6–7)', 
 // Formal part of the submission (task section 4) — not code. Tracked here so that they show up as open until done (docs/ZGODNOSC.md).
 describe('Z-32 — submission package (task section 4)', () => {
   it.todo('Z-32a title and detailed description including the search parameters (HackTribe entry)');
-  it.todo('Z-32b presentation in PDF, at most 10 slides');
+  it('Z-32b presentation in PDF, at most 10 slides (docs/pitch/KROPKA_HackNation2026.pdf, built by `pnpm pitch`)', () => {
+    const bytes = readFileSync(repoPath('docs/pitch/KROPKA_HackNation2026.pdf'));
+    const pages = (bytes.toString('latin1').match(/\/Type\s*\/Page(?![s\w])/g) ?? []).length;
+    expect(pages).toBe(10);
+    expect(bytes.length).toBeLessThanOrEqual(15 * 1024 * 1024);
+    const report = JSON.parse(readFileSync(repoPath('docs/pitch/preview/report.json'), 'utf8'));
+    expect(report.ok, 'the layout checks of the build must have passed').toBe(true);
+  });
   it.todo('Z-32c video of at most 3 minutes in the open repository');
   it.todo('Z-32d link to the repository (set to public)');
 });

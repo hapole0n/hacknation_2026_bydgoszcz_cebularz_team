@@ -66,7 +66,7 @@ Nic tu nie jest upiększone: to, czego nie zrobiliśmy albo zrobiliśmy części
 | Z-29 | Obowiązkowy scenariusz: wejście → szukanie śladów → wykrycie i weryfikacja adresu → Wskaźnik Pewności → odrzucenie błędnych przypisań → wskaźniki blockchain → źródła i wynik | przypadek demonstracyjny (`fixtures/demo-case.json`, `fixtures/expected.json`; przyciski „Załaduj sprawę demonstracyjną”) | `Z-29`; `pipeline.acceptance.test.ts` (siedem etapów) | ✅ |
 | Z-30 | Raport odróżnia fakty ze źródeł, wyniki obliczeń i wnioski do weryfikacji; chronologiczny opis ruchu środków; czytelny dla osób bez wiedzy IT | `packages/core/src/report/` (FAKT / OBLICZENIE / WNIOSEK, streszczenie w pięciu zdaniach, słowniczek, sekcja „Ograniczenia”) | `Z-30`; `report.test.ts` | ✅ |
 | Z-31 | Tylko dane syntetyczne lub zanonimizowane w testach i demo | `fixtures/` (adresy z `scripts/gen-fixture-addresses.mjs`, e-maile na domenach zarezerwowanych, fikcyjne serwisy `*.example`) | `Z-31`; `fixtures.test.ts` | ✅ |
-| Z-32 | Wymogi formalne: tytuł i opis z parametrami wyszukiwania, prezentacja PDF (maks. 10 slajdów), film (maks. 3 min) w repozytorium, link do repozytorium | opis i parametry: `README.md` (sekcja „Parametry wyszukiwania”) | `Z-32a…d` jako `todo` (celowo widoczne jako otwarte) | ❌ |
+| Z-32 | Wymogi formalne: tytuł i opis z parametrami wyszukiwania, prezentacja PDF (maks. 10 slajdów), film (maks. 3 min) w repozytorium, link do repozytorium | opis i parametry: `README.md` (sekcja „Parametry wyszukiwania”); prezentacja: `docs/pitch/KROPKA_HackNation2026.pdf` (źródła: `docs/pitch/deck.html`, kadry: `pnpm pitch:capture`, zbudowanie: `pnpm pitch`) | `Z-32b` (prezentacja: 10 stron, ≤ 15 MB, kontrole układu); `Z-32a`, `Z-32c`, `Z-32d` jako `todo` (celowo widoczne jako otwarte) | ⚠️ |
 
 ## Ograniczenia i to, czego nie zrobiliśmy
 
@@ -90,7 +90,7 @@ Nic tu nie jest upiększone: to, czego nie zrobiliśmy albo zrobiliśmy części
 
 **Testy.** Testy API korzystają z lokalnej bazy PostgreSQL (tej samej, co aplikacja), więc wymagają `docker compose up -d db`; każdy test sprząta tylko własne wiersze. `live-smoke.test.ts` bywa niestabilny w pełnym, równoległym przebiegu (limit darmowego planu Etherscan: 3 zapytania/s); osobno przechodzi.
 
-**Z-32 — pakiet zgłoszeniowy.** Nie ma jeszcze: prezentacji PDF (≤ 10 slajdów), filmu (≤ 3 min), skryptu filmu, ostatecznego tytułu i opisu zgłoszenia, ustawienia repozytorium jako publicznego. Są: opis i parametry wyszukiwania w `README.md`, zrzuty ekranu w `docs/screenshots/` (do odświeżenia po zmianie wyglądu).
+**Z-32 — pakiet zgłoszeniowy.** Nie ma jeszcze: filmu (≤ 3 min), skryptu filmu, ostatecznego tytułu i opisu zgłoszenia, ustawienia repozytorium jako publicznego. Są: opis i parametry wyszukiwania w `README.md`, zrzuty ekranu w `docs/screenshots/` i **prezentacja PDF (10 slajdów)** `docs/pitch/KROPKA_HackNation2026.pdf`; notatki do wystąpienia: `docs/pitch/NOTATKI.md`.
 
 ## Przegląd przed publikacją repozytorium
 
