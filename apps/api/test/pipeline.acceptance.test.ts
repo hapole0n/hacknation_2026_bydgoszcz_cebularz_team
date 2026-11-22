@@ -237,6 +237,26 @@ describe('on-chain indicators (stage 6)', () => {
     expect(shape(again)).toEqual(shape(results)); // the second run uses "now" as asOf; nothing in the demo depends on it
     expect(await api.getRun(results.run.id)).toEqual(results);
   });
+
+  it('9b. a stored run keeps the classification of its own time; the shared Address row only serves runs stored before that record existed', async () => {
+    // Regression: results() used to read category / labels from the Address table, which every later run (and any other test file on the same
+    // database) rewrites - a stored run, and so a report, changed after the fact. Only this run's own rows are touched here.
+    const r = await api.startRun(caseIds[0]!, { connectors: spec.run.connectors });
+    const summary = r.run.summaryJson as { addresses: { chain: string; address: string; category: string }[] };
+    const link = r.links[0]!;
+    const same = (a: { chain: string; address: string }) => a.chain === link.address.chain && a.address === link.address.address;
+    const category = async () => (await api.getRun(r.run.id)).links.find((l) => same(l.address))!.address.category;
+    expect(summary.addresses.find(same)?.category).toBe(link.address.category);
+
+    await prisma.run.update({ where: { id: r.run.id }, data: { summaryJson: { ...summary, addresses: summary.addresses.map((a) => (same(a) ? { ...a, category: 'CHARITY' } : a)) } as never } });
+    expect(await category()).toBe('CHARITY'); // the run's own record wins over the shared row
+
+    const old: Record<string, unknown> = { ...summary };
+    delete old.addresses;
+    await prisma.run.update({ where: { id: r.run.id }, data: { summaryJson: old as never } });
+    const row = await prisma.address.findUniqueOrThrow({ where: { chain_address: { chain: link.address.chain, address: link.address.address } } });
+    expect(await category()).toBe(row.category); // a run stored before the record existed falls back to the shared row
+  });
 });
 
 describe('address case — who is behind A1?', () => {
