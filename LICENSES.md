@@ -3,17 +3,17 @@
 Plik generowany skryptem `pnpm licenses:report` (2026-11-22) — nie edytować ręcznie.
 Wszystkie komponenty zewnętrzne są Open Source; licencja własnego kodu projektu: plik `LICENSE`. Skrypt kończy się błędem, jeśli pojawi się licencja wymagająca decyzji człowieka (silny copyleft, nieznana, albo słaby copyleft / uznanie autorstwa bez wpisu w sekcji „Uwagi”).
 
-## Podsumowanie (477 pakietów npm)
+## Podsumowanie (498 pakietów npm)
 
 | Licencja | Liczba pakietów |
 |---|---|
-| MIT | 381 |
-| Apache-2.0 | 35 |
-| ISC | 33 |
+| MIT | 393 |
+| ISC | 40 |
+| Apache-2.0 | 36 |
 | BSD-2-Clause | 8 |
 | BSD-3-Clause | 7 |
 | BlueOak-1.0.0 | 4 |
-| OFL-1.1 | 2 |
+| OFL-1.1 | 3 |
 | MPL-2.0 | 2 |
 | Unlicense | 2 |
 | MIT and ISC | 1 |
@@ -31,6 +31,7 @@ Silnego copyleftu (GPL / AGPL / SSPL) ani licencji nieznanych wśród zależnoś
 | `lightningcss-win32-x64-msvc` | MPL-2.0, jak `lightningcss` (binarium dla Windows, tylko narzędzie budowania). |
 | `@fontsource/ibm-plex-mono` | OFL-1.1 — czcionka interfejsu, patrz „Czcionki”. |
 | `@fontsource/vt323` | OFL-1.1 — czcionka nagłówków interfejsu, patrz „Czcionki”. |
+| `@fontsource/ibm-plex-sans` | OFL-1.1 — czcionka prezentacji dla jury (docs/pitch), patrz „Czcionki”. |
 
 ## Komponenty spoza npm (obrazy Docker i usługi)
 
@@ -50,7 +51,8 @@ Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SI
 | Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
 |---|---|---|---|
 | IBM Plex Mono (`@fontsource/ibm-plex-mono`; pliki `apps/api/assets/fonts/ibm-plex-mono/*.woff`) | SIL OFL-1.1 | Copyright © 2017 IBM Corp. with Reserved Font Name "Plex" | cały interfejs i tekst raportu PDF |
-| VT323 (`@fontsource/vt323`; plik `apps/api/assets/fonts/vt323/VT323-Regular.ttf`) | SIL OFL-1.1 | Copyright 2011, The VT323 Project Authors | duże nagłówki interfejsu i raportu PDF |
+| VT323 (`@fontsource/vt323`; plik `apps/api/assets/fonts/vt323/VT323-Regular.ttf`) | SIL OFL-1.1 | Copyright 2011, The VT323 Project Authors | duże nagłówki interfejsu i raportu PDF, znak słowny w prezentacji |
+| IBM Plex Sans (`@fontsource/ibm-plex-sans`) | SIL OFL-1.1 | IBM Corp. (patrz LICENSE w pakiecie) | tekst prezentacji dla jury (`docs/pitch`); IBM Plex Mono z interfejsu służy tam do etykiet i liczb |
 
 ## Zbiory danych i etykiet
 
@@ -72,6 +74,7 @@ Pozostałe dane:
 |---|---|---|
 | `fixtures/sandbox-web`, `fixtures/chain`, `fixtures/addresses.json`, `fixtures/expected.json`, `fixtures/demo-case.json` | **syntetyczne**: osoby, strony i adresy zmyślone (adresy z losowych kluczy, `scripts/gen-fixture-addresses.mjs`; e-maile na domenach zarezerwowanych) | autorstwa zespołu; nie dotyczą żadnej prawdziwej osoby |
 | `fixtures/recorded/real-addresses.json` | odpowiedzi publicznych API (Etherscan API v2 (module=proxy, action=eth_getCode) and TronGrid (POST /wallet/getcontract), both public APIs, read through EgressClient) dla pięciu adresów instytucjonalnych, zapisane 2026-11-21; bez kluczy API i bez list transakcji | Facts read from public blockchains (bytecode present or not, contract metadata); no licence text applies to them. No API key is stored: URLs are saved without `apikey`. |
+| `docs/pitch/assets/oleh.jpg` | zdjęcie autora projektu na slajdzie kontaktowym prezentacji | własność autora (wszelkie prawa zastrzeżone, jak `LICENSE`) |
 | Kursy NBP (API `api.nbp.pl`, tabela A) | pobierane w czasie działania, w testach zastępowane syntetycznymi (USD 4,00; EUR 4,40) | dane publiczne NBP; nie są zapisywane w repozytorium |
 | Dane Ethereum z Etherscan API v2 | pobierane w czasie działania (Powered by Etherscan.io APIs); w repozytorium tylko odpowiedzi `eth_getCode` pięciu adresów publicznych | regulamin Etherscan API |
 | Dane TRON z TronGrid | jak wyżej (`wallet/getcontract`) | regulamin TronGrid |
@@ -103,6 +106,7 @@ Pozostałe dane:
 | @eslint/object-schema | 3.0.5 | Apache-2.0 | https://github.com/eslint/rewrite/tree/main/packages/object-schema#readme |
 | @eslint/plugin-kit | 0.7.3 | Apache-2.0 | https://github.com/eslint/rewrite/tree/main/packages/plugin-kit#readme |
 | @fontsource/ibm-plex-mono | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/ibm-plex-mono |
+| @fontsource/ibm-plex-sans | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/ibm-plex-sans |
 | @fontsource/vt323 | 5.3.0 | OFL-1.1 | https://fontsource.org/fonts/vt323 |
 | @humanfs/core | 0.19.2 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
 | @humanfs/node | 0.16.8 | Apache-2.0 | https://github.com/humanwhocodes/humanfs#readme |
@@ -241,6 +245,7 @@ Pozostałe dane:
 | ajv | 6.15.0, 8.20.0 | MIT | https://ajv.js.org |
 | ajv-formats | 3.0.1 | MIT | https://github.com/ajv-validator/ajv-formats#readme |
 | ansi-regex | 5.0.1, 6.6.0 | MIT | https://github.com/chalk/ansi-regex#readme |
+| ansi-styles | 4.3.0 | MIT | https://github.com/chalk/ansi-styles#readme |
 | ansis | 4.5.0 | ISC | https://github.com/webdiscus/ansis#readme |
 | append-field | 1.0.0 | MIT | https://github.com/LinusU/node-append-field#readme |
 | array-timsort | 1.0.3 | MIT | https://github.com/kaelzhang/node-array-timsort |
@@ -258,6 +263,7 @@ Pozostałe dane:
 | cacheable | 2.5.0 | MIT | https://github.com/jaredwray/cacheable#readme |
 | call-bind-apply-helpers | 1.0.2 | MIT | https://github.com/ljharb/call-bind-apply-helpers#readme |
 | call-bound | 1.0.4 | MIT | https://github.com/ljharb/call-bound#readme |
+| camelcase | 5.3.1 | MIT | https://github.com/sindresorhus/camelcase#readme |
 | chai | 6.3.0 | MIT | http://chaijs.com |
 | chalk | 5.6.2 | MIT | https://github.com/chalk/chalk#readme |
 | char-regex | 1.0.2 | MIT | https://github.com/Richienb/char-regex#readme |
@@ -268,7 +274,10 @@ Pozostałe dane:
 | cli-spinners | 3.4.0 | MIT | https://github.com/sindresorhus/cli-spinners#readme |
 | cli-table3 | 0.6.5 | MIT | https://github.com/cli-table/cli-table3 |
 | cli-width | 4.1.0 | ISC | https://github.com/knownasilya/cli-width |
+| cliui | 6.0.0 | ISC | https://github.com/yargs/cliui#readme |
 | clone | 2.1.2 | MIT | https://github.com/pvorb/node-clone#readme |
+| color-convert | 2.0.1 | MIT | https://github.com/Qix-/color-convert#readme |
+| color-name | 1.1.4 | MIT | https://github.com/colorjs/color-name |
 | commander | 15.1.0 | MIT | https://github.com/tj/commander.js#readme |
 | comment-json | 5.0.0 | MIT | https://github.com/kaelzhang/node-comment-json#readme |
 | confbox | 0.2.4, 0.3.2 | MIT | https://github.com/unjs/confbox#readme |
@@ -292,6 +301,7 @@ Pozostałe dane:
 | d3-time | 3.1.0 | ISC | https://d3js.org/d3-time/ |
 | d3-time-format | 4.1.0 | ISC | https://d3js.org/d3-time-format/ |
 | debug | 4.4.3 | MIT | https://github.com/debug-js/debug#readme |
+| decamelize | 1.2.0 | MIT | https://github.com/sindresorhus/decamelize#readme |
 | deep-is | 0.1.4 | MIT | https://github.com/thlorenz/deep-is#readme |
 | deepmerge-ts | 8.0.2 | BSD-3-Clause | https://github.com/RebeccaStevens/deepmerge-ts#readme |
 | defu | 6.1.7 | MIT | https://github.com/unjs/defu#readme |
@@ -300,6 +310,7 @@ Pozostałe dane:
 | destr | 2.0.5 | MIT | https://github.com/unjs/destr#readme |
 | detect-libc | 2.1.2 | Apache-2.0 | https://github.com/lovell/detect-libc#readme |
 | dfa | 1.2.0 | MIT | https://github.com/devongovett/dfa#readme |
+| dijkstrajs | 1.0.3 | MIT | https://github.com/tcort/dijkstrajs |
 | dotenv | 17.4.2 | BSD-2-Clause | https://github.com/motdotla/dotenv#readme |
 | dunder-proto | 1.0.1 | MIT | https://github.com/es-shims/dunder-proto#readme |
 | ee-first | 1.1.1 | MIT | https://github.com/jonathanong/ee-first#readme |
@@ -349,7 +360,7 @@ Pozostałe dane:
 | file-type | 22.3.0 | MIT | https://github.com/sindresorhus/file-type#readme |
 | finalhandler | 2.1.1 | MIT | https://github.com/pillarjs/finalhandler#readme |
 | find-my-way | 9.7.0 | MIT | https://github.com/delvedor/find-my-way#readme |
-| find-up | 5.0.0 | MIT | https://github.com/sindresorhus/find-up#readme |
+| find-up | 4.1.0, 5.0.0 | MIT | https://github.com/sindresorhus/find-up#readme |
 | flat-cache | 6.1.23 | MIT | https://github.com/jaredwray/cacheable#readme |
 | flatted | 3.4.4 | ISC | https://github.com/WebReflection/flatted#readme |
 | fontkit | 2.0.4 | MIT | https://github.com/foliojs/fontkit#readme |
@@ -358,6 +369,7 @@ Pozostałe dane:
 | fresh | 2.0.0 | MIT | https://github.com/jshttp/fresh#readme |
 | function-bind | 1.1.2 | MIT | https://github.com/Raynos/function-bind |
 | generate-function | 2.3.1 | MIT | https://github.com/mafintosh/generate-function |
+| get-caller-file | 2.0.5 | ISC | https://github.com/stefanpenner/get-caller-file#readme |
 | get-east-asian-width | 1.7.0 | MIT | https://github.com/sindresorhus/get-east-asian-width#readme |
 | get-intrinsic | 1.3.0 | MIT | https://github.com/ljharb/get-intrinsic#readme |
 | get-port-please | 3.2.0 | MIT | https://github.com/unjs/get-port-please#readme |
@@ -402,7 +414,7 @@ Pozostałe dane:
 | lightningcss-win32-x64-msvc | 1.33.0 | MPL-2.0 | https://github.com/parcel-bundler/lightningcss#readme |
 | linebreak | 1.1.0 | MIT | https://github.com/devongovett/linebreaker |
 | load-esm | 1.0.3 | MIT | https://github.com/Borewit/load-esm#readme |
-| locate-path | 6.0.0 | MIT | https://github.com/sindresorhus/locate-path#readme |
+| locate-path | 5.0.0, 6.0.0 | MIT | https://github.com/sindresorhus/locate-path#readme |
 | lodash | 4.18.1 | MIT | https://lodash.com/ |
 | log-symbols | 7.0.1 | MIT | https://github.com/sindresorhus/log-symbols#readme |
 | long | 5.3.2 | Apache-2.0 | https://github.com/dcodeIO/long.js#readme |
@@ -435,8 +447,9 @@ Pozostałe dane:
 | onetime | 7.0.0 | MIT | https://github.com/sindresorhus/onetime#readme |
 | optionator | 0.9.4 | MIT | https://github.com/gkz/optionator |
 | ora | 9.4.1 | MIT | https://github.com/sindresorhus/ora#readme |
-| p-limit | 3.1.0 | MIT | https://github.com/sindresorhus/p-limit#readme |
-| p-locate | 5.0.0 | MIT | https://github.com/sindresorhus/p-locate#readme |
+| p-limit | 2.3.0, 3.1.0 | MIT | https://github.com/sindresorhus/p-limit#readme |
+| p-locate | 4.1.0, 5.0.0 | MIT | https://github.com/sindresorhus/p-locate#readme |
+| p-try | 2.2.0 | MIT | https://github.com/sindresorhus/p-try#readme |
 | pako | 0.2.9 | MIT | https://github.com/nodeca/pako |
 | parseurl | 1.3.3 | MIT | https://github.com/pillarjs/parseurl#readme |
 | path-exists | 4.0.0 | MIT | https://github.com/sindresorhus/path-exists#readme |
@@ -457,8 +470,10 @@ Pozostałe dane:
 | picocolors | 1.1.1 | ISC | https://github.com/alexeyraspopov/picocolors#readme |
 | picomatch | 4.0.7 | MIT | https://github.com/micromatch/picomatch |
 | pkg-types | 2.4.0 | MIT | https://github.com/unjs/pkg-types#readme |
+| playwright-core | 1.65.1 | Apache-2.0 | https://playwright.dev |
 | pluralize | 8.0.0 | MIT | https://github.com/blakeembrey/pluralize#readme |
 | png-js | 2.0.0 | MIT | https://github.com/devongovett/png.js#readme |
+| pngjs | 5.0.0 | MIT | https://github.com/lukeapage/pngjs |
 | postcss | 8.5.33 | MIT | https://postcss.org/ |
 | postgres | 3.4.7 | Unlicense | https://github.com/porsager/postgres |
 | postgres-array | 2.0.0, 3.0.4 | MIT | https://github.com/bendrucker/postgres-array#readme |
@@ -473,6 +488,7 @@ Pozostałe dane:
 | punycode | 2.3.1 | MIT | https://mths.be/punycode |
 | pure-rand | 6.1.0 | MIT | https://github.com/dubzzz/pure-rand#readme |
 | qified | 0.10.1 | MIT | https://github.com/jaredwray/qified#readme |
+| qrcode | 1.5.4 | MIT | http://github.com/soldair/node-qrcode |
 | qs | 6.17.1 | BSD-3-Clause | https://github.com/ljharb/qs |
 | range-parser | 1.3.0 | MIT | https://github.com/jshttp/range-parser#readme |
 | raw-body | 3.0.2 | MIT | https://github.com/stream-utils/raw-body#readme |
@@ -483,7 +499,9 @@ Pozostałe dane:
 | readdirp | 5.1.1 | MIT | https://github.com/paulmillr/readdirp |
 | reflect-metadata | 0.2.2 | Apache-2.0 | http://rbuckton.github.io/reflect-metadata |
 | remeda | 2.33.4 | MIT | https://remedajs.com/ |
+| require-directory | 2.1.1 | MIT | https://github.com/troygoode/node-require-directory/ |
 | require-from-string | 2.0.2 | MIT | https://github.com/floatdrop/require-from-string#readme |
+| require-main-filename | 2.0.0 | ISC | https://github.com/yargs/require-main-filename#readme |
 | restore-cursor | 5.1.0 | MIT | https://github.com/sindresorhus/restore-cursor#readme |
 | restructure | 3.0.2 | MIT | https://github.com/devongovett/restructure |
 | ret | 0.5.1 | MIT | https://github.com/fent/ret.js#readme |
@@ -499,6 +517,7 @@ Pozostałe dane:
 | semver | 7.8.6 | ISC | https://github.com/npm/node-semver#readme |
 | send | 1.2.1 | MIT | https://github.com/pillarjs/send#readme |
 | serve-static | 2.2.1 | MIT | https://github.com/expressjs/serve-static#readme |
+| set-blocking | 2.0.0 | ISC | https://github.com/yargs/set-blocking#readme |
 | setprototypeof | 1.2.0 | ISC | https://github.com/wesleytodd/setprototypeof |
 | shebang-command | 2.0.0 | MIT | https://github.com/kevva/shebang-command#readme |
 | shebang-regex | 3.0.0 | MIT | https://github.com/sindresorhus/shebang-regex#readme |
@@ -548,12 +567,17 @@ Pozostałe dane:
 | vite | 8.3.8 | MIT | https://vite.dev |
 | vitest | 5.1.1 | MIT | https://vitest.dev |
 | which | 2.0.2 | ISC | https://github.com/isaacs/node-which#readme |
+| which-module | 2.0.1 | ISC | https://github.com/nexdrew/which-module#readme |
 | why-is-node-running | 3.2.1 | MIT | https://github.com/mafintosh/why-is-node-running |
 | word-wrap | 1.2.5 | MIT | https://github.com/jonschlinkert/word-wrap |
+| wrap-ansi | 6.2.0 | MIT | https://github.com/chalk/wrap-ansi#readme |
 | wrappy | 1.0.2 | ISC | https://github.com/npm/wrappy |
 | xmldoc | 2.0.3 | MIT | https://github.com/nfarina/xmldoc#readme |
 | xtend | 4.0.2 | MIT | https://github.com/Raynos/xtend |
+| y18n | 4.0.3 | ISC | https://github.com/yargs/y18n |
 | yaml | 2.9.1 | ISC | https://eemeli.org/yaml/ |
+| yargs | 15.4.1 | MIT | https://yargs.js.org/ |
+| yargs-parser | 18.1.3 | ISC | https://github.com/yargs/yargs-parser#readme |
 | yocto-queue | 0.1.0 | MIT | https://github.com/sindresorhus/yocto-queue#readme |
 | yoctocolors | 2.2.0 | MIT | https://github.com/sindresorhus/yoctocolors#readme |
 | zeptomatch | 2.1.0 | MIT | https://github.com/fabiospampinato/zeptomatch#readme |

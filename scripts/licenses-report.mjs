@@ -21,6 +21,7 @@ const REVIEWED = {
   'caniuse-lite': 'CC-BY-4.0 (wymaga uznania autorstwa). Dane przeglądarek z caniuse.com © Alexis Deveria i współautorzy, https://creativecommons.org/licenses/by/4.0/ — używane tylko przy budowaniu (browserslist), niezmienione.',
   '@fontsource/ibm-plex-mono': 'OFL-1.1 — czcionka interfejsu, patrz „Czcionki”.',
   '@fontsource/vt323': 'OFL-1.1 — czcionka nagłówków interfejsu, patrz „Czcionki”.',
+  '@fontsource/ibm-plex-sans': 'OFL-1.1 — czcionka prezentacji dla jury (docs/pitch), patrz „Czcionki”.',
 };
 const needsReview = /MPL|EPL|CC-BY|OFL|LGPL|CDDL/i;
 const forbidden = /AGPL|(^|[^L])GPL|SSPL|BUSL|UNKNOWN|UNLICENSED|Commercial|SEE LICENSE/i;
@@ -45,6 +46,7 @@ const webFont = (name) => {
 };
 webFont('@fontsource/ibm-plex-mono');
 webFont('@fontsource/vt323');
+webFont('@fontsource/ibm-plex-sans');
 
 // Label sets and data: the headers are required by LabelService, so the table is complete by construction.
 const labelDir = root('config/labels');
@@ -93,7 +95,8 @@ Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SI
 | Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
 |---|---|---|---|
 | IBM Plex Mono (\`@fontsource/ibm-plex-mono\`; pliki \`apps/api/assets/fonts/ibm-plex-mono/*.woff\`) | SIL OFL-1.1 | ${plexCopyright} | cały interfejs i tekst raportu PDF |
-| VT323 (\`@fontsource/vt323\`; plik \`apps/api/assets/fonts/vt323/VT323-Regular.ttf\`) | SIL OFL-1.1 | ${vtCopyright} | duże nagłówki interfejsu i raportu PDF |
+| VT323 (\`@fontsource/vt323\`; plik \`apps/api/assets/fonts/vt323/VT323-Regular.ttf\`) | SIL OFL-1.1 | ${vtCopyright} | duże nagłówki interfejsu i raportu PDF, znak słowny w prezentacji |
+| IBM Plex Sans (\`@fontsource/ibm-plex-sans\`) | SIL OFL-1.1 | IBM Corp. (patrz LICENSE w pakiecie) | tekst prezentacji dla jury (\`docs/pitch\`); IBM Plex Mono z interfejsu służy tam do etykiet i liczb |
 
 ## Zbiory danych i etykiet
 
@@ -109,6 +112,7 @@ Pozostałe dane:
 |---|---|---|
 | \`fixtures/sandbox-web\`, \`fixtures/chain\`, \`fixtures/addresses.json\`, \`fixtures/expected.json\`, \`fixtures/demo-case.json\` | **syntetyczne**: osoby, strony i adresy zmyślone (adresy z losowych kluczy, \`scripts/gen-fixture-addresses.mjs\`; e-maile na domenach zarezerwowanych) | autorstwa zespołu; nie dotyczą żadnej prawdziwej osoby |
 | \`fixtures/recorded/real-addresses.json\` | odpowiedzi publicznych API (${recorded.source}) dla pięciu adresów instytucjonalnych, zapisane ${recorded.recordedAt.slice(0, 10)}; bez kluczy API i bez list transakcji | ${recorded.license} |
+| \`docs/pitch/assets/oleh.jpg\` | zdjęcie autora projektu na slajdzie kontaktowym prezentacji | własność autora (wszelkie prawa zastrzeżone, jak \`LICENSE\`) |
 | Kursy NBP (API \`api.nbp.pl\`, tabela A) | pobierane w czasie działania, w testach zastępowane syntetycznymi (USD 4,00; EUR 4,40) | dane publiczne NBP; nie są zapisywane w repozytorium |
 | Dane Ethereum z Etherscan API v2 | pobierane w czasie działania (Powered by Etherscan.io APIs); w repozytorium tylko odpowiedzi \`eth_getCode\` pięciu adresów publicznych | regulamin Etherscan API |
 | Dane TRON z TronGrid | jak wyżej (\`wallet/getcontract\`) | regulamin TronGrid |

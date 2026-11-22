@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-11-22T02:52:42.094Z",
+  "ok": true,
+  "pdf": {
+    "file": "KROPKA_HackNation2026.pdf",
+    "pages": 10,
+    "bytes": 1733653,
+    "fonts": [
+      "IBMPlexMono-Medium",
+      "VT323-Regular",
+      "IBMPlexSans-Regular",
+      "IBMPlexSans-SemiBold",
+      "IBMPlexMono-SemiBold",
+      "IBMPlexSans-Medium"
+    ]
+  },
+  "callouts": [
+    {
+      "ref": "P2.verdict",
+      "scale": 0.843
+    },
+    {
+      "ref": "P2.score",
+      "scale": 0.843
+    },
+    {
+      "ref": "P2.basis",
+      "scale": 0.843
+    },
+    {
+      "ref": "P3.official",
+      "scale": 0.963
+    },
+    {
+      "ref": "P3.synergy",
+      "scale": 0.963
+    },
+    {
+      "ref": "P3.total",
+      "scale": 0.963
+    },
+    {
+      "ref": "P5.totals",
+      "scale": 0.871
+    },
+    {
+      "ref": "P5.axis",
+      "scale": 0.871
+    },
+    {
+      "ref": "P5b.thresholds",
+      "scale": 1
+    }
+  ],
+  "productFrames": [
+    {
+      "slide": 1,
+      "shot": "P1",
+      "displayedWidth": 936,
+      "naturalCssWidth": 948,
+      "scale": 0.987
+    },
+    {
+      "slide": 3,
+      "shot": "P2",
+      "displayedWidth": 946,
+      "naturalCssWidth": 1122,
+      "scale": 0.843
+    },
+    {
+      "slide": 4,
+      "shot": "P8",
+      "displayedWidth": 492,
+      "naturalCssWidth": 574,
+      "scale": 0.857
+    },
+    {
+      "slide": 5,
+      "shot": "P3",
+      "displayedWidth": 790,
+      "naturalCssWidth": 820,
+      "scale": 0.963
+    },
+    {
+      "slide": 6,
+      "shot": "P4",
+      "displayedWidth": 940,
+      "naturalCssWidth": 1122,
+      "scale": 0.838
+    },
+    {
+      "slide": 7,
+      "shot": "P6a",
+      "displayedWidth": 728,
+      "naturalCssWidth": 860,
+      "scale": 0.847
+    },
+    {
+      "slide": 7,
+      "shot": "P6b",
+      "displayedWidth": 728,
+      "naturalCssWidth": 860,
+      "scale": 0.847
+    },
+    {
+      "slide": 8,
+      "shot": "P5",
+      "displayedWidth": 646,
+      "naturalCssWidth": 742,
+      "scale": 0.871
+    },
+    {
+      "slide": 8,
+      "shot": "P5b",
+      "displayedWidth": 344,
+      "naturalCssWidth": 344,
+      "scale": 1
+    }
+  ],
+  "issues": []
+}
