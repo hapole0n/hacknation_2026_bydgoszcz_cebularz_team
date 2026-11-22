@@ -7,7 +7,9 @@
     "footer": "Wyniki są przesłankami analitycznymi, a nie rozstrzygnięciem. Dane w sprawach demonstracyjnych są sztuczne.",
     "notFound": "Nie ma takiej strony",
     "notFoundBody": "Adres jest nieprawidłowy albo sprawa została usunięta.",
-    "navAudit": "Dziennik zapytań"
+    "navAudit": "Dziennik zapytań",
+    "prototype": "PROTOTYP · DANE SYNTETYCZNE",
+    "time": "Godzina"
   },
   "common": {
     "loading": "Ładowanie…",
@@ -30,8 +32,8 @@
     "calc": "Wynik obliczeń"
   },
   "cases": {
-    "title": "Sprawy",
-    "lead": "Sprawa zbiera identyfikatory jednej osoby i kolejne analizy tych identyfikatorów.",
+    "title": "Rejestr spraw",
+    "lead": "Wszystkie sprawy z sygnaturą, numerem postępowania, ostatnim wynikiem i stanem monitoringu.",
     "new": "Nowa sprawa",
     "loadDemo": "Załaduj sprawę demonstracyjną",
     "loadDemoAddress": "Demonstracja: kto stoi za adresem?",
@@ -43,10 +45,27 @@
       "identifiers": "Identyfikatory",
       "createdAt": "Utworzona",
       "lastRun": "Ostatnia analiza",
-      "runs": "Analizy"
+      "runs": "Analizy",
+      "signature": "Sygnatura",
+      "person": "Osoba / podmiot",
+      "basis": "Podstawa",
+      "result": "Wynik",
+      "monitoring": "Monitoring"
     },
     "noRuns": "jeszcze nie uruchomiono",
-    "moreIdentifiers": "+{{count}} więcej"
+    "moreIdentifiers": "+{{count}} więcej",
+    "register": "Rejestr spraw ({{count}})",
+    "status_one": "W rejestrze: {{count}} sprawa",
+    "status_few": "W rejestrze: {{count}} sprawy",
+    "status_many": "W rejestrze: {{count}} spraw",
+    "status_other": "W rejestrze: {{count}} spraw",
+    "filter": "Szukaj w rejestrze:",
+    "filterPlaceholder": "sygnatura, osoba, podstawa lub identyfikator",
+    "noMatch": "Brak spraw spełniających kryteria.",
+    "runsCount_one": "{{count}} analiza",
+    "runsCount_few": "{{count}} analizy",
+    "runsCount_many": "{{count}} analiz",
+    "runsCount_other": "{{count}} analiz"
   },
   "form": {
     "title": "Nowa sprawa",
@@ -100,7 +119,10 @@
       "title": "Podaj nazwę sprawy.",
       "identifiers": "Dodaj co najmniej jeden identyfikator z wartością.",
       "connectors": "Wybierz co najmniej jedno źródło danych.",
-      "server": "Serwer odrzucił dane"
+      "server": "Serwer odrzucił dane",
+      "invalid": "Popraw zaznaczone identyfikatory.",
+      "address": "nieprawidłowy adres (błędna suma kontrolna lub format)",
+      "format": "nieprawidłowy format dla tego rodzaju identyfikatora"
     },
     "checkedBy_one": "Sprawdza ten typ: {{list}}.",
     "checkedBy_few": "Sprawdzają ten typ: {{list}}.",
@@ -116,7 +138,8 @@
     "rate_one": "limit {{count}} zapytanie na sekundę",
     "rate_few": "limit {{count}} zapytania na sekundę",
     "rate_many": "limit {{count}} zapytań na sekundę",
-    "rate_other": "limit {{count, number}} zapytania na sekundę"
+    "rate_other": "limit {{count, number}} zapytania na sekundę",
+    "liveTag": "NA ŻYWO"
   },
   "identifierTypes": {
     "NAME": "Imię i nazwisko",
@@ -167,7 +190,8 @@
       "off": "Wyłączone",
       "15": "Co 15 minut",
       "60": "Co godzinę",
-      "1440": "Co 24 godziny"
+      "1440": "Co 24 godziny",
+      "offShort": "wyłączony"
     },
     "nextRun": "Następna analiza",
     "nextRunOff": "Monitoring wyłączony.",
@@ -181,6 +205,13 @@
       "changed": "Strona osobista persony A pokazuje teraz NOWY (sztuczny) adres. Uruchom analizę ponownie: pojawi się porównanie, powiadomienia i sekcja 8 raportu.",
       "simulate": "Demo: symuluj zmianę",
       "undo": "Cofnij zmianę"
+    },
+    "windowTitle": "Sprawa {{signature}}",
+    "basis": "Numer postępowania / podstawa",
+    "scheduleShort": {
+      "15": "co 15 min",
+      "60": "co 1 h",
+      "1440": "co 24 h"
     }
   },
   "run": {
@@ -252,7 +283,8 @@
       "columns": {
         "source": "Źródło",
         "query": "Czego szukano",
-        "result": "Wynik"
+        "result": "Wynik",
+        "time": "Czas"
       },
       "round": {
         "2": "adresy znalezione w źródłach: kto jeszcze je publikuje ({{queries}})",
@@ -349,13 +381,13 @@
   "decision": {
     "title": "Decyzja analityka",
     "note": "Decyzja jest zapisana osobno i nie zmienia wyliczonego wyniku.",
-    "analyst": "Analityk",
+    "analyst": "Imię i nazwisko analityka:",
     "analystPlaceholder": "Imię i nazwisko",
-    "comment": "Komentarz",
-    "commentPlaceholder": "Uzasadnienie decyzji (opcjonalnie)",
-    "confirm": "Potwierdź",
-    "reject": "Odrzuć",
-    "withdraw": "Wycofaj decyzję",
+    "comment": "Komentarz analityka:",
+    "commentPlaceholder": "np. potwierdzono w rozmowie z kantorem (fikcyjne)",
+    "confirm": "Potwierdź przypisanie",
+    "reject": "Odrzuć przypisanie",
+    "withdraw": "Cofnij decyzję",
     "state": {
       "CONFIRMED": "Potwierdzone",
       "REJECTED": "Odrzucone przez analityka",
@@ -374,11 +406,13 @@
       "category": "Rodzaj",
       "reason": "Powód odrzucenia",
       "mentionedWith": "Wspomniany przy",
-      "evidence": "Dowody"
+      "evidence": "Dowody",
+      "labelSource": "Źródło etykiety"
     },
     "empty": "Żaden adres nie został odrzucony.",
     "recorded": "Interakcja zapisana",
-    "labelSource": "Źródło etykiety"
+    "labelSource": "Źródło etykiety",
+    "mentions": "Wzmianki ({{count}})"
   },
   "categories": {
     "UNHOSTED": "Niehostowany (portfel osoby)",
@@ -491,7 +525,77 @@
     "unvalued": "Pozycje bez wyceny: {{count}} (brak kursu lub ceny).",
     "truncated": "Historia obcięta do ostatniej strony wyników dostawcy.",
     "noValuation": "— (brak wyceny)",
-    "partialValuation": "częściowo: brak wyceny części transferów"
+    "partialValuation": "częściowo: brak wyceny części transferów",
+    "windowTitle": "Sprawa {{signature}} — adres {{chain}}",
+    "taskbar": "Adres {{address}}",
+    "status": "Kursy: NBP, tabela A · blockchain: {{chain}} · stan na {{time}}",
+    "backToResult": "Wynik analizy",
+    "copy": "Kopiuj adres",
+    "copied": "Skopiowano",
+    "copiedNotice": "Adres skopiowany do schowka.",
+    "scoreTag": "WSKAŹNIK PEWNOŚCI {{score}}",
+    "cashOutTag": "PRZESŁANKA WYPŁATY DO GOTÓWKI",
+    "excludedTag": "WYKLUCZONY Z PRZYPISANIA",
+    "basisText": "Podstawa przypisania: {{sources}}. Treść źródeł zapisana {{date}}; skróty SHA-256 w raporcie.",
+    "excludedText": "Adres wykluczony z przypisania osobie: {{reason}}",
+    "noBasis": "Brak śladów tego adresu w przeszukanych źródłach.",
+    "tiles": {
+      "in": "PRZYJĘTO",
+      "out": "WYSŁANO",
+      "left": "POZOSTAŁO",
+      "toService": "DO USŁUGI WYPŁATY",
+      "onAddress": "na adresie"
+    },
+    "course": "Przebieg transakcji — {{range}}",
+    "legend": {
+      "in": "wpływ środków",
+      "cash": "przelew do usługi wypłaty",
+      "out": "inny wypływ"
+    },
+    "stripLabel": "Dni z transakcjami: {{month}}",
+    "tx": {
+      "in": "OTRZYMAŁ",
+      "out": "WYSŁAŁ",
+      "from": "od",
+      "to": "do",
+      "fact": "blockchain {{chain}}, transakcja potwierdzona",
+      "calc": "{{amount}} × {{rate}} zł · kurs średni NBP z ostatniego dnia roboczego przed {{date}}"
+    },
+    "unknownSender": "nieustalonego nadawcy",
+    "unknownRecipient": "nieustalonego odbiorcy",
+    "unknownParty": "nieustalony kontrahent",
+    "valuationNote": "Wycena: kurs średni NBP (tabela A) z ostatniego dnia roboczego poprzedzającego dzień transakcji, zgodnie z art. 11a ustawy o PIT; stablecoiny są wyceniane jak USD.",
+    "thresholdsTitle": "Progi — art. 35 ust. 1 ustawy AML",
+    "thresholdDesc": {
+      "1000": "transakcja w walucie wirtualnej",
+      "10000": "łącznie do usług wypłaty (gotówka)",
+      "15000": "transakcja okazjonalna"
+    },
+    "thState": {
+      "single": "PRZEKROCZONY · pojedynczy przelew z {{date}} (maks. {{max}})",
+      "cumulative": "PRZEKROCZONY · łącznie od {{date}}",
+      "below": "{{pct}}% · {{eur}}"
+    },
+    "counterparties": "Kontrahenci",
+    "cpIn_one": "{{count}} wpływ",
+    "cpIn_few": "{{count}} wpływy",
+    "cpIn_many": "{{count}} wpływów",
+    "cpIn_other": "{{count}} wpływów",
+    "cpOut_one": "{{count}} przelew wychodzący",
+    "cpOut_few": "{{count}} przelewy wychodzące",
+    "cpOut_many": "{{count}} przelewów wychodzących",
+    "cpOut_other": "{{count}} przelewów wychodzących",
+    "nextSteps": "Rekomendowane dalsze czynności",
+    "actions": {
+      "askOperator": "Wystąpienie do operatora usługi {{name}} o dane klienta (przelewy z {{dates}})",
+      "askOperatorAny": "Wystąpienie do operatorów usług wypłaty o dane klienta (przelewy z {{dates}})",
+      "traceInflows": "Ustalenie źródła wpływów z {{dates}}",
+      "monitoring": "Włączenie monitoringu — kolejny przelew do usługi wypłaty wygeneruje powiadomienie",
+      "monitoringOn": "Monitoring aktywny — kolejny przelew do usługi wypłaty wygeneruje powiadomienie",
+      "repeatValuation": "Powtórzenie analizy po udostępnieniu kursów NBP — uzupełnienie wycen w PLN",
+      "keepEvidence": "Zachowanie dowodów wraz ze skrótami SHA-256 i ponowienie analizy bezpośrednio przed użyciem wyniku"
+    },
+    "unknownParties": "nieustaleni kontrahenci ({{count}})"
   },
   "tags": {
     "SWAP_DEX": "wymiana na DEX",
@@ -548,7 +652,10 @@
     "others_one": "+{{count}} inny adres",
     "others_few": "+{{count}} inne adresy",
     "others_many": "+{{count}} innych adresów",
-    "others_other": "+{{count}} innych adresów"
+    "others_other": "+{{count}} innych adresów",
+    "windowTitle": "Sprawa {{signature}} — graf powiązań",
+    "taskbar": "Graf powiązań",
+    "status": "Kliknij węzeł grafu, aby zobaczyć szczegóły."
   },
   "evidence": {
     "title": "Źródła i dowody",
@@ -574,7 +681,9 @@
     "empty": "Nie zebrano żadnych dowodów.",
     "open": "Szczegóły dowodu",
     "aiSuggestion": "Sugestia AI: {{type}}",
-    "aiHint": "Wygenerowane przez lokalny model — do weryfikacji. Nie zmienia oceny."
+    "aiHint": "Wygenerowane przez lokalny model — do weryfikacji. Nie zmienia oceny.",
+    "show": "Pokaż dowody źródłowe",
+    "titleCount": "Dowody źródłowe ({{count}})"
   },
   "identities": {
     "title": "Kto stoi za adresem",
@@ -590,7 +699,8 @@
       "other": "Inne adresy tego konta"
     },
     "noOther": "brak",
-    "empty": "Nie znaleziono kont, które opublikowały ten adres."
+    "empty": "Nie znaleziono kont, które opublikowały ten adres.",
+    "titleCount": "Konta, które opublikowały adres ({{count}})"
   },
   "notes": {
     "ERROR": "Błąd techniczny: {{detail}}",
@@ -612,7 +722,10 @@
     "downloadPdf": "Pobierz PDF",
     "downloadJson": "Pobierz JSON",
     "print": "Drukuj",
-    "polishOnly": "Raport jest sporządzany po polsku. PDF i JSON zawierają te same dane co ten widok."
+    "polishOnly": "Raport jest sporządzany po polsku. PDF i JSON zawierają te same dane co ten widok.",
+    "windowTitle": "Raport z analizy",
+    "taskbar": "Raport",
+    "status": "Raport · skrót SHA-256 danych {{sha}}…"
   },
   "audit": {
     "title": "Dziennik zapytań",
@@ -627,12 +740,14 @@
       "host": "Serwer",
       "path": "Ścieżka (bez parametrów)",
       "status": "Wynik",
-      "duration": "Czas trwania"
+      "duration": "Czas trwania",
+      "basis": "Podstawa"
     },
     "status": {
       "blocked": "Zablokowane",
       "error": "Błąd sieci"
-    }
+    },
+    "requests": "Zapytania ({{count}})"
   },
   "changes": {
     "title": "Zmiany od poprzedniego przebiegu",
@@ -696,6 +811,242 @@
     "NEW_ADDRESS": "Nowy adres {{chain}} {{address}} z oceną {{score}}%.",
     "ADDRESS_CHANGED": "Zmiana adresu w źródle {{platform}}: {{from}} → {{to}}.",
     "THRESHOLD_EXCEEDED": "Adres {{chain}} {{address}} przekroczył próg {{thresholdEur}} EUR ({{at}}).",
-    "NEW_CASH_OUT": "Nowy wskaźnik wyjścia do gotówki dla adresu {{chain}} {{address}}: {{tags}}."
+    "NEW_CASH_OUT": "Nowy wskaźnik wyjścia do gotówki dla adresu {{chain}} {{address}}: {{tags}}.",
+    "lead": "Powiadomienia powstają w aplikacji po kolejnej analizie: nowy adres, zmiana adresu w źródle, przekroczony próg albo nowa przesłanka wypłaty. Nic nie jest wysyłane poza aplikację.",
+    "list": "Powiadomienia ({{count}})",
+    "new": "NOWE",
+    "status": "Nieprzeczytane: {{count}}"
+  },
+  "menu": {
+    "label": "Menu",
+    "case": "Sprawa",
+    "view": "Widok",
+    "report": "Raport",
+    "help": "Pomoc",
+    "new": "Nowa sprawa",
+    "cases": "Rejestr spraw",
+    "audit": "Dziennik zapytań",
+    "notifications": "Powiadomienia",
+    "language": "Język",
+    "lang": {
+      "pl": "Polski",
+      "en": "English"
+    },
+    "reportView": "Raport (widok w aplikacji)",
+    "reportPdf": "Raport PDF",
+    "reportJson": "Raport JSON",
+    "graph": "Graf powiązań",
+    "noRun": "Raport jest dostępny po otwarciu analizy",
+    "shortcuts": "Skróty klawiszowe",
+    "settings": "Ustawienia",
+    "shortcutBar": "Skróty klawiszowe"
+  },
+  "keys": {
+    "F1": "Pomoc: skróty klawiszowe",
+    "F2": "Nowa sprawa",
+    "F3": "Kopiuj adres (karta adresu)",
+    "F4": "Rejestr spraw",
+    "F5": "Uruchom analizę ponownie (sprawa, wynik analizy)",
+    "F6": "Graf powiązań (wynik analizy) / pokaż na grafie (karta adresu)",
+    "F7": "Raport PDF: pobranie pliku",
+    "F8": "Dziennik zapytań",
+    "F9": "Powiadomienia",
+    "F10": "Ustawienia",
+    "Esc": "Powrót do poprzedniego ekranu",
+    "short": {
+      "F1": "Pomoc",
+      "F2": "Nowa sprawa",
+      "F3": "Kopiuj adres",
+      "F4": "Rejestr spraw",
+      "F5": "Uruchom ponownie",
+      "F6": "Graf",
+      "F6g": "Pokaż na grafie",
+      "F7": "Raport PDF",
+      "F8": "Dziennik zapytań",
+      "F9": "Powiadomienia",
+      "F10": "Ustawienia",
+      "Esc": "Sprawy",
+      "back": "Wróć"
+    },
+    "taken": "Przeglądarka zachowuje {{key}} dla siebie — użyj {{alt}}."
+  },
+  "help": {
+    "title": "Skróty klawiszowe",
+    "intro": "Klawisze funkcyjne działają na każdym ekranie; część z nich dotyczy tylko wybranego ekranu.",
+    "key": "Klawisz",
+    "alt": "Zamiennik",
+    "action": "Działanie",
+    "browser": "Jeżeli przeglądarka zachowuje dla siebie któryś klawisz funkcyjny (np. F6 lub F10), program to wykrywa i w etykietach pokazuje zamiennik Alt+cyfra. Zamiennik działa zawsze."
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "analyst": "Imię i nazwisko analityka",
+    "analystHint": "Zapisywane wyłącznie w tej przeglądarce; widoczne przy decyzjach „Potwierdź / Odrzuć” i w raporcie.",
+    "keys": "Klawisze funkcyjne",
+    "keysNone": "Przeglądarka nie przechwyciła żadnego klawisza funkcyjnego.",
+    "keysTaken": "Przeglądarka zachowuje dla siebie: {{list}}. W etykietach pokazywany jest zamiennik.",
+    "keysReset": "Przywróć klawisze F"
+  },
+  "start": {
+    "windowTitle": "Nowa sprawa",
+    "console1Name": "KROPKA",
+    "console1": "system analizy śladów kryptowalutowych w źródłach otwartych (prototyp)",
+    "console2": "Zakres: wyłącznie źródła publicznie dostępne i oficjalne API · każde zapytanie jest rejestrowane w Dzienniku zapytań",
+    "console3": "Reguły oceny v{{rules}} · Blockchain: Ethereum, Tron, Bitcoin · Kursy walut: NBP, tabela A",
+    "systemReady": "system gotowy",
+    "enter": "Wprowadź dane osoby",
+    "lead": "Wklej znane identyfikatory: imię i nazwisko, adres e-mail, nick, identyfikator komunikatora lub adres kryptowaluty. Kilka pozycji rozdziel przecinkiem — system sam rozpozna ich rodzaj.",
+    "placeholder": "np. jan.testowy@example.org, jtestowy",
+    "submit": "Rozpocznij analizę (Enter)",
+    "recognised": "Rozpoznane identyfikatory ({{count}}):",
+    "none": "brak wprowadzonych danych",
+    "basis": "Numer postępowania / podstawa (opcjonalnie):",
+    "basisPlaceholder": "np. RKS-2026/0412 (fikcyjny)",
+    "basisHint": "Zapisywany w sprawie, w Dzienniku zapytań i w raporcie.",
+    "optSynthetic": "Źródła testowe (sztuczny internet, dane syntetyczne)",
+    "optLive": "Źródła otwarte na żywo ({{count}})",
+    "optChain": "Blockchain — dane bieżące (Ethereum, Tron)",
+    "optMonitor": "Monitoring: ponowna analiza co 24 h",
+    "liveWarning": "Wybrano źródła na żywo: zapytania zostaną wysłane do publicznych usług zewnętrznych i zapisane w Dzienniku zapytań. Używaj ich wyłącznie dla danych, których przetwarzanie jest dozwolone.",
+    "advanced": "Ustawienia zaawansowane",
+    "advancedTitle": "Nazwa sprawy",
+    "titleHint": "Gdy pole jest puste, nazwą sprawy będzie pierwsze imię i nazwisko albo pierwszy identyfikator.",
+    "typesTitle": "Rodzaj identyfikatorów",
+    "typesHint": "System rozpoznaje rodzaj automatycznie. Tutaj można go zmienić ręcznie — np. wskazać, że nick jest loginem z sieci społecznościowej.",
+    "detected": "rozpoznany",
+    "demoLead": "Wersja demonstracyjna:",
+    "demoOpen": "otwórz sprawę demonstracyjną",
+    "demoNote": "dane w całości syntetyczne.",
+    "flow": "Przebieg analizy",
+    "step1": "Identyfikatory osoby",
+    "step2": "Przeszukanie źródeł otwartych i blockchain",
+    "step3": "Ocena przypisań według reguł v{{rules}}",
+    "step4": "Raport PDF: fakty, obliczenia, wnioski",
+    "register": "Rejestr spraw",
+    "registerAll": "Pokaż cały rejestr →",
+    "ready": "Gotowy.",
+    "busy": "Trwa analiza…"
+  },
+  "bandNames": {
+    "VERY_HIGH": "BARDZO WYSOKI",
+    "PROBABLE": "PRAWDOPODOBNY",
+    "MEDIUM": "ŚREDNI",
+    "LOW": "NISKI",
+    "EXCLUDED": "WYKLUCZONY"
+  },
+  "categoryTags": {
+    "UNHOSTED": "PORTFEL NIEHOSTOWANY",
+    "CEX_CUSTODIAL": "GIEŁDA",
+    "CEX_DEPOSIT": "ADRES DEPOZYTOWY GIEŁDY",
+    "CONTRACT": "KONTRAKT",
+    "DEX": "KONTRAKT DEX",
+    "CASP_KANTOR": "KANTOR",
+    "PAYMENT_GATEWAY": "BRAMKA PŁATNICZA",
+    "CRYPTO_CARD": "KARTA KRYPTO",
+    "MIXER": "MIKSER",
+    "CHARITY": "ZBIÓRKA",
+    "SANCTIONED": "SANKCJONOWANY",
+    "EXAMPLE_BURN": "ADRES PRZYKŁADOWY",
+    "UNKNOWN_SERVICE": "USŁUGA"
+  },
+  "result": {
+    "windowTitle": "Sprawa {{signature}} — wynik analizy",
+    "caseLine": "Sprawa {{signature}} · {{title}} · analiza nr {{n}} z {{date}} · etap:",
+    "steps": {
+      "data": "Dane",
+      "search": "Szukanie",
+      "score": "Ocena",
+      "result": "Wynik",
+      "report": "Raport"
+    },
+    "verdict": {
+      "veryHigh_one": "Ustalono {{count}} adres z bardzo wysokim wskaźnikiem pewności",
+      "veryHigh_few": "Ustalono {{count}} adresy z bardzo wysokim wskaźnikiem pewności",
+      "veryHigh_many": "Ustalono {{count}} adresów z bardzo wysokim wskaźnikiem pewności",
+      "veryHigh_other": "Ustalono {{count}} adresów z bardzo wysokim wskaźnikiem pewności",
+      "probable_one": "Ustalono {{count}} adres z prawdopodobnym przypisaniem do osoby",
+      "probable_few": "Ustalono {{count}} adresy z prawdopodobnym przypisaniem do osoby",
+      "probable_many": "Ustalono {{count}} adresów z prawdopodobnym przypisaniem do osoby",
+      "probable_other": "Ustalono {{count}} adresów z prawdopodobnym przypisaniem do osoby",
+      "medium_one": "Znaleziono {{count}} adres wymagający potwierdzenia drugim źródłem",
+      "medium_few": "Znaleziono {{count}} adresy wymagające potwierdzenia drugim źródłem",
+      "medium_many": "Znaleziono {{count}} adresów wymagających potwierdzenia drugim źródłem",
+      "medium_other": "Znaleziono {{count}} adresów wymagających potwierdzenia drugim źródłem",
+      "low_one": "Znaleziono jedynie {{count}} adres o niskim wskaźniku pewności",
+      "low_few": "Znaleziono jedynie {{count}} adresy o niskim wskaźniku pewności",
+      "low_many": "Znaleziono jedynie {{count}} adresów o niskim wskaźniku pewności",
+      "low_other": "Znaleziono jedynie {{count}} adresów o niskim wskaźniku pewności",
+      "identities_one": "Ustalono {{count}} konto, które opublikowało badany adres",
+      "identities_few": "Ustalono {{count}} konta, które opublikowały badany adres",
+      "identities_many": "Ustalono {{count}} kont, które opublikowały badany adres",
+      "identities_other": "Ustalono {{count}} kont, które opublikowały badany adres",
+      "onlyExcluded_one": "Wykluczono z przypisania osobie {{count}} adres — nie ustalono adresów osoby",
+      "onlyExcluded_few": "Wykluczono z przypisania osobie {{count}} adresy — nie ustalono adresów osoby",
+      "onlyExcluded_many": "Wykluczono z przypisania osobie {{count}} adresów — nie ustalono adresów osoby",
+      "onlyExcluded_other": "Wykluczono z przypisania osobie {{count}} adresów — nie ustalono adresów osoby",
+      "subjects_one": "Zbadano {{count}} adres wskazany przez analityka",
+      "subjects_few": "Zbadano {{count}} adresy wskazane przez analityka",
+      "subjects_many": "Zbadano {{count}} adresów wskazanych przez analityka",
+      "subjects_other": "Zbadano {{count}} adresów wskazanych przez analityka",
+      "nothing": "Nie znaleziono adresów kryptowalutowych w przeszukanych źródłach",
+      "failed": "Analiza zakończyła się błędem"
+    },
+    "counters": {
+      "found": "adresy znalezione",
+      "band": "wskaźnik pewności {{range}}",
+      "cashOut": "przesłanki wypłaty do gotówki",
+      "excluded": "wykluczone z przypisania"
+    },
+    "disclaimer": "Wynik stanowi przesłankę do dalszych czynności, a nie dowód w postępowaniu. Każda ocena ma uzasadnienie punkt po punkcie — przycisk „Uzasadnienie” przy adresie.",
+    "assigned": "Adresy przypisane osobie ({{count}})",
+    "cols": {
+      "score": "Wskaźnik pewności",
+      "address": "Adres",
+      "network": "Sieć",
+      "basis": "Podstawa przypisania"
+    },
+    "reasoningButton": "Uzasadnienie",
+    "showReasoning": "Pokaż uzasadnienie oceny adresu {{address}}",
+    "reasoning": "Uzasadnienie oceny — adres {{address}}",
+    "identifier": "Identyfikator",
+    "pickIdentifier": "Wybór identyfikatora",
+    "scoreLine": "Wskaźnik pewności {{score}}/100",
+    "bandRange": "przedział {{range}} ({{band}})",
+    "total": "RAZEM",
+    "totalClamped": "{{raw}} → przycięte do {{total}}",
+    "hint": "Podpowiedź",
+    "conclusionTag": "WNIOSEK",
+    "conclusion": {
+      "VERY_HIGH": "Adres z bardzo wysokim prawdopodobieństwem należy do osoby.",
+      "PROBABLE": "Adres prawdopodobnie należy do osoby — zalecana weryfikacja.",
+      "MEDIUM": "Możliwe przypisanie — wymaga potwierdzenia drugim źródłem.",
+      "LOW": "Słaba przesłanka — przypisanie mało wiarygodne.",
+      "EXCLUDED": "Adres wykluczony z przypisania osobie."
+    },
+    "addressCard": "Karta adresu",
+    "cashOut": "Przesłanki wypłaty do gotówki ({{count}})",
+    "cashOutText": "Przelewy na adresy usług wypłaty do gotówki: {{count}}, łącznie ≈ {{pln}} (≈ {{eur}}).",
+    "thresholdCrossed": "PRÓG {{eur}} PRZEKROCZONY — art. 35 ust. 1 ustawy AML",
+    "single": "pojedynczy przelew z {{date}} (maks. {{max}})",
+    "cumulative": "łącznie od {{date}}",
+    "txCourse": "Przebieg transakcji adresu",
+    "excluded": "Wykluczone z przypisania osobie ({{count}})",
+    "searched": "Przeszukane źródła ({{count}})",
+    "status": "Analiza nr {{n}} zakończona {{time}} · reguły v{{rules}} · źródeł: {{sources}}, błędów: {{errors}}",
+    "rerun": "Uruchom ponownie",
+    "monitor24": "Sprawdzaj co 24 h",
+    "monitorOther": "Sprawdzanie co {{minutes}} min",
+    "addressesLine": "Adresy: {{list}}",
+    "excludedOnly": "WYKLUCZONE",
+    "none": "brak adresów",
+    "cashOutCount_one": "{{count}} przesłanka wypłaty",
+    "cashOutCount_few": "{{count}} przesłanki wypłaty",
+    "cashOutCount_many": "{{count}} przesłanek wypłaty",
+    "cashOutCount_other": "{{count}} przesłanek wypłaty"
+  },
+  "statement": {
+    "fact": "FAKT",
+    "calc": "OBLICZENIE",
+    "conclusion": "WNIOSEK"
   }
 }

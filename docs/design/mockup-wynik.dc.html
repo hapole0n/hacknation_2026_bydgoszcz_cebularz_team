@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>KROPKA — wynik analizy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=VT323&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2F6F6F}
+a{color:#1C2F7A}a:hover{color:#0E1A4D}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #2F6F6F; display: flex; flex-direction: column; font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace; color: #2A2A2A">
+
+  <div style="flex: 1 0 auto; box-sizing: border-box; width: 100%; max-width: 1320px; margin: 0 auto; padding: 24px 24px 20px; display: flex">
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #C3C3C3; padding: 3px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E, inset 1px 1px 0 #DFDFDF">
+
+      <div style="display: flex; align-items: center; gap: 8px; padding: 3px 4px; background: #1C2F7A; color: #FFFFFF; font-size: 15px; font-weight: 600">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 12px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">—</span>
+        <span style="flex: 1; min-width: 0">KROPKA — Sprawa KR/2026/0031 — wynik analizy</span>
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 11px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">▼</span>
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 22px; background: #C3C3C3; color: #2A2A2A; font-size: 11px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-sizing: border-box">▲</span>
+      </div>
+
+      <nav aria-label="Menu" style="display: flex; flex-wrap: wrap; gap: 2px; padding: 2px 4px; font-size: 14px; border-bottom: 1px solid #6E6E6E; box-shadow: 0 1px 0 #FFFFFF">
+        <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">S</span>prawa</a>
+        <a href="#widok" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">W</span>idok</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">R</span>aport</a>
+        <a href="#pomoc" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: #2A2A2A; text-decoration: none"><span style="text-decoration: underline">P</span>omoc</a>
+      </nav>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 8px; border-top: 1px solid #FFFFFF">
+        <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F2 · Nowa sprawa</a>
+        <button type="button" style="min-height: 44px; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-family: inherit; font-size: 14px; font-weight: 600; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E; cursor: pointer">F5 · Uruchom ponownie</button>
+        <a href="#graf" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F6 · Graf</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 700; text-decoration: none; outline: 1px solid #2A2A2A; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F7 · Raport PDF</a>
+        <a href="#dziennik" style="display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 14px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">F8 · Dziennik zapytań</a>
+        <span style="flex: 1 1 20px"></span>
+        <label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" defaultChecked="{{true}}" style="width: 18px; height: 18px; margin: 0; accent-color: #1C2F7A">Sprawdzaj co 24 h</label>
+      </div>
+
+      <main style="flex: 1 0 auto; display: flex; flex-direction: column; gap: 22px; padding: 14px 22px 26px">
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 14px">
+          <span style="font-weight: 600">Sprawa KR/2026/0031 · Jan Testowy (dane syntetyczne) · analiza nr 3 z 21.11.2026, 22:31 · etap:</span>
+          <span>[1] Dane ✓</span>
+          <span>[2] Szukanie ✓</span>
+          <span>[3] Ocena ✓</span>
+          <span aria-current="step" style="padding: 3px 10px; background: #1C2F7A; color: #FFFFFF">[4] Wynik</span>
+          <span>[5] Raport</span>
+          <span aria-hidden="true" style="display: inline-flex; gap: 2px; padding: 3px; margin-left: auto; background: #FFFFFF; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">
+            <span style="width: 12px; height: 14px; background: #1C2F7A"></span><span style="width: 12px; height: 14px; background: #1C2F7A"></span><span style="width: 12px; height: 14px; background: #1C2F7A"></span><span style="width: 12px; height: 14px; background: #1C2F7A"></span><span style="width: 10px; height: 12px; border: 1px solid #6E6E6E"></span>
+          </span>
+          <span>4/5</span>
+        </div>
+
+        <section aria-labelledby="werdykt" style="display: flex; flex-direction: column; gap: 12px">
+          <h1 id="werdykt" style="margin: 0; font-family: 'VT323', monospace; font-size: 46px; line-height: 1.05; font-weight: 400; color: #1C2F7A">Ustalono 3 adresy z bardzo wysokim wskaźnikiem pewności</h1>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-start">
+            <pre style="flex: 0 1 auto; margin: 0; padding: 10px 18px; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 15px; line-height: 1.6; color: #2A2A2A">adresy znalezione ................ 6
+wskaźnik pewności 80–100 ......... 3
+<span style="color: #8A2B0E; font-weight: 600">przesłanki wypłaty do gotówki .... 1</span>
+wykluczone z przypisania ......... 4</pre>
+            <p style="flex: 1 1 280px; margin: 0; padding-top: 8px; font-size: 14px; line-height: 1.6">Wynik stanowi przesłankę do dalszych czynności, a nie dowód w postępowaniu. Każda ocena ma uzasadnienie punkt po punkcie — przycisk „Uzasadnienie” przy adresie.</p>
+          </div>
+        </section>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+
+          <section aria-labelledby="adresy" style="flex: 999 1 600px; min-width: 0; position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+            <h2 id="adresy" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Adresy przypisane osobie (6)</h2>
+            <div style="overflow-x: auto; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A">
+              <div style="min-width: 720px">
+                <div style="display: grid; grid-template-columns: 196px 138px 56px minmax(0, 1fr) 112px; gap: 0 12px; padding: 9px 12px; font-size: 13px; font-weight: 600; border-bottom: 3px double #2A2A2A">
+                  <span>WSKAŹNIK PEWNOŚCI</span><span>ADRES</span><span>SIEĆ</span><span>PODSTAWA PRZYPISANIA</span><span></span>
+                </div>
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+                  <div style="display: grid; grid-template-columns: 196px 138px 56px minmax(0, 1fr) 112px; gap: 0 12px; align-items: center; padding: 7px 12px; background: {{r.bg}}; color: {{r.fg}}; border-bottom: 1px dashed #9A9A9A; font-size: 14px">
+                    <span style="display: flex; flex-direction: column; gap: 3px">
+                      <span style="display: flex; align-items: center; gap: 8px">
+                        <span aria-hidden="true" style="display: inline-flex; gap: 2px; padding: 2px; background: #FFFFFF; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">
+                          <sc-for list="{{r.blocks}}" as="b" hint-placeholder-count="10"><span style="{{b.s}}"></span></sc-for>
+                        </span>
+                        <span style="font-weight: 700">{{r.score}}</span>
+                      </span>
+                      <span style="font-size: 11px; letter-spacing: 0.04em">{{r.band}}</span>
+                    </span>
+                    <span style="font-weight: 600">{{r.addr}}</span>
+                    <span>{{r.chain}}</span>
+                    <span style="line-height: 1.4">{{r.from}}</span>
+                    <button type="button" onClick="{{r.pick}}" aria-label="{{r.aria}}" style="min-height: 40px; padding: 0 10px; background: #C3C3C3; color: #2A2A2A; font-family: inherit; font-size: 13px; font-weight: 600; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E; cursor: pointer">Uzasadnienie</button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+
+          <aside aria-labelledby="dlaczego" style="flex: 1 1 380px; min-width: 0; margin-top: 10px; display: flex; flex-direction: column; background: #C3C3C3; padding: 3px; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">
+            <h2 id="dlaczego" style="margin: 0; padding: 4px 8px; background: #1C2F7A; color: #FFFFFF; font-size: 14px; font-weight: 600">Uzasadnienie oceny — adres {{cur.id}}</h2>
+            <div style="margin: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; font-size: 14px">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-weight: 700">{{cur.addr}} · {{cur.chain}}</span>
+                <span style="color: #1C2F7A; font-weight: 600">Wskaźnik pewności {{cur.score}}/100 — przedział {{cur.range}} ({{cur.band}})</span>
+              </div>
+              <div style="display: flex; flex-direction: column; border-top: 3px double #2A2A2A">
+                <sc-for list="{{cur.items}}" as="it" hint-placeholder-count="4">
+                  <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed #9A9A9A">
+                    <span style="font-weight: 700; color: {{it.dcolor}}">{{it.delta}}</span>
+                    <span style="line-height: 1.4">{{it.text}}</span>
+                    <span style="font-size: 12px; font-weight: 600; color: #1C2F7A">[{{it.tag}}]</span>
+                  </div>
+                </sc-for>
+                <div style="display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; font-weight: 700">
+                  <span>RAZEM</span><span>= {{cur.total}}</span>
+                </div>
+              </div>
+              <sc-if value="{{cur.hasHint}}" hint-placeholder-val="{{false}}">
+                <p style="margin: 0; padding: 8px 10px; border: 1px dashed #1C2F7A; color: #1C2F7A; line-height: 1.5">Podpowiedź: {{cur.hint}}</p>
+              </sc-if>
+              <p style="margin: 0; line-height: 1.5"><b style="color: #1C2F7A">[WNIOSEK]</b> {{cur.conclusion}}</p>
+              <label for="komentarz" style="font-size: 13px; font-weight: 600">Komentarz analityka:</label>
+              <textarea id="komentarz" rows="2" placeholder="np. potwierdzono w rozmowie z kantorem (fikcyjne)" style="box-sizing: border-box; width: 100%; padding: 8px 10px; background: #FFFFFF; color: #2A2A2A; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 14px; resize: vertical; outline: none; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A"></textarea>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 6px 8px">
+              <button type="button" style="min-height: 44px; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-family: inherit; font-size: 14px; font-weight: 700; outline: 1px solid #2A2A2A; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E; cursor: pointer">Potwierdź przypisanie</button>
+              <button type="button" style="min-height: 44px; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-family: inherit; font-size: 14px; font-weight: 600; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E; cursor: pointer">Odrzuć przypisanie</button>
+              <a href="Adres.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; color: #1C2F7A; font-size: 14px; font-weight: 600">Karta adresu →</a>
+            </div>
+            <p style="margin: 0; padding: 0 8px 8px; font-size: 12px; line-height: 1.5">Decyzja analityka nie zmienia wskaźnika wyliczonego przez system — w raporcie jest zapisana osobno, z datą i komentarzem.</p>
+          </aside>
+        </div>
+
+        <section aria-labelledby="sygnaly" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+          <h2 id="sygnaly" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600; color: #8A2B0E">Przesłanki wypłaty do gotówki (1)</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: flex-start; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A; padding: 12px 14px; font-size: 14px; line-height: 1.6">
+            <span aria-hidden="true" style="flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: #8A2B0E; color: #FFFFFF; font-weight: 700; font-size: 18px">!</span>
+            <div style="flex: 1 1 520px; min-width: 0">
+              <div><b>TEon…GZey → kantor „USDT ↔ gotówka” (TVj7…JvSp)</b></div>
+              <div>Dwa przelewy na adres usługi wymiany USDT ↔ gotówka w październiku 2026 r., łącznie 2 250 USDT ≈ 8 190,00 zł (≈ 1 927 EUR).</div>
+              <div style="color: #8A2B0E; font-weight: 600">[ PRÓG 1 000 EUR PRZEKROCZONY — art. 35 ust. 1 ustawy AML ] przelew z 05.10.2026 — 1 400 USDT ≈ 1 199 EUR</div>
+              <a href="Adres.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; color: #1C2F7A; font-weight: 600">Przebieg transakcji adresu →</a>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="odrzucone" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+          <h2 id="odrzucone" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Wykluczone z przypisania osobie (4)</h2>
+          <div style="overflow-x: auto; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A">
+            <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="text-align: left">
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">ADRES</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">SIEĆ</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">PODSTAWA WYKLUCZENIA</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">ŹRÓDŁO ETYKIETY</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; text-decoration: line-through">0x28C6…1d60</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">ETH</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; color: #8A2B0E; font-weight: 600">[ GIEŁDA ]</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">Portfel giełdy Binance — publiczny zbiór etykiet eth-labels (licencja MIT)</td>
+                </tr>
+                <tr>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; text-decoration: line-through">0x7a25…488D</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">ETH</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; color: #8A2B0E; font-weight: 600">[ KONTRAKT ]</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">Kod kontraktu zapisany w blockchainie (Uniswap V2) — nie jest portfelem osoby</td>
+                </tr>
+                <tr>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; text-decoration: line-through">0x165C…5e14</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">ETH</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A; color: #8A2B0E; font-weight: 600">[ ZBIÓRKA ]</td>
+                  <td style="padding: 9px 12px; border-bottom: 1px dashed #9A9A9A">Publiczny adres zbiórki charytatywnej — wpłata nie wskazuje właściciela</td>
+                </tr>
+                <tr>
+                  <td style="padding: 9px 12px; text-decoration: line-through">TVj7…JvSp</td>
+                  <td style="padding: 9px 12px">TRON</td>
+                  <td style="padding: 9px 12px; color: #8A2B0E; font-weight: 600">[ KANTOR ]</td>
+                  <td style="padding: 9px 12px">Usługa wymiany USDT ↔ gotówka (lista demonstracyjna) — istotna jako kontrahent</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section aria-labelledby="zrodla" style="position: relative; margin-top: 10px; border: 1px solid #6E6E6E; box-shadow: inset 1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF; padding: 22px 14px 14px">
+          <h2 id="zrodla" style="position: absolute; top: -10px; left: 12px; margin: 0; padding: 0 6px; background: #C3C3C3; font-size: 14px; font-weight: 600">Przeszukane źródła (6)</h2>
+          <div style="overflow-x: auto; background: #FFFFFF; border: 2px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E; box-shadow: inset 1px 1px 0 #2A2A2A">
+            <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="text-align: left">
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">ŹRÓDŁO</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">ZAPYTANIE</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">WYNIK</th>
+                  <th scope="col" style="padding: 9px 12px; font-weight: 600; border-bottom: 3px double #2A2A2A">CZAS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">Mini-internet (dane testowe)</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">nick, e-mail, komunikator</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A; color: #1C2F7A; font-weight: 600">[ 13 dowodów ]</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">22:30:41</td></tr>
+                <tr><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">GitHub</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">nick, e-mail</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A; color: #1C2F7A; font-weight: 600">[ 1 profil, 1 adres ]</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">22:30:44</td></tr>
+                <tr><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">Telegram (dane testowe)</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">@jtestowy_pl</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A; color: #1C2F7A; font-weight: 600">[ 1 post, 1 adres ]</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">22:30:47</td></tr>
+                <tr><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">Wayback Machine</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">2 strony z dowodów</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A; color: #1C2F7A; font-weight: 600">[ 2 kopie archiwalne ]</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">22:30:52</td></tr>
+                <tr><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">Gravatar</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">e-mail</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">[ brak profilu ]</td><td style="padding: 8px 12px; border-bottom: 1px dashed #9A9A9A">22:30:53</td></tr>
+                <tr><td style="padding: 8px 12px">ENS</td><td style="padding: 8px 12px">3 adresy ETH</td><td style="padding: 8px 12px">[ brak nazw ]</td><td style="padding: 8px 12px">22:30:55</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <nav aria-label="Skróty klawiszowe" style="display: flex; flex-wrap: wrap; gap: 3px; padding: 3px; font-size: 13px">
+        <a href="#pomoc" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F1</b>&nbsp;Pomoc</a>
+        <a href="#uruchom" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F5</b>&nbsp;Uruchom ponownie</a>
+        <a href="#graf" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F6</b>&nbsp;Graf</a>
+        <a href="#raport" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>F7</b>&nbsp;Raport PDF</a>
+        <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; color: #2A2A2A; text-decoration: none; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E"><b>Esc</b>&nbsp;Sprawy</a>
+        <span style="flex: 1 1 200px; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">Analiza nr 3 zakończona 21.11.2026, 22:31:02 · reguły v1.1.0 · 6 źródeł, 0 błędów</span>
+      </nav>
+    </div>
+  </div>
+
+  <footer style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 5px 8px; background: #C3C3C3; border-top: 2px solid #FFFFFF; box-shadow: inset 0 1px 0 #DFDFDF">
+    <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 700; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">KROPKA</a>
+    <a href="Main.dc.html" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #C3C3C3; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #FFFFFF #2A2A2A #2A2A2A #FFFFFF; box-shadow: inset -1px -1px 0 #6E6E6E">Nowa sprawa</a>
+    <a href="Wyniki.dc.html" aria-current="page" style="display: inline-flex; align-items: center; min-height: 40px; box-sizing: border-box; padding: 0 16px; background: #B7B7B7; color: #2A2A2A; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid; border-color: #2A2A2A #FFFFFF #FFFFFF #2A2A2A">KR/2026/0031</a>
+    <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; min-height: 36px; padding: 0 12px; font-size: 13px; border: 1px solid; border-color: #6E6E6E #FFFFFF #FFFFFF #6E6E6E">
+      <span style="color: #1C2F7A; font-weight: 600">PROTOTYP · DANE SYNTETYCZNE</span>
+      <span>Powered by Etherscan.io APIs</span>
+      <span>22:47</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 'A1' };
+  }
+  band(s) {
+    if (s >= 80) return 'BARDZO WYSOKI';
+    if (s >= 60) return 'PRAWDOPODOBNY';
+    if (s >= 40) return 'ŚREDNI';
+    if (s >= 10) return 'NISKI';
+    return 'WYKLUCZONY';
+  }
+  renderVals() {
+    const data = [
+      { id: 'A1', score: 100, addr: '0x8ae1…3A47', chain: 'ETH', from: 'Strona osobista, profil GitHub, stopka wiadomości e-mail', total: '115 → przycięte do 100', hint: '', conclusion: 'Adres z bardzo wysokim prawdopodobieństwem należy do osoby.', items: [['+85', 'Oficjalny profil osoby — strona osobista', 'FAKT'], ['+10', 'Ten sam nick na tej samej platformie', 'OBLICZENIE'], ['+15', 'Co najmniej 2 niezależne źródła (tu: 3)', 'OBLICZENIE'], ['+5', 'Adres aktywny w blockchainie, daty się zgadzają', 'FAKT']] },
+      { id: 'T1', score: 100, addr: 'TEon…GZey', chain: 'TRON', from: 'Ogłoszenie P2P „USDT za gotówkę”, wpis w kanale Telegram', total: '100', hint: '', conclusion: 'Adres z bardzo wysokim prawdopodobieństwem należy do osoby; wykorzystywany do sprzedaży USDT za gotówkę.', items: [['+70', 'Ogłoszenie sprzedaży — oferta P2P', 'FAKT'], ['+10', 'Ten sam nick na tej samej platformie', 'OBLICZENIE'], ['+15', 'Co najmniej 2 niezależne źródła', 'OBLICZENIE'], ['+5', 'Adres aktywny w blockchainie, daty się zgadzają', 'FAKT']] },
+      { id: 'A0', score: 95, addr: '0xF27c…b476', chain: 'ETH', from: 'Strona osobista — kopia archiwalna z 2021 r.', total: '95', hint: '', conclusion: 'Wcześniej używany adres osoby (2021 r.).', items: [['+85', 'Oficjalny profil — kopia archiwalna (Wayback)', 'FAKT'], ['+10', 'Ten sam nick na tej samej platformie', 'OBLICZENIE'], ['−5', 'Ślad starszy niż 3 lata', 'OBLICZENIE'], ['+5', 'Adres aktywny w blockchainie', 'FAKT']] },
+      { id: 'B1', score: 50, addr: '121W…HgQS', chain: 'BTC', from: 'Wzmianka osoby trzeciej w dyskusji na forum', total: '50', hint: 'drugie niezależne źródło podniosłoby wskaźnik o 15 pkt.', conclusion: 'Możliwe przypisanie — wymaga potwierdzenia drugim źródłem.', items: [['+50', 'Dyskusja na forum', 'FAKT']] },
+      { id: 'AB', score: 20, addr: '0x8bB8…cBBb', chain: 'ETH', from: 'Ten sam nick; adres powielany przez wiele kont', total: '20', hint: 'adres podawany przez kilka niezależnych tożsamości — przypisanie osłabione.', conclusion: 'Prawdopodobnie inna osoba posługująca się tym samym nickiem.', items: [['+25', 'Masowe komentarze', 'FAKT'], ['+10', 'Ten sam nick na tej samej platformie', 'OBLICZENIE'], ['−20', 'Adres przypisany wielu tożsamościom', 'OBLICZENIE'], ['+5', 'Adres aktywny w blockchainie', 'FAKT']] },
+      { id: 'B2', score: 15, addr: 'bc1q…lrdk', chain: 'BTC', from: 'Komentarze pod konkursem (giveaway)', total: '15', hint: '', conclusion: 'Słaba przesłanka — komentarz w akcji typu giveaway.', items: [['+25', 'Konkurs, giveaway', 'FAKT'], ['−10', 'Nick z innego serwisu', 'OBLICZENIE']] }
+    ];
+    const rows = data.map((d) => {
+      const selected = d.id === this.state.sel;
+      const filled = Math.round(d.score / 10);
+      const blocks = [];
+      for (let i = 0; i < 10; i++) {
+        blocks.push({ s: i < filled ? 'width: 9px; height: 12px; background: #1C2F7A' : 'width: 7px; height: 10px; border: 1px solid #6E6E6E' });
+      }
+      return {
+        id: d.id,
+        score: d.score,
+        addr: d.addr,
+        chain: d.chain,
+        from: d.from,
+        band: this.band(d.score),
+        range: d.score >= 80 ? '80–100' : d.score >= 60 ? '60–79' : d.score >= 40 ? '40–59' : d.score >= 10 ? '10–39' : '0',
+        blocks: blocks,
+        bg: selected ? '#1C2F7A' : 'transparent',
+        fg: selected ? '#FFFFFF' : '#2A2A2A',
+        aria: 'Pokaż uzasadnienie oceny adresu ' + d.addr,
+        total: d.total,
+        hint: d.hint,
+        hasHint: d.hint !== '',
+        conclusion: d.conclusion,
+        items: d.items.map((it) => ({ delta: it[0], text: it[1], tag: it[2], dcolor: it[0].charAt(0) === '+' ? '#1C2F7A' : '#8A2B0E' })),
+        pick: () => this.setState({ sel: d.id })
+      };
+    });
+    const cur = rows.find((r) => r.id === this.state.sel) || rows[0];
+    return { rows: rows, cur: cur };
+  }
+}
+</script>
+</body>
+</html>

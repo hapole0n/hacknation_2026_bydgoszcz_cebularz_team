@@ -48,7 +48,7 @@ export class ReportService {
     const kase = await this.prisma.case.findUniqueOrThrow({ where: { id: results.run.caseId }, include: { identifiers: true } });
     const doc = buildReport({
       appName: APP_NAME,
-      case: { id: kase.id, title: kase.title, createdBy: kase.createdBy, identifiers: kase.identifiers.map(({ type, value }) => ({ type, value })) },
+      case: { id: kase.id, title: kase.title, createdBy: kase.createdBy, signature: kase.signature, basis: kase.basis, identifiers: kase.identifiers.map(({ type, value }) => ({ type, value })) },
       run: results.run,
       links: results.links,
       evidence: results.evidence,

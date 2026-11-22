@@ -1,17 +1,18 @@
 import { useTranslation } from 'react-i18next';
 import { useReport } from '@/api/client';
 import type { ReportBlock, ReportSection, StatementKind } from '@/api/types';
-import { LoadState, Panel } from '@/components/primitives';
-import { Button } from '@/components/ui/button';
+import { Screen, type ShortcutItem } from '@/components/win/chrome';
+import { BevelButton, BevelDownload, BevelLink, LoadState } from '@/components/win/controls';
 import { formatDateTime } from '@/lib/format';
+import { useShortcuts } from '@/lib/keys';
+import { downloadPdf } from '@/lib/run';
+import { openDialog } from '@/lib/ui';
 import { cn } from '@/lib/utils';
-import { Link } from '@/router';
+import { navigate } from '@/router';
 
-const KIND_STYLE: Record<StatementKind, string> = { FAKT: 'bg-steel', OBLICZENIE: 'bg-band-very-high', WNIOSEK: 'bg-band-medium' };
-
-/** The label is a word, not only a colour: FAKT / OBLICZENIE / WNIOSEK. */
+/** The label is a word, not only a colour: [FAKT] / [OBLICZENIE] / [WNIOSEK]. */
 function Kind({ kind, className }: { kind: StatementKind; className?: string }) {
-  return <span className={cn('inline-block shrink-0 rounded-sm px-2 py-0.5 text-[0.7rem] font-semibold tracking-wide text-white', KIND_STYLE[kind], className)}>{kind}</span>;
+  return <span className={cn('inline-block shrink-0 font-semibold text-navy', className)}>[{kind}]</span>;
 }
 
 function Table({ b, section }: { b: Extract<ReportBlock, { type: 'table' }>; section: ReportSection }) {
@@ -20,15 +21,15 @@ function Table({ b, section }: { b: Extract<ReportBlock, { type: 'table' }>; sec
   return (
     <div className="my-3 overflow-x-auto">
       {b.kind && b.kind !== section.kind && <Kind kind={b.kind} className="mb-1" />}
-      <table className="w-full border-collapse text-sm">
+      <table className="dt compact min-w-[560px] border border-shadow">
         <colgroup>{weights.map((w, i) => <col key={i} style={{ width: `${(w / total) * 100}%` }} />)}</colgroup>
         <thead>
-          <tr className="bg-muted text-left">{b.columns.map((c) => <th key={c} scope="col" className="px-2 py-1.5 font-semibold">{c}</th>)}</tr>
+          <tr>{b.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
         </thead>
         <tbody>
           {b.rows.map((r, ri) => (
-            <tr key={ri} className="border-b align-top">
-              {r.map((cell, ci) => <td key={ci} className={cn('px-2 py-1.5', b.mono?.includes(ci) ? 'break-all font-mono text-xs' : 'break-words')}>{cell}</td>)}
+            <tr key={ri}>
+              {r.map((cell, ci) => <td key={ci} className={cn('[overflow-wrap:anywhere]', b.mono?.includes(ci) && 'text-[12px]')}>{cell}</td>)}
             </tr>
           ))}
         </tbody>
@@ -40,9 +41,9 @@ function Table({ b, section }: { b: Extract<ReportBlock, { type: 'table' }>; sec
 function Block({ b, section }: { b: ReportBlock; section: ReportSection }) {
   switch (b.type) {
     case 'heading':
-      return <h3 className="mt-5 text-sm font-semibold">{b.text}</h3>;
+      return <h3 className="m-0 mt-5 text-[14px] font-semibold">{b.text}</h3>;
     case 'list':
-      return <ul className="my-2 list-disc space-y-1 pl-5 text-sm">{b.items.map((i) => <li key={i}>{i}</li>)}</ul>;
+      return <ul className="my-2 flex list-disc flex-col gap-1 pl-5 text-[14px]">{b.items.map((item, n) => <li key={`${n}-${item}`}>{item}</li>)}</ul>;
     case 'table':
       return <Table b={b} section={section} />;
     case 'text':
@@ -50,8 +51,8 @@ function Block({ b, section }: { b: ReportBlock; section: ReportSection }) {
         <div className="my-2 flex gap-3">
           {b.kind && <Kind kind={b.kind} className="mt-0.5 self-start" />}
           <div>
-            <p className="text-sm">{b.text}</p>
-            {b.basis && <p className="mt-0.5 text-xs italic text-muted-foreground">Podstawa: {b.basis}</p>}
+            <p className="m-0 text-[14px] leading-relaxed">{b.text}</p>
+            {b.basis && <p className="m-0 mt-0.5 text-[12px] italic text-sub">Podstawa: {b.basis}</p>}
           </div>
         </div>
       );
@@ -62,89 +63,108 @@ function Block({ b, section }: { b: ReportBlock; section: ReportSection }) {
 export function ReportPage({ id }: { id: string }) {
   const { t } = useTranslation();
   const report = useReport(id);
-  if (!report.data) return <LoadState isPending={report.isPending} error={report.error} onRetry={() => report.refetch()} />;
-  const { doc, sha256, evidenceSha256, generatedAt } = report.data;
-
+  const run = report.data;
+  const back = `/runs/${id}`;
+  useShortcuts({ F7: () => downloadPdf(id), Esc: () => navigate(back) });
+  const shortcuts: ShortcutItem[] = [
+    { id: 'F1', label: t('keys.short.F1'), onClick: () => openDialog('help') },
+    { id: 'F7', label: t('keys.short.F7'), onClick: () => downloadPdf(id) },
+    { id: 'Esc', label: t('keys.short.back'), to: back },
+  ];
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
-        <Link to={`/runs/${id}`} className="text-sm text-steel underline underline-offset-2">{t('report.back')}</Link>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button asChild><a href={`/api/runs/${id}/report.pdf`} download>{t('report.downloadPdf')}</a></Button>
-          <Button asChild variant="outline"><a href={`/api/runs/${id}/report.json`} download>{t('report.downloadJson')}</a></Button>
-          <Button variant="outline" onClick={() => window.print()}>{t('report.print')}</Button>
-        </div>
-      </div>
-      <p className="text-sm text-muted-foreground print:hidden">{t('report.polishOnly')}</p>
+    <Screen
+      title={t('report.windowTitle')}
+      windowLabel={t('report.taskbar')}
+      runId={id}
+      shortcuts={shortcuts}
+      status={run ? t('report.status', { sha: run.sha256.slice(0, 12) }) : t('common.loading')}
+      toolbar={
+        <>
+          <BevelLink to={back}>← Esc · {t('address.backToResult')}</BevelLink>
+          <BevelDownload href={`/api/runs/${id}/report.pdf`} primary>F7 · {t('keys.short.F7')}</BevelDownload>
+          <BevelDownload href={`/api/runs/${id}/report.json`}>{t('report.downloadJson')}</BevelDownload>
+          <BevelButton onClick={() => window.print()}>{t('report.print')}</BevelButton>
+        </>
+      }
+    >
+      <p className="no-print m-0 text-[13px] text-sub-face">{t('report.polishOnly')}</p>
+      {!run ? (
+        <LoadState pending={report.isPending} error={report.error} onRetry={() => void report.refetch()} retryLabel={t('common.retry')} loadingLabel={t('common.loading')} errorLabel={t('common.loadError')} />
+      ) : (
+        <ReportBody run={run} />
+      )}
+    </Screen>
+  );
+}
 
-      <Panel className="mx-auto max-w-4xl p-8 print:border-0 print:p-0">
-        <article lang="pl">
-          <p className="text-sm font-semibold text-muted-foreground">{doc.appName}</p>
-          <h1 className="font-serif text-4xl font-semibold">{doc.title}</h1>
-          <p className="mt-1 text-xl">{doc.caseTitle}</p>
-          <dl className="mt-4 grid grid-cols-[10rem_1fr] gap-y-1 border-y py-3 text-sm">
-            {doc.meta.map(([k, v]) => (
-              <div key={k} className="contents">
-                <dt className="text-muted-foreground">{k}</dt>
-                <dd className="break-all">{v}</dd>
-              </div>
-            ))}
-          </dl>
+function ReportBody({ run }: { run: NonNullable<ReturnType<typeof useReport>['data']> }) {
+  const { doc, sha256, evidenceSha256, generatedAt } = run;
+  return (
+    <article lang="pl" className="sunken mx-auto w-full max-w-[920px] p-8 text-ink print:border-0 print:p-0 print:shadow-none">
+      <p className="m-0 text-[13px] font-semibold text-sub">{doc.appName}</p>
+      <h2 className="m-0 mt-1 font-vt text-[46px] font-normal leading-none text-navy">{doc.title}</h2>
+      <p className="m-0 mt-1 text-[18px] font-semibold">{doc.caseTitle}</p>
+      <dl className="m-0 mt-4 grid grid-cols-[13rem_1fr] gap-y-1 border-y border-shadow py-3 text-[14px]">
+        {doc.meta.map(([k, v]) => (
+          <div key={k} className="contents">
+            <dt className="text-sub">{k}</dt>
+            <dd className="m-0 [overflow-wrap:anywhere]">{v}</dd>
+          </div>
+        ))}
+      </dl>
 
-          <h2 className="mt-8 font-serif text-2xl font-semibold">Podsumowanie</h2>
-          <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-base">{doc.summary.map((s) => <li key={s}>{s}</li>)}</ol>
+      <h2 className="m-0 mt-8 font-vt text-[34px] font-normal leading-none text-navy">Podsumowanie</h2>
+      <ol className="mt-2 flex list-decimal flex-col gap-1.5 pl-5 text-[15px] leading-relaxed">{doc.summary.map((s, n) => <li key={`${n}-${s}`}>{s}</li>)}</ol>
 
-          <h2 className="mt-8 font-serif text-xl font-semibold">Jak czytać ten raport</h2>
-          <ul className="mt-2 space-y-1.5 text-sm">
-            {doc.legend.map((l) => (
-              <li key={l.kind} className="flex items-start gap-3"><Kind kind={l.kind} className="mt-0.5" />{l.text}</li>
-            ))}
-          </ul>
+      <h2 className="m-0 mt-8 text-[16px] font-semibold">Jak czytać ten raport</h2>
+      <ul className="m-0 mt-2 flex list-none flex-col gap-1.5 p-0 text-[14px]">
+        {doc.legend.map((l) => (
+          <li key={l.kind} className="flex items-start gap-3"><Kind kind={l.kind} className="mt-0.5" />{l.text}</li>
+        ))}
+      </ul>
 
-          <nav aria-label="Spis treści" className="mt-8 print:hidden">
-            <h2 className="font-serif text-xl font-semibold">Spis treści</h2>
-            <ol className="mt-2 space-y-0.5 text-sm">
-              {doc.sections.map((s) => <li key={s.id}><a href={`#sec-${s.id}`} className="text-steel underline underline-offset-2">{s.number}. {s.title}</a></li>)}
-              <li><a href="#sec-glossary" className="text-steel underline underline-offset-2">Słowniczek</a></li>
-            </ol>
-          </nav>
+      <nav aria-label="Spis treści" className="no-print mt-8">
+        <h2 className="m-0 text-[16px] font-semibold">Spis treści</h2>
+        <ol className="m-0 mt-2 flex list-none flex-col gap-0.5 p-0 text-[14px]">
+          {doc.sections.map((s) => <li key={s.id}><a href={`#sec-${s.id}`} className="inline-flex min-h-[32px] items-center">{s.number}. {s.title}</a></li>)}
+          <li><a href="#sec-glossary" className="inline-flex min-h-[32px] items-center">Słowniczek</a></li>
+        </ol>
+      </nav>
 
-          {doc.sections.map((s) => (
-            <section key={s.id} id={`sec-${s.id}`} className="mt-10 scroll-mt-4">
-              <div className="flex items-center justify-between gap-3 border-b pb-1">
-                <h2 className="font-serif text-2xl font-semibold">{s.number}. {s.title}</h2>
-                {s.kind && <Kind kind={s.kind} />}
-              </div>
-              {s.blocks.map((b, i) => <Block key={i} b={b} section={s} />)}
-              {s.id === 'meta' && (
-                <>
-                  <h3 className="mt-5 text-sm font-semibold">Integralność raportu</h3>
-                  <dl className="mt-1 grid grid-cols-[12rem_1fr] gap-y-1 border-y py-2 text-sm">
-                    <dt className="text-muted-foreground">Raport wygenerowano</dt>
-                    <dd>{formatDateTime(generatedAt, 'pl')}</dd>
-                    <dt className="text-muted-foreground">SHA-256 danych raportu</dt>
-                    <dd className="break-all font-mono text-xs" data-testid="report-sha">{sha256}</dd>
-                    <dt className="text-muted-foreground">SHA-256 zbioru dowodów</dt>
-                    <dd className="break-all font-mono text-xs">{evidenceSha256}</dd>
-                  </dl>
-                </>
-              )}
-            </section>
+      {doc.sections.map((s) => (
+        <section key={s.id} id={`sec-${s.id}`} className="mt-10 scroll-mt-4">
+          <div className="flex items-center justify-between gap-3 border-b-[3px] border-double border-ink pb-1">
+            <h2 className="m-0 font-vt text-[34px] font-normal leading-none text-navy">{s.number}. {s.title}</h2>
+            {s.kind && <Kind kind={s.kind} />}
+          </div>
+          {s.blocks.map((b, i) => <Block key={i} b={b} section={s} />)}
+          {s.id === 'meta' && (
+            <>
+              <h3 className="m-0 mt-5 text-[14px] font-semibold">Integralność raportu</h3>
+              <dl className="m-0 mt-1 grid grid-cols-[13rem_1fr] gap-y-1 border-y border-shadow py-2 text-[14px]">
+                <dt className="text-sub">Raport wygenerowano</dt>
+                <dd className="m-0">{formatDateTime(generatedAt, 'pl')}</dd>
+                <dt className="text-sub">SHA-256 danych raportu</dt>
+                <dd className="m-0 text-[12px] [overflow-wrap:anywhere]" data-testid="report-sha">{sha256}</dd>
+                <dt className="text-sub">SHA-256 zbioru dowodów</dt>
+                <dd className="m-0 text-[12px] [overflow-wrap:anywhere]">{evidenceSha256}</dd>
+              </dl>
+            </>
+          )}
+        </section>
+      ))}
+
+      <section id="sec-glossary" className="mt-10 scroll-mt-4">
+        <h2 className="m-0 border-b-[3px] border-double border-ink pb-1 font-vt text-[34px] font-normal leading-none text-navy">Słowniczek</h2>
+        <dl className="m-0 mt-3 grid grid-cols-[12rem_1fr] gap-x-4 gap-y-2 text-[14px]">
+          {doc.glossary.map((g) => (
+            <div key={g.term} className="contents">
+              <dt className="font-semibold">{g.term}</dt>
+              <dd className="m-0">{g.definition}</dd>
+            </div>
           ))}
-
-          <section id="sec-glossary" className="mt-10 scroll-mt-4">
-            <h2 className="border-b pb-1 font-serif text-2xl font-semibold">Słowniczek</h2>
-            <dl className="mt-3 grid grid-cols-[11rem_1fr] gap-x-4 gap-y-2 text-sm">
-              {doc.glossary.map((g) => (
-                <div key={g.term} className="contents">
-                  <dt className="font-semibold">{g.term}</dt>
-                  <dd>{g.definition}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        </article>
-      </Panel>
-    </div>
+        </dl>
+      </section>
+    </article>
   );
 }

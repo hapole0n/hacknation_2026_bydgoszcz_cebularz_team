@@ -181,7 +181,7 @@ export class PipelineService {
       const search = async (identifiers: Ident[], round: 1 | 2 | 3, accept: (d: EvidenceDraft) => boolean, onlyKey?: string) => {
         for (const c of connectors) {
           if (c.identifiers.length === 0) continue; // works on pages other sources found (round 4)
-          const row = (i: Ident, e: Pick<SearchLogEntry, 'outcome' | 'resources' | 'addresses' | 'note'>) => searchLog.push({ connector: c.id, round, identifier: { type: i.type, value: i.value }, ...e });
+          const row = (i: Ident, e: Pick<SearchLogEntry, 'outcome' | 'resources' | 'addresses' | 'note'>) => searchLog.push({ connector: c.id, round, identifier: { type: i.type, value: i.value }, ...e, at: new Date().toISOString() });
           const taken = identifiers.filter((i) => c.identifiers.includes(i.type) && (c.accepts?.(i) ?? true));
           const runnable = taken.filter((i) => {
             const key = c.missingKey?.(i.type);
@@ -192,7 +192,10 @@ export class PipelineService {
           if (runnable.length === 0) continue;
 
           const sum = round === 1 ? undefined : sumFor(c.id, round);
-          if (sum) sum.queries!++;
+          if (sum) {
+            sum.queries!++;
+            sum.at = new Date().toISOString();
+          }
           const per = new Map<string, { resources: number; addresses: number }>();
           const skipped = new Map<string, string>();
           try {
@@ -481,7 +484,8 @@ export class PipelineService {
           })),
         });
         const addressIds = new Map<string, string>();
-        for (const [key, a] of addressRows) {
+        // Sorted: concurrent runs (scheduler + manual run, parallel tests) upsert the same shared rows, and a different order per run is a deadlock.
+        for (const [key, a] of [...addressRows].sort(([x], [y]) => (x < y ? -1 : x > y ? 1 : 0))) {
           const data = { category: a.category as never, labelsJson: json(a.labels), isContract: a.isContract };
           const row = await tx.address.upsert({ where: { chain_address: { chain: a.chain, address: a.address } }, create: { chain: a.chain, address: a.address, ...data }, update: a.known ? data : {} });
           addressIds.set(key, row.id);
@@ -511,6 +515,8 @@ export class PipelineService {
               identities,
               subjects,
               searches,
+              // the classification of every address AS OF THIS RUN: the Address table is shared and later runs rewrite it (see results())
+              addresses: [...addressRows.values()].map(({ chain, address, category, labels, isContract }) => ({ chain, address, category, labels, isContract })),
             }),
           },
         });
@@ -557,13 +563,19 @@ export class PipelineService {
     });
     if (!run) throw new NotFoundException(`run ${runId} not found`);
     const { evidence, traces, links, snapshots, ...head } = run;
+    // Category, labels and contract flag come from the run itself, not from the shared Address row: another run (or a test file on the same
+    // database) may reclassify the address later, and a stored run must not change with it. Runs stored before `addresses` existed use the row.
+    const stored = (head.summaryJson as { addresses?: { chain: string; address: string; category: string; labels: unknown[]; isContract: boolean | null }[] } | null)?.addresses ?? [];
+    const asOfRun = new Map(stored.map((a) => [`${a.chain}:${a.address}`, a]));
+    const classOf = (a: { chain: string; address: string; category: string; labelsJson: unknown; isContract: boolean | null }) =>
+      asOfRun.get(`${a.chain}:${a.address}`) ?? { category: a.category, labels: a.labelsJson, isContract: a.isContract };
     return {
       run: head,
       links: links
         .map(({ identifier, address, ...l }) => ({
           ...l,
           identifier: { id: identifier.id, type: identifier.type, value: identifier.value },
-          address: { chain: address.chain, address: address.address, category: address.category, labels: address.labelsJson, isContract: address.isContract },
+          address: { chain: address.chain, address: address.address, ...classOf(address) },
         }))
         .sort(
           (a, b) =>
@@ -577,7 +589,7 @@ export class PipelineService {
       /** On-chain indicators and chronology per analysed address. */
       chain: snapshots
         .map((s) => ({
-          address: { chain: s.address.chain, address: s.address.address, category: s.address.category },
+          address: { chain: s.address.chain, address: s.address.address, category: classOf(s.address).category },
           provider: s.provider,
           fetchedAt: s.fetchedAt,
           indicators: s.indicatorsJson,

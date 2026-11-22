@@ -19,8 +19,8 @@ const REVIEWED = {
   lightningcss: 'MPL-2.0 (copyleft na poziomie plików). Narzędzie budowania (Tailwind / Vite, devDependency interfejsu), niemodyfikowane; do paczki webowej trafia tylko wygenerowany CSS.',
   'lightningcss-win32-x64-msvc': 'MPL-2.0, jak `lightningcss` (binarium dla Windows, tylko narzędzie budowania).',
   'caniuse-lite': 'CC-BY-4.0 (wymaga uznania autorstwa). Dane przeglądarek z caniuse.com © Alexis Deveria i współautorzy, https://creativecommons.org/licenses/by/4.0/ — używane tylko przy budowaniu (browserslist), niezmienione.',
-  '@fontsource-variable/ibm-plex-sans': 'OFL-1.1 — czcionka interfejsu, patrz „Czcionki”.',
-  '@fontsource-variable/source-serif-4': 'OFL-1.1 — czcionka interfejsu, patrz „Czcionki”.',
+  '@fontsource/ibm-plex-mono': 'OFL-1.1 — czcionka interfejsu, patrz „Czcionki”.',
+  '@fontsource/vt323': 'OFL-1.1 — czcionka nagłówków interfejsu, patrz „Czcionki”.',
 };
 const needsReview = /MPL|EPL|CC-BY|OFL|LGPL|CDDL/i;
 const forbidden = /AGPL|(^|[^L])GPL|SSPL|BUSL|UNKNOWN|UNLICENSED|Commercial|SEE LICENSE/i;
@@ -30,20 +30,21 @@ for (const p of rows) {
   else if (needsReview.test(p.license) && !REVIEWED[p.name]) problems.push(`${p.name}@${p.versions}: licence "${p.license}" has no entry in REVIEWED`);
 }
 
-// Fonts: the claims below are re-checked against the files every time.
-const fontsource = (name) => {
-  const p = rows.find((r) => r.name === name);
-  const text = readFileSync(join(p.paths[0], 'LICENSE'), 'utf8');
-  if (!/SIL Open Font License, Version 1\.1/.test(text)) problems.push(`${name}: LICENSE is not the SIL OFL 1.1 any more`);
-  return text.split('\n').map((l) => l.trim()).find((l) => /Copyright|Google|Adobe|IBM/i.test(l))?.replace(/\s+/g, ' ').slice(0, 140) ?? '';
+// Fonts: the claims below are re-checked against the files every time. The web uses @fontsource; the PDF uses the unmodified files in apps/api/assets/fonts.
+const ofl = (file) => {
+  const text = readFileSync(root(file), 'utf8');
+  if (!/SIL Open Font License,? Version 1\.1/i.test(text)) problems.push(`${file}: not the SIL OFL 1.1 any more`);
+  return text.split('\n').map((l) => l.trim()).find((l) => /^Copyright/i.test(l))?.replace(/\s*\([^)]*@[^)]*\)/, '').replace(/\s+/g, ' ').slice(0, 140) ?? ''; // an author's e-mail stays in the licence file, not in this table
 };
-const pdfmake = rows.find((r) => r.name === 'pdfmake');
-// the name table of a TTF holds text both as single bytes (Mac) and as UTF-16BE (Windows), at either byte parity
-const utf16be = (b) => Buffer.from(b.subarray(0, b.length - (b.length % 2))).swap16().toString('utf16le');
-const roboto = readFileSync(join(pdfmake.paths[0], 'fonts/Roboto/Roboto-Regular.ttf'));
-const robotoMeta = [roboto.toString('latin1'), utf16be(roboto), utf16be(roboto.subarray(1))].join('\n');
-if (!robotoMeta.includes('SIL Open Font License')) problems.push('Roboto in pdfmake: the font file no longer says SIL OFL');
-const robotoCopyright = /Copyright 20\d\d The Roboto Project Authors \(https:\/\/github\.com\/googlefonts\/roboto-classic\)/.exec(robotoMeta)?.[0] ?? 'Copyright The Roboto Project Authors';
+for (const f of ['apps/api/assets/fonts/ibm-plex-mono/IBMPlexMono-Regular.woff', 'apps/api/assets/fonts/ibm-plex-mono/IBMPlexMono-Bold.woff', 'apps/api/assets/fonts/ibm-plex-mono/IBMPlexMono-Italic.woff', 'apps/api/assets/fonts/ibm-plex-mono/IBMPlexMono-BoldItalic.woff', 'apps/api/assets/fonts/vt323/VT323-Regular.ttf']) readFileSync(root(f)); // must exist
+const plexCopyright = ofl('apps/api/assets/fonts/ibm-plex-mono/OFL.txt');
+const vtCopyright = ofl('apps/api/assets/fonts/vt323/OFL.txt');
+const webFont = (name) => {
+  const p = rows.find((r) => r.name === name);
+  if (!/SIL Open Font License, Version 1\.1/.test(readFileSync(join(p.paths[0], 'LICENSE'), 'utf8'))) problems.push(`${name}: LICENSE is not the SIL OFL 1.1 any more`);
+};
+webFont('@fontsource/ibm-plex-mono');
+webFont('@fontsource/vt323');
 
 // Label sets and data: the headers are required by LabelService, so the table is complete by construction.
 const labelDir = root('config/labels');
@@ -87,13 +88,12 @@ Obrazy bazowe zawierają też pakiety systemowe Debian / Alpine na ich własnych
 
 ## Czcionki
 
-Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SIL Open Font License 1.1; skrypt sprawdza przy każdym generowaniu, że pliki nadal to deklarują.
+Wszystkie czcionki są serwowane lokalnie (żadnych czcionek z CDN) i objęte SIL Open Font License 1.1; skrypt sprawdza przy każdym generowaniu, że pliki i pakiety nadal to deklarują. Interfejs używa pakietów \`@fontsource/*\`, raport PDF — niezmodyfikowanych plików z \`apps/api/assets/fonts/\` (razem z tekstami licencji).
 
 | Czcionka | Licencja | Informacja o prawach autorskich | Użycie |
 |---|---|---|---|
-| Roboto 3.x (dołączona do pakietu \`pdfmake\`: \`fonts/Roboto/*.ttf\`) | SIL OFL-1.1 (zapisana w metadanych pliku) | ${robotoCopyright} | osadzana (podzbiór znaków) w raportach PDF, z polskimi literami |
-| IBM Plex Sans (\`@fontsource-variable/ibm-plex-sans\`) | SIL OFL-1.1 | ${fontsource('@fontsource-variable/ibm-plex-sans')} (wg pliku LICENSE pakietu) | interfejs webowy |
-| Source Serif 4 (\`@fontsource-variable/source-serif-4\`) | SIL OFL-1.1 | ${fontsource('@fontsource-variable/source-serif-4')} (wg pliku LICENSE pakietu) | interfejs webowy |
+| IBM Plex Mono (\`@fontsource/ibm-plex-mono\`; pliki \`apps/api/assets/fonts/ibm-plex-mono/*.woff\`) | SIL OFL-1.1 | ${plexCopyright} | cały interfejs i tekst raportu PDF |
+| VT323 (\`@fontsource/vt323\`; plik \`apps/api/assets/fonts/vt323/VT323-Regular.ttf\`) | SIL OFL-1.1 | ${vtCopyright} | duże nagłówki interfejsu i raportu PDF |
 
 ## Zbiory danych i etykiet
 

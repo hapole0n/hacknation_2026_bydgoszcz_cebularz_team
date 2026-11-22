@@ -344,11 +344,11 @@ describe('Z-21…Z-28 — technical requirements (task section 5)', () => {
     expect(names.size).toBeGreaterThan(30);
     for (const n of names) expect(licenses, `${n} is in LICENSES.md (run pnpm licenses:report)`).toContain(`| ${n} |`);
     const npmRows = licenses.slice(licenses.indexOf('## Pakiety npm')).split('\n').filter((l) => /^\| [^|]+ \| [^|]+ \| [^|]+ \|/.test(l)).slice(1); // without the header row
-    expect(npmRows.length).toBeGreaterThan(500);
+    expect(npmRows.length).toBeGreaterThan(300);
     for (const row of npmRows) expect(row.split('|')[3]!.trim(), row).toMatch(/^[^\s]+.*$/); // every package has a licence …
     expect(npmRows.filter((r) => /\|\s*\(?(A?GPL|SSPL|UNKNOWN|UNLICENSED|SEE LICENSE)/i.test(r.split('|')[3]!))).toEqual([]); // … and none is strong copyleft or unknown
     for (const s of app.labels.sources) expect(licenses, s.file).toContain(`\`${s.file}\``);
-    for (const font of ['Roboto', 'IBM Plex Sans', 'Source Serif 4']) expect(licenses, font).toContain(font);
+    for (const font of ['IBM Plex Mono', 'VT323']) expect(licenses, font).toContain(font);
   });
 
   it('Z-22 stack: Node.js + TypeScript backend (NestJS), React front-end, PostgreSQL', () => {

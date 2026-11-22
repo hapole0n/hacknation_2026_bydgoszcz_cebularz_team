@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   ADDRESS_CATEGORIES,
   countClaimants,
+  detectIdentifierType,
   evaluateIdentity,
   exclusionForCategory,
   findIdentifierInText,
@@ -159,5 +160,27 @@ describe('labels', () => {
     const a = synthEth('A1');
     expect(labelKey('ETH', a)).toBe(labelKey('ETH', a.toLowerCase()));
     expect(labelKey('BTC', '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa')).not.toBe(labelKey('BTC', '1a1zp1ep5qgefi2dmptftl5slmv7divfna'));
+  });
+});
+
+describe('detectIdentifierType', () => {
+  it('guesses address, e-mail, messenger handle, name or nick — and never a social login', () => {
+    expect(detectIdentifierType(synthEth('A1'))).toBe('ADDRESS');
+    expect(detectIdentifierType('jtestowy.eth')).toBe('ADDRESS');
+    expect(detectIdentifierType('jan.testowy@example.org')).toBe('EMAIL');
+    expect(detectIdentifierType('@jtestowy_pl')).toBe('MESSENGER');
+    expect(detectIdentifierType('t.me/jtestowy_pl')).toBe('MESSENGER');
+    expect(detectIdentifierType('Jan Testowy')).toBe('NAME');
+    expect(detectIdentifierType('jtestowy')).toBe('NICK');
+  });
+
+  it('an address with a broken checksum is still an address (the error is raised when it is normalised)', () => {
+    const broken = `${synthEth('A1').slice(0, -1)}${synthEth('A1').endsWith('a') ? 'b' : 'a'}`;
+    expect(detectIdentifierType(broken)).toBe('ADDRESS');
+    expect(() => normalizeIdentifier('ADDRESS', broken)).toThrow(/invalid address/);
+  });
+
+  it('ignores surrounding whitespace', () => {
+    expect(detectIdentifierType('  jan.testowy@example.org ')).toBe('EMAIL');
   });
 });
