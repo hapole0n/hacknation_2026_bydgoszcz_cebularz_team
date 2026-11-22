@@ -82,3 +82,11 @@ body { font-family: 'IBM Plex Mono', 'Courier New', monospace; color: #2a2a2a; }
 .pin { position: absolute; height: 44px; display: flex; align-items: center; pointer-events: none; }
 .pin .badge { width: 44px; height: 44px; line-height: 38px; font-size: 26px; }
 .pin .lead { height: 4px; flex: none; background: #e8a317; box-shadow: 0 0 0 1.5px #2a2a2a; }
+
+/* v3.1: równe łamanie wierszy (bez pojedynczych słów w ostatniej linii) */
+.slide p, .slide li, .pt > span { text-wrap: balance; }
+/* v3.1, slajd 02: pełniejsze karty z liczbami, zdanie w pasie jako hasło */
+#s02 .panel .vt { font-size: 150px !important; white-space: nowrap; }
+#s02 .panel { padding: 22px 34px; gap: 16px; }
+#s02 .panel .t32 { font-size: 36px; }
+#s02 .dash p { font-family: 'VT323', monospace; font-size: 60px; line-height: 1.05; color: #1c2f7a; }

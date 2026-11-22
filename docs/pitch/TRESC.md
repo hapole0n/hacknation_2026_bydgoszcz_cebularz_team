@@ -30,7 +30,7 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
 - Pasek tytułu okna: Problem
 - Nagłówek: Kantor P2P nie jest w rejestrze
 - Trzy pola sunken w rzędzie: duża liczba (VT323, ok. 150 px) + podpis (32 px):
-  1. **20 tys.** — wykazuje krypto w PIT-38, a ma je 2,5 mln
+  1. **20 tys.** — osób wykazuje krypto w PIT-38, a ma je 2,5 mln
   2. **58%** (kolor alert) — nielegalnego wolumenu w 2024 r.: sieć TRON
   3. **2027** — DAC8: tylko pośrednicy, bez P2P
 - Pas na dole (ramka przerywana, 32 px): Ślad kantoru jest na Telegramie, w ogłoszeniu i w e-mailu.
@@ -64,8 +64,8 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
 - Pasek tytułu okna: Szukanie odwrotne
 - Nagłówek: Masz adres? Szukamy, kto go publikuje
 - Punkty:
-  - [1] Konto, które opublikowało adres — z oceną
-  - [2] Inne adresy tego konta: sieć kantoru
+  - [1] Własny profil opublikował adres: 90
+  - [2] Ten sam adres w stopce e-maila: 75
   - [3] Ten sam nick to nie ta sama osoba
 - Numery na P9: ① pierwsza karta konta (wskaźnik 90) ② druga karta (75) ③ karta „ten sam nick na innej platformie; możliwa inna osoba”
 - Notatka: Gdy analityk ma tylko adres, na przykład z przelewu, KROPKA szuka odwrotnie: kto ten adres publikuje i jakie inne adresy publikują te same konta. Tak od jednego ogłoszenia dochodzimy do całej sieci kantoru. Zbieżność nicków nie wystarcza i system to wprost oznacza.
