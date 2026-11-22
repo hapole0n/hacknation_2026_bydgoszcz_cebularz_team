@@ -484,7 +484,8 @@ export class PipelineService {
           })),
         });
         const addressIds = new Map<string, string>();
-        for (const [key, a] of addressRows) {
+        // Sorted: concurrent runs (scheduler + manual run, parallel tests) upsert the same shared rows, and a different order per run is a deadlock.
+        for (const [key, a] of [...addressRows].sort(([x], [y]) => (x < y ? -1 : x > y ? 1 : 0))) {
           const data = { category: a.category as never, labelsJson: json(a.labels), isContract: a.isContract };
           const row = await tx.address.upsert({ where: { chain_address: { chain: a.chain, address: a.address } }, create: { chain: a.chain, address: a.address, ...data }, update: a.known ? data : {} });
           addressIds.set(key, row.id);
