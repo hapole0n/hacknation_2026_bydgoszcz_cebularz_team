@@ -1,0 +1,48 @@
+name: CI
+
+# Lint, type-check/build and the tests of core, web and api on every pull request and on pushes to main / develop.
+# No secrets are passed in: the tests never touch the internet (the sandbox is served from disk) and the one live
+# smoke test skips itself when ETHERSCAN_API_KEY is absent.
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: olcys
+          POSTGRES_PASSWORD: olcys
+          POSTGRES_DB: olcys
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U olcys"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://olcys:olcys@localhost:5432/olcys
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # the version comes from "packageManager" in package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm build
+      - run: pnpm --filter api exec prisma migrate deploy
+      - run: pnpm test
