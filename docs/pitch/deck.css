@@ -1,0 +1,92 @@
+/* KROPKA - pitch deck v3: Win95 (as in docs/pitch/win95), little text, big text, big focused screenshots of the product.
+   1920x1080 slides. Fonts: IBM Plex Mono 400/700 + VT323, local (@fontsource), no CDN. */
+@import url('../../node_modules/@fontsource/ibm-plex-mono/400.css');
+@import url('../../node_modules/@fontsource/ibm-plex-mono/700.css');
+@import url('../../node_modules/@fontsource/vt323/400.css');
+
+@page { size: 1920px 1080px; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #111; }
+body { font-family: 'IBM Plex Mono', 'Courier New', monospace; color: #2a2a2a; }
+.slide { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #2f6f6f; break-after: page; page-break-after: always; }
+.slide:last-child { break-after: auto; page-break-after: auto; }
+
+/* ---- task bar: three buttons + the progress of the slides in the tray ---- */
+.task { position: absolute; left: 0; top: 1012px; width: 1920px; height: 68px; background: #c3c3c3; box-shadow: inset 0 3px 0 #ffffff; display: flex; align-items: center; gap: 10px; padding: 0 14px; }
+.tbtn { height: 50px; padding: 0 22px; display: flex; align-items: center; background: #c3c3c3; box-shadow: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #2a2a2a, inset -4px -4px 0 #6e6e6e; }
+.tbt { font-size: 24px; font-weight: 700; white-space: nowrap; }
+.tray { margin-left: auto; height: 50px; display: flex; align-items: center; gap: 6px; padding: 0 16px; background: #c3c3c3; border: 2px solid #6e6e6e; box-shadow: inset 2px 2px 0 #2a2a2a; }
+.on { width: 18px; height: 26px; background: #1c2f7a; }
+.off { width: 18px; height: 26px; border: 2px solid #6e6e6e; }
+.pg { font-size: 24px; font-weight: 700; margin-left: 12px; white-space: nowrap; }
+
+/* ---- the desktop: the presentation window, and (slides with a screenshot) the window of the product, a 72 px rail between them ---- */
+.desk { position: absolute; left: 44px; top: 36px; width: 1832px; height: 936px; display: flex; gap: 24px; }
+.desk.rail { gap: 72px; }
+.win { height: 936px; flex: none; background: #c3c3c3; padding: 8px; display: flex; flex-direction: column; box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #2a2a2a, inset 6px 6px 0 #dfdfdf, inset -6px -6px 0 #6e6e6e; }
+.tbar { height: 56px; flex: none; background: #1c2f7a; display: flex; align-items: center; gap: 12px; padding: 0 10px; }
+.ttl { flex: 1; min-width: 0; font-size: 28px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+.btn { width: 40px; height: 36px; flex: none; background: #c3c3c3; display: flex; align-items: center; justify-content: center; box-shadow: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #2a2a2a; }
+.btxt { font-size: 24px; font-weight: 700; line-height: 1; }
+.tri { width: 16px; height: 12px; fill: #2a2a2a; }
+.body { flex: 1; min-height: 0; padding: 26px 34px 30px; display: flex; flex-direction: column; gap: 22px; }
+.spread { justify-content: space-between; }
+
+/* ---- type ---- */
+.head84 { font-family: 'VT323', monospace; font-size: 88px; font-weight: 400; line-height: 0.92; color: #1c2f7a; }
+.duo { font-family: 'VT323', monospace; font-size: 104px; font-weight: 400; line-height: 0.95; }
+.hero { font-family: 'VT323', monospace; font-size: 190px; font-weight: 400; line-height: 0.85; color: #1c2f7a; }
+.vt { font-family: 'VT323', monospace; font-weight: 400; line-height: 1; color: #1c2f7a; }
+.t32 { font-size: 32px; line-height: 1.35; }
+.t32b { font-size: 32px; line-height: 1.35; font-weight: 700; }
+.muted { font-size: 24px; line-height: 1.4; color: #444444; }
+.m32 { font-size: 32px; line-height: 1.35; color: #444444; }
+.tag { font-size: 28px; font-weight: 700; color: #1c2f7a; white-space: nowrap; }
+.tagred { font-size: 28px; font-weight: 700; color: #8a2b0e; white-space: nowrap; }
+.alert { color: #8a2b0e; }
+
+/* ---- panels ---- */
+.sunken { background: #ffffff; border: 2px solid #6e6e6e; box-shadow: inset 3px 3px 0 #2a2a2a; padding: 14px 24px; }
+.dash { border: 2px dashed #1c2f7a; padding: 16px 22px; }
+.panel { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 34px 40px; }
+.panel.sel { box-shadow: inset 3px 3px 0 #2a2a2a, 0 0 0 4px #1c2f7a; }
+.row { display: flex; gap: 40px; }
+.flow { display: flex; align-items: center; gap: 14px; }
+.cursor { width: 34px; height: 62px; background: #1c2f7a; flex: none; }
+.child { background: #c3c3c3; padding: 6px; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #2a2a2a, inset -4px -4px 0 #6e6e6e; }
+.ctb { background: #1c2f7a; padding: 6px 12px; flex: none; }
+.ctt { font-size: 24px; font-weight: 700; color: #ffffff; white-space: nowrap; }
+.list { flex: 1; background: #ffffff; border: 2px solid #6e6e6e; box-shadow: inset 3px 3px 0 #2a2a2a; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.item { flex: 1; display: flex; align-items: center; padding: 10px 16px; font-size: 36px; line-height: 1.3; }
+.itemsel { flex: 1; display: flex; align-items: center; padding: 10px 16px; font-size: 36px; line-height: 1.3; color: #ffffff; background: #1c2f7a; }
+.vt .g, .head84 .g, .duo .g { height: 0.42em; }
+.g { display: inline-block; height: 0.62em; width: auto; vertical-align: -0.02em; fill: none; stroke: currentColor; stroke-width: 2.4; overflow: visible; }
+
+/* ---- numbered points (the numbers are the same as on the screenshot) ---- */
+.pts { font-size: 36px; flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; gap: 34px; }
+.pt { display: flex; gap: 20px; align-items: flex-start; font-size: inherit; line-height: 1.3; }
+.badge { width: 48px; height: 48px; flex: none; background: #e8a317; border: 3px solid #2a2a2a; font-size: 28px; font-weight: 700; line-height: 42px; text-align: center; color: #2a2a2a; }
+.pt .badge { margin-top: -2px; }
+
+/* ---- the window of the product (right of the presentation window): its frame is drawn here only when the frame has none of its own ---- */
+.app { position: relative; flex: none; height: 936px; }
+.app.drawn { background: #c3c3c3; padding: 6px; box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #2a2a2a, inset 5px 5px 0 #dfdfdf, inset -5px -5px 0 #6e6e6e; }
+.app.drawn .tbar { height: 48px; }
+.app.drawn .ttl { font-size: 24px; }
+.app.drawn .btn { width: 34px; height: 30px; }
+.client { position: relative; }
+.app.drawn .client { margin-top: 6px; }
+.client > img { display: block; }
+/* annotations: amber, neither the colour of the deck nor of the product; the number stands in the rail and a line leads to the frame */
+.mark { position: absolute; border: 4px solid #e8a317; box-shadow: 0 0 0 1.5px #2a2a2a, inset 0 0 0 1.5px #2a2a2a; pointer-events: none; }
+.pin { position: absolute; height: 44px; display: flex; align-items: center; pointer-events: none; }
+.pin .badge { width: 44px; height: 44px; line-height: 38px; font-size: 26px; }
+.pin .lead { height: 4px; flex: none; background: #e8a317; box-shadow: 0 0 0 1.5px #2a2a2a; }
+
+/* v3.1: równe łamanie wierszy (bez pojedynczych słów w ostatniej linii) */
+.slide p, .slide li, .pt > span { text-wrap: balance; }
+/* v3.1, slajd 02: pełniejsze karty z liczbami, zdanie w pasie jako hasło */
+#s02 .panel .vt { font-size: 150px !important; white-space: nowrap; }
+#s02 .panel { padding: 22px 34px; gap: 16px; }
+#s02 .panel .t32 { font-size: 36px; }
+#s02 .dash p { font-family: 'VT323', monospace; font-size: 60px; line-height: 1.05; color: #1c2f7a; }
