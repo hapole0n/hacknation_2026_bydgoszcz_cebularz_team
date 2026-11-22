@@ -114,7 +114,7 @@ export function NewCasePage() {
               <span aria-hidden="true" className="ml-1.5 inline-block h-[0.85em] w-[0.5em] bg-navy align-[-0.08em]" />
             </label>
           </h1>
-          <p className="m-0 max-w-[800px] text-[15px] leading-relaxed">{t('start.lead')}</p>
+          <p className="m-0 max-w-[800px] text-[18px] leading-relaxed">{t('start.lead')}</p>
         </div>
 
         <div className="flex flex-wrap items-stretch gap-2.5">

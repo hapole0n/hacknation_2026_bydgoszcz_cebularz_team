@@ -18,11 +18,11 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
 ## 01 · Okładka
 - Układ: okno + produkt. Okno produktu to P1 (własny pasek tytułu), bez numerów.
 - Pasek tytułu okna: KROPKA — Osintowy Łapacz Cyfrowych Śladów
-- Pole sunken u góry (24 px): HackNation 2026 · Bydgoszcz · zadanie MF i KAS (OŁCyŚ)
+- Pole sunken u góry (24 px): trzy pola z etykietą: WYDARZENIE HackNation 2026 / MIEJSCE Bydgoszcz / ZADANIE MF I KAS OŁCyŚ
 - Znak słowny (VT323, ok. 180 px): KROPKA
 - Linia z kursorem (VT323): > Kto stoi za adresem?
 - Jedno zdanie (32 px): Od Telegrama i e-maila do adresu kryptowaluty — dla analityka KAS.
-- Autor (muted): Oleh Kropyva · zespół cebularz · stolik 8f
+- Autor (muted): trzy pola z etykietą: AUTOR Oleh Kropyva / ZESPÓŁ cebularz / STOLIK 8f
 - Notatka: Dzień dobry, nazywam się Oleh Kropyva, zespół cebularz. KROPKA odpowiada na pytanie, którego nie rozwiąże sam blockchain: kto stoi za adresem kryptowaluty. Wystarczy nick, e-mail albo kanał na Telegramie.
 
 ## 02 · Problem
@@ -33,7 +33,7 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
   1. **20 tys.** — osób wykazuje krypto w PIT-38, a ma je 2,5 mln
   2. **58%** (kolor alert) — nielegalnego wolumenu w 2024 r.: sieć TRON
   3. **2027** — DAC8: tylko pośrednicy, bez P2P
-- Pas na dole (ramka przerywana, 32 px): Ślad kantoru jest na Telegramie, w ogłoszeniu i w e-mailu.
+- Pas na dole (ramka przerywana, 32 px): Ślad kantoru jest w Telegramie, w ogłoszeniu i w e-mailu.
 - Drobny druk (jedna linia): Źródła: Bankier.pl (dane MF), TRM Labs, Komisja Europejska.
 - Notatka: Kryptowaluty w PIT-38 wykazuje około 20 tysięcy osób rocznie, a ma je około 2,5 miliona Polaków. 58% nielegalnego wolumenu w 2024 roku przeszło przez sieć TRON. DAC8 da dane dopiero od 2027 roku i tylko od pośredników. Kantor P2P nie jest w żadnym rejestrze, ale ogłasza się na Telegramie i forach.
 
@@ -43,7 +43,7 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
 - Nagłówek w dwóch liniach (VT323, ok. 104 px): Blockchain pokazuje: DOKĄD. / KROPKA pokazuje: KTO.
 - Dwa pola sunken obok siebie:
   - Lewe: [ NARZĘDZIA BLOCKCHAIN ] / adres → przepływy / Odpowiadają, dokąd płyną środki z adresu. / (muted) np. Chainalysis Reactor, TRM, Arkham
-  - Prawe (zaznaczone granatową ramką): [ KROPKA ] / @Telegram · e-mail · ogłoszenie → osoba → adres / Odpowiada, kto stoi za adresem — także za kantorem P2P.
+  - Prawe (zaznaczone granatową ramką): [ KROPKA ] / @Telegram, e-mail, ogłoszenie → osoba → adres / Odpowiada, kto stoi za adresem — także za kantorem P2P.
 - Pas na dole: Nie zastępujemy tych narzędzi: dajemy im adres i uzasadnienie, od których zaczyna się śledzenie.
 - Notatka: To jest sedno. Chainalysis, TRM czy Arkham pokazują, dokąd płyną pieniądze z adresu. KROPKA odpowiada wcześniej: kto za tym adresem stoi. Szukamy go tam, gdzie kantor naprawdę działa: na Telegramie, w ogłoszeniach i w e-mailach.
 
@@ -55,14 +55,14 @@ Myśl przewodnia: narzędzia blockchain pokazują, DOKĄD płyną pieniądze. KR
   - [1] E-mail → GitHub, Gravatar, stopki wiadomości
   - [2] @Telegram → kanały i ogłoszenia P2P
   - [3] Adres → kto jeszcze go publikuje
-- Drobny druk: Telegram na żywo po ocenie prawnej; w demo dane syntetyczne.
+- Drobny druk: Telegram na żywo po ocenie prawnej.
 - Numery na P11: ① wiersz „Adres e-mail” ② wiersz „Komunikator (Telegram i inne)” ③ wiersz „kto jeszcze je publikuje”
 - Notatka: To nasza główna różnica. Z e-maila sprawdzamy commity na GitHubie, profil Gravatar i stopki wiadomości. Z identyfikatora komunikatora sprawdzamy kanały i ogłoszenia, a każdy znaleziony adres sprawdzamy odwrotnie. Każde zapytanie trafia do Dziennika zapytań.
 
 ## 05 · Kto stoi za adresem?
 - Układ: okno + produkt. Okno produktu to P9 z rysowaną ramką „KROPKA — Kto stoi za adresem?”.
 - Pasek tytułu okna: Szukanie odwrotne
-- Nagłówek: Masz adres? Szukamy, kto go publikuje
+- Nagłówek: brak; punkty stoją na wysokości swoich kart na zrzucie
 - Punkty:
   - [1] Własny profil opublikował adres: 90
   - [2] Ten sam adres w stopce e-maila: 75

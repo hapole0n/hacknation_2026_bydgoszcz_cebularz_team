@@ -27,7 +27,7 @@ const TRON = 'TEonzwFMXhEWwoxNLdM13MBs99T9xAGZey'; // the synthetic persona's TR
 const want = (name) => !ONLY || ONLY.has(name);
 
 // viewport widths: they decide the cut of a frame and so its scale on the slide
-const W = { P1: 640, P3: 1052, P4: 600, P5: 800, P9: 640, P11: 580 };
+const W = { P1: 663, P3: 1052, P4: 600, P5: 800, P9: 640, P11: 580 };
 
 const getJson = async (path) => (await fetch(`${API}${path}`)).json();
 const existing = await getJson('/api/cases');
@@ -44,7 +44,7 @@ const context = await browser.newContext({ viewport: { width: 1000, height: 600 
 const page = await context.newPage();
 page.setDefaultTimeout(30000);
 
-const manifest = REUSE && existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')) : {};
+const manifest = (REUSE || ONLY) && existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')) : {};
 
 /** The container of a GroupBox / ChildWindow: its id is on the heading inside, the element itself carries aria-labelledby. */
 const box = (id) => `[aria-labelledby="${id}"]`;
@@ -134,6 +134,9 @@ if (want('P1')) {
   await hide('main > .sunken, main > p, section[aria-labelledby="przebieg"], section[aria-labelledby="rejestr"]'); // intro console, demo links, flow, register
   await hide('form > div.flex.flex-wrap.items-center, form > details'); // check boxes, "Ustawienia zaawansowane"
   await hide('div.bevel > nav.no-print'); // the shortcut bar at the bottom of the window
+  await hide('div.border-t.border-white > div.ml-auto'); // PL / EN / Powiadomienia: F2, F4, F8 then stand in ONE row
+  await style('div.border-t.border-white', { flexWrap: 'nowrap' });
+  await style('main', { paddingBottom: '8px' }); // less empty grey under the list: the frame gets scale >= 1.4 on the slide
   await page.evaluate(() => document.querySelector('#podstawa').closest('div.flex-col').style.setProperty('display', 'none')); // the optional case number
   await shot('P1', windowOf(), { own: true, caption: 'Nowa sprawa: jedno pole, typ rozpoznawany automatycznie' });
 }
