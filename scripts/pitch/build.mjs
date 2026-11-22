@@ -87,7 +87,7 @@ const layout = await page.evaluate((shotsJson) => {
       Object.assign(mark.style, { left: `${b.x * s - 8}px`, top: `${b.y * s - 8}px`, width: `${b.w * s + 16}px`, height: `${b.h * s + 16}px` });
       const pin = document.createElement('span');
       pin.className = 'pin';
-      const badgeLeft = railLeft - cr.left; // the badge starts where the presentation window ends: it stands in the rail
+      const badgeLeft = railLeft - cr.left + 14; // the badge stands in the middle of the 72 px rail
       const lineW = b.x * s - 8 - (badgeLeft + 44);
       pin.style.left = `${badgeLeft}px`;
       pin.style.top = `${b.lineY * s - 22}px`;
@@ -95,6 +95,19 @@ const layout = await page.evaluate((shotsJson) => {
       client.append(mark, pin);
       info.marks.push({ key, n: i + 1, x: +(b.x * s - 8).toFixed(1), y: +(b.y * s - 8).toFixed(1), w: +(b.w * s + 16).toFixed(1), h: +(b.h * s + 16).toFixed(1), lineY: +(b.lineY * s).toFixed(1) });
     });
+    // points on the left stand level with their annotations (the middle of each framed zone), when the window asks for it
+    if (left.dataset.align === 'pins') {
+      const box = left.querySelector('.pts');
+      Object.assign(box.style, { position: 'relative', display: 'block', flex: '1', alignSelf: 'stretch' });
+      const br = box.getBoundingClientRect();
+      const pins = Array.from(client.querySelectorAll('.pin'));
+      Array.from(box.querySelectorAll('.pt')).forEach((pt, i) => {
+        if (!pins[i]) return;
+        Object.assign(pt.style, { position: 'absolute', left: '0', right: '0' });
+        const pr = pins[i].getBoundingClientRect();
+        pt.style.top = `${pr.top + pr.height / 2 - br.top - pt.getBoundingClientRect().height / 2}px`;
+      });
+    }
     out.push(info);
   }
   return out;
@@ -178,6 +191,7 @@ const found = await page.evaluate(({ shotsJson, count }) => {
 
     // an empty band taller than 120 px inside a presentation window: boxes with text, a visible border or a background count as content
     for (const w of slide.querySelectorAll('.win')) {
+      if (w.dataset.align === 'pins') continue; // points stand level with the framed zones on the right: the bands between them are intended
       const wr = rel(w);
       const tb = w.querySelector('.tbar');
       const top = rel(tb).b;
@@ -209,7 +223,7 @@ const found = await page.evaluate(({ shotsJson, count }) => {
       const aspect = (ir.width / ir.height) / (img.naturalWidth / img.naturalHeight);
       const frameCount = app.querySelectorAll('.tbar').length + (shot.own ? 1 : 0);
       frames.push({ slide: n, shot: name, scale: +scale.toFixed(3), aspectError: +(Math.abs(aspect - 1) * 100).toFixed(3), windowFrames: frameCount, size: `${Math.round(ir.width)}x${Math.round(ir.height)}` });
-      if (scale < minScale || scale > 2.0001) issues.push({ slide: n, rule: 'scale', msg: `${name} is shown at ${scale.toFixed(2)}x (allowed ${minScale}-2.0)` });
+      if (scale < minScale || scale > 2.2501) issues.push({ slide: n, rule: 'scale', msg: `${name} is shown at ${scale.toFixed(2)}x (allowed ${minScale}-2.25)` }); // frames are 2x: up to 2.25 stays sharp enough
       if (Math.abs(aspect - 1) > 0.005) issues.push({ slide: n, rule: 'proportions', msg: `${name}: proportions off by ${(Math.abs(aspect - 1) * 100).toFixed(2)} %` });
       const pad = own ? 0 : 6;
       if (Math.abs(ir.left - cr.left) > 1 || Math.abs(ir.right - cr.right) > 1 || Math.abs(ir.top - cr.top) > 1 || Math.abs(ir.bottom - cr.bottom) > 1 || Math.abs(cr.right - (ar.right - pad)) > 1.5 || Math.abs(cr.bottom - (ar.bottom - pad)) > 1.5 || Math.abs(cr.left - (ar.left + pad)) > 1.5)

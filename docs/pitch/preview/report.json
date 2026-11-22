@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-22T07:51:39.452Z",
+  "generatedAt": "2026-11-22T08:46:42.772Z",
   "ok": true,
   "pdf": {
     "file": "KROPKA_HackNation2026.pdf",
     "pages": 10,
-    "bytes": 707167,
+    "bytes": 674499,
     "fonts": [
       "IBMPlexMono-Bold",
       "IBMPlexMono-Regular",
@@ -15,10 +15,10 @@
     {
       "slide": 1,
       "shot": "P1",
-      "scale": 1.267,
-      "aspectError": 0.025,
+      "scale": 1.415,
+      "aspectError": 0.052,
       "windowFrames": 1,
-      "size": "750x936"
+      "size": "870x936"
     },
     {
       "slide": 4,
@@ -30,11 +30,11 @@
     },
     {
       "slide": 5,
-      "shot": "P9",
-      "scale": 1.574,
-      "aspectError": 0.222,
+      "shot": "P9c",
+      "scale": 1.942,
+      "aspectError": 0.02,
       "windowFrames": 1,
-      "size": "916x870"
+      "size": "1130x870"
     },
     {
       "slide": 6,
@@ -46,11 +46,11 @@
     },
     {
       "slide": 7,
-      "shot": "P3",
-      "scale": 1.668,
-      "aspectError": 0.016,
+      "shot": "P3c",
+      "scale": 2.202,
+      "aspectError": 0.006,
       "windowFrames": 1,
-      "size": "734x936"
+      "size": "914x870"
     },
     {
       "slide": 8,
@@ -65,10 +65,10 @@
     {
       "slide": "s01",
       "name": "P1",
-      "scale": 1.267,
-      "clientW": 750,
+      "scale": 1.415,
+      "clientW": 870,
       "clientH": 936,
-      "appW": 750,
+      "appW": 870,
       "marks": []
     },
     {
@@ -82,27 +82,27 @@
         {
           "key": "email",
           "n": 1,
-          "x": 70.8,
+          "x": 54.3,
           "y": 316.2,
-          "w": 858,
+          "w": 906.1,
           "h": 125.9,
           "lineY": 379.1
         },
         {
           "key": "messenger",
           "n": 2,
-          "x": 70.8,
+          "x": 54.3,
           "y": 459.1,
-          "w": 842.6,
+          "w": 906.1,
           "h": 125.9,
           "lineY": 522
         },
         {
           "key": "reverse",
           "n": 3,
-          "x": 70.8,
+          "x": 54.3,
           "y": 601.9,
-          "w": 842.6,
+          "w": 906.1,
           "h": 202.8,
           "lineY": 703.3
         }
@@ -110,38 +110,38 @@
     },
     {
       "slide": "s05",
-      "name": "P9",
-      "scale": 1.573,
-      "clientW": 916,
+      "name": "P9c",
+      "scale": 1.942,
+      "clientW": 1130,
       "clientH": 870,
-      "appW": 928,
+      "appW": 1142,
       "marks": [
         {
           "key": "first",
           "n": 1,
-          "x": 37.6,
-          "y": 65.9,
-          "w": 840.4,
-          "h": 253.6,
-          "lineY": 192.7
+          "x": 48.3,
+          "y": 83.3,
+          "w": 1033.6,
+          "h": 206.3,
+          "lineY": 186.4
         },
         {
           "key": "second",
           "n": 2,
-          "x": 37.6,
-          "y": 322.4,
-          "w": 840.4,
-          "h": 253.6,
-          "lineY": 449.2
+          "x": 48.3,
+          "y": 296.9,
+          "w": 1033.6,
+          "h": 206.3,
+          "lineY": 400
         },
         {
           "key": "sameNick",
           "n": 3,
-          "x": 37.6,
-          "y": 578.8,
-          "w": 840.4,
-          "h": 253.6,
-          "lineY": 705.6
+          "x": 48.3,
+          "y": 510.5,
+          "w": 1033.6,
+          "h": 309.2,
+          "lineY": 665.1
         }
       ]
     },
@@ -184,38 +184,38 @@
     },
     {
       "slide": "s07",
-      "name": "P3",
-      "scale": 1.669,
-      "clientW": 734,
-      "clientH": 936,
-      "appW": 734,
+      "name": "P3c",
+      "scale": 2.203,
+      "clientW": 914,
+      "clientH": 870,
+      "appW": 926,
       "marks": [
         {
           "key": "official",
           "n": 1,
-          "x": 37.1,
-          "y": 334.2,
-          "w": 660.3,
-          "h": 139.2,
-          "lineY": 403.7
+          "x": 22.8,
+          "y": 121.9,
+          "w": 866.2,
+          "h": 179,
+          "lineY": 211.4
         },
         {
           "key": "synergy",
           "n": 2,
-          "x": 37.1,
-          "y": 580.3,
-          "w": 660.3,
-          "h": 139.2,
-          "lineY": 649.9
+          "x": 22.8,
+          "y": 445.7,
+          "w": 866.2,
+          "h": 179,
+          "lineY": 535.2
         },
         {
           "key": "total",
           "n": 3,
-          "x": 37.1,
-          "y": 824.5,
-          "w": 660.3,
-          "h": 77.8,
-          "lineY": 863.4
+          "x": 22.8,
+          "y": 769.5,
+          "w": 866.2,
+          "h": 97.5,
+          "lineY": 817.1
         }
       ]
     },
